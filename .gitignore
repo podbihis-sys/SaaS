@@ -42,7 +42,9 @@ web-build/
 .env
 .env.local
 .env.*.local
+.deploy.env
 !.env.example
+!.deploy.env.example
 
 # OS
 .DS_Store
