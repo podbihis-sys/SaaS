@@ -1,0 +1,29 @@
+name: mobile
+
+on:
+  push:
+    paths:
+      - "mobile/**"
+      - "shared/**"
+      - ".github/workflows/mobile.yml"
+  pull_request:
+    paths:
+      - "mobile/**"
+      - "shared/**"
+      - ".github/workflows/mobile.yml"
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install
+        run: npm i --prefix mobile
+
+      - name: Typecheck
+        run: npx -p typescript tsc --noEmit -p mobile
