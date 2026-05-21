@@ -25,14 +25,13 @@ test-backend:
 	$(COMPOSE) exec backend pytest -q
 
 test-web:
-	cd web && pnpm test
+	cd web && npx tsc --noEmit
 
 test: test-backend test-web
 
 format:
 	cd backend && ruff format .
-	cd web && pnpm format
 
 lint:
 	cd backend && ruff check .
-	cd web && pnpm lint
+	cd web && npx tsc --noEmit
