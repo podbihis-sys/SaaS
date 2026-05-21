@@ -28,28 +28,22 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
 
       - name: Install WeasyPrint system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             libpango-1.0-0 libpangoft2-1.0-0 libcairo2 libgdk-pixbuf-2.0-0 \
-            libffi-dev shared-mime-info fonts-dejavu
+            libffi-dev shared-mime-info fonts-dejavu-core
 
-      - name: Install uv
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
-
-      - name: Sync dependencies
+      - name: Install dependencies
         run: |
-          export PATH="$HOME/.local/bin:$PATH"
-          uv sync --extra dev
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
 
       - name: Ruff
-        run: |
-          export PATH="$HOME/.local/bin:$PATH"
-          uv run ruff check .
+        run: ruff check .
 
       - name: Pytest
-        run: |
-          export PATH="$HOME/.local/bin:$PATH"
-          uv run pytest -q
+        run: pytest -q
