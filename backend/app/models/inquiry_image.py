@@ -24,4 +24,4 @@ class InquiryImage(Base, TimestampMixin, TenantMixin):
     content_type: Mapped[str] = mapped_column(String(80), default="image/jpeg", nullable=False)
     size_bytes: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
-    inquiry: Mapped["Inquiry"] = relationship(back_populates="images")  # noqa: F821
+    inquiry: Mapped[Inquiry] = relationship(back_populates="images")  # noqa: F821

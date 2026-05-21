@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Generic, TypeVar
+from typing import TypeVar
 
 from pydantic import BaseModel, ConfigDict
 
@@ -37,6 +37,6 @@ class PageMeta(BaseModel):
     page_size: int
 
 
-class Paged(BaseModel, Generic[T]):
+class Paged[T](BaseModel):
     items: list[T]
     meta: PageMeta

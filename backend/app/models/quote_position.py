@@ -30,4 +30,4 @@ class QuotePosition(Base, TimestampMixin, TenantMixin):
     needs_pricing: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     notes: Mapped[str | None] = mapped_column(String(500), nullable=True)
 
-    quote: Mapped["Quote"] = relationship(back_populates="positions")  # noqa: F821
+    quote: Mapped[Quote] = relationship(back_populates="positions")  # noqa: F821

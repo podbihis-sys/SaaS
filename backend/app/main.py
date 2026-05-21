@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from collections.abc import Awaitable, Callable
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
@@ -106,7 +105,3 @@ async def root() -> dict[str, str]:
 
 
 __all__ = ["app"]
-
-
-def _ensure_middleware_signature_compat() -> Callable[[Request], Awaitable[Response]] | None:
-    return None

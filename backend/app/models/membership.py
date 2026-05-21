@@ -10,7 +10,7 @@ from app.db_types import GUID
 from app.models.base import Base, TimestampMixin, primary_key
 
 
-class MembershipRole(str, enum.Enum):
+class MembershipRole(enum.StrEnum):
     OWNER = "owner"
     ADMIN = "admin"
     MEMBER = "member"
@@ -36,5 +36,5 @@ class Membership(Base, TimestampMixin):
     )
     is_active: Mapped[bool] = mapped_column(default=True, nullable=False)
 
-    company: Mapped["Company"] = relationship(back_populates="memberships")  # noqa: F821
-    user: Mapped["User"] = relationship(back_populates="memberships")  # noqa: F821
+    company: Mapped[Company] = relationship(back_populates="memberships")  # noqa: F821
+    user: Mapped[User] = relationship(back_populates="memberships")  # noqa: F821

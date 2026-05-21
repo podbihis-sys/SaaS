@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.deps import get_current_company_id, get_db
 from app.repositories.company_repo import CompanyRepository
 from app.repositories.customer_repo import CustomerRepository
-from app.schemas.common import PageMeta, Paged
+from app.schemas.common import Paged, PageMeta
 from app.schemas.quote import GenerateQuoteRequest, QuoteRead, QuoteUpdate
 from app.services.pdf_service import PDFService
 from app.services.quote_service import QuoteService

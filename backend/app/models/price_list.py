@@ -20,6 +20,6 @@ class PriceList(Base, TimestampMixin, TenantMixin):
     is_default: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     currency: Mapped[str] = mapped_column(String(3), default="EUR", nullable=False)
 
-    items: Mapped[list["PriceItem"]] = relationship(  # noqa: F821
+    items: Mapped[list[PriceItem]] = relationship(  # noqa: F821
         back_populates="price_list", cascade="all, delete-orphan"
     )

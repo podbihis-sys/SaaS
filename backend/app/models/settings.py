@@ -31,4 +31,4 @@ class CompanySettings(Base, TimestampMixin):
     bic: Mapped[str | None] = mapped_column(String(20), nullable=True)
     locale: Mapped[str] = mapped_column(String(10), default="de-DE", nullable=False)
 
-    company: Mapped["Company"] = relationship(back_populates="settings")  # noqa: F821
+    company: Mapped[Company] = relationship(back_populates="settings")  # noqa: F821

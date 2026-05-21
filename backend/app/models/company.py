@@ -25,9 +25,9 @@ class Company(Base, TimestampMixin):
     email: Mapped[str | None] = mapped_column(String(200), nullable=True)
     logo_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
 
-    memberships: Mapped[list["Membership"]] = relationship(  # noqa: F821
+    memberships: Mapped[list[Membership]] = relationship(  # noqa: F821
         back_populates="company", cascade="all, delete-orphan"
     )
-    settings: Mapped["CompanySettings | None"] = relationship(  # noqa: F821
+    settings: Mapped[CompanySettings | None] = relationship(  # noqa: F821
         back_populates="company", uselist=False, cascade="all, delete-orphan"
     )

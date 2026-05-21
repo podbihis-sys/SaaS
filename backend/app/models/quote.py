@@ -11,7 +11,7 @@ from app.db_types import GUID
 from app.models.base import Base, TenantMixin, TimestampMixin, primary_key
 
 
-class QuoteStatus(str, enum.Enum):
+class QuoteStatus(enum.StrEnum):
     DRAFT = "draft"
     SENT = "sent"
     ACCEPTED = "accepted"
@@ -51,6 +51,6 @@ class Quote(Base, TimestampMixin, TenantMixin):
     needs_pricing: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
 
-    positions: Mapped[list["QuotePosition"]] = relationship(  # noqa: F821
+    positions: Mapped[list[QuotePosition]] = relationship(  # noqa: F821
         back_populates="quote", cascade="all, delete-orphan", order_by="QuotePosition.position"
     )

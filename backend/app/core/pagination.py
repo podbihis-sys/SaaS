@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Generic, TypeVar
+from typing import TypeVar
 
 from pydantic import BaseModel, Field
 
@@ -20,12 +20,12 @@ class PageParams(BaseModel):
         return self.page_size
 
 
-class Page(BaseModel, Generic[T]):
+class Page[T](BaseModel):
     items: list[T]
     total: int
     page: int
     page_size: int
 
     @classmethod
-    def build(cls, items: list[T], total: int, params: PageParams) -> "Page[T]":
+    def build(cls, items: list[T], total: int, params: PageParams) -> Page[T]:
         return cls(items=items, total=total, page=params.page, page_size=params.page_size)

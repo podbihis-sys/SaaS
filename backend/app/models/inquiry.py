@@ -10,7 +10,7 @@ from app.db_types import GUID
 from app.models.base import Base, TenantMixin, TimestampMixin, primary_key
 
 
-class InquiryStatus(str, enum.Enum):
+class InquiryStatus(enum.StrEnum):
     NEW = "new"
     AI_PENDING = "ai_pending"
     AI_DONE = "ai_done"
@@ -46,9 +46,9 @@ class Inquiry(Base, TimestampMixin, TenantMixin):
     postal_code: Mapped[str | None] = mapped_column(String(20), nullable=True)
     city: Mapped[str | None] = mapped_column(String(120), nullable=True)
 
-    images: Mapped[list["InquiryImage"]] = relationship(  # noqa: F821
+    images: Mapped[list[InquiryImage]] = relationship(  # noqa: F821
         back_populates="inquiry", cascade="all, delete-orphan"
     )
-    analyses: Mapped[list["AIAnalysis"]] = relationship(  # noqa: F821
+    analyses: Mapped[list[AIAnalysis]] = relationship(  # noqa: F821
         back_populates="inquiry", cascade="all, delete-orphan"
     )

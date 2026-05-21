@@ -24,4 +24,4 @@ class AIAnalysis(Base, TimestampMixin, TenantMixin):
     result: Mapped[dict[str, Any]] = mapped_column(JSONType(), nullable=False)
     raw_response: Mapped[dict[str, Any] | None] = mapped_column(JSONType(), nullable=True)
 
-    inquiry: Mapped["Inquiry"] = relationship(back_populates="analyses")  # noqa: F821
+    inquiry: Mapped[Inquiry] = relationship(back_populates="analyses")  # noqa: F821

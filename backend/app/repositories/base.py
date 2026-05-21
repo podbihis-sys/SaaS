@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import uuid
-from typing import Generic, TypeVar
+from typing import TypeVar
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -12,7 +12,7 @@ from app.models.base import TenantMixin
 T = TypeVar("T")
 
 
-class TenantRepository(Generic[T]):
+class TenantRepository[T]:
     """Base repository that enforces company_id scoping on every read/write."""
 
     model: type[T]
@@ -55,7 +55,7 @@ class TenantRepository(Generic[T]):
         if issubclass(self.model, TenantMixin):
             cid = getattr(entity, "company_id", None)
             if cid is None:
-                setattr(entity, "company_id", self.company_id)
+                entity.company_id = self.company_id
             elif str(cid) != str(self.company_id):
                 raise TenantMismatch("Entity company_id does not match repository scope")
         self.db.add(entity)

@@ -11,7 +11,7 @@ from app.db_types import GUID
 from app.models.base import Base, TenantMixin, TimestampMixin, primary_key
 
 
-class PriceItemKind(str, enum.Enum):
+class PriceItemKind(enum.StrEnum):
     LABOR = "labor"
     MATERIAL = "material"
     AREA = "area"
@@ -41,4 +41,4 @@ class PriceItem(Base, TimestampMixin, TenantMixin):
     unit_price: Mapped[Decimal] = mapped_column(Numeric(12, 4), nullable=False)
     currency: Mapped[str] = mapped_column(String(3), default="EUR", nullable=False)
 
-    price_list: Mapped["PriceList"] = relationship(back_populates="items")  # noqa: F821
+    price_list: Mapped[PriceList] = relationship(back_populates="items")  # noqa: F821

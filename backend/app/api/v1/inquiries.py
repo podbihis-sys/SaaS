@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.deps import get_current_company_id, get_db
-from app.schemas.common import PageMeta, Paged
+from app.schemas.common import Paged, PageMeta
 from app.schemas.inquiry import (
     InquiryCreate,
     InquiryImageRead,
