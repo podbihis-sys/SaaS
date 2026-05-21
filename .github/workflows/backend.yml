@@ -16,6 +16,12 @@ jobs:
     defaults:
       run:
         working-directory: backend
+    env:
+      ENV: test
+      TEST_DATABASE_URL: sqlite+aiosqlite:///:memory:
+      DATABASE_URL: sqlite+aiosqlite:///:memory:
+      SUPABASE_JWT_SECRET: ci-secret
+      OPENAI_API_KEY: ci-openai-key
     steps:
       - uses: actions/checkout@v4
 
@@ -23,13 +29,20 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install WeasyPrint system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libpango-1.0-0 libpangoft2-1.0-0 libcairo2 libgdk-pixbuf-2.0-0 \
+            libffi-dev shared-mime-info fonts-dejavu
+
       - name: Install uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
       - name: Sync dependencies
         run: |
           export PATH="$HOME/.local/bin:$PATH"
-          uv sync --frozen || uv sync
+          uv sync --extra dev
 
       - name: Ruff
         run: |
