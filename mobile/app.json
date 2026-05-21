@@ -1,0 +1,62 @@
+{
+  "expo": {
+    "name": "Handwerk",
+    "slug": "saas-mobile",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "handwerk",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.handwerk.mobile",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Diese App benoetigt Kamerazugriff, um Fotos von Anfragen aufzunehmen.",
+        "NSPhotoLibraryUsageDescription": "Diese App benoetigt Zugriff auf Ihre Fotos, um Bilder zu Anfragen hochzuladen."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.handwerk.mobile",
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Diese App benoetigt Zugriff auf Ihre Fotos.",
+          "cameraPermission": "Diese App benoetigt Zugriff auf die Kamera."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "tsconfigPaths": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      }
+    }
+  }
+}

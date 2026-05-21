@@ -1,0 +1,44 @@
+app = "handwerk-backend"
+primary_region = "fra"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[deploy]
+  release_command = "alembic upgrade head"
+
+[env]
+  ENV = "production"
+  LOG_LEVEL = "INFO"
+  SUPABASE_URL = "https://nmxexbprvuzwyhxtfnub.supabase.co"
+  SUPABASE_STORAGE_BUCKET = "inquiry-images"
+  OPENAI_MODEL = "gpt-4o"
+  DEFAULT_VAT_RATE = "0.19"
+  DEFAULT_CURRENCY = "EUR"
+  JWT_ALGORITHM = "HS256"
+  JWT_AUDIENCE = "authenticated"
+  PORT = "8000"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 100
+    hard_limit = 200
+
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    timeout = "5s"
+    path = "/api/v1/health"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512
