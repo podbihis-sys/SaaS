@@ -1,8 +1,22 @@
 import { api } from "./client";
 import type { AuthMeResponse, Company, Membership, Role, UUID } from "./types";
 
+export interface CompanyCreateInput {
+  name: string;
+  slug: string;
+  legal_name?: string | null;
+  tax_id?: string | null;
+  address_line1?: string | null;
+  postal_code?: string | null;
+  city?: string | null;
+  country?: string;
+  phone?: string | null;
+  email?: string | null;
+}
+
 export const companiesApi = {
   me: () => api.get<AuthMeResponse>("/api/v1/auth/me"),
+  create: (input: CompanyCreateInput) => api.post<Company>("/api/v1/companies", input),
   getCurrent: () => api.get<Company>("/api/v1/companies/me"),
   update: (input: Partial<Company>) => api.patch<Company>("/api/v1/companies/me", input),
   uploadLogo: (file: { filename: string; content_type: string; size: number }) =>

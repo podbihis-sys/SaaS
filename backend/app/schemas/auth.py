@@ -22,7 +22,15 @@ class MembershipRead(ORMModel):
     is_active: bool
 
 
+class CompanySummary(BaseModel):
+    id: uuid.UUID
+    name: str
+    slug: str
+    role: MembershipRole
+
+
 class MeResponse(BaseModel):
     user: UserRead
     memberships: list[MembershipRead]
+    companies: list[CompanySummary]
     active_company_id: uuid.UUID | None = None

@@ -37,9 +37,17 @@ export interface Membership {
   created_at: string;
 }
 
+export interface CompanySummary {
+  id: UUID;
+  name: string;
+  slug: string;
+  role: Role;
+}
+
 export interface AuthMeResponse {
   user: AuthUser;
-  companies: Company[];
+  memberships: Membership[];
+  companies: CompanySummary[];
   active_company_id: UUID | null;
 }
 

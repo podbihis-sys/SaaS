@@ -6,8 +6,9 @@ from fastapi import APIRouter, Depends, Header
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.deps import CurrentUser, get_current_user, get_db
+from app.models.company import Company
 from app.models.user import User
-from app.schemas.auth import MembershipRead, MeResponse, UserRead
+from app.schemas.auth import CompanySummary, MembershipRead, MeResponse, UserRead
 from app.services.auth_service import AuthService
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -33,10 +34,19 @@ async def me(
     if active_company is None and memberships:
         active_company = memberships[0].company_id
 
+    companies: list[CompanySummary] = []
+    for m in memberships:
+        company = await db.get(Company, m.company_id)
+        if company is not None:
+            companies.append(
+                CompanySummary(id=company.id, name=company.name, slug=company.slug, role=m.role)
+            )
+
     user_row = await db.get(User, user.id)
     assert user_row is not None
     return MeResponse(
         user=UserRead.model_validate(user_row),
         memberships=[MembershipRead.model_validate(m) for m in memberships],
+        companies=companies,
         active_company_id=active_company,
     )

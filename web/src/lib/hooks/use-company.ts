@@ -4,7 +4,7 @@ import * as React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { companiesApi } from "@/lib/api/companies";
 import { ACTIVE_COMPANY_COOKIE } from "@/lib/api/client";
-import type { AuthMeResponse, Company } from "@/lib/api/types";
+import type { AuthMeResponse, CompanySummary } from "@/lib/api/types";
 
 function setCookie(name: string, value: string) {
   if (typeof document === "undefined") return;
@@ -50,7 +50,7 @@ export function useActiveCompany() {
     if (typeof window !== "undefined") window.location.reload();
   }, []);
 
-  const company: Company | undefined = React.useMemo(
+  const company: CompanySummary | undefined = React.useMemo(
     () => me.data?.companies.find((c) => c.id === activeId),
     [me.data, activeId],
   );
