@@ -27,6 +27,14 @@ type PasswordForm = z.infer<typeof loginSchema>;
 type MagicForm = z.infer<typeof magicLinkSchema>;
 
 export default function LoginPage() {
+  return (
+    <React.Suspense fallback={null}>
+      <LoginContent />
+    </React.Suspense>
+  );
+}
+
+function LoginContent() {
   const router = useRouter();
   const params = useSearchParams();
   const next = params.get("next") ?? "/dashboard";
