@@ -17,6 +17,7 @@ revoke all on function auth_has_company(uuid) from public;
 grant execute on function auth_has_company(uuid) to authenticated;
 
 alter table companies enable row level security;
+alter table users enable row level security;
 alter table memberships enable row level security;
 alter table customers enable row level security;
 alter table inquiries enable row level security;
@@ -32,6 +33,11 @@ create policy companies_select on companies
     for select using (auth_has_company(id));
 create policy companies_modify on companies
     for all using (auth_has_company(id)) with check (auth_has_company(id));
+
+create policy users_self on users
+    for select using (id = auth.uid());
+create policy users_self_modify on users
+    for all using (id = auth.uid()) with check (id = auth.uid());
 
 create policy memberships_select_self on memberships
     for select using (
