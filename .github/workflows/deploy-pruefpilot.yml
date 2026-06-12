@@ -39,6 +39,12 @@ jobs:
             echo "::error::Secret VERCEL_TOKEN ist nicht gesetzt — 'gh secret set VERCEL_TOKEN -R podbihis-sys/SaaS' ausführen."
             exit 1
           fi
+          # Öffentliche Landingpage: Vercel Authentication (Deployment Protection)
+          # für dieses Projekt deaktivieren — idempotent, gewollter Dauerzustand.
+          curl -s -X PATCH "https://api.vercel.com/v9/projects/pruefpilot" \
+            -H "Authorization: Bearer $VERCEL_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"ssoProtection":null}' > /dev/null || echo "Hinweis: Protection-PATCH fehlgeschlagen (Projekt evtl. noch nicht vorhanden)"
           # Fallbacks = echtes Supabase-Projekt "pruefpilot" (eu-central-1).
           # URL + Anon-Key sind öffentliche Client-Werte; RLS schützt die Daten.
           SUPABASE_URL="${PRUEFPILOT_SUPABASE_URL:-https://otsavbpvfzkytlouklwe.supabase.co}"
@@ -55,8 +61,9 @@ jobs:
             > /tmp/deploy.log 2>&1
           rc=$?
           set -e
-          url=$(tail -1 /tmp/deploy.log)
-          if [ "$rc" -ne 0 ] || ! printf '%s' "$url" | grep -qE '^https://'; then
+          # Die Produktions-URL steht nicht zwingend in der letzten Zeile (ANSI/Status-Zeilen).
+          url=$(grep -oE 'https://[a-z0-9-]+\.vercel\.app' /tmp/deploy.log | tail -1)
+          if [ "$rc" -ne 0 ] || [ -z "$url" ]; then
             echo "::error::Vercel-Deploy fehlgeschlagen (Exit $rc). Ausgabe:"
             tail -50 /tmp/deploy.log
             exit 1
