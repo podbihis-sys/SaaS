@@ -1,3 +1,5 @@
+import type { InspectionResult } from "./inspections";
+
 export interface CompanyRow {
   id: string;
   owner_id: string;
@@ -22,4 +24,16 @@ export interface DeviceRow {
   notes: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface InspectionRow {
+  id: string;
+  device_id: string;
+  company_id: string;
+  inspected_at: string;
+  inspector_name: string;
+  result: InspectionResult;
+  comment: string | null;
+  document_path: string | null;
+  created_at: string;
 }

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { CATEGORY_IDS } from "./categories";
+import { INSPECTION_RESULT_VALUES } from "./inspections";
 
 const isoDate = z
   .string()
@@ -42,6 +43,13 @@ export const deviceSchema = z
       });
     }
   });
+
+export const inspectionSchema = z.object({
+  inspectedAt: isoDate,
+  inspectorName: z.string().trim().min(1, "Name des Prüfers erforderlich").max(200, "Maximal 200 Zeichen"),
+  result: z.enum(INSPECTION_RESULT_VALUES, { message: "Prüfergebnis wählen" }),
+  comment: optionalTrimmed(2000),
+});
 
 export const registerSchema = z.object({
   email: z.string().trim().email("Gültige E-Mail-Adresse erforderlich"),

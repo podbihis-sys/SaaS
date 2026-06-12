@@ -1,11 +1,18 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ResultBadge } from "@/components/result-badge";
 import { StatusBadge } from "@/components/status-badge";
 import { categoryById } from "@/lib/categories";
 import { dueInfo, todayIso } from "@/lib/due";
 import { createClient } from "@/lib/supabase/server";
-import type { DeviceRow } from "@/lib/types";
+import type { DeviceRow, InspectionRow } from "@/lib/types";
 import { toggleDeviceStatus } from "../actions";
+
+const DATE_FORMAT = new Intl.DateTimeFormat("de-DE", { dateStyle: "medium", timeZone: "Europe/Berlin" });
+
+function formatDate(iso: string): string {
+  return DATE_FORMAT.format(new Date(`${iso}T00:00:00`));
+}
 
 export default async function DeviceDetailPage({
   params,
@@ -22,6 +29,27 @@ export default async function DeviceDetailPage({
   const category = categoryById(device.category_id);
   const due = dueInfo(device.next_due_date, todayIso());
 
+  const { data: inspectionRows } = await supabase
+    .from("inspections")
+    .select("*")
+    .eq("device_id", device.id)
+    .order("inspected_at", { ascending: false })
+    .order("created_at", { ascending: false });
+  const inspections = (inspectionRows ?? []) as InspectionRow[];
+  const latest = inspections[0];
+
+  // Signierte Download-URLs (10 Minuten gültig) nur für vorhandene Nachweise.
+  const documentUrls = new Map<string, string>();
+  for (const inspection of inspections) {
+    if (!inspection.document_path) continue;
+    const { data: signed } = await supabase.storage
+      .from("inspection-docs")
+      .createSignedUrl(inspection.document_path, 600);
+    if (signed?.signedUrl) {
+      documentUrls.set(inspection.id, signed.signedUrl);
+    }
+  }
+
   return (
     <div className="max-w-2xl">
       <div className="flex items-start justify-between">
@@ -32,14 +60,21 @@ export default async function DeviceDetailPage({
             {category ? ` · ${category.legalBasis}` : ""}
           </p>
         </div>
-        <StatusBadge status={device.status === "retired" ? "retired" : due.status} />
+        <div className="flex flex-col items-end gap-2">
+          <StatusBadge status={device.status === "retired" ? "retired" : due.status} />
+          {latest && latest.result !== "passed" ? (
+            <span className="flex items-center gap-1 text-xs text-slate-500">
+              Letzte Prüfung: <ResultBadge result={latest.result} />
+            </span>
+          ) : null}
+        </div>
       </div>
 
       <dl className="card mt-6 grid gap-4 sm:grid-cols-2">
         <div>
           <dt className="text-xs uppercase tracking-wide text-slate-500">Nächste Prüfung</dt>
           <dd className="mt-1 font-medium">
-            {device.next_due_date}
+            {formatDate(device.next_due_date)}
             {device.status === "active" ? (
               <span className="ml-2 text-sm font-normal text-slate-500">
                 {due.daysLeft < 0
@@ -74,6 +109,9 @@ export default async function DeviceDetailPage({
       </dl>
 
       <div className="mt-6 flex flex-wrap gap-3">
+        <Link href={`/geraete/${device.id}/pruefung`} className="btn-primary">
+          Prüfung erfassen
+        </Link>
         <Link href={`/geraete/${device.id}/bearbeiten`} className="btn-secondary">
           Bearbeiten
         </Link>
@@ -89,8 +127,46 @@ export default async function DeviceDetailPage({
         </form>
       </div>
 
-      <section className="card mt-8 border-dashed text-sm text-slate-500">
-        Prüfhistorie und Nachweis-Upload folgen in Milestone 3 (siehe docs/implementation-plan.md).
+      <section className="mt-10">
+        <h2 className="text-lg font-semibold">Prüfhistorie</h2>
+        {inspections.length === 0 ? (
+          <div className="card mt-4 text-sm text-slate-600">
+            Noch keine Prüfung dokumentiert.{" "}
+            <Link href={`/geraete/${device.id}/pruefung`} className="text-blue-700 underline">
+              Erste Prüfung erfassen
+            </Link>
+          </div>
+        ) : (
+          <ul className="mt-4 divide-y divide-slate-200 rounded-lg border border-slate-200 bg-white">
+            {inspections.map((inspection) => (
+              <li key={inspection.id} className="px-4 py-3">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="font-medium">{formatDate(inspection.inspected_at)}</span>
+                  <ResultBadge result={inspection.result} />
+                </div>
+                <p className="mt-1 text-sm text-slate-600">Prüfer: {inspection.inspector_name}</p>
+                {inspection.comment ? (
+                  <p className="mt-1 whitespace-pre-wrap text-sm text-slate-600">
+                    {inspection.comment}
+                  </p>
+                ) : null}
+                {documentUrls.has(inspection.id) ? (
+                  <a
+                    href={documentUrls.get(inspection.id)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 inline-block text-sm text-blue-700 underline"
+                  >
+                    Nachweis öffnen (PDF)
+                  </a>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        )}
+        <p className="mt-2 text-xs text-slate-500">
+          Einträge sind unveränderlich — Korrekturen als neue Prüfung mit Bemerkung erfassen.
+        </p>
       </section>
     </div>
   );

@@ -3,10 +3,10 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { getCompany } from "@/lib/data";
-import { nextDueFrom } from "@/lib/due";
+import { daysUntil, nextDueFrom, todayIso } from "@/lib/due";
 import { makePublicCode } from "@/lib/public-code";
 import { createClient } from "@/lib/supabase/server";
-import { deviceSchema } from "@/lib/zod-schemas";
+import { deviceSchema, inspectionSchema } from "@/lib/zod-schemas";
 
 export interface DeviceFormState {
   error?: string;
@@ -164,4 +164,96 @@ export async function toggleDeviceStatus(formData: FormData): Promise<void> {
   revalidatePath("/geraete");
   revalidatePath(`/geraete/${deviceId}`);
   revalidatePath("/dashboard");
+}
+
+const MAX_DOCUMENT_BYTES = 8 * 1024 * 1024;
+
+export async function recordInspection(
+  _previous: DeviceFormState,
+  formData: FormData,
+): Promise<DeviceFormState> {
+  const company = await getCompany();
+  if (!company) {
+    redirect("/onboarding");
+  }
+
+  const deviceId = formData.get("deviceId");
+  if (typeof deviceId !== "string" || !deviceId) {
+    return { error: "Gerät nicht gefunden." };
+  }
+
+  const parsed = inspectionSchema.safeParse({
+    inspectedAt: formData.get("inspectedAt"),
+    inspectorName: formData.get("inspectorName"),
+    result: formData.get("result"),
+    comment: formData.get("comment"),
+  });
+  if (!parsed.success) {
+    return {
+      error: "Bitte Eingaben prüfen.",
+      fieldErrors: parsed.error.flatten().fieldErrors,
+    };
+  }
+  if (daysUntil(parsed.data.inspectedAt, todayIso()) > 0) {
+    return {
+      error: "Bitte Eingaben prüfen.",
+      fieldErrors: { inspectedAt: ["Das Prüfdatum darf nicht in der Zukunft liegen."] },
+    };
+  }
+
+  const supabase = await createClient();
+  const { data: device } = await supabase
+    .from("devices")
+    .select("id")
+    .eq("id", deviceId)
+    .maybeSingle();
+  if (!device) {
+    return { error: "Gerät nicht gefunden oder keine Berechtigung." };
+  }
+
+  let documentPath: string | null = null;
+  const file = formData.get("document");
+  if (file instanceof File && file.size > 0) {
+    if (file.type !== "application/pdf") {
+      return {
+        error: "Bitte Eingaben prüfen.",
+        fieldErrors: { document: ["Nur PDF-Dateien sind erlaubt."] },
+      };
+    }
+    if (file.size > MAX_DOCUMENT_BYTES) {
+      return {
+        error: "Bitte Eingaben prüfen.",
+        fieldErrors: { document: ["Maximal 8 MB pro Nachweis."] },
+      };
+    }
+    documentPath = `${company.id}/${deviceId}/${crypto.randomUUID()}.pdf`;
+    const { error: uploadError } = await supabase.storage
+      .from("inspection-docs")
+      .upload(documentPath, file, { contentType: "application/pdf" });
+    if (uploadError) {
+      return { error: "Der Nachweis-Upload ist fehlgeschlagen. Bitte erneut versuchen." };
+    }
+  }
+
+  const { error } = await supabase.from("inspections").insert({
+    device_id: deviceId,
+    company_id: company.id,
+    inspected_at: parsed.data.inspectedAt,
+    inspector_name: parsed.data.inspectorName,
+    result: parsed.data.result,
+    comment: parsed.data.comment ?? null,
+    document_path: documentPath,
+  });
+  if (error) {
+    if (documentPath) {
+      // Best-Effort-Aufräumen: verwaiste Datei entfernen, Fehler dabei ignorieren.
+      await supabase.storage.from("inspection-docs").remove([documentPath]);
+    }
+    return { error: "Die Prüfung konnte nicht gespeichert werden. Bitte erneut versuchen." };
+  }
+
+  revalidatePath(`/geraete/${deviceId}`);
+  revalidatePath("/geraete");
+  revalidatePath("/dashboard");
+  redirect(`/geraete/${deviceId}`);
 }
