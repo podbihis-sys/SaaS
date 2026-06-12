@@ -13,6 +13,11 @@ function appUrl(): string {
   return process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 }
 
+// Nur app-interne Pfade: "//evil.com" ist eine protokoll-relative URL und muss abgelehnt werden.
+function isSafeInternalPath(value: unknown): value is string {
+  return typeof value === "string" && value.startsWith("/") && !value.startsWith("//");
+}
+
 export async function register(
   _previous: AuthFormState,
   formData: FormData,
@@ -63,7 +68,7 @@ export async function login(
   }
 
   const next = formData.get("next");
-  redirect(typeof next === "string" && next.startsWith("/") ? next : "/dashboard");
+  redirect(isSafeInternalPath(next) ? next : "/dashboard");
 }
 
 export async function logout(): Promise<void> {

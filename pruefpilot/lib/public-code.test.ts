@@ -15,7 +15,17 @@ describe("makePublicCode", () => {
     expect(makePublicCode(bytes)).toBe(makePublicCode(bytes));
   });
 
-  it("wirft bei zu wenig Zufallsbytes", () => {
+  it("verwirft Bytes oberhalb der Rejection-Grenze (kein Modulo-Bias)", () => {
+    // 248–255 würden die ersten 8 Alphabet-Zeichen bevorzugen und müssen übersprungen werden.
+    const bytes = new Uint8Array([255, 250, 0, 1, 2, 3, 4, 5, 6, 7]);
+    const reference = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7]);
+    expect(makePublicCode(bytes)).toBe(makePublicCode(reference));
+  });
+
+  it("wirft bei zu wenig verwertbaren Zufallsbytes", () => {
     expect(() => makePublicCode(new Uint8Array(4))).toThrow("Zufallsbytes");
+    expect(() => makePublicCode(new Uint8Array([255, 255, 255, 255, 255, 255, 255, 255]))).toThrow(
+      "Zufallsbytes",
+    );
   });
 });

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { daysUntil, dueInfo, dueStatus, nextDueFrom } from "./due";
+import { daysUntil, dueInfo, dueStatus, nextDueFrom, todayIso } from "./due";
 
 const TODAY = "2026-06-12";
 
@@ -68,5 +68,18 @@ describe("nextDueFrom", () => {
 
   it("wirft bei ungültigem Startdatum", () => {
     expect(() => nextDueFrom("2026-02-30", 1)).toThrow("Kein gültiger Kalendertag");
+  });
+});
+
+describe("todayIso", () => {
+  it("liefert das Datum im ISO-Format für Europe/Berlin", () => {
+    const value = todayIso();
+    expect(value).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    const berlin = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Berlin" }).format(new Date());
+    expect(value).toBe(berlin);
+  });
+
+  it("respektiert eine explizite Zeitzone", () => {
+    expect(todayIso("UTC")).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 });

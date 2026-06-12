@@ -108,7 +108,7 @@ export async function updateDevice(
   }
 
   const supabase = await createClient();
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("devices")
     .update({
       category_id: parsed.data.categoryId,
@@ -119,30 +119,47 @@ export async function updateDevice(
       next_due_date: resolveNextDue(parsed.data),
       notes: parsed.data.notes ?? null,
     })
-    .eq("id", deviceId);
+    .eq("id", deviceId)
+    .select("id");
 
-  if (error) {
-    return { error: "Änderungen konnten nicht gespeichert werden." };
+  // RLS filtert fremde IDs heraus: 0 betroffene Zeilen = nicht gefunden oder keine Berechtigung.
+  if (error || !data?.length) {
+    return { error: "Gerät nicht gefunden oder keine Berechtigung." };
   }
 
   revalidatePath("/geraete");
   revalidatePath(`/geraete/${deviceId}`);
+  revalidatePath(`/geraete/${deviceId}/bearbeiten`);
   revalidatePath("/dashboard");
   redirect(`/geraete/${deviceId}`);
 }
 
 export async function toggleDeviceStatus(formData: FormData): Promise<void> {
   const deviceId = formData.get("deviceId");
-  const currentStatus = formData.get("currentStatus");
-  if (typeof deviceId !== "string" || typeof currentStatus !== "string") {
+  if (typeof deviceId !== "string" || !deviceId) {
     return;
   }
 
   const supabase = await createClient();
-  await supabase
+  // Ist-Status aus der DB lesen statt dem Formularfeld zu vertrauen.
+  const { data: device } = await supabase
     .from("devices")
-    .update({ status: currentStatus === "active" ? "retired" : "active" })
-    .eq("id", deviceId);
+    .select("id, status")
+    .eq("id", deviceId)
+    .maybeSingle();
+  if (!device) {
+    throw new Error("Gerät nicht gefunden oder keine Berechtigung.");
+  }
+
+  const { data, error } = await supabase
+    .from("devices")
+    .update({ status: device.status === "active" ? "retired" : "active" })
+    .eq("id", deviceId)
+    .select("id");
+
+  if (error || !data?.length) {
+    throw new Error("Statuswechsel fehlgeschlagen. Bitte erneut versuchen.");
+  }
 
   revalidatePath("/geraete");
   revalidatePath(`/geraete/${deviceId}`);

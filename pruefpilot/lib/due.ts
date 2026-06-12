@@ -76,6 +76,11 @@ export function nextDueFrom(lastInspected: string, intervalMonths: number): stri
   return `${targetYear}-${pad(targetMonth0 + 1)}-${pad(targetDay)}`;
 }
 
-export function todayIso(): string {
-  return new Date().toISOString().slice(0, 10);
+/**
+ * Heutiges Datum in deutscher Zeitzone (nicht UTC): zwischen 22:00 und 24:00 MESZ
+ * wäre das UTC-Datum sonst einen Tag zurück — für Fälligkeitsgrenzen relevant.
+ */
+export function todayIso(timeZone = "Europe/Berlin"): string {
+  // Das sv-SE-Locale formatiert nativ als JJJJ-MM-TT.
+  return new Intl.DateTimeFormat("sv-SE", { timeZone }).format(new Date());
 }

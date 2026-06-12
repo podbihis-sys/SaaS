@@ -78,6 +78,7 @@ We'll know we're right when **≥3 zahlende Design-Partner das Tool 60 Tage akti
 - [ ] UG-Gründung + Vermögensschadenhaftpflicht + AGB vor erstem zahlenden Kunden — Zeitpunkt/Kosten klären (Steuerberater)
 - [ ] Vercel (US-Anbieter) trotz Supabase Frankfurt für DSGVO-sensible Käufer akzeptabel? Ggf. EU-Hosting-Alternative prüfen
 - [ ] Wie wichtig ist Offline-Erfassung (Prüfung im Keller ohne Netz)? → Gespräche (Kritiker-Hinweis)
+- [ ] Öffentliche QR-Leseansicht für externe Prüfer/Auditoren (ohne Login)? Datenschutz-Trade-off — V1 erfordert Login, Entscheidung nach Validierungsgesprächen (Code-Review-Finding 2026-06-12)
 - [ ] Reaktion, falls Timly/ToolSense/Lumiform ein KMU-DGUV-Paket < 100 EUR/Monat launchen? (Marktrisiko 1–3)
 
 ## Risks
