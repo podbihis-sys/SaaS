@@ -39,6 +39,13 @@ export default function RegisterPage() {
         <button type="submit" disabled={pending} className="btn-primary w-full">
           {pending ? "Konto wird angelegt…" : "Konto anlegen"}
         </button>
+        <p className="text-center text-xs text-slate-500">
+          Mit der Registrierung bestätigen Sie die Kenntnisnahme der{" "}
+          <a href="/datenschutz" className="underline">
+            Datenschutzerklärung
+          </a>
+          .
+        </p>
         <p className="text-center text-sm text-slate-600">
           Bereits registriert?{" "}
           <Link href="/login" className="text-blue-700 underline">

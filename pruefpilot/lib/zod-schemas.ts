@@ -51,6 +51,17 @@ export const inspectionSchema = z.object({
   comment: optionalTrimmed(2000),
 });
 
+export const COMPANY_SIZES = ["1-4", "5-19", "20-49", "50+"] as const;
+
+export const leadSchema = z.object({
+  email: z.string().trim().email("Gültige E-Mail-Adresse erforderlich").max(320),
+  name: optionalTrimmed(200),
+  companySize: z.preprocess(
+    (value) => (value === "" || value == null ? null : value),
+    z.enum(COMPANY_SIZES).nullable(),
+  ),
+});
+
 export const registerSchema = z.object({
   email: z.string().trim().email("Gültige E-Mail-Adresse erforderlich"),
   password: z.string().min(8, "Passwort mit mindestens 8 Zeichen"),
