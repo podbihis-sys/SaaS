@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 type CookieToSet = { name: string; value: string; options: CookieOptions };
 
-const PROTECTED_PREFIXES = ["/dashboard", "/geraete", "/onboarding", "/g"];
+const PROTECTED_PREFIXES = ["/dashboard", "/geraete", "/onboarding", "/g", "/abo"];
 
 function isProtectedPath(pathname: string): boolean {
   return PROTECTED_PREFIXES.some(

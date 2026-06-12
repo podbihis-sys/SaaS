@@ -6,6 +6,10 @@ export interface CompanyRow {
   name: string;
   contact_email: string;
   created_at: string;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
+  subscription_status: string;
+  trial_ends_at: string;
 }
 
 export type DeviceStatus = "active" | "retired";

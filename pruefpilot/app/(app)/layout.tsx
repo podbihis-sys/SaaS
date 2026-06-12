@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { logout } from "@/app/(auth)/actions";
+import { hasAccess, isTrialing, trialDaysLeft } from "@/lib/billing";
 import { getCompany, getUser } from "@/lib/data";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
@@ -12,9 +13,28 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   if (!company) {
     redirect("/onboarding");
   }
+  if (!hasAccess(company)) {
+    redirect("/abo");
+  }
+  const showTrialBanner = isTrialing(company);
+  const daysLeft = showTrialBanner ? trialDaysLeft(company) : 0;
 
   return (
     <div className="min-h-screen">
+      {showTrialBanner ? (
+        <div className="no-print border-b border-blue-200 bg-blue-50">
+          <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-2 text-sm text-blue-900">
+            <span>
+              Testphase: noch {daysLeft} {daysLeft === 1 ? "Tag" : "Tage"} voller Funktionsumfang.
+            </span>
+            <form action="/api/stripe/checkout" method="post">
+              <button type="submit" className="font-medium underline">
+                Abo starten (49 €/Monat netto)
+              </button>
+            </form>
+          </div>
+        </div>
+      ) : null}
       <header className="no-print border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
           <nav className="flex items-center gap-6">
