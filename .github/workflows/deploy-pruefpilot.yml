@@ -35,27 +35,30 @@ jobs:
           PRUEFPILOT_SUPABASE_URL: ${{ secrets.PRUEFPILOT_SUPABASE_URL }}
           PRUEFPILOT_SUPABASE_ANON_KEY: ${{ secrets.PRUEFPILOT_SUPABASE_ANON_KEY }}
         run: |
-          set -o pipefail
           if [ -z "$VERCEL_TOKEN" ]; then
-            echo "::error::Secret VERCEL_TOKEN ist nicht gesetzt — 'gh secret set VERCEL_TOKEN -R podbihis-sys/SaaS' oder scripts/setup-deploy-secrets.sh ausführen."
+            echo "::error::Secret VERCEL_TOKEN ist nicht gesetzt — 'gh secret set VERCEL_TOKEN -R podbihis-sys/SaaS' ausführen."
             exit 1
           fi
-          # Vorschau-Modus ohne eigenes Supabase-Projekt: Platzhalter-Werte.
-          # Landing, Rechtsseiten und UI sind voll ansehbar; Login/Registrierung
-          # funktionieren erst, wenn PRUEFPILOT_SUPABASE_* als Secrets gesetzt sind.
-          SUPABASE_URL="${PRUEFPILOT_SUPABASE_URL:-https://example.supabase.co}"
-          SUPABASE_ANON_KEY="${PRUEFPILOT_SUPABASE_ANON_KEY:-preview-placeholder-key}"
-          url=$(vercel deploy --prod --yes \
+          # Fallbacks = echtes Supabase-Projekt "pruefpilot" (eu-central-1).
+          # URL + Anon-Key sind öffentliche Client-Werte; RLS schützt die Daten.
+          SUPABASE_URL="${PRUEFPILOT_SUPABASE_URL:-https://otsavbpvfzkytlouklwe.supabase.co}"
+          SUPABASE_ANON_KEY="${PRUEFPILOT_SUPABASE_ANON_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90c2F2YnB2ZnpreXRsb3VrbHdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyNjMwMTcsImV4cCI6MjA5NjgzOTAxN30.THaVh8ZYdiW0oebp-vmt0N2MsjoW7Xlfr4lhTDRmaGg}"
+          set +e
+          vercel deploy --prod --yes \
             --token="$VERCEL_TOKEN" \
-            --name=pruefpilot \
             --build-env NEXT_PUBLIC_SUPABASE_URL="$SUPABASE_URL" \
             --build-env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY" \
             --build-env NEXT_PUBLIC_APP_URL="https://pruefpilot.vercel.app" \
             --env NEXT_PUBLIC_SUPABASE_URL="$SUPABASE_URL" \
             --env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY" \
-            --env NEXT_PUBLIC_APP_URL="https://pruefpilot.vercel.app" 2>&1 | tail -1)
-          if ! printf '%s' "$url" | grep -qE '^https://'; then
-            echo "::error::Vercel-Deploy fehlgeschlagen: $url"
+            --env NEXT_PUBLIC_APP_URL="https://pruefpilot.vercel.app" \
+            > /tmp/deploy.log 2>&1
+          rc=$?
+          set -e
+          url=$(tail -1 /tmp/deploy.log)
+          if [ "$rc" -ne 0 ] || ! printf '%s' "$url" | grep -qE '^https://'; then
+            echo "::error::Vercel-Deploy fehlgeschlagen (Exit $rc). Ausgabe:"
+            tail -50 /tmp/deploy.log
             exit 1
           fi
           echo "DEPLOY_URL=$url"
