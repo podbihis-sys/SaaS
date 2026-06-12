@@ -30,3 +30,25 @@ Next.js (App Router) · Supabase (Postgres/Auth/RLS, Region Frankfurt) · Stripe
 ## Nächster Schritt
 
 `/ecc:plan ./docs/PRD.md` → Implementierungsplan für Milestone 2 (Kern-Inventar).
+
+## Entwicklung (Milestone 2)
+
+```bash
+cd pruefpilot
+cp .env.example .env.local   # Supabase-Projektwerte eintragen (Region Frankfurt)
+pnpm install
+pnpm dev                     # http://localhost:3000
+# Qualitätssicherung:
+pnpm typecheck && pnpm lint && pnpm test && pnpm build
+```
+
+Migrationen (`supabase/migrations/`) + `supabase/seed.sql` im Supabase-SQL-Editor oder per
+`supabase db push` einspielen. In den Auth-Einstellungen `{APP_URL}/auth/callback` als Redirect-URL
+hinterlegen.
+
+**Manuelle Smoke-Checkliste gegen das echte Supabase-Projekt** (lokal nicht prüfbar):
+1. Registrieren → Bestätigungs-Mail → Callback landet auf /onboarding
+2. Betrieb anlegen → Dashboard
+3. Gerät anlegen (Kategorie wählen → Intervall wird vorbelegt) → Liste/Badges korrekt
+4. QR-Etikett drucken → Scan öffnet Geräteakte (`/g/{code}`)
+5. Zweiten Account anlegen → sieht keine fremden Geräte (RLS)
