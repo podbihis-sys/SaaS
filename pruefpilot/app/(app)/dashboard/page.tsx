@@ -48,9 +48,14 @@ export default async function DashboardPage() {
     <div>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <Link href="/geraete/neu" className="btn-primary">
-          + Gerät anlegen
-        </Link>
+        <div className="flex gap-3">
+          <a href="/api/reports/audit" className="btn-secondary">
+            Prüfbericht (PDF)
+          </a>
+          <Link href="/geraete/neu" className="btn-primary">
+            + Gerät anlegen
+          </Link>
+        </div>
       </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-4">

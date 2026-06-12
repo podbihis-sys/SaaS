@@ -65,7 +65,7 @@ We'll know we're right when **≥3 zahlende Design-Partner das Tool 60 Tage akti
 | 2 | Kern-Inventar | Registrieren, Betrieb anlegen, Geräte mit Kategorie-Vorlagen verwalten, Fälligkeiten im Dashboard sehen | complete | ./implementation-plan.md |
 | 3 | Prüfdokumentation | Prüfung mit PDF-Nachweis erfassen; Historie je Gerät; Fälligkeit schreibt sich fort | complete | ./implementation-plan.md |
 | 4 | Erinnerungs-Engine | Täglicher Cron versendet 60/30/7-Mails + Eskalation, idempotent, ≥99 % Zustellrate | complete | ./implementation-plan.md |
-| 5 | Audit-Export | PDF-Gesamtbericht auf Knopfdruck | pending | ./implementation-plan.md |
+| 5 | Audit-Export | PDF-Gesamtbericht auf Knopfdruck | complete | ./implementation-plan.md |
 | 6 | Monetarisierung | Stripe Checkout + Portal, 49 EUR/Monat, 14-Tage-Trial-Logik | pending | ./implementation-plan.md |
 | 7 | Design-Partner-Launch | 3 Betriebe founder-geführt onboarded und zahlend | pending | — |
 
