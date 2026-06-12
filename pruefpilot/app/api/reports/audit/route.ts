@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { renderAuditPdf } from "@/lib/audit-report";
 import { hasAccess } from "@/lib/billing";
-import { getCompany } from "@/lib/data";
+import { getCompany, getUser } from "@/lib/data";
 import { todayIso } from "@/lib/due";
 import { createClient } from "@/lib/supabase/server";
 import type { DeviceRow, InspectionRow } from "@/lib/types";
@@ -10,6 +10,11 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  // Auth-Check VOR dem Betriebs-Lookup: unauthentifizierte Aufrufe erreichen die DB nicht.
+  const user = await getUser();
+  if (!user) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
   const company = await getCompany();
   if (!company) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
