@@ -35,6 +35,11 @@ jobs:
           PRUEFPILOT_SUPABASE_URL: ${{ secrets.PRUEFPILOT_SUPABASE_URL }}
           PRUEFPILOT_SUPABASE_ANON_KEY: ${{ secrets.PRUEFPILOT_SUPABASE_ANON_KEY }}
         run: |
+          set -o pipefail
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::Secret VERCEL_TOKEN ist nicht gesetzt — 'gh secret set VERCEL_TOKEN -R podbihis-sys/SaaS' oder scripts/setup-deploy-secrets.sh ausführen."
+            exit 1
+          fi
           # Vorschau-Modus ohne eigenes Supabase-Projekt: Platzhalter-Werte.
           # Landing, Rechtsseiten und UI sind voll ansehbar; Login/Registrierung
           # funktionieren erst, wenn PRUEFPILOT_SUPABASE_* als Secrets gesetzt sind.
@@ -49,6 +54,10 @@ jobs:
             --env NEXT_PUBLIC_SUPABASE_URL="$SUPABASE_URL" \
             --env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY" \
             --env NEXT_PUBLIC_APP_URL="https://pruefpilot.vercel.app" 2>&1 | tail -1)
+          if ! printf '%s' "$url" | grep -qE '^https://'; then
+            echo "::error::Vercel-Deploy fehlgeschlagen: $url"
+            exit 1
+          fi
           echo "DEPLOY_URL=$url"
           echo "## PrüfPilot deployed to" >> $GITHUB_STEP_SUMMARY
           echo "$url" >> $GITHUB_STEP_SUMMARY
