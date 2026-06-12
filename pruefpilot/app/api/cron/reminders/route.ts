@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { categoryName } from "@/lib/categories";
 import { todayIso } from "@/lib/due";
@@ -25,6 +26,12 @@ interface ReminderLogRow {
   device_id: string;
   stage: ReminderStage;
   due_date: string;
+}
+
+function safeCompare(a: string, b: string): boolean {
+  const bufferA = Buffer.from(a);
+  const bufferB = Buffer.from(b);
+  return bufferA.length === bufferB.length && timingSafeEqual(bufferA, bufferB);
 }
 
 function addDaysIso(iso: string, days: number): string {
@@ -55,7 +62,8 @@ async function sendEmail(to: string, subject: string, text: string): Promise<voi
 
 export async function GET(request: Request) {
   const cronSecret = process.env.CRON_SECRET;
-  if (!cronSecret || request.headers.get("authorization") !== `Bearer ${cronSecret}`) {
+  const authHeader = request.headers.get("authorization") ?? "";
+  if (!cronSecret || !safeCompare(authHeader, `Bearer ${cronSecret}`)) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
@@ -119,7 +127,12 @@ export async function GET(request: Request) {
       deviceUrl: `${appUrl}/geraete/${device.id}`,
     };
     const recipient = device.companies.contact_email;
-    planned.push({ device: device.name, stage: candidate.stage, to: recipient });
+    // Empfänger im Dry-Run-Output maskieren (Datenminimierung in Cron-Logs).
+    planned.push({
+      device: device.name,
+      stage: candidate.stage,
+      to: recipient.replace(/.(?=.*@)/g, "*"),
+    });
     if (dryRun) continue;
 
     try {

@@ -51,6 +51,33 @@ describe("renderAuditPdf", () => {
     expect(buffer.subarray(0, 5).toString("latin1")).toBe("%PDF-");
   });
 
+  it("bricht große Kategorien über mehrere Seiten um statt abzuschneiden", async () => {
+    const many = Array.from({ length: 40 }, (_, i) =>
+      device({ id: `d${i}`, name: `Feuerlöscher ${i + 1}`, category_id: "fire_extinguisher" }),
+    );
+    const buffer = await renderAuditPdf({
+      companyName: "Groß GmbH",
+      generatedAt: "12.06.2026, 10:00",
+      today: "2026-06-12",
+      devices: many,
+      latestInspectionByDevice: new Map(),
+      evidenceCount: 0,
+    });
+    const pageCount = (buffer.toString("latin1").match(/\/Type\s*\/Page[^s]/g) ?? []).length;
+    expect(pageCount).toBeGreaterThan(1);
+    // Textinhalte sind komprimiert — Wachstum gegenüber 5 Geräten belegt,
+    // dass alle Zeilen gerendert werden (kein stilles Clipping).
+    const small = await renderAuditPdf({
+      companyName: "Groß GmbH",
+      generatedAt: "12.06.2026, 10:00",
+      today: "2026-06-12",
+      devices: many.slice(0, 5),
+      latestInspectionByDevice: new Map(),
+      evidenceCount: 0,
+    });
+    expect(buffer.length).toBeGreaterThan(small.length * 1.5);
+  });
+
   it("rendert auch ohne Geräte (leerer Betrieb)", async () => {
     const buffer = await renderAuditPdf({
       companyName: "Leer GmbH",

@@ -214,22 +214,27 @@ export async function recordInspection(
   let documentPath: string | null = null;
   const file = formData.get("document");
   if (file instanceof File && file.size > 0) {
-    if (file.type !== "application/pdf") {
-      return {
-        error: "Bitte Eingaben prüfen.",
-        fieldErrors: { document: ["Nur PDF-Dateien sind erlaubt."] },
-      };
-    }
     if (file.size > MAX_DOCUMENT_BYTES) {
       return {
         error: "Bitte Eingaben prüfen.",
         fieldErrors: { document: ["Maximal 8 MB pro Nachweis."] },
       };
     }
+    // file.type ist client-kontrolliert — zusätzlich die PDF-Magic-Bytes (%PDF) prüfen.
+    const arrayBuffer = await file.arrayBuffer();
+    const magic = new Uint8Array(arrayBuffer.slice(0, 4));
+    const isPdf =
+      magic[0] === 0x25 && magic[1] === 0x50 && magic[2] === 0x44 && magic[3] === 0x46;
+    if (file.type !== "application/pdf" || !isPdf) {
+      return {
+        error: "Bitte Eingaben prüfen.",
+        fieldErrors: { document: ["Nur PDF-Dateien sind erlaubt."] },
+      };
+    }
     documentPath = `${company.id}/${deviceId}/${crypto.randomUUID()}.pdf`;
     const { error: uploadError } = await supabase.storage
       .from("inspection-docs")
-      .upload(documentPath, file, { contentType: "application/pdf" });
+      .upload(documentPath, arrayBuffer, { contentType: "application/pdf" });
     if (uploadError) {
       return { error: "Der Nachweis-Upload ist fehlgeschlagen. Bitte erneut versuchen." };
     }

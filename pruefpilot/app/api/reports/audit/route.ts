@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { renderAuditPdf } from "@/lib/audit-report";
+import { hasAccess } from "@/lib/billing";
 import { getCompany } from "@/lib/data";
 import { todayIso } from "@/lib/due";
 import { createClient } from "@/lib/supabase/server";
@@ -12,6 +13,10 @@ export async function GET() {
   const company = await getCompany();
   if (!company) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+  // API-Routen prüfen den Abo-Zugriff selbst — das Layout-Gate deckt nur Seiten ab.
+  if (!hasAccess(company)) {
+    return NextResponse.json({ error: "subscription required" }, { status: 402 });
   }
 
   const supabase = await createClient();

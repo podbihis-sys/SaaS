@@ -96,7 +96,10 @@ function AuditReport({ data }: { data: AuditReportData }) {
           const devices = data.devices.filter((device) => device.category_id === category.id);
           if (devices.length === 0) return null;
           return (
-            <View key={category.id} wrap={false}>
+            <View key={category.id}>
+              {/* Kopf bleibt zusammen; Zeilen dürfen über Seiten laufen — wrap={false}
+                  auf der ganzen Sektion würde große Gerätelisten still abschneiden. */}
+              <View wrap={false}>
               <Text style={styles.sectionTitle}>{category.nameDe}</Text>
               <Text style={styles.sectionLegal}>Rechtsgrundlage: {category.legalBasis}</Text>
               <View style={styles.headerRow}>
@@ -107,6 +110,7 @@ function AuditReport({ data }: { data: AuditReportData }) {
                 <Text style={styles.colStatus}>Status</Text>
                 <Text style={styles.colLast}>Letzte Prüfung</Text>
               </View>
+              </View>
               {devices.map((device) => {
                 const latest = data.latestInspectionByDevice.get(device.id);
                 const status =
@@ -114,7 +118,7 @@ function AuditReport({ data }: { data: AuditReportData }) {
                     ? "retired"
                     : dueStatus(device.next_due_date, data.today);
                 return (
-                  <View key={device.id} style={styles.row}>
+                  <View key={device.id} style={styles.row} wrap={false}>
                     <Text style={styles.colName}>{device.name}</Text>
                     <Text style={styles.colLocation}>{device.location ?? "—"}</Text>
                     <Text style={styles.colInterval}>{device.interval_months} M</Text>

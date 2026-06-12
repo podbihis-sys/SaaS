@@ -22,15 +22,33 @@ export async function POST(request: Request) {
       name: company.name,
       metadata: { company_id: company.id },
     });
-    customerId = customer.id;
     const supabase = await createClient();
-    const { error } = await supabase
+    // Race-Guard: nur schreiben, wenn noch kein Kunde verknüpft ist (Doppelklick/zweiter Tab).
+    const { data: claimed, error } = await supabase
       .from("companies")
-      .update({ stripe_customer_id: customerId })
-      .eq("id", company.id);
+      .update({ stripe_customer_id: customer.id })
+      .eq("id", company.id)
+      .is("stripe_customer_id", null)
+      .select("id");
     if (error) {
       return NextResponse.json({ error: "Kunde konnte nicht gespeichert werden" }, { status: 500 });
     }
+    if (claimed?.length) {
+      customerId = customer.id;
+    } else {
+      // Paralleler Request hat gewonnen: dessen Kunden verwenden,
+      // den soeben angelegten verwaisten Stripe-Kunden best-effort entfernen.
+      await stripe.customers.del(customer.id).catch(() => undefined);
+      const { data: fresh } = await supabase
+        .from("companies")
+        .select("stripe_customer_id")
+        .eq("id", company.id)
+        .maybeSingle();
+      customerId = fresh?.stripe_customer_id ?? null;
+    }
+  }
+  if (!customerId) {
+    return NextResponse.json({ error: "Checkout konnte nicht gestartet werden" }, { status: 500 });
   }
 
   const session = await stripe.checkout.sessions.create({

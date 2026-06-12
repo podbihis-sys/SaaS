@@ -35,19 +35,21 @@ export async function POST(request: Request) {
       const subscriptionId =
         typeof session.subscription === "string" ? session.subscription : null;
       if (customerId && subscriptionId) {
+        // Nur die Abo-Verknüpfung speichern. Der Status kommt ausschließlich aus
+        // customer.subscription.updated/.deleted — sonst überschreibt die
+        // Zustellreihenfolge der Events den echten Zustand.
         const { error } = await admin
           .from("companies")
-          .update({
-            stripe_subscription_id: subscriptionId,
-            subscription_status: "active",
-          })
+          .update({ stripe_subscription_id: subscriptionId })
           .eq("stripe_customer_id", customerId);
         if (error) {
-          return NextResponse.json({ error: error.message }, { status: 500 });
+          console.error("stripe webhook db error", event.type, error.message);
+          return NextResponse.json({ error: "internal error" }, { status: 500 });
         }
       }
       break;
     }
+    case "customer.subscription.created":
     case "customer.subscription.updated":
     case "customer.subscription.deleted": {
       const subscription = event.data.object;
@@ -64,7 +66,8 @@ export async function POST(request: Request) {
           })
           .eq("stripe_customer_id", customerId);
         if (error) {
-          return NextResponse.json({ error: error.message }, { status: 500 });
+          console.error("stripe webhook db error", event.type, error.message);
+          return NextResponse.json({ error: "internal error" }, { status: 500 });
         }
       }
       break;
