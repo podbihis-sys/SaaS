@@ -42,9 +42,7 @@ web-build/
 .env
 .env.local
 .env.*.local
-.deploy.env
 !.env.example
-!.deploy.env.example
 
 # OS
 .DS_Store
@@ -65,3 +63,12 @@ logs/
 # Supabase local
 supabase/.branches/
 supabase/.temp/
+
+
+
+.deploy.env
+!.deploy.env.example
+
+
+
+

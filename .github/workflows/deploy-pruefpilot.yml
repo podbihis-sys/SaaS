@@ -1,0 +1,54 @@
+name: deploy-pruefpilot
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "pruefpilot/**"
+      - ".github/workflows/deploy-pruefpilot.yml"
+
+jobs:
+  deploy:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-pruefpilot
+      cancel-in-progress: true
+    defaults:
+      run:
+        working-directory: pruefpilot
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Deploy
+        env:
+          PRUEFPILOT_SUPABASE_URL: ${{ secrets.PRUEFPILOT_SUPABASE_URL }}
+          PRUEFPILOT_SUPABASE_ANON_KEY: ${{ secrets.PRUEFPILOT_SUPABASE_ANON_KEY }}
+        run: |
+          # Vorschau-Modus ohne eigenes Supabase-Projekt: Platzhalter-Werte.
+          # Landing, Rechtsseiten und UI sind voll ansehbar; Login/Registrierung
+          # funktionieren erst, wenn PRUEFPILOT_SUPABASE_* als Secrets gesetzt sind.
+          SUPABASE_URL="${PRUEFPILOT_SUPABASE_URL:-https://example.supabase.co}"
+          SUPABASE_ANON_KEY="${PRUEFPILOT_SUPABASE_ANON_KEY:-preview-placeholder-key}"
+          url=$(vercel deploy --prod --yes \
+            --token="$VERCEL_TOKEN" \
+            --name=pruefpilot \
+            --build-env NEXT_PUBLIC_SUPABASE_URL="$SUPABASE_URL" \
+            --build-env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY" \
+            --build-env NEXT_PUBLIC_APP_URL="https://pruefpilot.vercel.app" \
+            --env NEXT_PUBLIC_SUPABASE_URL="$SUPABASE_URL" \
+            --env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY" \
+            --env NEXT_PUBLIC_APP_URL="https://pruefpilot.vercel.app" 2>&1 | tail -1)
+          echo "DEPLOY_URL=$url"
+          echo "## PrüfPilot deployed to" >> $GITHUB_STEP_SUMMARY
+          echo "$url" >> $GITHUB_STEP_SUMMARY
