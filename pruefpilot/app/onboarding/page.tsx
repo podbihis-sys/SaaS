@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { AuthShell } from "@/components/auth-shell";
 import { getCompany, getUser } from "@/lib/data";
 import { OnboardingForm } from "./onboarding-form";
 
@@ -13,12 +14,8 @@ export default async function OnboardingPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6 py-12">
-      <h1 className="mb-2 text-center text-2xl font-bold">Ihren Betrieb anlegen</h1>
-      <p className="mb-6 text-center text-sm text-slate-600">
-        Einmalig erforderlich — danach geht es direkt zum Geräteinventar.
-      </p>
+    <AuthShell title="Ihren Betrieb anlegen" subtitle="Einmalig erforderlich — danach geht es direkt zum Geräteinventar.">
       <OnboardingForm defaultEmail={user.email ?? ""} />
-    </main>
+    </AuthShell>
   );
 }
