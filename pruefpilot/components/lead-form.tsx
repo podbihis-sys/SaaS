@@ -16,9 +16,14 @@ export function LeadForm() {
 
   if (state.success) {
     return (
-      <div className="card border-green-200 bg-green-50 text-center">
-        <p className="font-medium text-green-800">Vielen Dank — Sie sind vorgemerkt!</p>
-        <p className="mt-1 text-sm text-green-700">
+      <div className="card flex flex-col items-center border-emerald-200 bg-emerald-50 text-center">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500 text-white shadow-lg shadow-emerald-500/30">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="h-6 w-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M20 6 9 17l-5-5" />
+          </svg>
+        </div>
+        <p className="mt-4 text-lg font-semibold text-emerald-900">Vielen Dank — Sie sind vorgemerkt!</p>
+        <p className="mt-1 text-sm text-emerald-700">
           Wir melden uns persönlich, sobald PrüfPilot für Gründungspartner öffnet.
         </p>
       </div>
@@ -26,8 +31,7 @@ export function LeadForm() {
   }
 
   return (
-    <form action={formAction} className="card space-y-3">
-      {/* Honeypot — für Menschen unsichtbar, von Bots gern ausgefüllt */}
+    <form action={formAction} className="card space-y-3 text-left shadow-xl shadow-blue-950/10">
       <div aria-hidden="true" className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden">
         <label htmlFor="website">Website</label>
         <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
@@ -64,7 +68,7 @@ export function LeadForm() {
       </button>
       <p className="text-xs text-slate-500">
         Keine Werbung, keine Weitergabe — nur die Einladung zum Start. Details in der{" "}
-        <a href="/datenschutz" className="underline">
+        <a href="/datenschutz" className="underline hover:text-slate-700">
           Datenschutzerklärung
         </a>
         .
