@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DashboardPreview, QrLabelPreview } from "@/components/app-preview";
 import { LeadForm } from "@/components/lead-form";
 import { Reveal } from "@/components/reveal";
 import { DEVICE_CATEGORIES } from "@/lib/categories";
@@ -8,25 +9,19 @@ const PAINS = [
     accent: "from-rose-500 to-red-500",
     title: "Das Excel-Dilemma",
     text: "Ihre Prüfliste lebt in einer Tabelle, die nur eine Person kennt. Ist die im Urlaub, weiß niemand, welche Geräte fällig sind — gemerkt wird es erst, wenn der Prüfdienstleister anruft.",
-    icon: (
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h18v18H3zM3 9h18M9 9v12M15 9v12" />
-    ),
+    icon: <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h18v18H3zM3 9h18M9 9v12M15 9v12" />,
   },
   {
     accent: "from-amber-500 to-orange-500",
     title: "Der Moment bei der BG-Kontrolle",
     text: "Der Prüfer will die Protokolle der letzten zwei Jahre sehen — für alle Geräte, Leitern, Feuerlöscher. Sie suchen in Mails und Ordnern. Notiert wird: „unvollständige Dokumentation“.",
-    icon: (
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z" />
-    ),
+    icon: <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z" />,
   },
   {
     accent: "from-slate-600 to-slate-800",
     title: "Persönliche Haftung",
     text: "ArbSchG §13, DGUV Vorschrift 1, BetrSichV — die Nachweispflicht liegt bei Ihnen persönlich. Bei einem Unfall mit ungeprüftem Gerät wird genau diese Dokumentation zur entscheidenden Frage.",
-    icon: (
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7l8-4z" />
-    ),
+    icon: <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7l8-4z" />,
   },
 ];
 
@@ -69,6 +64,12 @@ const FEATURES = [
   },
 ];
 
+const SHOWCASE_POINTS = [
+  "QR-Etikett drucken, ankleben — Scan öffnet sofort die Geräteakte.",
+  "Prüfung in Sekunden erfassen: Datum, Prüfer, Ergebnis, PDF-Nachweis.",
+  "Unveränderliche Historie — auditfest für jede BG-Kontrolle.",
+];
+
 const STEPS = [
   { title: "Inventar anlegen", text: "Geräte eintragen — Kategorie wählen, das gesetzliche Intervall ist vorbelegt. QR-Etiketten drucken. Einmalig 20–30 Minuten." },
   { title: "Erinnerungen laufen automatisch", text: "PrüfPilot überwacht jede Frist und meldet sich rechtzeitig per E-Mail. Sie müssen an nichts mehr denken." },
@@ -93,6 +94,16 @@ function FeatureIcon({ accent, children }: { accent: string; children: React.Rea
         {children}
       </svg>
     </div>
+  );
+}
+
+function Check() {
+  return (
+    <span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-3 w-3">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M20 6 9 17l-5-5" />
+      </svg>
+    </span>
   );
 }
 
@@ -162,11 +173,15 @@ export default function HomePage() {
               </span>
             ))}
           </div>
+
+          {/* Schwebende App-Vorschau */}
+          <div className="animate-fade-up relative z-10 mx-auto mt-16 max-w-3xl [animation-delay:420ms]">
+            <div className="absolute -inset-x-8 -top-8 bottom-0 -z-10 rounded-[2.5rem] bg-gradient-to-tr from-blue-500/25 to-cyan-400/20 blur-3xl" aria-hidden="true" />
+            <div className="animate-float">
+              <DashboardPreview />
+            </div>
+          </div>
         </div>
-        <div className="relative h-16 bg-gradient-to-b from-transparent to-slate-50" />
-        <svg className="absolute bottom-0 w-full text-slate-50" viewBox="0 0 1440 60" fill="currentColor" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M0 60h1440V20c-240 30-480 40-720 30S240 10 0 30z" />
-        </svg>
       </section>
 
       {/* Pains */}
@@ -209,19 +224,43 @@ export default function HomePage() {
               </Reveal>
             ))}
           </div>
-          <Reveal delay={120}>
-            <p className="mx-auto mt-10 max-w-3xl text-center text-sm text-slate-500">
-              Vorkonfigurierte Prüfarten:{" "}
-              <span className="font-medium text-slate-700">
-                {DEVICE_CATEGORIES.map((c) => c.nameDe).join(" · ")}
-              </span>
-            </p>
+        </div>
+      </section>
+
+      {/* App-Einblick */}
+      <section className="bg-white py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <Reveal className="mx-auto max-w-2xl text-center">
+            <span className="text-sm font-semibold uppercase tracking-wider text-blue-600">Einblick</span>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">So sieht PrüfPilot aus</h2>
+            <p className="mt-3 text-slate-600">Aufgeräumt und schnell erfasst — vom QR-Etikett bis zum auditfesten Nachweis.</p>
           </Reveal>
+          <div className="mt-12 grid items-center gap-10 md:grid-cols-2">
+            <Reveal>
+              <QrLabelPreview />
+            </Reveal>
+            <Reveal delay={120}>
+              <h3 className="text-2xl font-bold tracking-tight text-slate-900">QR-Etikett & lückenloser Nachweis</h3>
+              <p className="mt-3 text-slate-600">
+                Jedes Gerät trägt sein eigenes Etikett. Vor Ort scannen, Prüfung dokumentieren — der
+                Nachweis landet automatisch in der unveränderlichen Historie.
+              </p>
+              <ul className="mt-6 space-y-3 text-sm text-slate-600">
+                {SHOWCASE_POINTS.map((point) => (
+                  <li key={point} className="flex items-start gap-2.5">
+                    <Check />
+                    {point}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/register" className="btn-primary mt-7">App kostenlos ausprobieren</Link>
+            </Reveal>
+          </div>
         </div>
       </section>
 
       {/* Steps */}
-      <section className="bg-white py-20">
+      <section className="bg-slate-50 py-20">
         <div className="mx-auto max-w-5xl px-6">
           <Reveal className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-slate-900">In drei Schritten startklar</h2>
@@ -245,7 +284,7 @@ export default function HomePage() {
       </section>
 
       {/* Pricing */}
-      <section className="bg-slate-50 py-20">
+      <section className="bg-white py-20">
         <div className="mx-auto max-w-6xl px-6">
           <Reveal className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-slate-900">Ein Preis. Alles drin.</h2>
@@ -263,11 +302,7 @@ export default function HomePage() {
                 <ul className="mx-auto mt-7 space-y-3 text-left text-sm">
                   {["Unbegrenzte Geräte & Prüfungen", "Alle Prüfarten-Vorlagen inklusive", "Automatische E-Mail-Erinnerungen", "QR-Etiketten zum Selbstdrucken", "Prüfbericht-Export als PDF", "Hosting in Deutschland, AVV inklusive"].map((f) => (
                     <li key={f} className="flex items-start gap-2.5 text-slate-700">
-                      <span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-3 w-3">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M20 6 9 17l-5-5" />
-                        </svg>
-                      </span>
+                      <Check />
                       {f}
                     </li>
                   ))}
@@ -280,7 +315,7 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-white py-20">
+      <section className="bg-slate-50 py-20">
         <div className="mx-auto max-w-3xl px-6">
           <Reveal className="text-center">
             <h2 className="text-3xl font-bold tracking-tight text-slate-900">Häufige Fragen</h2>

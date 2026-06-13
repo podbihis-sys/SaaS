@@ -22,12 +22,17 @@ export default {
           "0%, 100%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
         },
+        shine: {
+          "0%": { transform: "translateX(-120%) skewX(-12deg)" },
+          "60%, 100%": { transform: "translateX(520%) skewX(-12deg)" },
+        },
       },
       animation: {
         blob: "blob 14s ease-in-out infinite",
         float: "float 6s ease-in-out infinite",
         "fade-up": "fade-up 0.7s ease-out both",
         gradient: "gradient 8s ease infinite",
+        shine: "shine 5s ease-in-out infinite",
       },
     },
   },
