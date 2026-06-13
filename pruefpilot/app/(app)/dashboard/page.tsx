@@ -11,47 +11,19 @@ interface DeviceListEntry {
   next_due_date: string;
 }
 
-const TILES: Array<{
-  status: DueStatus;
-  label: string;
-  ring: string;
-  chip: string;
-  value: string;
-  icon: React.ReactNode;
-}> = [
-  {
-    status: "overdue",
-    label: "Überfällig",
-    ring: "hover:border-red-300 hover:shadow-red-200/50",
-    chip: "bg-red-100 text-red-600",
-    value: "text-red-600",
-    icon: <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" />,
-  },
-  {
-    status: "due_30",
-    label: "Fällig ≤ 30 Tage",
-    ring: "hover:border-amber-300 hover:shadow-amber-200/50",
-    chip: "bg-amber-100 text-amber-600",
-    value: "text-amber-600",
-    icon: <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 2m6-2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />,
-  },
-  {
-    status: "due_60",
-    label: "Fällig ≤ 60 Tage",
-    ring: "hover:border-yellow-300 hover:shadow-yellow-200/50",
-    chip: "bg-yellow-100 text-yellow-700",
-    value: "text-yellow-700",
-    icon: <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3M3 11h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" />,
-  },
-  {
-    status: "ok",
-    label: "Im Plan",
-    ring: "hover:border-emerald-300 hover:shadow-emerald-200/50",
-    chip: "bg-emerald-100 text-emerald-600",
-    value: "text-emerald-600",
-    icon: <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />,
-  },
+const STAT_CARDS: Array<{ status: DueStatus; label: string; num: string; chip: string; bar: string }> = [
+  { status: "overdue", label: "Überfällig", num: "text-red-600", chip: "bg-red-100 text-red-600", bar: "bg-red-500" },
+  { status: "due_30", label: "Fällig ≤ 30 Tage", num: "text-amber-600", chip: "bg-amber-100 text-amber-600", bar: "bg-amber-500" },
+  { status: "due_60", label: "Fällig ≤ 60 Tage", num: "text-yellow-700", chip: "bg-yellow-100 text-yellow-700", bar: "bg-yellow-400" },
+  { status: "ok", label: "Im Plan", num: "text-emerald-600", chip: "bg-emerald-100 text-emerald-600", bar: "bg-emerald-500" },
 ];
+
+const STAT_ICONS: Record<DueStatus, React.ReactNode> = {
+  overdue: <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" />,
+  due_30: <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 2m6-2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />,
+  due_60: <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3M3 11h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" />,
+  ok: <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />,
+};
 
 const DATE_FORMAT = new Intl.DateTimeFormat("de-DE", { dateStyle: "medium", timeZone: "Europe/Berlin" });
 const fmt = (iso: string) => DATE_FORMAT.format(new Date(`${iso}T00:00:00`));
@@ -70,10 +42,7 @@ export default async function DashboardPage() {
 
   const devices = (data ?? []) as DeviceListEntry[];
   const today = todayIso();
-  const withDue = devices.map((device) => ({
-    ...device,
-    due: dueInfo(device.next_due_date, today),
-  }));
+  const withDue = devices.map((device) => ({ ...device, due: dueInfo(device.next_due_date, today) }));
   const counts = withDue.reduce<Record<DueStatus, number>>(
     (acc, device) => {
       acc[device.due.status] += 1;
@@ -81,6 +50,7 @@ export default async function DashboardPage() {
     },
     { overdue: 0, due_30: 0, due_60: 0, ok: 0 },
   );
+  const total = devices.length || 1;
 
   return (
     <div>
@@ -100,61 +70,90 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {TILES.map((tile) => (
+      {/* Stat-Karten */}
+      <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {STAT_CARDS.map((card) => (
           <Link
-            key={tile.status}
-            href={`/geraete?status=${tile.status}`}
-            className={`group rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg ${tile.ring}`}
+            key={card.status}
+            href={`/geraete?status=${card.status}`}
+            className="group rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
           >
-            <div className="flex items-center justify-between">
-              <span className={`flex h-10 w-10 items-center justify-center rounded-xl ${tile.chip}`}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
-                  {tile.icon}
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-sm font-medium text-slate-500">{card.label}</p>
+                <p className={`mt-2 text-3xl font-extrabold tracking-tight ${card.num}`}>{counts[card.status]}</p>
+              </div>
+              <span className={`flex h-11 w-11 items-center justify-center rounded-xl ${card.chip}`}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-6 w-6">
+                  {STAT_ICONS[card.status]}
                 </svg>
               </span>
-              <span className={`text-3xl font-extrabold tracking-tight ${tile.value}`}>{counts[tile.status]}</span>
             </div>
-            <p className="mt-3 text-sm font-medium text-slate-600">{tile.label}</p>
           </Link>
         ))}
       </div>
 
-      <h2 className="mt-10 text-lg font-semibold text-slate-900">Nächste Fälligkeiten</h2>
-      {withDue.length === 0 ? (
-        <div className="card mt-4 flex flex-col items-center py-12 text-center">
-          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-7 w-7">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-3-3v6M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" />
-            </svg>
-          </span>
-          <p className="mt-4 font-medium text-slate-700">Noch keine Geräte erfasst.</p>
-          <p className="mt-1 text-sm text-slate-500">Legen Sie Ihr erstes Prüfobjekt an — das gesetzliche Intervall ist vorbelegt.</p>
-          <Link href="/geraete/neu" className="btn-primary mt-5">Erstes Gerät anlegen</Link>
+      <div className="mt-6 grid gap-6 lg:grid-cols-3">
+        {/* Nächste Fälligkeiten */}
+        <div className="lg:col-span-2">
+          <div className="overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-sm">
+            <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+              <h2 className="font-semibold text-slate-900">Nächste Fälligkeiten</h2>
+              <Link href="/geraete" className="text-sm font-medium text-blue-700 hover:underline">Alle anzeigen</Link>
+            </div>
+            {withDue.length === 0 ? (
+              <div className="flex flex-col items-center px-5 py-12 text-center">
+                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-7 w-7">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-3-3v6M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" />
+                  </svg>
+                </span>
+                <p className="mt-4 font-medium text-slate-700">Noch keine Geräte erfasst.</p>
+                <Link href="/geraete/neu" className="btn-primary mt-5">Erstes Gerät anlegen</Link>
+              </div>
+            ) : (
+              <ul className="divide-y divide-slate-100">
+                {withDue.slice(0, 8).map((device) => (
+                  <li key={device.id}>
+                    <Link href={`/geraete/${device.id}`} className="flex items-center justify-between gap-3 px-5 py-3.5 transition-colors hover:bg-slate-50">
+                      <span className="min-w-0">
+                        <span className="font-medium text-slate-900">{device.name}</span>
+                        <span className="block truncate text-sm text-slate-500">{categoryName(device.category_id)}</span>
+                      </span>
+                      <span className="flex flex-none items-center gap-3 text-sm text-slate-600">
+                        <span className="hidden sm:inline">{fmt(device.next_due_date)}</span>
+                        <StatusBadge status={device.due.status} />
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
-      ) : (
-        <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm">
-          <ul className="divide-y divide-slate-100">
-            {withDue.slice(0, 10).map((device) => (
-              <li key={device.id}>
-                <Link
-                  href={`/geraete/${device.id}`}
-                  className="flex items-center justify-between gap-3 px-5 py-3.5 transition-colors hover:bg-slate-50"
-                >
-                  <span className="min-w-0">
-                    <span className="font-medium text-slate-900">{device.name}</span>
-                    <span className="block truncate text-sm text-slate-500">{categoryName(device.category_id)}</span>
-                  </span>
-                  <span className="flex flex-none items-center gap-3 text-sm text-slate-600">
-                    <span className="hidden sm:inline">{fmt(device.next_due_date)}</span>
-                    <StatusBadge status={device.due.status} />
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+
+        {/* Statusverteilung */}
+        <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm">
+          <h2 className="font-semibold text-slate-900">Statusverteilung</h2>
+          <p className="mt-1 text-sm text-slate-500">{devices.length} aktive Geräte</p>
+          <div className="mt-5 space-y-4">
+            {STAT_CARDS.map((card) => {
+              const pct = Math.round((counts[card.status] / total) * 100);
+              return (
+                <div key={card.status}>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-slate-600">{card.label}</span>
+                    <span className="font-semibold text-slate-900">{counts[card.status]}</span>
+                  </div>
+                  <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-slate-100">
+                    <div className={`h-full rounded-full ${card.bar}`} style={{ width: `${pct}%` }} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
