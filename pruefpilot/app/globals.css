@@ -73,7 +73,8 @@
   }
   .animate-blob,
   .animate-float,
-  .animate-gradient {
+  .animate-gradient,
+  .animate-shine {
     animation: none !important;
   }
 }
