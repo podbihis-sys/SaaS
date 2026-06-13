@@ -87,3 +87,29 @@
     background: white;
   }
 }
+
+/* Einstellbare Sidebar (hell/dunkel) — gesteuert über html[data-sidebar] */
+.app-sidebar {
+  --side-bg: #ffffff;
+  --side-border: rgb(226 232 240);
+  --side-fg: rgb(15 23 42);
+  --side-muted: rgb(71 85 105);
+  --side-faint: rgb(148 163 184);
+  --side-hover-bg: rgb(241 245 249);
+  --side-hover-fg: rgb(15 23 42);
+  --side-active-bg: rgb(239 246 255);
+  --side-active-fg: rgb(29 78 216);
+  --side-chip-bg: rgb(248 250 252);
+}
+[data-sidebar="dark"] .app-sidebar {
+  --side-bg: rgb(15 23 42);
+  --side-border: rgb(30 41 59);
+  --side-fg: #ffffff;
+  --side-muted: rgb(148 163 184);
+  --side-faint: rgb(100 116 139);
+  --side-hover-bg: rgb(30 41 59);
+  --side-hover-fg: #ffffff;
+  --side-active-bg: rgb(37 99 235);
+  --side-active-fg: #ffffff;
+  --side-chip-bg: rgb(30 41 59);
+}
