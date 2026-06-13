@@ -2,12 +2,13 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { logout } from "@/app/(auth)/actions";
 import { SidebarNav } from "@/components/sidebar-nav";
+import { SidebarThemeToggle } from "@/components/sidebar-theme-toggle";
 import { hasAccess, isTrialing, trialDaysLeft } from "@/lib/billing";
 import { getCompany, getUser } from "@/lib/data";
 
 function Logo() {
   return (
-    <Link href="/dashboard" className="flex items-center gap-2 text-lg font-bold tracking-tight text-slate-900">
+    <Link href="/dashboard" className="flex items-center gap-2 text-lg font-bold tracking-tight text-[color:var(--side-fg)]">
       <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-md">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="h-5 w-5">
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7l8-4zM9.5 12l1.8 1.8L15 10" />
@@ -20,63 +21,59 @@ function Logo() {
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const user = await getUser();
-  if (!user) {
-    redirect("/login");
-  }
+  if (!user) redirect("/login");
   const company = await getCompany();
-  if (!company) {
-    redirect("/onboarding");
-  }
-  if (!hasAccess(company)) {
-    redirect("/abo");
-  }
+  if (!company) redirect("/onboarding");
+  if (!hasAccess(company)) redirect("/abo");
+
   const showTrialBanner = isTrialing(company);
   const daysLeft = showTrialBanner ? trialDaysLeft(company) : 0;
 
   return (
     <div className="min-h-screen bg-slate-100 lg:grid lg:grid-cols-[16rem_1fr]">
       {/* Sidebar (Desktop) */}
-      <aside className="no-print hidden lg:flex lg:flex-col lg:border-r lg:border-slate-200 lg:bg-white">
+      <aside className="app-sidebar no-print hidden border-[color:var(--side-border)] bg-[var(--side-bg)] lg:block lg:border-r">
         <div className="sticky top-0 flex h-screen flex-col">
-          <div className="flex h-16 items-center border-b border-slate-200 px-6">
+          <div className="flex h-16 items-center border-b border-[color:var(--side-border)] px-6">
             <Logo />
           </div>
           <div className="flex-1 overflow-y-auto px-4 py-6">
-            <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">Verwaltung</p>
+            <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-wider text-[color:var(--side-faint)]">Verwaltung</p>
             <SidebarNav />
           </div>
-          <div className="border-t border-slate-200 p-4">
-            <div className="mb-3 flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2 text-sm">
+          <div className="space-y-3 border-t border-[color:var(--side-border)] p-4">
+            <div className="flex items-center gap-2 rounded-lg bg-[var(--side-chip-bg)] px-3 py-2 text-sm">
               <span className="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 text-xs font-bold text-white">
                 {company.name.charAt(0).toUpperCase()}
               </span>
-              <span className="min-w-0 truncate font-medium text-slate-700">{company.name}</span>
+              <span className="min-w-0 truncate font-medium text-[color:var(--side-fg)]">{company.name}</span>
             </div>
             <form action={logout}>
-              <button type="submit" className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-800">
+              <button type="submit" className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-[color:var(--side-muted)] transition-colors hover:bg-[var(--side-hover-bg)] hover:text-[color:var(--side-hover-fg)]">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16 17l5-5m0 0-5-5m5 5H9M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                 </svg>
                 Abmelden
               </button>
             </form>
+            <div>
+              <p className="px-1 pb-1.5 text-[11px] font-medium text-[color:var(--side-faint)]">Sidebar-Farbe</p>
+              <SidebarThemeToggle />
+            </div>
           </div>
         </div>
       </aside>
 
       {/* Content-Spalte */}
       <div className="flex min-h-screen flex-col">
-        {/* Mobile-Header */}
-        <header className="no-print border-b border-slate-200 bg-white px-4 py-3 lg:hidden">
+        <header className="app-sidebar no-print border-b border-[color:var(--side-border)] bg-[var(--side-bg)] px-4 py-3 lg:hidden">
           <div className="flex items-center justify-between">
             <Logo />
             <form action={logout}>
-              <button type="submit" className="text-sm font-medium text-slate-500 hover:text-slate-800">Abmelden</button>
+              <button type="submit" className="text-sm font-medium text-[color:var(--side-muted)] hover:text-[color:var(--side-hover-fg)]">Abmelden</button>
             </form>
           </div>
-          <div className="mt-3">
-            <SidebarNav />
-          </div>
+          <div className="mt-3"><SidebarNav /></div>
         </header>
 
         {showTrialBanner ? (
