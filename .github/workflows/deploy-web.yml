@@ -37,22 +37,29 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
         run: |
+          set -o pipefail
           # main -> Produktion, jeder andere Branch (manueller Dispatch) -> Preview.
           if [ "$GITHUB_REF_NAME" = "main" ]; then
             PROD_FLAG="--prod"
           else
             PROD_FLAG=""
           fi
-          url=$(vercel deploy $PROD_FLAG --yes \
+          # Fallback auf Platzhalter, falls Secrets nicht gesetzt sind. Der Build
+          # benoetigt nicht-leere NEXT_PUBLIC_*-Werte; die BIT-Website nutzt selbst
+          # kein Supabase, daher genuegen Platzhalter fuer ein lauffaehiges Preview.
+          SUPA_URL="${NEXT_PUBLIC_SUPABASE_URL:-https://example.supabase.co}"
+          SUPA_KEY="${NEXT_PUBLIC_SUPABASE_ANON_KEY:-placeholder-anon-key}"
+          API_URL="${NEXT_PUBLIC_API_URL:-http://localhost:8000}"
+          vercel deploy $PROD_FLAG --yes \
             --token="$VERCEL_TOKEN" \
-            --name=handwerk-saas \
-            --build-env NEXT_PUBLIC_SUPABASE_URL="$NEXT_PUBLIC_SUPABASE_URL" \
-            --build-env NEXT_PUBLIC_SUPABASE_ANON_KEY="$NEXT_PUBLIC_SUPABASE_ANON_KEY" \
-            --build-env NEXT_PUBLIC_API_URL="$NEXT_PUBLIC_API_URL" \
-            --env NEXT_PUBLIC_SUPABASE_URL="$NEXT_PUBLIC_SUPABASE_URL" \
-            --env NEXT_PUBLIC_SUPABASE_ANON_KEY="$NEXT_PUBLIC_SUPABASE_ANON_KEY" \
-            --env NEXT_PUBLIC_API_URL="$NEXT_PUBLIC_API_URL" 2>&1 | tail -1)
+            --build-env NEXT_PUBLIC_SUPABASE_URL="$SUPA_URL" \
+            --build-env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPA_KEY" \
+            --build-env NEXT_PUBLIC_API_URL="$API_URL" \
+            --env NEXT_PUBLIC_SUPABASE_URL="$SUPA_URL" \
+            --env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPA_KEY" \
+            --env NEXT_PUBLIC_API_URL="$API_URL" 2>&1 | tee deploy.log
+          url=$(grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' deploy.log | tail -1)
           echo "DEPLOY_URL=$url"
           echo "## Deployed ($GITHUB_REF_NAME)" >> $GITHUB_STEP_SUMMARY
-          echo "BIT-Website: ${url}/bit" >> $GITHUB_STEP_SUMMARY
-          echo "$url" >> $GITHUB_STEP_SUMMARY
+          echo "- BIT-Website: ${url}/bit" >> $GITHUB_STEP_SUMMARY
+          echo "- Root: ${url}" >> $GITHUB_STEP_SUMMARY
