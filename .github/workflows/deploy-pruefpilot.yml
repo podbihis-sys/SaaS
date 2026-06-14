@@ -1,0 +1,73 @@
+name: deploy-pruefpilot
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "pruefpilot/**"
+      - ".github/workflows/deploy-pruefpilot.yml"
+
+jobs:
+  deploy:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-pruefpilot
+      cancel-in-progress: true
+    defaults:
+      run:
+        working-directory: pruefpilot
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Deploy
+        env:
+          PRUEFPILOT_SUPABASE_URL: ${{ secrets.PRUEFPILOT_SUPABASE_URL }}
+          PRUEFPILOT_SUPABASE_ANON_KEY: ${{ secrets.PRUEFPILOT_SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::Secret VERCEL_TOKEN ist nicht gesetzt — 'gh secret set VERCEL_TOKEN -R podbihis-sys/SaaS' ausführen."
+            exit 1
+          fi
+          # Öffentliche Landingpage: Vercel Authentication (Deployment Protection)
+          # für dieses Projekt deaktivieren — idempotent, gewollter Dauerzustand.
+          curl -s -X PATCH "https://api.vercel.com/v9/projects/pruefpilot" \
+            -H "Authorization: Bearer $VERCEL_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"ssoProtection":null}' > /dev/null || echo "Hinweis: Protection-PATCH fehlgeschlagen (Projekt evtl. noch nicht vorhanden)"
+          # Fallbacks = echtes Supabase-Projekt "pruefpilot" (eu-central-1).
+          # URL + Anon-Key sind öffentliche Client-Werte; RLS schützt die Daten.
+          SUPABASE_URL="${PRUEFPILOT_SUPABASE_URL:-https://otsavbpvfzkytlouklwe.supabase.co}"
+          SUPABASE_ANON_KEY="${PRUEFPILOT_SUPABASE_ANON_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90c2F2YnB2ZnpreXRsb3VrbHdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyNjMwMTcsImV4cCI6MjA5NjgzOTAxN30.THaVh8ZYdiW0oebp-vmt0N2MsjoW7Xlfr4lhTDRmaGg}"
+          set +e
+          vercel deploy --prod --yes \
+            --token="$VERCEL_TOKEN" \
+            --build-env NEXT_PUBLIC_SUPABASE_URL="$SUPABASE_URL" \
+            --build-env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY" \
+            --build-env NEXT_PUBLIC_APP_URL="https://pruefpilot.vercel.app" \
+            --env NEXT_PUBLIC_SUPABASE_URL="$SUPABASE_URL" \
+            --env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY" \
+            --env NEXT_PUBLIC_APP_URL="https://pruefpilot.vercel.app" \
+            > /tmp/deploy.log 2>&1
+          rc=$?
+          set -e
+          # Die Produktions-URL steht nicht zwingend in der letzten Zeile (ANSI/Status-Zeilen).
+          url=$(grep -oE 'https://[a-z0-9-]+\.vercel\.app' /tmp/deploy.log | tail -1)
+          if [ "$rc" -ne 0 ] || [ -z "$url" ]; then
+            echo "::error::Vercel-Deploy fehlgeschlagen (Exit $rc). Ausgabe:"
+            tail -50 /tmp/deploy.log
+            exit 1
+          fi
+          echo "DEPLOY_URL=$url"
+          echo "## PrüfPilot deployed to" >> $GITHUB_STEP_SUMMARY
+          echo "$url" >> $GITHUB_STEP_SUMMARY

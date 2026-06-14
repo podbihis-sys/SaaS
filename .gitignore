@@ -63,3 +63,12 @@ logs/
 # Supabase local
 supabase/.branches/
 supabase/.temp/
+
+
+
+.deploy.env
+!.deploy.env.example
+
+
+
+
