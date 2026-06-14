@@ -59,27 +59,24 @@ jobs:
           echo "Ziel-Projekt: $PROJ_NAME ($VERCEL_PROJECT_ID), Org $ORG_ID"
 
           if [ "${{ github.event.inputs.target }}" = "production" ]; then
-            PROD_FLAG="--prod"
+            ENV_NAME="production"; PROD_FLAG="--prod"
           else
-            PROD_FLAG=""
+            ENV_NAME="preview"; PROD_FLAG=""
           fi
 
-          # Platzhalter, falls die NEXT_PUBLIC_*-Secrets leer sind. Die BIT-Website
-          # nutzt selbst kein Supabase; nicht-leere Werte genügen für einen grünen Build.
-          SUPA_URL="${NEXT_PUBLIC_SUPABASE_URL:-https://example.supabase.co}"
-          SUPA_KEY="${NEXT_PUBLIC_SUPABASE_ANON_KEY:-placeholder-anon-key}"
-          API_URL="${NEXT_PUBLIC_API_URL:-http://localhost:8000}"
+          # NEXT_PUBLIC_*-Werte für den Build (Platzhalter, falls Secrets leer sind).
+          # Die BIT-Website nutzt selbst kein Supabase; nicht-leere Werte genügen.
+          export NEXT_PUBLIC_SUPABASE_URL="${NEXT_PUBLIC_SUPABASE_URL:-https://example.supabase.co}"
+          export NEXT_PUBLIC_SUPABASE_ANON_KEY="${NEXT_PUBLIC_SUPABASE_ANON_KEY:-placeholder-anon-key}"
+          export NEXT_PUBLIC_API_URL="${NEXT_PUBLIC_API_URL:-http://localhost:8000}"
 
-          # Aus dem Repo-Root deployen, damit die im Vercel-Projekt konfigurierte
-          # Root-Directory (z. B. "web") angewendet wird.
-          vercel deploy $PROD_FLAG --yes \
-            --token="$VERCEL_TOKEN" \
-            --build-env NEXT_PUBLIC_SUPABASE_URL="$SUPA_URL" \
-            --build-env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPA_KEY" \
-            --build-env NEXT_PUBLIC_API_URL="$API_URL" \
-            --env NEXT_PUBLIC_SUPABASE_URL="$SUPA_URL" \
-            --env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPA_KEY" \
-            --env NEXT_PUBLIC_API_URL="$API_URL" 2>&1 | tee deploy.log
+          # Prebuilt-Deploy: Wir bauen die App auf dem Runner (npm funktioniert hier
+          # zuverlässig) und laden nur das fertige .vercel/output hoch. Damit wird das
+          # Install/Build-Setup des Ziel-Projekts (das remote mit npm exit 254 abbricht)
+          # vollständig umgangen. Die Projekt-Root-Directory (web) kommt via vercel pull.
+          vercel pull --yes --environment="$ENV_NAME" --token="$VERCEL_TOKEN"
+          vercel build $PROD_FLAG --token="$VERCEL_TOKEN"
+          vercel deploy --prebuilt $PROD_FLAG --yes --token="$VERCEL_TOKEN" 2>&1 | tee deploy.log
 
           url=$(grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' deploy.log | tail -1)
           echo "DEPLOY_URL=$url"
