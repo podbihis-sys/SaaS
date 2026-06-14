@@ -63,3 +63,6 @@ logs/
 # Supabase local
 supabase/.branches/
 supabase/.temp/
+
+# Scraper output (generated, not source)
+backend/data/
