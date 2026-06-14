@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ChevronRight, CircleCheck, Thermometer } from "lucide-react";
+import { ChevronRight, CircleCheck, FileText, Thermometer } from "lucide-react";
 import {
   PRODUCTS,
   getCategory,
@@ -62,8 +62,13 @@ export default async function ProductDetail({
         <div className="grid gap-10 lg:grid-cols-2">
           {/* Visual */}
           <div>
-            <div className="overflow-hidden rounded-2xl border border-slate-200">
-              <ProductIllustration category={product.category} className="aspect-[4/3] w-full" />
+            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+              <ProductIllustration
+                category={product.category}
+                src={product.image}
+                alt={product.imageAlt}
+                className="aspect-[4/3] w-full"
+              />
             </div>
             <div className="mt-4 grid grid-cols-3 gap-3">
               {product.applications.slice(0, 3).map((a) => (
@@ -76,9 +81,16 @@ export default async function ProductDetail({
 
           {/* Info + Add to cart */}
           <div>
-            <span className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">
-              {category?.name}
-            </span>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">
+                {category?.name}
+              </span>
+              {product.code !== product.name && (
+                <span className="rounded-md bg-slate-100 px-2 py-0.5 font-mono text-xs font-medium text-slate-600">
+                  {product.code}
+                </span>
+              )}
+            </div>
             <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">{product.name}</h1>
             <p className="mt-2 text-lg text-slate-600">{product.tagline}</p>
             <p className="mt-5 leading-relaxed text-slate-700">{product.description}</p>
@@ -138,6 +150,41 @@ export default async function ProductDetail({
             </ul>
           </div>
         </div>
+
+        {/* Technische Daten (verbatim vom Hersteller) */}
+        {product.tech.length > 0 && (
+          <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-slate-50 px-6 py-4">
+              <h2 className="text-lg font-semibold text-slate-900">Technische Daten</h2>
+              {product.datasheet && (
+                <a
+                  href={product.datasheet}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-[#1e4a7a] hover:underline"
+                >
+                  <FileText className="h-4 w-4" /> Produktdatenblatt (PDF)
+                </a>
+              )}
+            </div>
+            <dl className="divide-y divide-slate-100">
+              {product.tech.map((row) => (
+                <div key={row.label} className="grid grid-cols-1 gap-1 px-6 py-3 sm:grid-cols-3 sm:gap-4">
+                  <dt className="text-sm text-slate-500">{row.label}</dt>
+                  <dd className="text-sm font-medium text-slate-900 sm:col-span-2">{row.value}</dd>
+                </div>
+              ))}
+              {product.colors && product.colors.length > 0 && (
+                <div className="grid grid-cols-1 gap-1 px-6 py-3 sm:grid-cols-3 sm:gap-4">
+                  <dt className="text-sm text-slate-500">Farben</dt>
+                  <dd className="text-sm font-medium text-slate-900 sm:col-span-2">
+                    {product.colors.join(", ")}
+                  </dd>
+                </div>
+              )}
+            </dl>
+          </div>
+        )}
 
         {/* Related */}
         {related.length > 0 && (

@@ -7,11 +7,15 @@ export function SiteFooter() {
     <footer className="mt-20 border-t border-slate-800 bg-[#0f2742] text-slate-300">
       <div className="container grid gap-10 py-14 md:grid-cols-4">
         <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white font-bold text-[#1e4a7a]">
-              BIT
-            </span>
-            <span className="text-base font-semibold text-white">BIT Bierther GmbH</span>
+          <div className="flex items-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/bit/logo.png"
+              alt="BIT Bierther GmbH"
+              className="h-11 w-auto rounded-md bg-white p-1.5"
+              width={224}
+              height={44}
+            />
           </div>
           <p className="mt-4 text-sm leading-relaxed text-slate-400">
             {COMPANY.claim}. Seit {COMPANY.foundedYear} Ihr Partner für Schrumpf-,

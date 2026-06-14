@@ -11,12 +11,14 @@ export function ProductCard({ product }: { product: Product }) {
       href={`/bit/produkte/${product.slug}`}
       className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:-translate-y-0.5 hover:border-[#1e4a7a]/40 hover:shadow-lg"
     >
-      <div className="relative aspect-[4/3] overflow-hidden">
+      <div className="relative aspect-[4/3] overflow-hidden bg-white">
         <ProductIllustration
           category={product.category}
+          src={product.image}
+          alt={product.imageAlt}
           className="h-full w-full transition-transform duration-500 group-hover:scale-105"
         />
-        <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-[#1e4a7a]">
+        <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-[#1e4a7a] shadow-sm">
           {category?.name}
         </span>
       </div>

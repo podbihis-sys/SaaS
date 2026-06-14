@@ -11,19 +11,20 @@ export const metadata: Metadata = {
 };
 
 const milestones = [
-  { year: "1996", text: "Gründung der BIT Bierther GmbH als spezialisierter Schlauchlieferant." },
-  { year: "1997", text: "Erste Zertifizierung nach DIN EN ISO 9001 durch den TÜV." },
-  { year: "2005", text: "Ausbau der Konfektion auf mehrere Produktionslinien." },
-  { year: "Heute", text: "Über 1.000 Standardartikel und kundenspezifische Lösungen für ganz Europa." },
+  { year: "1996", text: "Gründung der BIT Bierther GmbH – der Start erfolgte aus zwei Containerbüros heraus." },
+  { year: "1997", text: "Zertifizierung des Qualitätsmanagements nach DIN EN ISO 9001 durch den TÜV." },
+  { year: "2001", text: "Umzug in neue Büro- und Produktionsräume mit deutlich mehr Lager- und Produktionsfläche." },
+  { year: "Heute", text: "Über 1.000 Standardartikel und kundenspezifische Lösungen – weltweit im Einsatz von der Automobilindustrie bis zur Medizintechnik." },
 ];
 
 export default function UnternehmenPage() {
   return (
     <>
       <section className="relative overflow-hidden bg-[#0f2742]">
-        <div className="absolute inset-0 opacity-15">
-          <ProductIllustration category="konfektion" className="h-full w-full" />
+        <div className="absolute inset-0 opacity-20">
+          <ProductIllustration category="schrumpfschlauch" fit="cover" className="h-full w-full" />
         </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0f2742] via-[#0f2742]/90 to-[#0f2742]/60" />
         <div className="container relative py-20">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#f59e0b]">Unternehmen</p>
           <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl">
@@ -59,6 +60,12 @@ export default function UnternehmenPage() {
       <section className="border-y border-slate-200 bg-slate-50 py-20">
         <div className="container">
           <h2 className="text-3xl font-bold tracking-tight text-slate-900">Unsere Entwicklung</h2>
+          <p className="mt-4 max-w-3xl leading-relaxed text-slate-700">
+            Seit der Gründung 1996 hat sich die BIT Bierther GmbH zu einem der führenden Anbieter für
+            Schrumpfprodukte, Isolier- und Schutzschläuche entwickelt. Angefangen von einem
+            eigenwilligen Start aus zwei Containerbüros heraus, über den Umzug in ein neuerrichtetes
+            Bürohaus mit angegliederter Lagerhalle bis hin zum Aufbau eigener Produktionsstraßen.
+          </p>
           <div className="mt-10 space-y-6 border-l-2 border-[#1e4a7a]/20 pl-6">
             {milestones.map((m) => (
               <div key={m.year} className="relative">

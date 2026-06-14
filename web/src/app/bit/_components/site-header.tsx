@@ -39,16 +39,15 @@ export function SiteHeader() {
       </div>
 
       <div className="container flex h-16 items-center justify-between gap-4">
-        <Link href="/bit" className="flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#1e4a7a] font-bold text-white">
-            BIT
-          </span>
-          <span className="hidden flex-col leading-tight sm:flex">
-            <span className="text-base font-semibold text-slate-900">BIT Bierther</span>
-            <span className="text-[11px] uppercase tracking-wide text-slate-500">
-              Schrumpf- & Isoliertechnik
-            </span>
-          </span>
+        <Link href="/bit" className="flex items-center gap-2.5" aria-label="BIT Bierther GmbH – Startseite">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/bit/logo.png"
+            alt="BIT Bierther GmbH"
+            className="h-9 w-auto"
+            width={184}
+            height={36}
+          />
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">

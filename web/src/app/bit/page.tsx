@@ -22,9 +22,9 @@ import { ProductIllustration } from "./_components/product-illustration";
 export default function BitHome() {
   const featured = PRODUCTS.filter((p) =>
     [
-      "schrumpfschlauch-mittelwandig-3-1-kleber",
-      "geflechtschlauch-polyamid-expandierbar",
-      "glasseideschlauch-silikon",
+      "schrumpfschlauch-mit-kleber-bpdw-100",
+      "geflechtschlauch-bis-ge-pp",
+      "kabelbinder-uv-bestaendig",
     ].includes(p.slug),
   );
 
@@ -32,9 +32,14 @@ export default function BitHome() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden bg-[#0f2742]">
-        <div className="absolute inset-0 opacity-20">
-          <ProductIllustration category="geflechtschlauch" className="h-full w-full" />
+        <div className="absolute inset-0 opacity-25">
+          <ProductIllustration
+            category="geflechtschlauch"
+            fit="cover"
+            className="h-full w-full"
+          />
         </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0f2742] via-[#0f2742]/90 to-[#0f2742]/60" />
         <div className="container relative grid gap-10 py-20 lg:grid-cols-2 lg:py-28">
           <div className="flex flex-col justify-center">
             <span className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white ring-1 ring-white/20">
