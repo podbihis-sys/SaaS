@@ -37,7 +37,13 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
         run: |
-          url=$(vercel deploy --prod --yes \
+          # main -> Produktion, jeder andere Branch (manueller Dispatch) -> Preview.
+          if [ "$GITHUB_REF_NAME" = "main" ]; then
+            PROD_FLAG="--prod"
+          else
+            PROD_FLAG=""
+          fi
+          url=$(vercel deploy $PROD_FLAG --yes \
             --token="$VERCEL_TOKEN" \
             --name=handwerk-saas \
             --build-env NEXT_PUBLIC_SUPABASE_URL="$NEXT_PUBLIC_SUPABASE_URL" \
@@ -47,5 +53,6 @@ jobs:
             --env NEXT_PUBLIC_SUPABASE_ANON_KEY="$NEXT_PUBLIC_SUPABASE_ANON_KEY" \
             --env NEXT_PUBLIC_API_URL="$NEXT_PUBLIC_API_URL" 2>&1 | tail -1)
           echo "DEPLOY_URL=$url"
-          echo "## Deployed to" >> $GITHUB_STEP_SUMMARY
+          echo "## Deployed ($GITHUB_REF_NAME)" >> $GITHUB_STEP_SUMMARY
+          echo "BIT-Website: ${url}/bit" >> $GITHUB_STEP_SUMMARY
           echo "$url" >> $GITHUB_STEP_SUMMARY
