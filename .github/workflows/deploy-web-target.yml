@@ -1,0 +1,88 @@
+name: deploy-web-target
+
+# Einmaliger / manueller Deploy der Web-App auf ein bestimmtes Vercel-Projekt
+# (per Project-ID). Lässt die reguläre deploy-web-Pipeline unberührt.
+# Die Org-ID wird zur Laufzeit aus der Project-ID über die Vercel-API abgeleitet,
+# daher genügt das vorhandene VERCEL_TOKEN-Secret.
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_id:
+        description: "Vercel Project ID (prj_...)"
+        required: true
+        default: "prj_0zwtc7YwIsxeJ0Yg1iH1jdmG1gox"
+      target:
+        description: "production oder preview"
+        required: true
+        default: "production"
+
+jobs:
+  deploy:
+    name: Deploy to target Vercel project
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-web-target-${{ github.event.inputs.project_id }}
+      cancel-in-progress: true
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_PROJECT_ID: ${{ github.event.inputs.project_id }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Resolve org and deploy
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+        run: |
+          set -o pipefail
+
+          # Org-/Account-ID aus der Project-ID ableiten (prüft zugleich den Token-Zugriff).
+          PROJ_JSON=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_ID")
+          ORG_ID=$(echo "$PROJ_JSON" | jq -r '.accountId // empty')
+          PROJ_NAME=$(echo "$PROJ_JSON" | jq -r '.name // empty')
+          if [ -z "$ORG_ID" ]; then
+            echo "::error::Konnte Org-ID nicht ermitteln – Token hat evtl. keinen Zugriff auf $VERCEL_PROJECT_ID."
+            echo "$PROJ_JSON" | head -c 600
+            exit 1
+          fi
+          export VERCEL_ORG_ID="$ORG_ID"
+          echo "Ziel-Projekt: $PROJ_NAME ($VERCEL_PROJECT_ID), Org $ORG_ID"
+
+          if [ "${{ github.event.inputs.target }}" = "production" ]; then
+            PROD_FLAG="--prod"
+          else
+            PROD_FLAG=""
+          fi
+
+          # Platzhalter, falls die NEXT_PUBLIC_*-Secrets leer sind. Die BIT-Website
+          # nutzt selbst kein Supabase; nicht-leere Werte genügen für einen grünen Build.
+          SUPA_URL="${NEXT_PUBLIC_SUPABASE_URL:-https://example.supabase.co}"
+          SUPA_KEY="${NEXT_PUBLIC_SUPABASE_ANON_KEY:-placeholder-anon-key}"
+          API_URL="${NEXT_PUBLIC_API_URL:-http://localhost:8000}"
+
+          # Aus dem Repo-Root deployen, damit die im Vercel-Projekt konfigurierte
+          # Root-Directory (z. B. "web") angewendet wird.
+          vercel deploy $PROD_FLAG --yes \
+            --token="$VERCEL_TOKEN" \
+            --build-env NEXT_PUBLIC_SUPABASE_URL="$SUPA_URL" \
+            --build-env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPA_KEY" \
+            --build-env NEXT_PUBLIC_API_URL="$API_URL" \
+            --env NEXT_PUBLIC_SUPABASE_URL="$SUPA_URL" \
+            --env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPA_KEY" \
+            --env NEXT_PUBLIC_API_URL="$API_URL" 2>&1 | tee deploy.log
+
+          url=$(grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' deploy.log | tail -1)
+          echo "DEPLOY_URL=$url"
+          echo "## Deployed → $PROJ_NAME" >> "$GITHUB_STEP_SUMMARY"
+          echo "- URL: ${url}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- BIT-Website: ${url}/bit" >> "$GITHUB_STEP_SUMMARY"
