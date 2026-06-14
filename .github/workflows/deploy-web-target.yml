@@ -70,10 +70,14 @@ jobs:
           export NEXT_PUBLIC_SUPABASE_ANON_KEY="${NEXT_PUBLIC_SUPABASE_ANON_KEY:-placeholder-anon-key}"
           export NEXT_PUBLIC_API_URL="${NEXT_PUBLIC_API_URL:-http://localhost:8000}"
 
+          # Das Ziel-Projekt hat als Root-Directory das Repo-Root konfiguriert; die
+          # Next-App liegt aber in web/. Daher aus web/ heraus bauen, damit npm die
+          # package.json findet (sonst ENOENT -> npm exit 254).
+          cd web
+
           # Prebuilt-Deploy: Wir bauen die App auf dem Runner (npm funktioniert hier
           # zuverlässig) und laden nur das fertige .vercel/output hoch. Damit wird das
-          # Install/Build-Setup des Ziel-Projekts (das remote mit npm exit 254 abbricht)
-          # vollständig umgangen. Die Projekt-Root-Directory (web) kommt via vercel pull.
+          # Install/Build-Setup des Ziel-Projekts vollständig umgangen.
           vercel pull --yes --environment="$ENV_NAME" --token="$VERCEL_TOKEN"
           vercel build $PROD_FLAG --token="$VERCEL_TOKEN"
           vercel deploy --prebuilt $PROD_FLAG --yes --token="$VERCEL_TOKEN" 2>&1 | tee deploy.log
