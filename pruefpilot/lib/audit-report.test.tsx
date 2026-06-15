@@ -14,6 +14,7 @@ function device(overrides: Partial<DeviceRow>): DeviceRow {
     next_due_date: "2026-07-01",
     status: "active",
     public_code: "TESTCODE",
+    verify_token: "TESTTOKEN0001",
     notes: null,
     created_at: "2026-01-01T00:00:00Z",
     updated_at: "2026-01-01T00:00:00Z",

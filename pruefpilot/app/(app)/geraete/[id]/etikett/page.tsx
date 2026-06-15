@@ -18,7 +18,7 @@ export default async function DeviceLabelPage({
   }
   const device = data as DeviceRow;
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-  const qrDataUrl = await QRCode.toDataURL(`${appUrl}/g/${device.public_code}`, {
+  const qrDataUrl = await QRCode.toDataURL(`${appUrl}/v/${device.verify_token}`, {
     width: 240,
     margin: 1,
   });

@@ -25,6 +25,7 @@ export interface DeviceRow {
   next_due_date: string;
   status: DeviceStatus;
   public_code: string;
+  verify_token: string;
   notes: string | null;
   created_at: string;
   updated_at: string;
