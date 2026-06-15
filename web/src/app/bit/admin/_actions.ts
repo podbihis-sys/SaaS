@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/app/bit/_lib/supabase-server";
 
 const techRow = z.object({ label: z.string().min(1), value: z.string().min(1) });
 

@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { Trash2 } from "lucide-react";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/app/bit/_lib/supabase-server";
 import { getCmsCategories } from "@/app/bit/_data/cms";
 import { ProductForm } from "@/app/bit/admin/_components/product-form";
 import type { ProductInput } from "@/app/bit/admin/_actions";

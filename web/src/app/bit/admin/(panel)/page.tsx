@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Plus, Pencil } from "lucide-react";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/app/bit/_lib/supabase-server";
 
 export const dynamic = "force-dynamic";
 

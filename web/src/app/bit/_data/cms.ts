@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/app/bit/_lib/supabase-server";
 import {
   CATEGORIES,
   CATEGORY_IMAGE,

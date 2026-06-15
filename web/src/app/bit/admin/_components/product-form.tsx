@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Plus, Upload, X } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/app/bit/_lib/supabase-browser";
 import { saveProduct, type ProductInput } from "../_actions";
 
 const BUCKET = "bit-product-images";

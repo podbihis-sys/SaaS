@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { LogOut, Package, Plus, ExternalLink } from "lucide-react";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/app/bit/_lib/supabase-server";
 
 export const dynamic = "force-dynamic";
 

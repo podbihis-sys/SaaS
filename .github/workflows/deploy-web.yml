@@ -58,6 +58,9 @@ jobs:
           SUPA_URL="${NEXT_PUBLIC_SUPABASE_URL:-https://otsavbpvfzkytlouklwe.supabase.co}"
           SUPA_KEY="${NEXT_PUBLIC_SUPABASE_ANON_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90c2F2YnB2ZnpreXRsb3VrbHdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyNjMwMTcsImV4cCI6MjA5NjgzOTAxN30.THaVh8ZYdiW0oebp-vmt0N2MsjoW7Xlfr4lhTDRmaGg}"
           API_URL="${NEXT_PUBLIC_API_URL:-http://localhost:8000}"
+          # Eigene BIT-Supabase-Instanz (oeffentliche Werte; Secrets ueberschreiben).
+          BIT_URL="${NEXT_PUBLIC_BIT_SUPABASE_URL:-https://lhllsywxusrqtxcpnjbo.supabase.co}"
+          BIT_KEY="${NEXT_PUBLIC_BIT_SUPABASE_ANON_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxobGxzeXd4dXNycXR4Y3BuamJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0OTY3NjEsImV4cCI6MjA5NzA3Mjc2MX0.hbqQU6MlbP7VJUpPdx9kTyqnGLW67702J8Us657iPG0}"
           vercel deploy $PROD_FLAG --yes \
             --token="$VERCEL_TOKEN" \
             --build-env NEXT_PUBLIC_SUPABASE_URL="$SUPA_URL" \
@@ -65,7 +68,11 @@ jobs:
             --build-env NEXT_PUBLIC_API_URL="$API_URL" \
             --env NEXT_PUBLIC_SUPABASE_URL="$SUPA_URL" \
             --env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPA_KEY" \
-            --env NEXT_PUBLIC_API_URL="$API_URL" 2>&1 | tee deploy.log
+            --env NEXT_PUBLIC_API_URL="$API_URL" \
+            --build-env NEXT_PUBLIC_BIT_SUPABASE_URL="$BIT_URL" \
+            --build-env NEXT_PUBLIC_BIT_SUPABASE_ANON_KEY="$BIT_KEY" \
+            --env NEXT_PUBLIC_BIT_SUPABASE_URL="$BIT_URL" \
+            --env NEXT_PUBLIC_BIT_SUPABASE_ANON_KEY="$BIT_KEY" 2>&1 | tee deploy.log
           url=$(grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' deploy.log | tail -1)
           echo "DEPLOY_URL=$url"
           echo "## Deployed ($GITHUB_REF_NAME)" >> $GITHUB_STEP_SUMMARY
