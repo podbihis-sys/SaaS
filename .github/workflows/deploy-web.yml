@@ -2,6 +2,11 @@ name: deploy-web
 
 on:
   workflow_dispatch:
+    inputs:
+      production:
+        description: "Auf Produktion (stabile URL) deployen"
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths:
@@ -36,10 +41,11 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          PRODUCTION: ${{ inputs.production }}
         run: |
           set -o pipefail
-          # main -> Produktion, jeder andere Branch (manueller Dispatch) -> Preview.
-          if [ "$GITHUB_REF_NAME" = "main" ]; then
+          # main oder production-Input -> Produktion (stabile URL), sonst Preview.
+          if [ "$GITHUB_REF_NAME" = "main" ] || [ "$PRODUCTION" = "true" ]; then
             PROD_FLAG="--prod"
           else
             PROD_FLAG=""
