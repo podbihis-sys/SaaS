@@ -16,7 +16,8 @@
       "source": {
         "source": "github",
         "repo": "affaan-m/ecc"
-      }
+      },
+      "autoUpdate": true
     }
   },
   "enabledPlugins": {
