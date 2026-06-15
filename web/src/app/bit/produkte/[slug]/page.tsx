@@ -24,7 +24,18 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = getProduct(slug);
   if (!product) return { title: "Produkt nicht gefunden" };
-  return { title: product.name, description: product.description };
+  return {
+    title: product.name,
+    description: product.description,
+    alternates: { canonical: `/bit/produkte/${product.slug}` },
+    openGraph: {
+      type: "website",
+      title: `${product.name} · BIT Bierther GmbH`,
+      description: product.description,
+      url: `/bit/produkte/${product.slug}`,
+      images: product.image ? [{ url: product.image, alt: product.imageAlt }] : undefined,
+    },
+  };
 }
 
 export default async function ProductDetail({
@@ -41,8 +52,43 @@ export default async function ProductDetail({
     .filter((p) => p.slug !== product.slug)
     .slice(0, 3);
 
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
+  const imageUrl = product.image?.startsWith("/") ? `${base}${product.image}` : product.image;
+  const productLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description,
+    image: imageUrl,
+    sku: product.code,
+    category: category?.name,
+    brand: { "@type": "Brand", name: "BIT Bierther GmbH" },
+  };
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Start", item: `${base}/bit` },
+      { "@type": "ListItem", position: 2, name: "Produkte", item: `${base}/bit/produkte` },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: product.name,
+        item: `${base}/bit/produkte/${product.slug}`,
+      },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
       {/* Breadcrumb */}
       <nav className="border-b border-slate-200 bg-slate-50">
         <div className="container flex flex-wrap items-center gap-1.5 py-4 text-sm text-slate-500">
