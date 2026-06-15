@@ -91,7 +91,11 @@ export function ProductForm({
     e.preventDefault();
     setSaving(true);
     setError("");
-    const payload: ProductInput = { ...f, slug: f.slug || slugify(f.name) };
+    const payload: ProductInput = {
+      ...f,
+      slug: f.slug || slugify(f.name),
+      status: "published",
+    };
     const res = await saveProduct(payload);
     setSaving(false);
     if (res.ok) {
@@ -210,35 +214,22 @@ export function ProductForm({
       </Field>
 
       {/* Status + Submit */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-t border-slate-200 pt-6">
-        <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
-          Status
-          <select
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
-            value={f.status}
-            onChange={(e) => set("status", e.target.value as ProductInput["status"])}
-          >
-            <option value="draft">Entwurf</option>
-            <option value="published">Veröffentlicht</option>
-          </select>
-        </label>
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={() => router.push("/bit/admin")}
-            className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
-          >
-            Abbrechen
-          </button>
-          <button
-            type="submit"
-            disabled={saving}
-            className="inline-flex items-center gap-2 rounded-lg bg-[#1e4a7a] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#163a61] disabled:opacity-60"
-          >
-            {saving && <Loader2 className="h-4 w-4 animate-spin" />}
-            Speichern
-          </button>
-        </div>
+      <div className="sticky bottom-0 -mx-6 mt-2 flex items-center justify-end gap-2 border-t border-slate-200 bg-white/95 px-6 py-3 backdrop-blur">
+        <button
+          type="button"
+          onClick={() => router.push("/bit/admin")}
+          className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+        >
+          Abbrechen
+        </button>
+        <button
+          type="submit"
+          disabled={saving}
+          className="inline-flex items-center gap-2 rounded-lg bg-[#1e4a7a] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#163a61] disabled:opacity-60"
+        >
+          {saving && <Loader2 className="h-4 w-4 animate-spin" />}
+          Speichern &amp; veröffentlichen
+        </button>
       </div>
     </form>
   );

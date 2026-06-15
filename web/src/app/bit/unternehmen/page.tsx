@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Factory, History, Target, Users } from "lucide-react";
 import { COMPANY, INDUSTRIES } from "../_data/catalog";
+import { c } from "../_data/content";
+import { getContent } from "../_data/content-server";
 import { ProductIllustration } from "../_components/product-illustration";
 
 export const metadata: Metadata = {
@@ -17,7 +19,8 @@ const milestones = [
   { year: "Heute", text: "Über 1.000 Standardartikel und kundenspezifische Lösungen – weltweit im Einsatz von der Automobilindustrie bis zur Medizintechnik." },
 ];
 
-export default function UnternehmenPage() {
+export default async function UnternehmenPage() {
+  const content = await getContent();
   return (
     <>
       <section className="relative overflow-hidden bg-[#0f2742]">
@@ -28,12 +31,14 @@ export default function UnternehmenPage() {
         <div className="container relative py-20">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#f59e0b]">Unternehmen</p>
           <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl">
-            Spezialist für Schrumpf- & Isolierschlauchtechnik
+            {c(content, "unternehmen.title", "Spezialist für Schrumpf- & Isolierschlauchtechnik")}
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-300">
-            Seit {COMPANY.foundedYear} ist die {COMPANY.legalName} aus {COMPANY.city} ein
-            verlässlicher Partner renommierter Unternehmen für Schrumpfschläuche, Isolier- und
-            Schutzschläuche, Kunststoffbefestigung und Kabelbinderlösungen.
+            {c(
+              content,
+              "unternehmen.intro",
+              `Seit ${COMPANY.foundedYear} ist die ${COMPANY.legalName} aus ${COMPANY.city} ein verlässlicher Partner renommierter Unternehmen für Schrumpfschläuche, Isolier- und Schutzschläuche, Kunststoffbefestigung und Kabelbinderlösungen.`,
+            )}
           </p>
         </div>
       </section>
@@ -61,10 +66,11 @@ export default function UnternehmenPage() {
         <div className="container">
           <h2 className="text-3xl font-bold tracking-tight text-slate-900">Unsere Entwicklung</h2>
           <p className="mt-4 max-w-3xl leading-relaxed text-slate-700">
-            Seit der Gründung 1996 hat sich die BIT Bierther GmbH zu einem der führenden Anbieter für
-            Schrumpfprodukte, Isolier- und Schutzschläuche entwickelt. Angefangen von einem
-            eigenwilligen Start aus zwei Containerbüros heraus, über den Umzug in ein neuerrichtetes
-            Bürohaus mit angegliederter Lagerhalle bis hin zum Aufbau eigener Produktionsstraßen.
+            {c(
+              content,
+              "unternehmen.entwicklung",
+              "Seit der Gründung 1996 hat sich die BIT Bierther GmbH zu einem der führenden Anbieter für Schrumpfprodukte, Isolier- und Schutzschläuche entwickelt. Angefangen von einem eigenwilligen Start aus zwei Containerbüros heraus, über den Umzug in ein neuerrichtetes Bürohaus mit angegliederter Lagerhalle bis hin zum Aufbau eigener Produktionsstraßen.",
+            )}
           </p>
           <div className="mt-10 space-y-6 border-l-2 border-[#1e4a7a]/20 pl-6">
             {milestones.map((m) => (

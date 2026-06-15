@@ -2,13 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Clock, Mail, MapPin, Phone, Printer, ShoppingCart } from "lucide-react";
 import { COMPANY } from "../_data/catalog";
+import { c } from "../_data/content";
+import { getContent } from "../_data/content-server";
 
 export const metadata: Metadata = {
   title: "Kontakt",
   description: `Kontakt zur ${COMPANY.legalName} in ${COMPANY.city}: Telefon ${COMPANY.phone}, E-Mail ${COMPANY.email}.`,
 };
 
-export default function KontaktPage() {
+export default async function KontaktPage() {
+  const content = await getContent();
   const mapsQuery = encodeURIComponent(
     `${COMPANY.street}, ${COMPANY.zip} ${COMPANY.city}`,
   );
@@ -19,11 +22,14 @@ export default function KontaktPage() {
         <div className="container py-16">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">Kontakt</p>
           <h1 className="mt-3 text-4xl font-bold tracking-tight text-slate-900">
-            Wir beraten Sie persönlich
+            {c(content, "kontakt.title", "Wir beraten Sie persönlich")}
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
-            Ob Standardartikel oder Sonderkonfektion – sprechen Sie uns an. Für eine konkrete
-            Anfrage stellen Sie Ihre Artikel einfach im Warenkorb zusammen.
+            {c(
+              content,
+              "kontakt.intro",
+              "Ob Standardartikel oder Sonderkonfektion – sprechen Sie uns an. Für eine konkrete Anfrage stellen Sie Ihre Artikel einfach im Warenkorb zusammen.",
+            )}
           </p>
         </div>
       </section>

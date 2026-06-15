@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import "./bit.css";
 import { COMPANY } from "./_data/catalog";
-import { CartProvider } from "./_lib/cart";
-import { CartDrawer } from "./_components/cart-drawer";
-import { SiteHeader } from "./_components/site-header";
-import { SiteFooter } from "./_components/site-footer";
+import { SiteChrome } from "./_components/site-chrome";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
 
@@ -68,17 +65,12 @@ export default function BitLayout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <CartProvider>
-      <div className="min-h-screen bg-white font-sans text-slate-900 antialiased">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}
-        />
-        <SiteHeader />
-        <main>{children}</main>
-        <SiteFooter />
-        <CartDrawer />
-      </div>
-    </CartProvider>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}
+      />
+      <SiteChrome>{children}</SiteChrome>
+    </>
   );
 }
