@@ -53,8 +53,10 @@ jobs:
           # Fallback auf Platzhalter, falls Secrets nicht gesetzt sind. Der Build
           # benoetigt nicht-leere NEXT_PUBLIC_*-Werte; die BIT-Website nutzt selbst
           # kein Supabase, daher genuegen Platzhalter fuer ein lauffaehiges Preview.
-          SUPA_URL="${NEXT_PUBLIC_SUPABASE_URL:-https://example.supabase.co}"
-          SUPA_KEY="${NEXT_PUBLIC_SUPABASE_ANON_KEY:-placeholder-anon-key}"
+          # Öffentliche (browser-sichere) Defaults für das pruefpilot-Supabase-Projekt;
+          # ein gleichnamiges GitHub-Secret überschreibt sie, wenn gesetzt.
+          SUPA_URL="${NEXT_PUBLIC_SUPABASE_URL:-https://otsavbpvfzkytlouklwe.supabase.co}"
+          SUPA_KEY="${NEXT_PUBLIC_SUPABASE_ANON_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90c2F2YnB2ZnpreXRsb3VrbHdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyNjMwMTcsImV4cCI6MjA5NjgzOTAxN30.THaVh8ZYdiW0oebp-vmt0N2MsjoW7Xlfr4lhTDRmaGg}"
           API_URL="${NEXT_PUBLIC_API_URL:-http://localhost:8000}"
           vercel deploy $PROD_FLAG --yes \
             --token="$VERCEL_TOKEN" \
