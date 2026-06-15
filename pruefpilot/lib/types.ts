@@ -5,6 +5,7 @@ export interface CompanyRow {
   owner_id: string;
   name: string;
   contact_email: string;
+  bundesland: string | null;
   created_at: string;
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;

@@ -2,6 +2,7 @@ import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { categoryName } from "@/lib/categories";
 import { todayIso } from "@/lib/due";
+import { germanHolidaysForYears } from "@/lib/holidays";
 import {
   reminderBody,
   reminderStageFor,
@@ -9,6 +10,7 @@ import {
   type ReminderStage,
 } from "@/lib/reminders";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { lastWorkdayOnOrBefore } from "@/lib/workdays";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,7 +21,7 @@ interface DeviceWithCompany {
   category_id: string;
   next_due_date: string;
   company_id: string;
-  companies: { name: string; contact_email: string } | null;
+  companies: { name: string; contact_email: string; bundesland: string | null } | null;
 }
 
 interface ReminderLogRow {
@@ -72,10 +74,25 @@ export async function GET(request: Request) {
   const horizon = addDaysIso(today, 60);
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
+  // Feiertage je Region memoisieren — mehrere Betriebe können verschiedene Bundesländer
+  // haben; das Vorjahr deckt Rückrechnungen über den Jahreswechsel ab.
+  const baseYear = Number(today.slice(0, 4));
+  const holidayYears = [baseYear - 1, baseYear, baseYear + 1];
+  const holidayCache = new Map<string, ReadonlySet<string>>();
+  const holidaysForRegion = (region: string | null): ReadonlySet<string> => {
+    const key = region ?? "BUND";
+    let set = holidayCache.get(key);
+    if (!set) {
+      set = germanHolidaysForYears(holidayYears, region);
+      holidayCache.set(key, set);
+    }
+    return set;
+  };
+
   const admin = createAdminClient();
   const { data: deviceRows, error: devicesError } = await admin
     .from("devices")
-    .select("id, name, category_id, next_due_date, company_id, companies(name, contact_email)")
+    .select("id, name, category_id, next_due_date, company_id, companies(name, contact_email, bundesland)")
     .eq("status", "active")
     .lte("next_due_date", horizon);
   if (devicesError) {
@@ -110,10 +127,15 @@ export async function GET(request: Request) {
   const planned: Array<{ device: string; stage: ReminderStage; to: string }> = [];
 
   for (const device of devices) {
+    const finalReminderDate = lastWorkdayOnOrBefore(
+      device.next_due_date,
+      holidaysForRegion(device.companies?.bundesland ?? null),
+    );
     const candidate = reminderStageFor(
       device.next_due_date,
       today,
       sentByDevice.get(device.id) ?? new Set<ReminderStage>(),
+      finalReminderDate,
     );
     if (!candidate || !device.companies) continue;
 

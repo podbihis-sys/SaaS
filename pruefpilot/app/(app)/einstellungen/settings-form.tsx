@@ -2,11 +2,19 @@
 
 import { useActionState } from "react";
 import { BUNDESLAENDER } from "@/lib/holidays";
-import { createCompany, type OnboardingFormState } from "./actions";
+import { updateCompany, type SettingsFormState } from "./actions";
 
-export function OnboardingForm({ defaultEmail }: { defaultEmail: string }) {
-  const [state, formAction, pending] = useActionState<OnboardingFormState, FormData>(
-    createCompany,
+interface SettingsFormProps {
+  defaults: {
+    name: string;
+    contactEmail: string;
+    bundesland: string | null;
+  };
+}
+
+export function SettingsForm({ defaults }: SettingsFormProps) {
+  const [state, formAction, pending] = useActionState<SettingsFormState, FormData>(
+    updateCompany,
     {},
   );
 
@@ -16,8 +24,16 @@ export function OnboardingForm({ defaultEmail }: { defaultEmail: string }) {
         <label className="label" htmlFor="name">
           Betriebsname
         </label>
-        <input id="name" name="name" required maxLength={200} className="input" />
+        <input
+          id="name"
+          name="name"
+          required
+          maxLength={200}
+          defaultValue={defaults.name}
+          className="input"
+        />
       </div>
+
       <div>
         <label className="label" htmlFor="contactEmail">
           Kontakt-E-Mail für Erinnerungen
@@ -27,18 +43,24 @@ export function OnboardingForm({ defaultEmail }: { defaultEmail: string }) {
           name="contactEmail"
           type="email"
           required
-          defaultValue={defaultEmail}
+          defaultValue={defaults.contactEmail}
           className="input"
         />
         <p className="mt-1 text-xs text-slate-500">
           An diese Adresse gehen Fälligkeits-Erinnerungen und Eskalationen.
         </p>
       </div>
+
       <div>
         <label className="label" htmlFor="bundesland">
-          Bundesland (optional)
+          Bundesland
         </label>
-        <select id="bundesland" name="bundesland" defaultValue="" className="input">
+        <select
+          id="bundesland"
+          name="bundesland"
+          defaultValue={defaults.bundesland ?? ""}
+          className="input"
+        >
           <option value="">Ohne Angabe (nur bundesweite Feiertage)</option>
           {BUNDESLAENDER.map((land) => (
             <option key={land.code} value={land.code}>
@@ -47,13 +69,19 @@ export function OnboardingForm({ defaultEmail }: { defaultEmail: string }) {
           ))}
         </select>
         <p className="mt-1 text-xs text-slate-500">
-          Fällt eine Prüfung auf ein Wochenende oder einen Feiertag, geht die letzte
-          Erinnerung am letzten Arbeitstag davor raus — mit Bundesland auch für regionale Feiertage.
+          Steuert die Feiertage für die Arbeitstag-Verschiebung der letzten Erinnerung.
+          Fällt eine Fälligkeit auf Wochenende oder Feiertag, geht die letzte Info am
+          letzten Arbeitstag davor raus.
         </p>
       </div>
+
       {state.error ? <p className="field-error">{state.error}</p> : null}
-      <button type="submit" disabled={pending} className="btn-primary w-full">
-        {pending ? "Wird angelegt…" : "Betrieb anlegen"}
+      {state.success ? (
+        <p className="text-sm font-medium text-emerald-600">Gespeichert.</p>
+      ) : null}
+
+      <button type="submit" disabled={pending} className="btn-primary">
+        {pending ? "Speichern…" : "Änderungen speichern"}
       </button>
     </form>
   );

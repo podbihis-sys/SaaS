@@ -21,6 +21,7 @@ export async function createCompany(
   const parsed = companySchema.safeParse({
     name: formData.get("name"),
     contactEmail: formData.get("contactEmail"),
+    bundesland: formData.get("bundesland"),
   });
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Eingaben prüfen" };
@@ -31,6 +32,7 @@ export async function createCompany(
     owner_id: user.id,
     name: parsed.data.name,
     contact_email: parsed.data.contactEmail,
+    bundesland: parsed.data.bundesland,
   });
 
   // 23505 = unique_violation: Betrieb existiert bereits (Doppel-Submit) → einfach weiterleiten.
