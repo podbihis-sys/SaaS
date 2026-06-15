@@ -39,7 +39,10 @@ export function SiteFooter() {
         <div>
           <h3 className="text-sm font-semibold uppercase tracking-wide text-white">Unternehmen</h3>
           <ul className="mt-4 space-y-2 text-sm">
-            <li><Link href="/bit/unternehmen" className="text-slate-400 hover:text-white">Über uns</Link></li>
+            <li><Link href="/bit/news" className="text-slate-400 hover:text-white">News</Link></li>
+            <li><Link href="/bit/kompetenzen" className="text-slate-400 hover:text-white">Kompetenzen</Link></li>
+            <li><Link href="/bit/branchen" className="text-slate-400 hover:text-white">Branchen</Link></li>
+            <li><Link href="/bit/unternehmen" className="text-slate-400 hover:text-white">Die BIT</Link></li>
             <li><Link href="/bit/qualitaet" className="text-slate-400 hover:text-white">Qualität & Zertifikate</Link></li>
             <li><Link href="/bit/kontakt" className="text-slate-400 hover:text-white">Kontakt</Link></li>
             <li><Link href="/bit/warenkorb" className="text-slate-400 hover:text-white">Anfrage / Warenkorb</Link></li>

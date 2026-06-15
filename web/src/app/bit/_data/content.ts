@@ -18,10 +18,22 @@ export const CONTENT_FIELDS: ContentField[] = [
   { key: "home.hero.subtitle", label: "Hero – Untertext", page: "Startseite", multiline: true },
   { key: "home.cta.title", label: "Abschluss-CTA – Überschrift", page: "Startseite" },
   { key: "home.cta.text", label: "Abschluss-CTA – Text", page: "Startseite", multiline: true },
-  // Über uns
-  { key: "unternehmen.title", label: "Überschrift", page: "Über uns" },
-  { key: "unternehmen.intro", label: "Einleitung", page: "Über uns", multiline: true },
-  { key: "unternehmen.entwicklung", label: "Abschnitt „Unsere Entwicklung“", page: "Über uns", multiline: true },
+  // News
+  { key: "news.hero.title", label: "Überschrift", page: "News" },
+  { key: "news.hero.intro", label: "Einleitung", page: "News", multiline: true },
+  // Kompetenzen
+  { key: "kompetenzen.hero.title", label: "Überschrift", page: "Kompetenzen" },
+  { key: "kompetenzen.hero.intro", label: "Einleitung", page: "Kompetenzen", multiline: true },
+  { key: "kompetenzen.cta.title", label: "Abschluss-CTA – Überschrift", page: "Kompetenzen" },
+  { key: "kompetenzen.cta.text", label: "Abschluss-CTA – Text", page: "Kompetenzen", multiline: true },
+  // Branchen
+  { key: "branchen.hero.title", label: "Überschrift", page: "Branchen" },
+  { key: "branchen.hero.intro", label: "Einleitung", page: "Branchen", multiline: true },
+  { key: "branchen.cta.text", label: "Abschluss-CTA – Text", page: "Branchen", multiline: true },
+  // Die BIT (Unternehmen)
+  { key: "unternehmen.title", label: "Überschrift", page: "Die BIT" },
+  { key: "unternehmen.intro", label: "Einleitung", page: "Die BIT", multiline: true },
+  { key: "unternehmen.entwicklung", label: "Abschnitt „Unsere Entwicklung“", page: "Die BIT", multiline: true },
   // Qualität
   { key: "qualitaet.title", label: "Überschrift", page: "Qualität" },
   { key: "qualitaet.intro", label: "Einleitung", page: "Qualität", multiline: true },

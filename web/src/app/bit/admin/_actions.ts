@@ -99,9 +99,76 @@ export async function saveContent(
     .from("bit_content")
     .upsert(parsed.data.map((e) => ({ key: e.key, value: e.value })), { onConflict: "key" });
   if (error) return { ok: false, error: error.message };
-  revalidatePath("/bit");
-  revalidatePath("/bit/unternehmen");
-  revalidatePath("/bit/qualitaet");
-  revalidatePath("/bit/kontakt");
+  for (const path of [
+    "/bit",
+    "/bit/news",
+    "/bit/kompetenzen",
+    "/bit/branchen",
+    "/bit/unternehmen",
+    "/bit/qualitaet",
+    "/bit/kontakt",
+  ]) {
+    revalidatePath(path);
+  }
+  return { ok: true };
+}
+
+// ----------------------------------------------------------------------- News
+const newsInput = z.object({
+  id: z.string().uuid().optional(),
+  slug: z
+    .string()
+    .min(1, "Slug erforderlich")
+    .regex(/^[a-z0-9-]+$/, "Nur Kleinbuchstaben, Zahlen und Bindestriche"),
+  title: z.string().min(1, "Titel erforderlich"),
+  excerpt: z.string().default(""),
+  body: z.string().default(""),
+  published_at: z.string().default(""),
+  image_path: z.string().default(""),
+  image_alt: z.string().default(""),
+  status: z.enum(["draft", "published"]).default("draft"),
+});
+
+export type NewsInput = z.infer<typeof newsInput>;
+
+function revalidateNews(slug: string) {
+  revalidatePath("/bit/admin/news");
+  revalidatePath("/bit/news");
+  revalidatePath(`/bit/news/${slug}`);
+}
+
+export async function saveNews(input: NewsInput): Promise<ActionResult> {
+  const parsed = newsInput.safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Ungültige Eingabe." };
+  }
+  const d = parsed.data;
+  const supabase = await createClient();
+
+  const row = {
+    slug: d.slug,
+    title: d.title,
+    excerpt: d.excerpt,
+    body: d.body,
+    published_at: d.published_at || null,
+    image_path: d.image_path || null,
+    image_alt: d.image_alt || null,
+    status: d.status,
+  };
+
+  const { error } = d.id
+    ? await supabase.from("bit_news").update(row).eq("id", d.id)
+    : await supabase.from("bit_news").insert(row);
+
+  if (error) return { ok: false, error: error.message };
+  revalidateNews(d.slug);
+  return { ok: true };
+}
+
+export async function deleteNews(id: string, slug: string): Promise<ActionResult> {
+  const supabase = await createClient();
+  const { error } = await supabase.from("bit_news").delete().eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  revalidateNews(slug);
   return { ok: true };
 }

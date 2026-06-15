@@ -8,10 +8,12 @@ import { useCart } from "../_lib/cart";
 import { COMPANY } from "../_data/catalog";
 
 const NAV = [
-  { href: "/bit", label: "Start" },
+  { href: "/bit", label: "Home" },
   { href: "/bit/produkte", label: "Produkte" },
-  { href: "/bit/unternehmen", label: "Unternehmen" },
-  { href: "/bit/qualitaet", label: "Qualität" },
+  { href: "/bit/news", label: "News" },
+  { href: "/bit/kompetenzen", label: "Kompetenzen" },
+  { href: "/bit/branchen", label: "Branchen" },
+  { href: "/bit/unternehmen", label: "Die BIT" },
   { href: "/bit/kontakt", label: "Kontakt" },
 ];
 

@@ -55,6 +55,9 @@ export default async function PanelLayout({ children }: { children: React.ReactN
             <Link href="/bit/admin" className="text-sm font-medium text-slate-600 hover:text-[#1e4a7a]">
               Produkte
             </Link>
+            <Link href="/bit/admin/news" className="text-sm font-medium text-slate-600 hover:text-[#1e4a7a]">
+              News
+            </Link>
             <Link href="/bit/admin/inhalte" className="text-sm font-medium text-slate-600 hover:text-[#1e4a7a]">
               Seiten
             </Link>
