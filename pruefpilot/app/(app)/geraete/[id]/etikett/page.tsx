@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import QRCode from "qrcode";
 import { PrintButton } from "@/components/print-button";
 import { categoryName } from "@/lib/categories";
@@ -17,7 +18,11 @@ export default async function DeviceLabelPage({
     notFound();
   }
   const device = data as DeviceRow;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const h = await headers();
+  const host = h.get("x-forwarded-host") ?? h.get("host");
+  const proto = h.get("x-forwarded-proto") ?? "https";
+  // QR zeigt immer auf die tatsächlich aufgerufene Domain (nicht eine hartcodierte).
+  const appUrl = host ? `${proto}://${host}` : (process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000");
   const qrDataUrl = await QRCode.toDataURL(`${appUrl}/v/${device.verify_token}`, {
     width: 240,
     margin: 1,

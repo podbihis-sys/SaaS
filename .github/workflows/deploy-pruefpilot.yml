@@ -54,10 +54,10 @@ jobs:
             --token="$VERCEL_TOKEN" \
             --build-env NEXT_PUBLIC_SUPABASE_URL="$SUPABASE_URL" \
             --build-env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY" \
-            --build-env NEXT_PUBLIC_APP_URL="https://pruefpilot.vercel.app" \
+            --build-env NEXT_PUBLIC_APP_URL="https://pruefpilot-sable.vercel.app" \
             --env NEXT_PUBLIC_SUPABASE_URL="$SUPABASE_URL" \
             --env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY" \
-            --env NEXT_PUBLIC_APP_URL="https://pruefpilot.vercel.app" \
+            --env NEXT_PUBLIC_APP_URL="https://pruefpilot-sable.vercel.app" \
             > /tmp/deploy.log 2>&1
           rc=$?
           set -e
