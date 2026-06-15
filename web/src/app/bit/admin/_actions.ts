@@ -86,3 +86,22 @@ export async function deleteProduct(id: string, slug: string): Promise<ActionRes
   revalidateProduct(slug);
   return { ok: true };
 }
+
+const contentSchema = z.array(z.object({ key: z.string().min(1), value: z.string() }));
+
+export async function saveContent(
+  entries: { key: string; value: string }[],
+): Promise<ActionResult> {
+  const parsed = contentSchema.safeParse(entries);
+  if (!parsed.success) return { ok: false, error: "Ungültige Eingabe." };
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("bit_content")
+    .upsert(parsed.data.map((e) => ({ key: e.key, value: e.value })), { onConflict: "key" });
+  if (error) return { ok: false, error: error.message };
+  revalidatePath("/bit");
+  revalidatePath("/bit/unternehmen");
+  revalidatePath("/bit/qualitaet");
+  revalidatePath("/bit/kontakt");
+  return { ok: true };
+}
