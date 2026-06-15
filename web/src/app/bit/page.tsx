@@ -3,6 +3,7 @@ import {
   ArrowRight,
   BadgeCheck,
   Boxes,
+  CalendarDays,
   Clock,
   Factory,
   Layers,
@@ -14,9 +15,17 @@ import {
 import { CATEGORIES, COMPANY, INDUSTRIES, PRODUCTS } from "./_data/catalog";
 import { c } from "./_data/content";
 import { getContent } from "./_data/content-server";
+import { getCmsNews } from "./_data/news-server";
+import { formatDate } from "./_lib/format";
 import { ProductCard } from "./_components/product-card";
 import { ProductIllustration } from "./_components/product-illustration";
 import { Reveal } from "./_components/reveal";
+
+const KOMPETENZEN = [
+  { title: "Schlauch-Abschnitte & Konfektion", image: "/bit/kompetenzen/abschnitte.jpg" },
+  { title: "Schrumpfschlauch bedruckt", image: "/bit/kompetenzen/bedruckt.jpg" },
+  { title: "Farbige Schrumpfschläuche", image: "/bit/kompetenzen/farbig.jpg" },
+];
 
 const STATS = [
   { icon: Boxes, value: "1.000+", label: "Standardartikel" },
@@ -34,6 +43,7 @@ const ADVANTAGES = [
 
 export default async function BitHome() {
   const content = await getContent();
+  const latestNews = (await getCmsNews()).slice(0, 3);
   const featured = PRODUCTS.filter((p) =>
     [
       "schrumpfschlauch-mit-kleber-bpdw-100",
@@ -198,8 +208,51 @@ export default async function BitHome() {
         </div>
       </section>
 
-      {/* ----------------------------------------------------------- Featured */}
+      {/* -------------------------------------------------------- Kompetenzen */}
       <section className="container py-20 sm:py-24">
+        <Reveal className="flex flex-wrap items-end justify-between gap-4">
+          <div className="max-w-2xl">
+            <span className="text-sm font-semibold uppercase tracking-wide text-[#c27803]">Kompetenzen</span>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+              {c(content, "home.kompetenzen.title", "Wir fertigen nach Ihren Wünschen")}
+            </h2>
+            <p className="mt-3 text-slate-600">
+              {c(
+                content,
+                "home.kompetenzen.text",
+                "Zuschnitt, Bedruckung, Sonderwerkstoffe und zugelassene Qualität – über sechs Produktionsstrecken konfektionieren wir exakt nach Ihrer Vorgabe.",
+              )}
+            </p>
+          </div>
+          <Link
+            href="/bit/kompetenzen"
+            className="group inline-flex items-center gap-1.5 text-sm font-semibold text-[#1e4a7a]"
+          >
+            Alle Kompetenzen
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Link>
+        </Reveal>
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {KOMPETENZEN.map((k, i) => (
+            <Reveal key={k.title} delay={i * 70} className="h-full">
+              <Link href="/bit/kompetenzen" className="bit-card group flex h-full flex-col overflow-hidden">
+                <div className="aspect-[16/10] overflow-hidden rounded-t-[1.3rem] bg-slate-100">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={k.image} alt={k.title} className="bit-card-img h-full w-full object-cover" loading="lazy" />
+                </div>
+                <div className="flex flex-1 items-center justify-between gap-2 p-5">
+                  <h3 className="font-semibold text-slate-900">{k.title}</h3>
+                  <ArrowRight className="h-4 w-4 shrink-0 text-[#1e4a7a] transition-transform group-hover:translate-x-1" />
+                </div>
+              </Link>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ----------------------------------------------------------- Featured */}
+      <section className="border-y border-slate-200 bg-slate-50 py-20 sm:py-24">
+        <div className="container">
         <Reveal className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <span className="text-sm font-semibold uppercase tracking-wide text-[#c27803]">Beliebt</span>
@@ -221,10 +274,11 @@ export default async function BitHome() {
             <ProductCard key={p.slug} product={p} />
           ))}
         </Reveal>
+        </div>
       </section>
 
       {/* ---------------------------------------------------------- Industries */}
-      <section className="border-t border-slate-200 bg-slate-50 py-16">
+      <section className="border-t border-slate-200 bg-white py-16">
         <div className="container text-center">
           <Reveal as="h2" className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             Branchen, die uns vertrauen
@@ -246,7 +300,57 @@ export default async function BitHome() {
             ))}
           </div>
         </div>
+        <div className="container mt-10 text-center">
+          <Link
+            href="/bit/branchen"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-sm font-semibold text-[#1e4a7a] hover:border-[#1e4a7a]"
+          >
+            Branchenlösungen entdecken <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
       </section>
+
+      {/* --------------------------------------------------------------- News */}
+      {latestNews.length > 0 && (
+        <section className="container py-20 sm:py-24">
+          <Reveal className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <span className="text-sm font-semibold uppercase tracking-wide text-[#c27803]">Aktuelles</span>
+              <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                {c(content, "home.news.title", "News aus dem Hause BIT")}
+              </h2>
+            </div>
+            <Link
+              href="/bit/news"
+              className="group inline-flex items-center gap-1.5 text-sm font-semibold text-[#1e4a7a]"
+            >
+              Alle News
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </Reveal>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {latestNews.map((post, i) => (
+              <Reveal key={post.slug} delay={i * 70} className="h-full">
+                <Link href={`/bit/news/${post.slug}`} className="bit-card group flex h-full flex-col overflow-hidden">
+                  <div className="aspect-[16/10] overflow-hidden rounded-t-[1.3rem] bg-slate-100">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={post.image} alt={post.imageAlt} className="bit-card-img h-full w-full object-cover" loading="lazy" />
+                  </div>
+                  <div className="flex flex-1 flex-col p-6">
+                    {post.date && (
+                      <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400">
+                        <CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.date)}
+                      </span>
+                    )}
+                    <h3 className="mt-2 line-clamp-2 font-semibold leading-snug text-slate-900">{post.title}</h3>
+                    <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-slate-600">{post.excerpt}</p>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ----------------------------------------------------------------- CTA */}
       <section className="container py-20 sm:py-24">

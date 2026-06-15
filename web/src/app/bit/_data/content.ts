@@ -16,6 +16,9 @@ export const CONTENT_FIELDS: ContentField[] = [
   { key: "home.hero.badge", label: "Hero – Badge", page: "Startseite" },
   { key: "home.hero.title", label: "Hero – Überschrift", page: "Startseite" },
   { key: "home.hero.subtitle", label: "Hero – Untertext", page: "Startseite", multiline: true },
+  { key: "home.kompetenzen.title", label: "Kompetenzen-Teaser – Überschrift", page: "Startseite" },
+  { key: "home.kompetenzen.text", label: "Kompetenzen-Teaser – Text", page: "Startseite", multiline: true },
+  { key: "home.news.title", label: "News-Teaser – Überschrift", page: "Startseite" },
   { key: "home.cta.title", label: "Abschluss-CTA – Überschrift", page: "Startseite" },
   { key: "home.cta.text", label: "Abschluss-CTA – Text", page: "Startseite", multiline: true },
   // News
@@ -34,6 +37,10 @@ export const CONTENT_FIELDS: ContentField[] = [
   { key: "unternehmen.title", label: "Überschrift", page: "Die BIT" },
   { key: "unternehmen.intro", label: "Einleitung", page: "Die BIT", multiline: true },
   { key: "unternehmen.entwicklung", label: "Abschnitt „Unsere Entwicklung“", page: "Die BIT", multiline: true },
+  { key: "unternehmen.soziales.title", label: "Soziales Engagement – Überschrift", page: "Die BIT" },
+  { key: "unternehmen.soziales.text", label: "Soziales Engagement – Text", page: "Die BIT", multiline: true },
+  { key: "unternehmen.karriere.title", label: "Karriere – Überschrift", page: "Die BIT" },
+  { key: "unternehmen.karriere.text", label: "Karriere – Text", page: "Die BIT", multiline: true },
   // Qualität
   { key: "qualitaet.title", label: "Überschrift", page: "Qualität" },
   { key: "qualitaet.intro", label: "Einleitung", page: "Qualität", multiline: true },
