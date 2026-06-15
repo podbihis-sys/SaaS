@@ -12,6 +12,8 @@ import {
   Truck,
 } from "lucide-react";
 import { CATEGORIES, COMPANY, INDUSTRIES, PRODUCTS } from "./_data/catalog";
+import { c } from "./_data/content";
+import { getContent } from "./_data/content-server";
 import { ProductCard } from "./_components/product-card";
 import { ProductIllustration } from "./_components/product-illustration";
 import { Reveal } from "./_components/reveal";
@@ -30,7 +32,8 @@ const ADVANTAGES = [
   { icon: ShieldCheck, title: "Geprüfte Qualität", text: "Seit 1997 nach DIN EN ISO 9001 zertifiziert – dokumentiert und rückverfolgbar." },
 ];
 
-export default function BitHome() {
+export default async function BitHome() {
+  const content = await getContent();
   const featured = PRODUCTS.filter((p) =>
     [
       "schrumpfschlauch-mit-kleber-bpdw-100",
@@ -52,22 +55,21 @@ export default function BitHome() {
               className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white ring-1 ring-white/20"
             >
               <BadgeCheck className="h-3.5 w-3.5 text-[#f59e0b]" />
-              DIN EN ISO 9001 zertifiziert seit 1997
+              {c(content, "home.hero.badge", "DIN EN ISO 9001 zertifiziert seit 1997")}
             </Reveal>
             <Reveal
               as="h1"
               delay={90}
               className="mt-5 text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl xl:text-6xl"
             >
-              Schrumpf- &amp; Isolier&shy;schlauchtechnik{" "}
-              <span className="bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] bg-clip-text text-transparent">
-                aus einer Hand
-              </span>
+              {c(content, "home.hero.title", "Schrumpf- & Isolierschlauchtechnik aus einer Hand")}
             </Reveal>
             <Reveal as="p" delay={170} className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">
-              Seit {COMPANY.foundedYear} beliefern wir Automotive, Elektronik, Maschinenbau und
-              Medizintechnik mit über 1.000 Standardartikeln – plus Konfektion nach Maß.
-              Standardware in der Regel innerhalb von 24 Stunden.
+              {c(
+                content,
+                "home.hero.subtitle",
+                `Seit ${COMPANY.foundedYear} beliefern wir Automotive, Elektronik, Maschinenbau und Medizintechnik mit über 1.000 Standardartikeln – plus Konfektion nach Maß. Standardware in der Regel innerhalb von 24 Stunden.`,
+              )}
             </Reveal>
             <Reveal delay={250} className="mt-9 flex flex-wrap gap-3">
               <Link href="/bit/produkte" className="bit-btn bit-btn-primary">
@@ -252,12 +254,14 @@ export default function BitHome() {
           <div className="bit-aurora" />
           <div className="relative mx-auto max-w-2xl">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Stellen Sie Ihre Anfrage zusammen
+              {c(content, "home.cta.title", "Stellen Sie Ihre Anfrage zusammen")}
             </h2>
             <p className="mx-auto mt-4 text-slate-300">
-              Legen Sie die gewünschten Artikel in allen benötigten Größen in den Warenkorb und senden
-              Sie alles in einer einzigen Anfrage. Wir melden uns mit einem individuellen Angebot – in
-              der Regel innerhalb von 24 Stunden.
+              {c(
+                content,
+                "home.cta.text",
+                "Legen Sie die gewünschten Artikel in allen benötigten Größen in den Warenkorb und senden Sie alles in einer einzigen Anfrage. Wir melden uns mit einem individuellen Angebot – in der Regel innerhalb von 24 Stunden.",
+              )}
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link href="/bit/produkte" className="bit-btn bit-btn-primary">
