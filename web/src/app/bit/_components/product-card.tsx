@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import type { Product } from "../_data/catalog";
 import { getCategory } from "../_data/catalog";
 import { ProductIllustration } from "./product-illustration";
@@ -9,38 +9,54 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/bit/produkte/${product.slug}`}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:-translate-y-0.5 hover:border-[#1e4a7a]/40 hover:shadow-lg"
+      className="bit-card group flex flex-col overflow-hidden"
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-white">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-t-[1.3rem] bg-gradient-to-br from-slate-50 to-slate-100">
         <ProductIllustration
           category={product.category}
           src={product.image}
           alt={product.imageAlt}
-          className="h-full w-full transition-transform duration-500 group-hover:scale-105"
+          className="bit-card-img h-full w-full"
         />
-        <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-[#1e4a7a] shadow-sm">
+        <span className="absolute left-3 top-3 rounded-full bg-white/85 px-2.5 py-1 text-xs font-medium text-[#1e4a7a] shadow-sm backdrop-blur">
           {category?.name}
         </span>
+        {product.code !== product.name && (
+          <span className="absolute right-3 top-3 rounded-md bg-[#0f2742]/80 px-2 py-0.5 font-mono text-[11px] font-medium text-white/90 backdrop-blur">
+            {product.code}
+          </span>
+        )}
       </div>
+
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="text-base font-semibold text-slate-900">{product.name}</h3>
-        <p className="mt-1 text-sm text-slate-500">{product.tagline}</p>
+        <h3 className="text-base font-semibold text-slate-900 transition-colors group-hover:text-[#1e4a7a]">
+          {product.name}
+        </h3>
+        <p className="mt-1 text-sm text-[#c27803]">{product.tagline}</p>
         <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-slate-600">
           {product.description}
         </p>
+
         <div className="mt-4 flex flex-wrap gap-1.5">
           {product.features.slice(0, 2).map((f) => (
-            <span key={f} className="rounded-md bg-slate-100 px-2 py-1 text-xs text-slate-600">
+            <span
+              key={f}
+              className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-600"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-[#f59e0b]" />
               {f}
             </span>
           ))}
-          <span className="rounded-md bg-slate-100 px-2 py-1 text-xs text-slate-600">
+          <span className="inline-flex items-center rounded-full bg-[#1e4a7a]/10 px-2.5 py-1 text-xs font-medium text-[#1e4a7a]">
             {product.sizes.length} Größen
           </span>
         </div>
-        <div className="mt-5 flex items-center gap-1 text-sm font-medium text-[#1e4a7a]">
-          Details & Anfrage
-          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+
+        <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
+          <span className="text-sm font-semibold text-slate-900">Details &amp; Anfrage</span>
+          <span className="bit-arrow-circle">
+            <ArrowUpRight className="h-4 w-4" />
+          </span>
         </div>
       </div>
     </Link>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "./bit.css";
 import { CartProvider } from "./_lib/cart";
 import { CartDrawer } from "./_components/cart-drawer";
 import { SiteHeader } from "./_components/site-header";
