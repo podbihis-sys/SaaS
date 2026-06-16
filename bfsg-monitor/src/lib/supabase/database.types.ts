@@ -211,9 +211,10 @@ export type Database = {
           score: number | null
           started_at: string | null
           status: string
+          target_url: string | null
           total_issues: number | null
           type: string
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           count_critical?: number | null
@@ -230,9 +231,10 @@ export type Database = {
           score?: number | null
           started_at?: string | null
           status?: string
+          target_url?: string | null
           total_issues?: number | null
           type: string
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           count_critical?: number | null
@@ -249,9 +251,10 @@ export type Database = {
           score?: number | null
           started_at?: string | null
           status?: string
+          target_url?: string | null
           total_issues?: number | null
           type?: string
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: [
           {

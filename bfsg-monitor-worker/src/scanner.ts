@@ -3,7 +3,7 @@ import { chromium, type Browser } from "playwright";
 
 import { IMPACT_WEIGHTS, IMPACTS, LIMITS, WCAG_TAGS, type Impact } from "./config";
 import { discoverPages } from "./crawler";
-import type { ImpactCounts, PageScan, ScanSummary } from "./types";
+import type { ImpactCounts, Issue, PageScan, ScanSummary } from "./types";
 
 function emptyCounts(): ImpactCounts {
   return { critical: 0, serious: 0, moderate: 0, minor: 0 };
@@ -35,22 +35,29 @@ export async function scanPage(browser: Browser, url: string): Promise<PageScan>
       .withTags([...WCAG_TAGS])
       .analyze();
 
+    const issues: Issue[] = results.violations.map((violation) => ({
+      id: violation.id,
+      impact: (violation.impact ?? "minor") as Impact,
+      help: violation.help,
+      description: violation.description,
+      helpUrl: violation.helpUrl,
+      nodes: violation.nodes.length || 1,
+    }));
+
     const counts = emptyCounts();
-    for (const violation of results.violations) {
-      const impact = (violation.impact ?? "minor") as Impact;
-      if (impact in counts) {
-        counts[impact] += violation.nodes.length || 1;
-      }
+    for (const issue of issues) {
+      if (issue.impact in counts) counts[issue.impact] += issue.nodes;
     }
 
     const totalIssues = IMPACTS.reduce((sum, k) => sum + counts[k], 0);
-    return { url, score: scoreFromCounts(counts), totalIssues, counts };
+    return { url, score: scoreFromCounts(counts), totalIssues, counts, issues };
   } catch (err) {
     return {
       url,
       score: 0,
       totalIssues: 0,
       counts: emptyCounts(),
+      issues: [],
       error: err instanceof Error ? err.message : String(err),
     };
   } finally {
@@ -76,11 +83,25 @@ export async function runScan(target: URL, maxPages: number): Promise<ScanSummar
     }
     const totalIssues = IMPACTS.reduce((sum, k) => sum + counts[k], 0);
 
+    const issueMap = new Map<string, Issue>();
+    for (const page of pages) {
+      for (const issue of page.issues) {
+        const existing = issueMap.get(issue.id);
+        if (existing) existing.nodes += issue.nodes;
+        else issueMap.set(issue.id, { ...issue });
+      }
+    }
+    const issues = [...issueMap.values()].sort(
+      (a, b) =>
+        IMPACT_WEIGHTS[b.impact] * b.nodes - IMPACT_WEIGHTS[a.impact] * a.nodes,
+    );
+
     return {
       url: target.toString(),
       score: scoreFromCounts(counts),
       totalIssues,
       counts,
+      issues,
       pagesScanned: pages.length,
       pages,
       startedAt,

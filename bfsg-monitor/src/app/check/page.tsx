@@ -1,28 +1,30 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 
-import { buttonVariants } from "@/components/ui/button";
-import { DISCLAIMERS } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { DISCLAIMERS, WCAG } from "@/lib/constants";
 
-export const metadata: Metadata = { title: "Kostenlos prüfen" };
+import { FreeScanForm } from "./free-scan-form";
 
-// Placeholder for the public free-scan funnel (built out in Phase 3).
+export const metadata: Metadata = {
+  title: "Kostenloser Barrierefreiheits-Check",
+  description:
+    "Prüfen Sie Ihre Website kostenlos auf WCAG-Probleme. Score, Mängelliste, keine Anmeldung.",
+};
+
 export default function CheckPage() {
   return (
     <main className="mx-auto flex min-h-svh max-w-2xl flex-col items-center justify-center gap-6 px-4 py-16 text-center">
-      <h1 className="text-3xl font-semibold tracking-tight">
+      <h1 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
         Kostenloser Barrierefreiheits-Check
       </h1>
-      <p className="text-muted-foreground">
-        Der öffentliche Schnell-Check folgt in Phase 3. Lege bis dahin ein Konto
-        an, um deine Domains zu hinterlegen.
+      <p className="text-balance text-muted-foreground">
+        Geben Sie Ihre Domain ein — wir prüfen die Startseite automatisch gegen{" "}
+        {WCAG.standard} {WCAG.level} und zeigen die wichtigsten Mängel.
       </p>
-      <Link href="/login" className={cn(buttonVariants({ size: "lg" }))}>
-        Konto anlegen
-      </Link>
+
+      <FreeScanForm />
+
       <p className="max-w-xl text-xs text-muted-foreground">
-        {DISCLAIMERS.automatedCoverage}
+        {DISCLAIMERS.automatedCoverage} {DISCLAIMERS.noLegalAdvice}
       </p>
     </main>
   );
