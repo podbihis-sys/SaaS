@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  CreditCard,
   FileText,
   Globe,
   LayoutDashboard,
@@ -17,6 +18,7 @@ const NAV = [
   { href: "/app/domains", label: "Domains", icon: Globe, ready: false },
   { href: "/app/scans", label: "Scans & Berichte", icon: ScanLine, ready: false },
   { href: "/app/statement", label: "Erklärung", icon: FileText, ready: false },
+  { href: "/app/billing", label: "Abo & Rechnung", icon: CreditCard, ready: true },
   { href: "/app/settings", label: "Einstellungen", icon: Settings, ready: false },
 ] as const;
 
