@@ -44,3 +44,14 @@ export async function getCurrentUser() {
   } = await supabase.auth.getUser();
   return user;
 }
+
+/** The current authenticated tenant's profile (RLS-scoped), or null. */
+export async function getCurrentProfile() {
+  const supabase = await createServerSupabase();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+  const { data } = await supabase.from("profiles").select("*").eq("user_id", user.id).maybeSingle();
+  return data;
+}

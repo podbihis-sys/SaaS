@@ -116,10 +116,16 @@ npm run build      # next build
 | 6 Owner-Aktionen (confirm/returned+Kaution-Refund/cancel) | ✅ API |
 | 7 Plattform-Billing (Checkout, Portal, Webhook, Entitlements) | ✅ |
 | 8 E-Mail & Reminder-Cron | ✅ |
-| 1 Auth & App-Shell, 2 Inventar-UI, 6 Kalender-UI | ⏳ offen (UI) |
+| 1 Auth (Magic-Link + Google) & App-Shell | ✅ |
+| 2 Inventar-UI (Anlegen, Liste, Limit-Gating) | ✅ (Bilder-Upload offen) |
+| 6 Owner-Dashboard, Buchungsliste + Aktionen | ✅ (Kalender-Ansicht: Liste, noch keine Grid-Kalenderansicht) |
 | 9 PDF (Bestätigung + Mietvertrag) | ⏳ offen |
-| 10 SEO/Programmatic Content | ⏳ offen (Landing vorhanden) |
-| 11 Recht (Impressum/DSGVO/AGB), Plausible, Sentry, E2E | ⏳ offen |
+| 10 SEO/Programmatic Content | 🟡 Landing `/verleih-software` (FAQ-JSON-LD) vorhanden; `/verleih/[branche]`, Sitemap, OG offen |
+| 11 Recht (Impressum/DSGVO/AGB), Sentry, E2E | ⏳ offen (Plausible verdrahtet) |
+
+### CI
+`.github/workflows/rentflow.yml` läuft bei Änderungen unter `rentflow/**`: `npm ci`,
+`npm test`, `npm run typecheck`, `npm run build`.
 
 ## Offene Punkte / bewusste Defaults
 
