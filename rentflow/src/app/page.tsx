@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Footer } from "@/components/footer";
 
 export default function HomePage() {
   return (
+    <>
     <main className="mx-auto max-w-3xl px-6 py-20">
       <p className="mb-3 inline-block rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
         Für Eventausstattungs-Verleih · DACH
@@ -40,5 +42,7 @@ export default function HomePage() {
         ))}
       </ul>
     </main>
+    <Footer />
+    </>
   );
 }
