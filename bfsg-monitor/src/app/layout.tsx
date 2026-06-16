@@ -13,12 +13,24 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
+  ),
   title: {
     default: "BFSG-Monitor — Barrierefreiheit überwachen",
     template: "%s · BFSG-Monitor",
   },
   description:
     "Automatischer WCAG-Check, priorisierte Mängelliste und laufendes Monitoring der Barrierefreiheit Ihrer Website. Monitoring-Tool, keine Rechtsberatung.",
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "BFSG-Monitor",
+    title: "BFSG-Monitor — Barrierefreiheit überwachen",
+    description:
+      "Automatischer WCAG-Check und laufendes Monitoring der Barrierefreiheit Ihrer Website.",
+  },
+  twitter: { card: "summary" },
 };
 
 export default function RootLayout({

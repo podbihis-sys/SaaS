@@ -7,6 +7,21 @@ import { cn } from "@/lib/utils";
 export default function HomePage() {
   return (
     <main className="mx-auto flex min-h-svh max-w-3xl flex-col items-center justify-center gap-8 px-4 py-16 text-center">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "BFSG-Monitor",
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web",
+            offers: { "@type": "Offer", price: "29", priceCurrency: "EUR" },
+            description:
+              "Automatischer WCAG-Check und laufendes Monitoring der Barrierefreiheit Ihrer Website.",
+          }),
+        }}
+      />
       <span className="inline-block rounded-full border px-3 py-1 text-xs text-muted-foreground">
         {WCAG.standard} {WCAG.level} · {LAW.name}
       </span>
