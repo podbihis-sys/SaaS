@@ -42,7 +42,16 @@ web-build/
 .env
 .env.local
 .env.*.local
+.env.selfhost
 !.env.example
+!.env.selfhost.example
+
+# Self-hosting runtime data / dumps
+volumes/db/data/
+volumes/storage/
+migration-dump/
+caddy/data/
+caddy/config/
 
 # OS
 .DS_Store

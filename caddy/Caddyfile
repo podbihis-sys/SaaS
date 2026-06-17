@@ -1,0 +1,37 @@
+{
+	# Email used by Let's Encrypt for certificate notifications.
+	email {$ACME_EMAIL}
+}
+
+# --- BIT website (Next.js) -------------------------------------------------
+{$SITE_DOMAIN} {
+	encode gzip zstd
+	reverse_proxy web:3000
+}
+
+# --- Supabase API gateway (Kong) -------------------------------------------
+# Auth / REST / Storage live under this host, e.g. https://{$API_DOMAIN}/rest/v1
+{$API_DOMAIN} {
+	encode gzip zstd
+
+	# Storage uploads/downloads can be large.
+	request_body {
+		max_size 100MB
+	}
+
+	reverse_proxy kong:8000
+}
+
+# --- Supabase Studio (optional admin UI) -----------------------------------
+# Remove this block (and unset STUDIO_DOMAIN) to disable the public Studio host.
+# Protected with HTTP basic auth; generate STUDIO_BASIC_AUTH_HASH with:
+#   docker run --rm caddy:2-alpine caddy hash-password --plaintext 'yourpassword'
+{$STUDIO_DOMAIN} {
+	encode gzip zstd
+
+	basic_auth {
+		{$STUDIO_BASIC_AUTH_USER} {$STUDIO_BASIC_AUTH_HASH}
+	}
+
+	reverse_proxy studio:3000
+}
