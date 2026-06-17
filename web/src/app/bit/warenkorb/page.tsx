@@ -222,7 +222,7 @@ export default function CartPage() {
               <button
                 type="submit"
                 disabled={status === "sending"}
-                className="mt-5 w-full rounded-xl bg-[#f59e0b] px-4 py-3.5 text-sm font-semibold text-slate-900 hover:bg-[#e08e06] disabled:opacity-60"
+                className="mt-5 w-full rounded-xl bg-[#38bdf8] px-4 py-3.5 text-sm font-semibold text-slate-900 hover:bg-[#0ea5e9] disabled:opacity-60"
               >
                 {status === "sending" ? "Wird gesendet …" : "Anfrage absenden"}
               </button>

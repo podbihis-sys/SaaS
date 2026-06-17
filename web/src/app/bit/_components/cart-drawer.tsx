@@ -124,7 +124,7 @@ export function CartDrawer() {
             <Link
               href="/bit/warenkorb"
               onClick={closeCart}
-              className="block w-full rounded-lg bg-[#f59e0b] px-4 py-3 text-center text-sm font-semibold text-slate-900 hover:bg-[#e08e06]"
+              className="block w-full rounded-lg bg-[#38bdf8] px-4 py-3 text-center text-sm font-semibold text-slate-900 hover:bg-[#0ea5e9]"
             >
               Anfrage zusammenstellen
             </Link>

@@ -33,7 +33,7 @@ export function AddToCart({ product }: { product: Product }) {
 
   return (
     <div className="relative overflow-hidden rounded-[1.4rem] bg-white p-6 shadow-[0_0_0_1px_rgba(15,39,66,0.08)]">
-      <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-[#f59e0b]/10 blur-2xl" />
+      <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-[#38bdf8]/10 blur-2xl" />
 
       {/* Größe – Pflichtauswahl */}
       <div className="relative">

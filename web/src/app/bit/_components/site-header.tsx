@@ -99,7 +99,7 @@ export function SiteHeader() {
             <ShoppingCart className="h-5 w-5 transition-transform group-hover:-rotate-6" />
             <span className="hidden sm:inline">Warenkorb</span>
             {count > 0 && (
-              <span className="bit-pulse absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#f59e0b] px-1 text-xs font-bold text-slate-900">
+              <span className="bit-pulse absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#38bdf8] px-1 text-xs font-bold text-slate-900">
                 {count}
               </span>
             )}
@@ -117,7 +117,7 @@ export function SiteHeader() {
       {/* Scroll progress */}
       <div className="absolute inset-x-0 bottom-0 h-[2px] bg-transparent">
         <div
-          className="h-full origin-left bg-gradient-to-r from-[#1e4a7a] to-[#f59e0b]"
+          className="h-full origin-left bg-gradient-to-r from-[#1e4a7a] to-[#38bdf8]"
           style={{ transform: `scaleX(${progress})` }}
         />
       </div>

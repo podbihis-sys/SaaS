@@ -178,7 +178,7 @@ export default async function ProductDetail({
             <ul className="mt-4 space-y-2.5">
               {product.features.map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-sm text-slate-700">
-                  <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#f59e0b]" />
+                  <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#38bdf8]" />
                   {f}
                 </li>
               ))}

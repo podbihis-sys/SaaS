@@ -53,15 +53,15 @@ export function SiteFooter() {
           <h3 className="text-sm font-semibold uppercase tracking-wide text-white">Kontakt</h3>
           <ul className="mt-4 space-y-3 text-sm text-slate-400">
             <li className="flex items-start gap-2">
-              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#f59e0b]" />
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#38bdf8]" />
               <span>{COMPANY.street}<br />{COMPANY.zip} {COMPANY.city}</span>
             </li>
             <li className="flex items-center gap-2">
-              <Phone className="h-4 w-4 shrink-0 text-[#f59e0b]" />
+              <Phone className="h-4 w-4 shrink-0 text-[#38bdf8]" />
               <a href={`tel:${COMPANY.phone.replace(/\s/g, "")}`} className="hover:text-white">{COMPANY.phone}</a>
             </li>
             <li className="flex items-center gap-2">
-              <Mail className="h-4 w-4 shrink-0 text-[#f59e0b]" />
+              <Mail className="h-4 w-4 shrink-0 text-[#38bdf8]" />
               <a href={`mailto:${COMPANY.email}`} className="hover:text-white">{COMPANY.email}</a>
             </li>
           </ul>

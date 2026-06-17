@@ -41,7 +41,7 @@ export default async function QualitaetPage() {
             { icon: Recycle, title: "Langlebige Produkte", text: "Beständigkeit gegen Temperatur, Chemikalien und UV verlängert die Lebensdauer im Einsatz." },
           ].map(({ icon: Icon, title, text }) => (
             <div key={title} className="rounded-2xl border border-slate-200 p-6">
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#f59e0b]/15 text-[#b45309]">
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#38bdf8]/15 text-[#1d4ed8]">
                 <Icon className="h-6 w-6" />
               </span>
               <h3 className="mt-4 font-semibold text-slate-900">{title}</h3>
@@ -62,7 +62,7 @@ export default async function QualitaetPage() {
           </div>
           <Link
             href="/bit/kontakt"
-            className="shrink-0 rounded-xl bg-[#f59e0b] px-6 py-3.5 text-sm font-semibold text-slate-900 hover:bg-[#e08e06]"
+            className="shrink-0 rounded-xl bg-[#38bdf8] px-6 py-3.5 text-sm font-semibold text-slate-900 hover:bg-[#0ea5e9]"
           >
             Dokument anfragen
           </Link>

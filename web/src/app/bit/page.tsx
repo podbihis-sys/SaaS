@@ -64,7 +64,7 @@ export default async function BitHome() {
               as="span"
               className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white ring-1 ring-white/20"
             >
-              <BadgeCheck className="h-3.5 w-3.5 text-[#f59e0b]" />
+              <BadgeCheck className="h-3.5 w-3.5 text-[#38bdf8]" />
               {c(content, "home.hero.badge", "DIN EN ISO 9001 zertifiziert seit 1997")}
             </Reveal>
             <Reveal
@@ -95,7 +95,7 @@ export default async function BitHome() {
           {/* Floating product visual */}
           <Reveal delay={220} className="relative hidden lg:block">
             <div className="relative mx-auto max-w-sm">
-              <div className="bit-spin-slow absolute -right-8 -top-8 h-28 w-28 rounded-full border border-dashed border-[#f59e0b]/40" />
+              <div className="bit-spin-slow absolute -right-8 -top-8 h-28 w-28 rounded-full border border-dashed border-[#38bdf8]/40" />
               <div className="bit-float overflow-hidden rounded-[1.75rem] bg-white/5 p-3 shadow-2xl ring-1 ring-white/15 backdrop-blur">
                 <ProductIllustration
                   category="geflechtschlauch"
@@ -117,7 +117,7 @@ export default async function BitHome() {
             <div className="bit-marquee__track text-sm font-medium uppercase tracking-[0.18em] text-white/45">
               {[...CATEGORIES, ...CATEGORIES].map((c, i) => (
                 <span key={i} className="flex items-center gap-3">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#f59e0b]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#38bdf8]" />
                   {c.name}
                 </span>
               ))}
@@ -131,7 +131,7 @@ export default async function BitHome() {
             {STATS.map(({ icon: Icon, value, label }, i) => (
               <Reveal key={label} delay={i * 80} className="flex items-center gap-3">
                 <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/5 ring-1 ring-white/10">
-                  <Icon className="h-6 w-6 text-[#f59e0b]" />
+                  <Icon className="h-6 w-6 text-[#38bdf8]" />
                 </span>
                 <div>
                   <div className="text-2xl font-bold">{value}</div>
@@ -146,7 +146,7 @@ export default async function BitHome() {
       {/* ---------------------------------------------------------- Categories */}
       <section className="container py-20 sm:py-24">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-semibold uppercase tracking-wide text-[#c27803]">Sortiment</span>
+          <span className="text-sm font-semibold uppercase tracking-wide text-[#1d4ed8]">Sortiment</span>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             Sechs Produktwelten
           </h2>
@@ -171,7 +171,7 @@ export default async function BitHome() {
                 </div>
                 <div className="flex flex-1 flex-col p-6">
                   <h3 className="text-lg font-semibold text-slate-900">{cat.name}</h3>
-                  <p className="mt-1 text-sm font-medium text-[#c27803]">{cat.tagline}</p>
+                  <p className="mt-1 text-sm font-medium text-[#1d4ed8]">{cat.tagline}</p>
                   <p className="mt-3 line-clamp-3 flex-1 text-sm leading-relaxed text-slate-600">
                     {cat.description}
                   </p>
@@ -255,7 +255,7 @@ export default async function BitHome() {
         <div className="container">
         <Reveal className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <span className="text-sm font-semibold uppercase tracking-wide text-[#c27803]">Beliebt</span>
+            <span className="text-sm font-semibold uppercase tracking-wide text-[#1d4ed8]">Beliebt</span>
             <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
               Beliebte Artikel
             </h2>
