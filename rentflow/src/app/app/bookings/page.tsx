@@ -60,9 +60,21 @@ export default async function BookingsPage({
                     {b.deposit_status})
                   </div>
                 </div>
-                <span className="rounded-full bg-muted px-2 py-1 text-xs font-medium">
-                  {b.status}
-                </span>
+                <div className="flex flex-col items-end gap-1">
+                  <span className="rounded-full bg-muted px-2 py-1 text-xs font-medium">
+                    {b.status}
+                  </span>
+                  {["confirmed", "active", "returned"].includes(b.status) ? (
+                    <a
+                      href={`/api/booking/${b.id}/document`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-xs underline text-muted-foreground"
+                    >
+                      PDF
+                    </a>
+                  ) : null}
+                </div>
               </div>
               <div className="mt-3">
                 <BookingRowActions id={b.id} status={b.status} />

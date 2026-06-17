@@ -4,6 +4,7 @@ import { getStripe } from "@/lib/stripe/client";
 import { claimEvent } from "@/lib/stripe/events";
 import { createServiceClient } from "@/lib/supabase/service";
 import { sendBookingConfirmation } from "@/lib/email/send";
+import { generateAndStoreBookingPdf } from "@/lib/pdf/generate";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -101,7 +102,13 @@ async function confirmBooking(
     .maybeSingle();
 
   if (updated) {
-    // Best-effort confirmation email; failures must not break the webhook.
+    // Best-effort PDF generation + confirmation email; failures must not break
+    // the webhook (Stripe would otherwise retry a successful payment).
+    try {
+      await generateAndStoreBookingPdf(updated);
+    } catch (err) {
+      console.error("pdf generation failed", err);
+    }
     try {
       await sendBookingConfirmation(updated);
     } catch (err) {

@@ -119,7 +119,7 @@ npm run build      # next build
 | 1 Auth (Magic-Link + Google) & App-Shell | ✅ |
 | 2 Inventar-UI (Anlegen, Liste, Limit-Gating) | ✅ (Bilder-Upload offen) |
 | 6 Owner-Dashboard, Buchungsliste + Aktionen | ✅ (Kalender-Ansicht: Liste, noch keine Grid-Kalenderansicht) |
-| 9 PDF (Bestätigung + Mietvertrag) | ⏳ offen |
+| 9 PDF (Bestätigung + Mietvertrag) | ✅ (`@react-pdf/renderer` → Storage, signierte URL, Disclaimer) |
 | 10 SEO/Programmatic Content | 🟡 Landing `/verleih-software` (FAQ-JSON-LD) vorhanden; `/verleih/[branche]`, Sitemap, OG offen |
 | 11 Recht (Impressum/DSGVO/AGB), Sentry, E2E | ⏳ offen (Plausible verdrahtet) |
 
