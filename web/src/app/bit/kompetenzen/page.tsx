@@ -83,7 +83,7 @@ export default async function KompetenzenPage() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-[#0f2742] via-[#0f2742]/90 to-[#0f2742]/60" />
         <div className="container relative py-20">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#f59e0b]">Kompetenzen</p>
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Kompetenzen</p>
           <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl">
             {c(content, "kompetenzen.hero.title", "Mehr als Standardware – unsere Kompetenzen")}
           </h1>

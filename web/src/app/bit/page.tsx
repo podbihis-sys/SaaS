@@ -212,7 +212,7 @@ export default async function BitHome() {
       <section className="container py-20 sm:py-24">
         <Reveal className="flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-2xl">
-            <span className="text-sm font-semibold uppercase tracking-wide text-[#c27803]">Kompetenzen</span>
+            <span className="text-sm font-semibold uppercase tracking-wide text-[#1d4ed8]">Kompetenzen</span>
             <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
               {c(content, "home.kompetenzen.title", "Wir fertigen nach Ihren Wünschen")}
             </h2>
@@ -315,7 +315,7 @@ export default async function BitHome() {
         <section className="container py-20 sm:py-24">
           <Reveal className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <span className="text-sm font-semibold uppercase tracking-wide text-[#c27803]">Aktuelles</span>
+              <span className="text-sm font-semibold uppercase tracking-wide text-[#1d4ed8]">Aktuelles</span>
               <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
                 {c(content, "home.news.title", "News aus dem Hause BIT")}
               </h2>

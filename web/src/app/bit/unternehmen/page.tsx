@@ -87,7 +87,7 @@ export default async function UnternehmenPage() {
       <section className="border-b border-slate-200 bg-white py-20">
         <div className="container grid gap-10 lg:grid-cols-2 lg:gap-16">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-wide text-[#c27803]">Soziales Engagement</p>
+            <p className="text-sm font-semibold uppercase tracking-wide text-[#1d4ed8]">Soziales Engagement</p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">
               {c(content, "unternehmen.soziales.title", "Verantwortung, die wir leben")}
             </h2>
@@ -107,7 +107,7 @@ export default async function UnternehmenPage() {
                 "Stiftung Deutsche KinderKrebshilfe",
               ].map((org) => (
                 <li key={org} className="flex items-center gap-2 text-sm text-slate-700">
-                  <Heart className="h-4 w-4 shrink-0 text-[#f59e0b]" /> {org}
+                  <Heart className="h-4 w-4 shrink-0 text-[#38bdf8]" /> {org}
                 </li>
               ))}
             </ul>

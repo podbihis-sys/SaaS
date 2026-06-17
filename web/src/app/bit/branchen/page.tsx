@@ -123,7 +123,7 @@ export default async function BranchenPage() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-[#0f2742] via-[#0f2742]/90 to-[#0f2742]/60" />
         <div className="container relative py-20">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#f59e0b]">Branchen</p>
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Branchen</p>
           <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl">
             {c(content, "branchen.hero.title", "Branchen, die auf BIT vertrauen")}
           </h1>
@@ -157,7 +157,7 @@ export default async function BranchenPage() {
                 />
               </div>
               <div>
-                <p className="text-sm font-semibold uppercase tracking-wide text-[#c27803]">{ind.name}</p>
+                <p className="text-sm font-semibold uppercase tracking-wide text-[#1d4ed8]">{ind.name}</p>
                 <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
                   {ind.focus}
                 </h2>
@@ -196,7 +196,7 @@ export default async function BranchenPage() {
           <div className="flex shrink-0 flex-wrap justify-center gap-3">
             <Link
               href="/bit/kontakt"
-              className="rounded-xl bg-[#f59e0b] px-6 py-3.5 text-sm font-semibold text-slate-900 hover:bg-[#e08e06]"
+              className="rounded-xl bg-[#38bdf8] px-6 py-3.5 text-sm font-semibold text-slate-900 hover:bg-[#0ea5e9]"
             >
               Beratung anfragen
             </Link>
