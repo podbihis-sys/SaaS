@@ -2,7 +2,7 @@
 // in catalog.ts. Hier liegt die Logik für Produktfilter und die SEO-Landingpages,
 // damit catalog.ts unangetastet bleibt (wird vom Scraper neu erzeugt).
 
-import { PRODUCTS, type Product } from "./catalog";
+import { CATEGORIES, PRODUCTS, type CategoryId, type Product } from "./catalog";
 
 export type Wall = "dünnwandig" | "mittelwandig" | "dickwandig";
 
@@ -253,4 +253,28 @@ export function applicationTaxa(): Taxon[] {
 
 export function getApplicationTaxon(slug: string): Taxon | undefined {
   return applicationTaxa().find((t) => t.slug === slug);
+}
+
+/** Findet die passende Eigenschafts-Themenseite zu einem Feature-/Textwert. */
+export function propertyTaxonForText(text: string): Taxon | undefined {
+  const t = text.toLowerCase();
+  const def = PROPERTY_DEFS.find((d) => d.match.test(t));
+  return def ? getPropertyTaxon(def.slug) : undefined;
+}
+
+export interface CategoryFacet {
+  id: CategoryId;
+  name: string;
+  count: number;
+}
+
+/** Kategorien (mit Anzahl), in denen die übergebenen Produkte vorkommen. */
+export function categoriesForProducts(products: Product[]): CategoryFacet[] {
+  const counts = new Map<CategoryId, number>();
+  for (const p of products) counts.set(p.category, (counts.get(p.category) ?? 0) + 1);
+  return CATEGORIES.filter((c) => counts.has(c.id)).map((c) => ({
+    id: c.id,
+    name: c.name,
+    count: counts.get(c.id) ?? 0,
+  }));
 }

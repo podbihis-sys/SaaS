@@ -8,7 +8,7 @@ import {
   getProduct,
   productsByCategory,
 } from "../../_data/catalog";
-import { applicationTaxa, propertyTaxa, slugify } from "../../_data/attributes";
+import { applicationTaxa, propertyTaxonForText, slugify } from "../../_data/attributes";
 import { ProductIllustration } from "../../_components/product-illustration";
 import { ProductCard } from "../../_components/product-card";
 import { AddToCart } from "../../_components/add-to-cart";
@@ -52,8 +52,6 @@ export default async function ProductDetail({
   const related = productsByCategory(product.category)
     .filter((p) => p.slug !== product.slug)
     .slice(0, 3);
-  // Passende SEO-Themenseiten für dieses Produkt.
-  const propertyLinks = propertyTaxa().filter((t) => t.products.includes(product));
   const applicationSlugs = new Set(applicationTaxa().map((t) => t.slug));
 
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
@@ -178,33 +176,37 @@ export default async function ProductDetail({
         {/* Features & applications */}
         <div className="mt-14 grid gap-8 md:grid-cols-2">
           <div className="rounded-2xl border border-slate-200 p-6">
-            <h2 className="text-lg font-semibold text-slate-900">Eigenschaften</h2>
-            <ul className="mt-4 space-y-2.5">
-              {product.features.map((f) => (
-                <li key={f} className="flex items-start gap-2.5 text-sm text-slate-700">
-                  <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#38bdf8]" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-            {propertyLinks.length > 0 && (
-              <div className="mt-5 border-t border-slate-100 pt-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Passende Themenseiten
-                </p>
-                <div className="mt-2.5 flex flex-wrap gap-2">
-                  {propertyLinks.map((t) => (
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="text-lg font-semibold text-slate-900">Eigenschaften</h2>
+              <span className="text-xs text-slate-400">Eigenschaft anklicken für passende Produkte</span>
+            </div>
+            <ul className="mt-4 space-y-1">
+              {product.features.map((f) => {
+                const taxon = propertyTaxonForText(f);
+                if (!taxon) {
+                  return (
+                    <li key={f} className="flex items-start gap-2.5 px-2 py-1.5 text-sm text-slate-700">
+                      <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#38bdf8]" />
+                      <span className="flex-1">{f}</span>
+                    </li>
+                  );
+                }
+                return (
+                  <li key={f}>
                     <Link
-                      key={t.slug}
-                      href={`/bit/produkte/eigenschaft/${t.slug}`}
-                      className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-[#1e4a7a] transition-colors hover:bg-[#1e4a7a] hover:text-white"
+                      href={`/bit/produkte/eigenschaft/${taxon.slug}`}
+                      className="group/feat -mx-2 flex items-start gap-2.5 rounded-lg px-2 py-1.5 text-sm font-medium text-[#1e4a7a] transition-colors hover:bg-[#1e4a7a]/5"
                     >
-                      {t.label}
+                      <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#38bdf8]" />
+                      <span className="flex-1 underline decoration-[#1e4a7a]/30 underline-offset-2 group-hover/feat:decoration-[#1e4a7a]">
+                        {f}
+                      </span>
+                      <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 transition-transform group-hover/feat:translate-x-0.5" />
                     </Link>
-                  ))}
-                </div>
-              </div>
-            )}
+                  </li>
+                );
+              })}
+            </ul>
           </div>
           <div className="rounded-2xl border border-slate-200 p-6">
             <h2 className="text-lg font-semibold text-slate-900">Typische Anwendungen</h2>

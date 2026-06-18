@@ -1,6 +1,10 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getPropertyTaxon, propertyTaxa } from "../../../_data/attributes";
+import {
+  categoriesForProducts,
+  getPropertyTaxon,
+  propertyTaxa,
+} from "../../../_data/attributes";
 import { TaxonLanding } from "../../../_components/taxon-landing";
 
 const BASE_PATH = "/bit/produkte/eigenschaft";
@@ -44,6 +48,17 @@ export default async function PropertyLanding({
     .filter((t) => t.slug !== taxon.slug)
     .map((t) => ({ slug: t.slug, label: t.label }));
 
+  // Verfeinerung nach Kategorie – jede Kombination hat eine eigene URL.
+  const refine = [
+    { label: "Alle", href: `${BASE_PATH}/${taxon.slug}`, count: taxon.products.length, active: true },
+    ...categoriesForProducts(taxon.products).map((c) => ({
+      label: c.name,
+      href: `${BASE_PATH}/${taxon.slug}/${c.id}`,
+      count: c.count,
+      active: false,
+    })),
+  ];
+
   return (
     <TaxonLanding
       kind="Eigenschaft"
@@ -53,6 +68,7 @@ export default async function PropertyLanding({
       basePath={BASE_PATH}
       baseLabel="Eigenschaften"
       related={related}
+      refine={refine.length > 2 ? refine : undefined}
     />
   );
 }
