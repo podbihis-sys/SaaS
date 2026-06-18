@@ -12,9 +12,11 @@ import {
   type Wall,
   hasAdhesive,
   materialGroups,
+  materialTaxa,
   maxTemp,
   propertyTaxa,
   shrinkRatio,
+  shrinkTaxa,
   wallType,
 } from "../_data/attributes";
 
@@ -110,6 +112,8 @@ function Catalog() {
     });
 
   const properties = propertyTaxa();
+  const materials = materialTaxa();
+  const shrinks = shrinkTaxa();
 
   return (
     <>
@@ -126,18 +130,15 @@ function Catalog() {
             Artikel in der gewünschten Größe in den Warenkorb.
           </p>
 
-          {/* SEO: beliebte Eigenschaften */}
-          <div className="mt-6 flex flex-wrap gap-2">
-            <span className="self-center text-sm text-slate-500">Beliebt:</span>
-            {properties.slice(0, 8).map((t) => (
-              <Link
-                key={t.slug}
-                href={`/bit/produkte/eigenschaft/${t.slug}`}
-                className="rounded-full border border-slate-300 bg-white px-3 py-1 text-sm text-slate-700 transition-colors hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
-              >
-                {t.label}
-              </Link>
-            ))}
+          {/* SEO: beliebte Eigenschaften, Werkstoffe & Schrumpfraten */}
+          <div className="mt-6 space-y-2">
+            <SeoChipRow label="Eigenschaften" prefix="/bit/produkte/eigenschaft" items={properties.slice(0, 8)} />
+            <SeoChipRow label="Material" prefix="/bit/produkte/material" items={materials} />
+            <SeoChipRow
+              label="Schrumpfrate"
+              prefix="/bit/produkte/schrumpfrate"
+              items={shrinks.map((t) => ({ slug: t.slug, label: t.label }))}
+            />
           </div>
         </div>
       </section>
@@ -326,6 +327,32 @@ function Check({
       />
       {label}
     </label>
+  );
+}
+
+function SeoChipRow({
+  label,
+  prefix,
+  items,
+}: {
+  label: string;
+  prefix: string;
+  items: { slug: string; label: string }[];
+}) {
+  if (items.length === 0) return null;
+  return (
+    <div className="flex flex-wrap gap-2">
+      <span className="w-24 shrink-0 self-center text-sm text-slate-500">{label}:</span>
+      {items.map((t) => (
+        <Link
+          key={t.slug}
+          href={`${prefix}/${t.slug}`}
+          className="rounded-full border border-slate-300 bg-white px-3 py-1 text-sm text-slate-700 transition-colors hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
+        >
+          {t.label}
+        </Link>
+      ))}
+    </div>
   );
 }
 

@@ -28,7 +28,7 @@ export function TaxonLanding({
   parent,
   refine,
 }: {
-  kind: "Eigenschaft" | "Anwendung";
+  kind: string;
   /** Kurzes Label für Breadcrumb/JSON-LD. */
   label: string;
   /** Überschrift (H1); falls nicht gesetzt, wird aus label abgeleitet. */

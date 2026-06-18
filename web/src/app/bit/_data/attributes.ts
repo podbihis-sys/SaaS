@@ -278,3 +278,49 @@ export function categoriesForProducts(products: Product[]): CategoryFacet[] {
     count: counts.get(c.id) ?? 0,
   }));
 }
+
+// ------------------------------------------------------------- Material-Taxa
+let materialCache: Taxon[] | null = null;
+export function materialTaxa(): Taxon[] {
+  if (materialCache) return materialCache;
+  materialCache = MATERIAL_GROUPS.map((g) => ({
+    slug: slugify(g),
+    label: g,
+    intro: `Schrumpf-, Isolier- und Geflechtschläuche aus ${g} von BIT Bierther GmbH. ${g} überzeugt mit spezifischen mechanischen, thermischen und chemischen Eigenschaften – hier finden Sie alle ${g}-Artikel aus dem Sortiment, mit allen verfügbaren Größen direkt anfragbar.`,
+    products: PRODUCTS.filter((p) => materialGroups(p).includes(g)),
+  })).filter((t) => t.products.length > 0);
+  return materialCache;
+}
+
+export function getMaterialTaxon(slug: string): Taxon | undefined {
+  return materialTaxa().find((t) => t.slug === slug);
+}
+
+// ---------------------------------------------------------- Schrumpfraten-Taxa
+let shrinkCache: Taxon[] | null = null;
+export function shrinkTaxa(): Taxon[] {
+  if (shrinkCache) return shrinkCache;
+  const map = new Map<number, { label: string; products: Product[] }>();
+  for (const p of PRODUCTS) {
+    const s = shrinkRatio(p);
+    if (!s) continue;
+    const entry = map.get(s.value) ?? { label: s.label, products: [] };
+    entry.products.push(p);
+    map.set(s.value, entry);
+  }
+  shrinkCache = [...map.entries()]
+    .sort((a, b) => a[0] - b[0])
+    .map(([, e]) => ({
+      slug: slugify(e.label),
+      label: e.label,
+      intro: `Schrumpfschläuche mit Schrumpfrate ${e.label} von BIT Bierther GmbH. Eine Schrumpfrate von ${e.label} bedeutet, dass sich der Schlauch beim Erwärmen auf einen Bruchteil seines Ausgangsdurchmessers zusammenzieht – ideal für das Ummanteln großer Durchmesserunterschiede. Hier alle Artikel mit ${e.label}.`,
+      products: e.products,
+    }))
+    // Nur Raten mit ≥ 2 Produkten -> keine dünnen Seiten.
+    .filter((t) => t.products.length >= 2);
+  return shrinkCache;
+}
+
+export function getShrinkTaxon(slug: string): Taxon | undefined {
+  return shrinkTaxa().find((t) => t.slug === slug);
+}

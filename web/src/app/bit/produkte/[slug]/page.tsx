@@ -8,7 +8,7 @@ import {
   getProduct,
   productsByCategory,
 } from "../../_data/catalog";
-import { applicationTaxa, propertyTaxonForText, slugify } from "../../_data/attributes";
+import { applicationTaxa, materialTaxa, propertyTaxonForText, slugify } from "../../_data/attributes";
 import { ProductIllustration } from "../../_components/product-illustration";
 import { ProductCard } from "../../_components/product-card";
 import { AddToCart } from "../../_components/add-to-cart";
@@ -53,6 +53,7 @@ export default async function ProductDetail({
     .filter((p) => p.slug !== product.slug)
     .slice(0, 3);
   const applicationSlugs = new Set(applicationTaxa().map((t) => t.slug));
+  const materialLink = materialTaxa().find((t) => t.products.includes(product));
 
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
   const imageUrl = product.image?.startsWith("/") ? `${base}${product.image}` : product.image;
@@ -147,7 +148,18 @@ export default async function ProductDetail({
             <dl className="mt-6 grid grid-cols-2 gap-4 rounded-xl border border-slate-200 p-5 text-sm">
               <div>
                 <dt className="text-slate-500">Material</dt>
-                <dd className="mt-0.5 font-medium text-slate-900">{product.material}</dd>
+                <dd className="mt-0.5 font-medium text-slate-900">
+                  {materialLink ? (
+                    <Link
+                      href={`/bit/produkte/material/${materialLink.slug}`}
+                      className="text-[#1e4a7a] underline decoration-[#1e4a7a]/30 underline-offset-2 hover:decoration-[#1e4a7a]"
+                    >
+                      {product.material}
+                    </Link>
+                  ) : (
+                    product.material
+                  )}
+                </dd>
               </div>
               {product.temperature && (
                 <div>
