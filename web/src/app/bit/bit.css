@@ -69,6 +69,35 @@
   mask-image: radial-gradient(ellipse 75% 65% at 50% 0%, #000 35%, transparent 100%);
 }
 
+/* Same grid, tuned for light backgrounds (dark faint lines). */
+.bit-grid-light {
+  background-image:
+    linear-gradient(to right, rgba(15, 39, 66, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 39, 66, 0.05) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 70% 0%, #000 35%, transparent 100%);
+  mask-image: radial-gradient(ellipse 75% 70% at 70% 0%, #000 35%, transparent 100%);
+}
+
+/* Soft corporate-blue glow for the light hero. */
+.bit-hero-glow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bit-hero-glow::before {
+  content: "";
+  position: absolute;
+  right: -10vw;
+  top: -30%;
+  width: 55vw;
+  height: 55vw;
+  border-radius: 50%;
+  filter: blur(90px);
+  background: radial-gradient(circle at center, rgba(56, 189, 248, 0.22), transparent 70%);
+}
+
 /* --------------------------------------------------------------- buttons -- */
 /* Pill buttons with a sheen sweep on hover — replaces the standard boxes. */
 .bit-btn {
@@ -143,6 +172,23 @@
     120deg,
     transparent 18%,
     rgba(255, 255, 255, 0.18) 50%,
+    transparent 82%
+  );
+}
+/* Outline button for light backgrounds. */
+.bit-btn-outline {
+  background: #fff;
+  color: #1e4a7a;
+  box-shadow: inset 0 0 0 1px rgba(30, 74, 122, 0.25);
+}
+.bit-btn-outline:hover {
+  box-shadow: inset 0 0 0 1px rgba(30, 74, 122, 0.55);
+}
+.bit-btn-outline::after {
+  background: linear-gradient(
+    120deg,
+    transparent 18%,
+    rgba(30, 74, 122, 0.1) 50%,
     transparent 82%
   );
 }

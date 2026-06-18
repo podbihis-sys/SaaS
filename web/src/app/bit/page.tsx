@@ -6,20 +6,40 @@ import {
   CalendarDays,
   Clock,
   Factory,
+  Headset,
   Layers,
   PencilRuler,
   Phone,
   ShieldCheck,
   Truck,
 } from "lucide-react";
-import { CATEGORIES, COMPANY, INDUSTRIES, PRODUCTS } from "./_data/catalog";
+import { CATEGORIES, COMPANY, INDUSTRIES, PRODUCTS, getProduct } from "./_data/catalog";
 import { c } from "./_data/content";
 import { getContent } from "./_data/content-server";
 import { getCmsNews } from "./_data/news-server";
 import { formatDate } from "./_lib/format";
 import { ProductCard } from "./_components/product-card";
 import { ProductIllustration } from "./_components/product-illustration";
+import { HeroSlider, type HeroSlide } from "./_components/hero-slider";
 import { Reveal } from "./_components/reveal";
+
+// Wechselnde Hero-Bilder (rechte Seite) aus dem realen Sortiment.
+const HERO_SLIDES: HeroSlide[] = [
+  "3-1-schrumpfschlauch-bp-300",
+  "schrumpfschlauch-bp-135",
+  "hart-pvc-schrumpfschlauch",
+  "dickwandiger-schrumpfschlauch-bptw",
+]
+  .map(getProduct)
+  .filter((p): p is NonNullable<typeof p> => Boolean(p))
+  .map((p) => ({ src: p.image, alt: p.imageAlt }));
+
+const HERO_TRUST = [
+  { icon: Headset, title: "Technische Beratung", text: "Persönlich, kompetent und lösungsorientiert." },
+  { icon: Truck, title: "Schnelle Lieferung", text: "Standardware in der Regel in 24 h." },
+  { icon: PencilRuler, title: "Individuelle Konfektion", text: "Zuschnitt & Sätze ab Losgröße 1." },
+  { icon: ShieldCheck, title: "Zertifizierte Qualität", text: "DIN EN ISO 9001 seit 1997." },
+];
 
 const KOMPETENZEN = [
   { title: "Schlauch-Abschnitte & Konfektion", image: "/bit/kompetenzen/abschnitte.jpg" },
@@ -55,26 +75,26 @@ export default async function BitHome() {
   return (
     <>
       {/* ---------------------------------------------------------------- Hero */}
-      <section className="relative overflow-hidden bg-[#0f2742] text-white">
-        <div className="bit-aurora" />
-        <div className="absolute inset-0 bit-grid" />
-        <div className="container relative grid items-center gap-12 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:py-28">
+      <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-white to-slate-50">
+        <div className="bit-hero-glow" />
+        <div className="absolute inset-0 bit-grid-light" />
+        <div className="container relative grid items-center gap-12 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-24">
           <div>
             <Reveal
               as="span"
-              className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white ring-1 ring-white/20"
+              className="inline-flex w-fit items-center gap-2 rounded-full bg-[#1e4a7a]/10 px-3 py-1 text-xs font-medium text-[#1e4a7a] ring-1 ring-[#1e4a7a]/15"
             >
-              <BadgeCheck className="h-3.5 w-3.5 text-[#38bdf8]" />
+              <BadgeCheck className="h-3.5 w-3.5 text-[#1e4a7a]" />
               {c(content, "home.hero.badge", "DIN EN ISO 9001 zertifiziert seit 1997")}
             </Reveal>
             <Reveal
               as="h1"
               delay={90}
-              className="mt-5 text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl xl:text-6xl"
+              className="mt-5 text-4xl font-bold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl xl:text-6xl"
             >
-              {c(content, "home.hero.title", "Schrumpf- & Isolierschlauchtechnik aus einer Hand")}
+              {c(content, "home.hero.title", "Ihr Partner für Schrumpfschläuche und Kabelschutzlösungen")}
             </Reveal>
-            <Reveal as="p" delay={170} className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">
+            <Reveal as="p" delay={170} className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">
               {c(
                 content,
                 "home.hero.subtitle",
@@ -82,39 +102,53 @@ export default async function BitHome() {
               )}
             </Reveal>
             <Reveal delay={250} className="mt-9 flex flex-wrap gap-3">
-              <Link href="/bit/produkte" className="bit-btn bit-btn-primary">
+              <Link href="/bit/produkte" className="bit-btn bit-btn-dark">
                 <span>Sortiment entdecken</span>
                 <ArrowRight className="bit-arrow h-4 w-4" />
               </Link>
-              <Link href="/bit/kontakt" className="bit-btn bit-btn-ghost">
+              <Link href="/bit/kontakt" className="bit-btn bit-btn-outline">
                 <span>Beratung anfragen</span>
               </Link>
             </Reveal>
           </div>
 
-          {/* Floating product visual */}
+          {/* Wechselndes Hero-Bild (Slider) */}
           <Reveal delay={220} className="relative hidden lg:block">
-            <div className="relative mx-auto max-w-sm">
-              <div className="bit-spin-slow absolute -right-8 -top-8 h-28 w-28 rounded-full border border-dashed border-[#38bdf8]/40" />
-              <div className="bit-float overflow-hidden rounded-[1.75rem] bg-white/5 p-3 shadow-2xl ring-1 ring-white/15 backdrop-blur">
+            {HERO_SLIDES.length > 0 ? (
+              <HeroSlider slides={HERO_SLIDES} />
+            ) : (
+              <div className="relative mx-auto max-w-md">
                 <ProductIllustration
                   category="geflechtschlauch"
                   fit="cover"
-                  className="aspect-square w-full rounded-[1.4rem]"
+                  className="aspect-square w-full rounded-[1.75rem]"
                 />
               </div>
-              <div className="absolute -bottom-5 -left-5 rounded-2xl bg-white px-4 py-3 text-slate-900 shadow-xl">
-                <div className="text-xl font-bold text-[#1e4a7a]">1.000+</div>
-                <div className="text-[11px] uppercase tracking-wide text-slate-500">Artikel ab Lager</div>
-              </div>
-            </div>
+            )}
           </Reveal>
         </div>
 
+        {/* Trust row */}
+        <div className="relative border-t border-slate-200 bg-white/60">
+          <div className="container grid gap-6 py-8 sm:grid-cols-2 lg:grid-cols-4">
+            {HERO_TRUST.map(({ icon: Icon, title, text }, i) => (
+              <Reveal key={title} delay={i * 70} className="flex items-start gap-3">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#1e4a7a]/10 text-[#1e4a7a]">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <div>
+                  <div className="text-sm font-semibold text-slate-900">{title}</div>
+                  <div className="text-xs text-slate-500">{text}</div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+
         {/* Category marquee */}
-        <div className="relative border-t border-white/10 py-4">
+        <div className="relative border-t border-slate-200 py-4">
           <div className="bit-marquee">
-            <div className="bit-marquee__track text-sm font-medium uppercase tracking-[0.18em] text-white/45">
+            <div className="bit-marquee__track text-sm font-medium uppercase tracking-[0.18em] text-slate-400">
               {[...CATEGORIES, ...CATEGORIES].map((c, i) => (
                 <span key={i} className="flex items-center gap-3">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#38bdf8]" />
@@ -126,16 +160,16 @@ export default async function BitHome() {
         </div>
 
         {/* Stat strip */}
-        <div className="relative border-t border-white/10 bg-[#0c2138]">
+        <div className="relative border-t border-slate-200 bg-slate-50">
           <div className="container grid grid-cols-2 gap-6 py-8 md:grid-cols-4">
             {STATS.map(({ icon: Icon, value, label }, i) => (
               <Reveal key={label} delay={i * 80} className="flex items-center gap-3">
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/5 ring-1 ring-white/10">
-                  <Icon className="h-6 w-6 text-[#38bdf8]" />
+                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white ring-1 ring-slate-200">
+                  <Icon className="h-6 w-6 text-[#1e4a7a]" />
                 </span>
                 <div>
-                  <div className="text-2xl font-bold">{value}</div>
-                  <div className="text-xs text-slate-400">{label}</div>
+                  <div className="text-2xl font-bold text-slate-900">{value}</div>
+                  <div className="text-xs text-slate-500">{label}</div>
                 </div>
               </Reveal>
             ))}

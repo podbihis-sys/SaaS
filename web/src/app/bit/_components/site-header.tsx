@@ -63,15 +63,15 @@ export function SiteHeader() {
         </div>
       </div>
 
-      <div className="container flex h-16 items-center justify-between gap-4">
+      <div className="container flex h-20 items-center justify-between gap-4">
         <Link href="/bit" className="flex items-center gap-2.5" aria-label="BIT Bierther GmbH – Startseite">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/bit/logo.png"
             alt="BIT Bierther GmbH"
-            className="h-9 w-auto transition-transform duration-300 hover:scale-105"
-            width={184}
-            height={36}
+            className="h-12 w-auto transition-transform duration-300 hover:scale-105"
+            width={245}
+            height={48}
           />
         </Link>
 

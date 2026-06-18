@@ -1,11 +1,14 @@
 import Link from "next/link";
-import { ArrowUpRight, Thermometer } from "lucide-react";
+import { ArrowUpRight, Ruler, Shrink, Thermometer } from "lucide-react";
 import type { Product } from "../_data/catalog";
 import { getCategory } from "../_data/catalog";
+import { diameterLabel, shrinkRatio } from "../_data/attributes";
 import { ProductIllustration } from "./product-illustration";
 
 export function ProductCard({ product }: { product: Product }) {
   const category = getCategory(product.category);
+  const shrink = shrinkRatio(product);
+  const diameter = diameterLabel(product);
   return (
     <Link
       href={`/bit/produkte/${product.slug}`}
@@ -26,6 +29,16 @@ export function ProductCard({ product }: { product: Product }) {
             {product.code}
           </span>
         )}
+        {/* Schrumpfrate als Icon-Badge */}
+        {shrink && (
+          <span
+            className="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full bg-[#38bdf8] px-2.5 py-1 text-xs font-bold text-[#0f2742] shadow-sm"
+            title={`Schrumpfrate ${shrink.label}`}
+          >
+            <Shrink className="h-3.5 w-3.5" />
+            {shrink.label}
+          </span>
+        )}
         {product.temperature && (
           <span className="absolute bottom-3 left-3 inline-flex items-center gap-1 rounded-full bg-[#0f2742]/85 px-2.5 py-1 text-xs font-medium text-white shadow-sm backdrop-blur">
             <Thermometer className="h-3.5 w-3.5 text-[#38bdf8]" />
@@ -35,10 +48,16 @@ export function ProductCard({ product }: { product: Product }) {
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="text-base font-semibold text-slate-900 transition-colors group-hover:text-[#1e4a7a]">
+        <h3 className="text-lg font-semibold leading-snug text-slate-900 transition-colors group-hover:text-[#1e4a7a]">
           {product.name}
         </h3>
         <p className="mt-1 text-sm text-[#1d4ed8]">{product.tagline}</p>
+        {diameter && (
+          <p className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-slate-700">
+            <Ruler className="h-4 w-4 text-[#1e4a7a]" />
+            {diameter}
+          </p>
+        )}
         <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-slate-600">
           {product.description}
         </p>
