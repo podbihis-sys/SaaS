@@ -39,13 +39,15 @@ export default function CartPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
-          items: items.map(({ name, size, color, unit, quantity, metersPerRoll }) => ({
+          items: items.map(({ name, size, color, unit, quantity, metersPerRoll, unitsPerPack }) => ({
             name,
             size,
             color,
             unit: metersPerRoll
               ? `Rolle (${metersPerRoll} m/Rolle, gesamt ${quantity * metersPerRoll} m)`
-              : unit,
+              : unitsPerPack
+                ? `Gebinde (${unitsPerPack} Stück/Gebinde, gesamt ${quantity * unitsPerPack} Stück)`
+                : unit,
             quantity,
           })),
         }),
@@ -166,7 +168,9 @@ export default function CartPage() {
                         <div className="mt-1 text-xs text-slate-400">
                           {item.metersPerRoll
                             ? `${item.quantity === 1 ? "Rolle" : "Rollen"} · ${item.quantity * item.metersPerRoll} m gesamt`
-                            : item.unit}
+                            : item.unitsPerPack
+                              ? `Gebinde · ${item.quantity * item.unitsPerPack} Stück gesamt`
+                              : item.unit}
                         </div>
                       </td>
                       <td className="px-3 py-4 text-right">

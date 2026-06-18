@@ -10,6 +10,7 @@ import {
 } from "../../_data/catalog";
 import { applicationTaxa, formatMm, materialTaxa, propertyTaxonForText, slugify } from "../../_data/attributes";
 import { getRolls } from "../../_data/rolls";
+import { getPacks } from "../../_data/packs";
 import { ProductIllustration } from "../../_components/product-illustration";
 import { ProductCard } from "../../_components/product-card";
 import { AddToCart } from "../../_components/add-to-cart";
@@ -56,6 +57,7 @@ export default async function ProductDetail({
   const applicationSlugs = new Set(applicationTaxa().map((t) => t.slug));
   const materialLink = materialTaxa().find((t) => t.products.includes(product));
   const rolls = getRolls(product.slug);
+  const packs = !rolls ? getPacks(product.slug) : undefined;
 
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
   const imageUrl = product.image?.startsWith("/") ? `${base}${product.image}` : product.image;
@@ -174,13 +176,17 @@ export default async function ProductDetail({
               <div>
                 <dt className="text-slate-500">Bezugseinheit</dt>
                 <dd className="mt-0.5 font-medium text-slate-900">
-                  {rolls ? "Rolle (nur ganze Rollen)" : product.unit}
+                  {rolls
+                    ? "Rolle (nur ganze Rollen)"
+                    : packs
+                      ? "Gebinde (nur ganze Gebinde)"
+                      : product.unit}
                 </dd>
               </div>
               <div>
                 <dt className="text-slate-500">Verfügbare Größen</dt>
                 <dd className="mt-0.5 font-medium text-slate-900">
-                  {rolls ? rolls.length : product.sizes.length}
+                  {rolls ? rolls.length : packs ? packs.length : product.sizes.length}
                 </dd>
               </div>
             </dl>
@@ -324,6 +330,40 @@ export default async function ProductDetail({
                       <td className="px-6 py-3 text-right font-semibold text-slate-900">
                         {r.metersPerRoll} m
                       </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* Lieferform & Verpackung (VPE pro Gebinde – Stückware) */}
+        {packs && (
+          <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200">
+            <div className="border-b border-slate-200 bg-slate-50 px-6 py-4">
+              <h2 className="text-lg font-semibold text-slate-900">Lieferform & Verpackung</h2>
+              <p className="mt-1 text-sm text-slate-600">
+                Lieferung in ganzen Gebinden. Die Stückzahl je Gebinde (VPE) hängt von der Größe ab.
+              </p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-white text-left text-xs uppercase tracking-wide text-slate-500">
+                  <tr className="border-b border-slate-100">
+                    <th className="px-6 py-3 font-medium">Länge</th>
+                    <th className="px-3 py-3 font-medium">Breite</th>
+                    <th className="px-6 py-3 text-right font-medium">VPE (Stück / Gebinde)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {packs.map((p) => (
+                    <tr key={p.label}>
+                      <td className="px-6 py-3 font-medium text-slate-900">{formatMm(p.laenge)} mm</td>
+                      <td className="px-3 py-3 text-slate-700">
+                        {p.breite != null ? `${formatMm(p.breite)} mm` : "–"}
+                      </td>
+                      <td className="px-6 py-3 text-right font-semibold text-slate-900">{p.vpe}</td>
                     </tr>
                   ))}
                 </tbody>

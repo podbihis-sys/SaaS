@@ -21,6 +21,8 @@ export interface CartItem {
   quantity: number;
   /** Bei Rollenware: Meter pro Rolle (Gesamtmeter = quantity × metersPerRoll). */
   metersPerRoll?: number;
+  /** Bei Stückware/Gebinde: Stück pro Gebinde (gesamt = quantity × unitsPerPack). */
+  unitsPerPack?: number;
 }
 
 interface CartContextValue {
