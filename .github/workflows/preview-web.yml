@@ -62,9 +62,8 @@ jobs:
           BIT_ANON="${NEXT_PUBLIC_BIT_SUPABASE_ANON_KEY:-$SUPABASE_ANON}"
           SITE_URL="${NEXT_PUBLIC_SITE_URL:-https://www.bit-gmbh.de}"
 
-          out=$(vercel deploy --yes \
+          out=$(vercel deploy --prod --yes \
             --token="$VERCEL_TOKEN" \
-            --name=handwerk-saas \
             --build-env NEXT_PUBLIC_SUPABASE_URL="$SUPABASE_URL" \
             --build-env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON" \
             --build-env NEXT_PUBLIC_API_URL="$API_URL" \
@@ -78,8 +77,12 @@ jobs:
             --env NEXT_PUBLIC_BIT_SUPABASE_ANON_KEY="$BIT_ANON" \
             --env NEXT_PUBLIC_SITE_URL="$SITE_URL" 2>&1)
           echo "$out"
-          # Erste *.vercel.app-URL aus der Ausgabe = die Preview-Deployment-URL.
-          url=$(printf '%s\n' "$out" | grep -oE 'https://[a-zA-Z0-9.-]+\.vercel\.app' | head -1)
+          # Alle ausgegebenen *.vercel.app-URLs (Deployment-URL + Production-Alias).
+          urls=$(printf '%s\n' "$out" | grep -oE 'https://[a-zA-Z0-9.-]+\.vercel\.app' | sort -u)
+          echo "DEPLOY_URLS<<EOF"
+          echo "$urls"
+          echo "EOF"
+          url=$(printf '%s\n' "$urls" | head -1)
           echo "PREVIEW_URL=$url"
           {
             echo "## Vercel Preview";
