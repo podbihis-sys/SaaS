@@ -19,6 +19,8 @@ export interface CartItem {
   color?: string;
   unit: string;
   quantity: number;
+  /** Bei Rollenware: Meter pro Rolle (Gesamtmeter = quantity × metersPerRoll). */
+  metersPerRoll?: number;
 }
 
 interface CartContextValue {

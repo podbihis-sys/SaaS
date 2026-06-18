@@ -39,11 +39,13 @@ export default function CartPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
-          items: items.map(({ name, size, color, unit, quantity }) => ({
+          items: items.map(({ name, size, color, unit, quantity, metersPerRoll }) => ({
             name,
             size,
             color,
-            unit,
+            unit: metersPerRoll
+              ? `Rolle (${metersPerRoll} m/Rolle, gesamt ${quantity * metersPerRoll} m)`
+              : unit,
             quantity,
           })),
         }),
@@ -161,7 +163,11 @@ export default function CartPage() {
                             <Plus className="h-3.5 w-3.5" />
                           </button>
                         </div>
-                        <div className="mt-1 text-xs text-slate-400">{item.unit}</div>
+                        <div className="mt-1 text-xs text-slate-400">
+                          {item.metersPerRoll
+                            ? `${item.quantity === 1 ? "Rolle" : "Rollen"} · ${item.quantity * item.metersPerRoll} m gesamt`
+                            : item.unit}
+                        </div>
                       </td>
                       <td className="px-3 py-4 text-right">
                         <button

@@ -111,7 +111,11 @@ export function CartDrawer() {
                         <Plus className="h-4 w-4" />
                       </button>
                     </div>
-                    <span className="text-xs text-slate-500">{item.unit}</span>
+                    <span className="text-right text-xs text-slate-500">
+                      {item.metersPerRoll
+                        ? `${item.quantity === 1 ? "Rolle" : "Rollen"} · ${item.quantity * item.metersPerRoll} m`
+                        : item.unit}
+                    </span>
                   </div>
                 </li>
               ))}
