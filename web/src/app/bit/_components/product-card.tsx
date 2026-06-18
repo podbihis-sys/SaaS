@@ -25,7 +25,7 @@ export function ProductCard({ product }: { product: Product }) {
           {category?.name}
         </span>
         {product.code !== product.name && (
-          <span className="absolute right-3 top-3 rounded-md bg-[#0f2742]/80 px-2 py-0.5 font-mono text-[11px] font-medium text-white/90 backdrop-blur">
+          <span className="absolute right-3 top-3 rounded-md bg-[#0f2742]/80 px-2.5 py-1 font-mono text-sm font-medium text-white/90 backdrop-blur">
             {product.code}
           </span>
         )}
