@@ -103,8 +103,8 @@ export default async function ProductDetail({
           <Link href={`/bit/produkte?kategorie=${product.category}`} className="hover:text-[#1e4a7a]">
             {category?.name}
           </Link>
-          <ChevronRight className="h-4 w-4" />
-          <span className="text-slate-900">{product.name}</span>
+          <ChevronRight className="h-4 w-4 shrink-0" />
+          <span className="min-w-0 break-words text-slate-900">{product.name}</span>
         </div>
       </nav>
 
@@ -120,9 +120,9 @@ export default async function ProductDetail({
                 className="aspect-[4/3] w-full"
               />
             </div>
-            <div className="mt-4 grid grid-cols-3 gap-3">
+            <div className="mt-4 grid grid-cols-3 gap-2">
               {product.applications.slice(0, 3).map((a) => (
-                <div key={a} className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-center text-xs font-medium text-slate-600">
+                <div key={a} className="flex items-center justify-center rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-center text-xs font-medium leading-tight text-slate-600 break-words hyphens-auto">
                   {a}
                 </div>
               ))}
