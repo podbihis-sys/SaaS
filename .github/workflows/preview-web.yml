@@ -1,0 +1,87 @@
+name: preview-web
+
+# Erstellt eine Vercel-PREVIEW-Deployment (kein Production), damit Änderungen
+# vor dem Merge angeschaut werden können. Nutzt denselben VERCEL_TOKEN wie der
+# Production-Workflow. Die NEXT_PUBLIC_*-Werte werden zur Build-Zeit gesetzt;
+# für die öffentlichen BIT-Seiten genügen Platzhalter (Daten kommen lokal aus
+# dem Katalog), echte Werte werden – falls als Secret vorhanden – bevorzugt.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "web/**"
+      - "shared/**"
+      - ".github/workflows/preview-web.yml"
+
+concurrency:
+  group: preview-web-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    name: Deploy Vercel Preview
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Guard – VERCEL_TOKEN vorhanden?
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::Secret VERCEL_TOKEN ist nicht gesetzt. Bitte unter Settings → Secrets and variables → Actions anlegen."
+            exit 1
+          fi
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Deploy preview
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          NEXT_PUBLIC_BIT_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_BIT_SUPABASE_URL }}
+          NEXT_PUBLIC_BIT_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_BIT_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+        run: |
+          # Platzhalter, falls Secrets fehlen – die öffentlichen BIT-Seiten
+          # rendern aus lokalen Katalogdaten und brauchen keine echte DB.
+          SUPABASE_URL="${NEXT_PUBLIC_SUPABASE_URL:-https://placeholder.supabase.co}"
+          SUPABASE_ANON="${NEXT_PUBLIC_SUPABASE_ANON_KEY:-placeholder-anon-key}"
+          API_URL="${NEXT_PUBLIC_API_URL:-http://localhost:8000}"
+          BIT_URL="${NEXT_PUBLIC_BIT_SUPABASE_URL:-$SUPABASE_URL}"
+          BIT_ANON="${NEXT_PUBLIC_BIT_SUPABASE_ANON_KEY:-$SUPABASE_ANON}"
+          SITE_URL="${NEXT_PUBLIC_SITE_URL:-https://www.bit-gmbh.de}"
+
+          url=$(vercel deploy --yes \
+            --token="$VERCEL_TOKEN" \
+            --name=handwerk-saas \
+            --build-env NEXT_PUBLIC_SUPABASE_URL="$SUPABASE_URL" \
+            --build-env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON" \
+            --build-env NEXT_PUBLIC_API_URL="$API_URL" \
+            --build-env NEXT_PUBLIC_BIT_SUPABASE_URL="$BIT_URL" \
+            --build-env NEXT_PUBLIC_BIT_SUPABASE_ANON_KEY="$BIT_ANON" \
+            --build-env NEXT_PUBLIC_SITE_URL="$SITE_URL" \
+            --env NEXT_PUBLIC_SUPABASE_URL="$SUPABASE_URL" \
+            --env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_ANON" \
+            --env NEXT_PUBLIC_API_URL="$API_URL" \
+            --env NEXT_PUBLIC_BIT_SUPABASE_URL="$BIT_URL" \
+            --env NEXT_PUBLIC_BIT_SUPABASE_ANON_KEY="$BIT_ANON" \
+            --env NEXT_PUBLIC_SITE_URL="$SITE_URL" 2>&1 | tail -1)
+          echo "PREVIEW_URL=$url"
+          {
+            echo "## Vercel Preview";
+            echo "";
+            echo "**Startseite:** $url/bit";
+            echo "**Produkte/Filter:** $url/bit/produkte";
+            echo "**Landingpage-Beispiel:** $url/bit/produkte/eigenschaft/halogenfrei";
+          } >> "$GITHUB_STEP_SUMMARY"
