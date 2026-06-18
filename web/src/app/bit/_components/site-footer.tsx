@@ -1,8 +1,24 @@
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { CATEGORIES, COMPANY } from "../_data/catalog";
+import { materialTaxa, propertyTaxa, shrinkTaxa } from "../_data/attributes";
 
 export function SiteFooter() {
+  const popular = [
+    ...propertyTaxa().slice(0, 6).map((t) => ({
+      href: `/bit/produkte/eigenschaft/${t.slug}`,
+      label: t.label,
+    })),
+    ...materialTaxa().slice(0, 6).map((t) => ({
+      href: `/bit/produkte/material/${t.slug}`,
+      label: `${t.label}-Schläuche`,
+    })),
+    ...shrinkTaxa().map((t) => ({
+      href: `/bit/produkte/schrumpfrate/${t.slug}`,
+      label: `Schrumpfrate ${t.label}`,
+    })),
+  ];
+
   return (
     <footer className="mt-20 border-t border-slate-200 bg-slate-50 text-slate-600">
       <div className="container grid gap-10 py-14 md:grid-cols-4">
@@ -65,6 +81,23 @@ export function SiteFooter() {
               <a href={`mailto:${COMPANY.email}`} className="hover:text-[#1e4a7a]">{COMPANY.email}</a>
             </li>
           </ul>
+        </div>
+      </div>
+
+      <div className="border-t border-slate-200">
+        <div className="container py-8">
+          <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-900">Beliebte Suchen</h3>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {popular.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="rounded-full border border-slate-300 bg-white px-3 py-1 text-sm text-slate-600 transition-colors hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
+              >
+                {l.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
 

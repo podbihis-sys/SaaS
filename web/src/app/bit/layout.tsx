@@ -55,6 +55,7 @@ export default function BitLayout({ children }: { children: React.ReactNode }) {
     email: COMPANY.email,
     telephone: COMPANY.phone,
     foundingDate: String(COMPANY.foundedYear),
+    vatID: COMPANY.vatId,
     address: {
       "@type": "PostalAddress",
       streetAddress: COMPANY.street,
@@ -64,11 +65,53 @@ export default function BitLayout({ children }: { children: React.ReactNode }) {
     },
   };
 
+  const localBusinessLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": `${BASE}/bit#business`,
+    name: COMPANY.legalName,
+    url: `${BASE}/bit`,
+    logo: `${BASE}/bit/logo.png`,
+    image: `${BASE}/bit/logo.png`,
+    email: COMPANY.email,
+    telephone: COMPANY.phone,
+    faxNumber: COMPANY.fax,
+    vatID: COMPANY.vatId,
+    foundingDate: String(COMPANY.foundedYear),
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: COMPANY.street,
+      postalCode: COMPANY.zip,
+      addressLocality: COMPANY.city,
+      addressCountry: "DE",
+    },
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        opens: "08:00",
+        closes: "17:00",
+      },
+    ],
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "sales",
+      telephone: COMPANY.phone,
+      email: COMPANY.email,
+      areaServed: "DE",
+      availableLanguage: ["de", "en"],
+    },
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessLd) }}
       />
       <SiteChrome>{children}</SiteChrome>
     </>

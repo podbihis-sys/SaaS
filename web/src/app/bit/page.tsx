@@ -22,6 +22,11 @@ import { ProductCard } from "./_components/product-card";
 import { ProductIllustration } from "./_components/product-illustration";
 import { HeroSlider, type HeroSlide } from "./_components/hero-slider";
 import { Reveal } from "./_components/reveal";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/bit" },
+};
 
 // Wechselnde Hero-Bilder (rechte Seite) aus dem realen Sortiment.
 const HERO_SLIDES: HeroSlide[] = [
