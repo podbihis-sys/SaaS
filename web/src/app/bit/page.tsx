@@ -236,7 +236,7 @@ export default async function BitHome() {
                   />
                 </div>
                 <div className="flex flex-1 flex-col p-6">
-                  <h3 className="text-lg font-semibold text-slate-900">{cat.name}</h3>
+                  <p className="text-lg font-semibold text-slate-900">{cat.name}</p>
                   <p className="mt-1 text-sm font-medium text-[#1d4ed8]">{cat.tagline}</p>
                   <p className="mt-3 line-clamp-3 flex-1 text-sm leading-relaxed text-slate-600">
                     {cat.description}
@@ -265,7 +265,7 @@ export default async function BitHome() {
                   <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#1e4a7a] to-[#163a61] text-white shadow-lg shadow-[#1e4a7a]/20">
                     <Icon className="h-6 w-6" />
                   </span>
-                  <h3 className="mt-4 font-semibold text-slate-900">{title}</h3>
+                  <p className="mt-4 font-semibold text-slate-900">{title}</p>
                   <p className="mt-2 text-sm leading-relaxed text-slate-600">{text}</p>
                 </div>
               </Reveal>
@@ -307,7 +307,7 @@ export default async function BitHome() {
                   <img src={k.image} alt={k.title} className="bit-card-img h-full w-full object-contain" loading="lazy" />
                 </div>
                 <div className="flex flex-1 items-center justify-between gap-2 p-5">
-                  <h3 className="font-semibold text-slate-900">{k.title}</h3>
+                  <p className="font-semibold text-slate-900">{k.title}</p>
                   <ArrowRight className="h-4 w-4 shrink-0 text-[#1e4a7a] transition-transform group-hover:translate-x-1" />
                 </div>
               </Link>
@@ -408,14 +408,14 @@ export default async function BitHome() {
                         <CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.date)}
                       </span>
                     )}
-                    <h3 className="mt-2 line-clamp-2 flex-1 font-semibold leading-snug text-slate-900">
+                    <div className="mt-2 line-clamp-2 flex-1 font-semibold leading-snug text-slate-900">
                       <Link
                         href={`/bit/news/${post.slug}`}
                         className="before:absolute before:inset-0 hover:text-[#1e4a7a]"
                       >
                         {post.title}
                       </Link>
-                    </h3>
+                    </div>
                     <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#1e4a7a]">
                       Mehr lesen
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -495,7 +495,7 @@ export default async function BitHome() {
           <div className="mx-auto mt-10 max-w-3xl divide-y divide-slate-200 border-y border-slate-200">
             {FAQ.map((f) => (
               <Reveal key={f.q} as="div" className="py-5">
-                <h3 className="text-lg font-semibold text-slate-900">{f.q}</h3>
+                <p className="text-lg font-semibold text-slate-900">{f.q}</p>
                 <p className="mt-2 leading-relaxed text-slate-600">{f.a}</p>
               </Reveal>
             ))}
