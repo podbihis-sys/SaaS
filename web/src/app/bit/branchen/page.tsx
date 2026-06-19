@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/bit/branchen" },
   title: "Branchen",
   description:
-    "Schrumpf-, Isolier- und Geflechtschläuche, Wellrohre und Kabelbinder von BIT Bierther im Einsatz: Automotive, Energietechnik, Hausgeräte, Medizintechnik, Maschinenbau, Lichttechnik und Sicherheitstechnik.",
+    "BIT-Schläuche, Wellrohre & Kabelbinder im Einsatz: Automotive, Energietechnik, Hausgeräte, Medizintechnik, Maschinen-, Licht- & Sicherheitstechnik.",
 };
 
 interface Industry {

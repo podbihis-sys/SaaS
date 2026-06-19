@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Produkte – Schrumpfschläuche, Isolier- & Geflechtschläuche",
+  title: { absolute: "Produkte – Schrumpf- & Isolierschläuche · BIT Bierther" },
   description:
-    "Über 1.000 Standardartikel: Schrumpfschläuche, Isolier-, Glasseiden- und Geflechtschläuche, Wellrohre, Kabelbinder & Verarbeitungsgeräte. Filtern nach Material, Wandstärke, Schrumpfrate und Temperatur – Lieferung in 24 h, Konfektion ab Losgröße 1.",
+    "1.000+ Artikel: Schrumpf-, Isolier-, Glasseiden- & Geflechtschläuche, Wellrohre, Kabelbinder – filterbar nach Material, Schrumpfrate & Temperatur.",
   keywords: [
     "Schrumpfschlauch kaufen",
     "Schrumpfschlauch mit Kleber",

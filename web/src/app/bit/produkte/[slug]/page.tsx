@@ -9,6 +9,7 @@ import {
   productsByCategory,
 } from "../../_data/catalog";
 import { applicationTaxa, formatMm, materialTaxa, propertyTaxonForText, slugify } from "../../_data/attributes";
+import { seoTitle, clampDesc } from "../../_lib/seo";
 import { getRolls } from "../../_data/rolls";
 import { getPacks } from "../../_data/packs";
 import { ProductIllustration } from "../../_components/product-illustration";
@@ -27,14 +28,21 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = getProduct(slug);
   if (!product) return { title: "Produkt nicht gefunden" };
+  const categoryName = getCategory(product.category)?.name ?? "";
+  let core = product.name.replace(/\s+/g, " ").trim().replace(/[\s:.]+$/u, "");
+  const pcode = (product.code || "").trim();
+  if (pcode && pcode !== product.name && !core.includes(pcode)) core = `${core} (${pcode})`;
+  if (core.length < 30 && categoryName) core = `${core} – ${categoryName}`;
+  const metaTitle = seoTitle(core, { brand: true });
+  const metaDesc = clampDesc(product.description || product.tagline || core);
   return {
-    title: product.name,
-    description: product.description,
+    title: { absolute: metaTitle },
+    description: metaDesc,
     alternates: { canonical: `/bit/produkte/${product.slug}` },
     openGraph: {
       type: "website",
-      title: `${product.name} · BIT Bierther GmbH`,
-      description: product.description,
+      title: metaTitle,
+      description: metaDesc,
       url: `/bit/produkte/${product.slug}`,
       images: product.image ? [{ url: product.image, alt: product.imageAlt }] : undefined,
     },
@@ -144,7 +152,11 @@ export default async function ProductDetail({
                 </span>
               )}
             </div>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">{product.name}</h1>
+            <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">
+              {category && product.name.trim().split(/\s+/).length < 2
+                ? `${product.name} – ${category.name}`
+                : product.name}
+            </h1>
             <p className="mt-2 text-lg text-slate-600">{product.tagline}</p>
             <p className="mt-5 leading-relaxed text-slate-700">{product.description}</p>
 

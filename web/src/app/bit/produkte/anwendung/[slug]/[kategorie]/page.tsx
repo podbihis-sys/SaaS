@@ -7,6 +7,7 @@ import {
   getApplicationTaxon,
 } from "../../../../_data/attributes";
 import { TaxonLanding } from "../../../../_components/taxon-landing";
+import { clampDesc, clampText } from "../../../../_lib/seo";
 
 const BASE_PATH = "/bit/produkte/anwendung";
 
@@ -40,8 +41,9 @@ export async function generateMetadata({
   const title = `${r.taxon.label} – ${r.category.name}`;
   const description = `${r.category.name} für die Anwendung „${r.taxon.label}" von BIT Bierther: ${r.products.length} Artikel mit allen verfügbaren Größen direkt anfragbar.`;
   return {
-    title,
-    description,
+    title: clampText(title, 60),
+    description: clampDesc(description),
+    robots: { index: false, follow: true },
     alternates: { canonical: `${BASE_PATH}/${slug}/${kategorie}` },
     openGraph: {
       type: "website",

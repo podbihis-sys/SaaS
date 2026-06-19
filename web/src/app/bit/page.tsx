@@ -25,6 +25,9 @@ import { Reveal } from "./_components/reveal";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  title: { absolute: "BIT Bierther GmbH – Schrumpf- & Isolierschlauchtechnik" },
+  description:
+    "Schrumpf-, Isolier- & Geflechtschläuche, Wellrohre und Kabelbinder vom Hersteller. 1.000+ Artikel, Lieferung in 24 h, Konfektion ab Losgröße 1.",
   alternates: { canonical: "/bit" },
 };
 

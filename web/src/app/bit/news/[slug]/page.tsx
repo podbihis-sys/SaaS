@@ -7,6 +7,7 @@ import { NEWS } from "../../_data/news";
 import { formatDate } from "../../_lib/format";
 import { COMPANY } from "../../_data/catalog";
 import { BreadcrumbLd } from "../../_components/breadcrumb-ld";
+import { clampText, clampDesc } from "../../_lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -30,14 +31,16 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = await getCmsNewsPost(slug);
   if (!post) return { title: "News" };
+  const metaTitle = clampText(post.title, 60);
+  const metaDesc = clampDesc(post.excerpt);
   return {
-    title: post.title,
-    description: post.excerpt,
+    title: { absolute: metaTitle },
+    description: metaDesc,
     alternates: { canonical: `/bit/news/${post.slug}` },
     openGraph: {
       type: "article",
       title: post.title,
-      description: post.excerpt,
+      description: metaDesc,
       publishedTime: post.date || undefined,
       images: post.image ? [{ url: post.image, alt: post.imageAlt }] : undefined,
     },
