@@ -7,6 +7,7 @@ import {
   materialTaxa,
 } from "../../../../_data/attributes";
 import { TaxonLanding } from "../../../../_components/taxon-landing";
+import { clampDesc, clampText } from "../../../../_lib/seo";
 
 const BASE_PATH = "/bit/produkte/material";
 
@@ -40,8 +41,8 @@ export async function generateMetadata({
   const title = `${r.category.name} aus ${r.taxon.label}`;
   const description = `${r.category.name} aus dem Werkstoff ${r.taxon.label} von BIT Bierther: ${r.products.length} Artikel mit allen verfügbaren Größen direkt anfragbar.`;
   return {
-    title,
-    description,
+    title: clampText(title, 60),
+    description: clampDesc(description),
     alternates: { canonical: `${BASE_PATH}/${slug}/${kategorie}` },
     openGraph: {
       type: "website",

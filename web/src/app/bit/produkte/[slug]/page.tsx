@@ -9,6 +9,7 @@ import {
   productsByCategory,
 } from "../../_data/catalog";
 import { applicationTaxa, formatMm, materialTaxa, propertyTaxonForText, slugify } from "../../_data/attributes";
+import { seoTitle, clampDesc } from "../../_lib/seo";
 import { getRolls } from "../../_data/rolls";
 import { getPacks } from "../../_data/packs";
 import { ProductIllustration } from "../../_components/product-illustration";
@@ -27,14 +28,19 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = getProduct(slug);
   if (!product) return { title: "Produkt nicht gefunden" };
+  const categoryName = getCategory(product.category)?.name ?? "";
+  let core = product.name.replace(/\s+/g, " ").trim().replace(/[\s:.]+$/u, "");
+  if (core.length < 30 && categoryName) core = `${core} – ${categoryName}`;
+  const metaTitle = seoTitle(core, { brand: true });
+  const metaDesc = clampDesc(product.description || product.tagline || core);
   return {
-    title: product.name,
-    description: product.description,
+    title: { absolute: metaTitle },
+    description: metaDesc,
     alternates: { canonical: `/bit/produkte/${product.slug}` },
     openGraph: {
       type: "website",
-      title: `${product.name} · BIT Bierther GmbH`,
-      description: product.description,
+      title: metaTitle,
+      description: metaDesc,
       url: `/bit/produkte/${product.slug}`,
       images: product.image ? [{ url: product.image, alt: product.imageAlt }] : undefined,
     },

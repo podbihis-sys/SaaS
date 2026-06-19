@@ -6,6 +6,7 @@ import {
   propertyTaxa,
 } from "../../../_data/attributes";
 import { TaxonLanding } from "../../../_components/taxon-landing";
+import { clampDesc, clampText } from "../../../_lib/seo";
 
 const BASE_PATH = "/bit/produkte/eigenschaft";
 
@@ -23,13 +24,13 @@ export async function generateMetadata({
   if (!taxon) return { title: "Eigenschaft nicht gefunden" };
   const title = `${taxon.label} – Schrumpf- & Isolierschläuche`;
   return {
-    title,
-    description: taxon.intro,
+    title: clampText(title, 60),
+    description: clampDesc(taxon.intro),
     alternates: { canonical: `${BASE_PATH}/${taxon.slug}` },
     openGraph: {
       type: "website",
       title: `${title} · BIT Bierther GmbH`,
-      description: taxon.intro,
+      description: clampDesc(taxon.intro),
       url: `${BASE_PATH}/${taxon.slug}`,
     },
   };
