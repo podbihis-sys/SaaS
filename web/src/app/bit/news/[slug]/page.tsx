@@ -181,10 +181,9 @@ export default async function NewsPostPage({
             <h2 className="text-xl font-bold tracking-tight text-slate-900">Weitere Beiträge</h2>
             <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {others.map((n) => (
-                <Link
+                <article
                   key={n.slug}
-                  href={`/bit/news/${n.slug}`}
-                  className="bit-card group flex flex-col overflow-hidden bg-white"
+                  className="bit-card group relative flex flex-col overflow-hidden bg-white"
                 >
                   <div className="aspect-[16/10] overflow-hidden rounded-t-[1.3rem] bg-slate-100">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -200,8 +199,15 @@ export default async function NewsPostPage({
                       <span className="text-xs font-medium text-slate-400">{formatDate(n.date)}</span>
                     )}
                     <h3 className="mt-1.5 text-sm font-semibold leading-snug text-slate-900">{n.title}</h3>
+                    <Link
+                      href={`/bit/news/${n.slug}`}
+                      aria-label={n.title}
+                      className="mt-3 text-sm font-semibold text-[#1e4a7a] before:absolute before:inset-0"
+                    >
+                      Mehr lesen
+                    </Link>
                   </div>
-                </Link>
+                </article>
               ))}
             </div>
           </div>

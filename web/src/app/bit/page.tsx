@@ -396,7 +396,7 @@ export default async function BitHome() {
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {latestNews.map((post, i) => (
               <Reveal key={post.slug} delay={i * 70} className="h-full">
-                <Link href={`/bit/news/${post.slug}`} className="bit-card group flex h-full flex-col overflow-hidden">
+                <article className="bit-card group relative flex h-full flex-col overflow-hidden">
                   <div className="aspect-[16/10] overflow-hidden rounded-t-[1.3rem] bg-slate-100">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={post.image} alt={post.imageAlt} className="bit-card-img h-full w-full object-contain" loading="lazy" />
@@ -407,10 +407,17 @@ export default async function BitHome() {
                         <CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.date)}
                       </span>
                     )}
-                    <h3 className="mt-2 line-clamp-2 font-semibold leading-snug text-slate-900">{post.title}</h3>
-                    <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-slate-600">{post.excerpt}</p>
+                    <h3 className="mt-2 line-clamp-2 flex-1 font-semibold leading-snug text-slate-900">{post.title}</h3>
+                    <Link
+                      href={`/bit/news/${post.slug}`}
+                      aria-label={post.title}
+                      className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#1e4a7a] before:absolute before:inset-0"
+                    >
+                      Mehr lesen
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </Link>
                   </div>
-                </Link>
+                </article>
               </Reveal>
             ))}
           </div>
