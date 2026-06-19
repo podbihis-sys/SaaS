@@ -427,6 +427,47 @@ export default async function BitHome() {
         </section>
       )}
 
+      {/* ------------------------------------------------------ Sortiment SEO */}
+      <section className="border-t border-slate-200 bg-slate-50 py-16">
+        <div className="container">
+          <Reveal as="h2" className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+            Unser Sortiment im Überblick
+          </Reveal>
+          <Reveal as="div" delay={60} className="mt-4 grid gap-4 text-sm leading-relaxed text-slate-600 md:grid-cols-2">
+            <p>
+              <strong className="text-slate-900">Schrumpfschläuche</strong> in allen Varianten:
+              halogenfreie, dünnwandige und dickwandige Schrumpfschläuche, Typen mit Kleber bzw.
+              Innenkleber, hochtemperaturbeständige Schläuche aus PTFE, FEP und Kynar® (PVDF) sowie
+              UL-zugelassene, farbige und bedruckte Schrumpfschläuche.
+            </p>
+            <p>
+              <strong className="text-slate-900">Isolier- &amp; Silikonschläuche</strong>,
+              <strong className="text-slate-900"> Glasseidenschläuche</strong> und
+              <strong className="text-slate-900"> Geflechtschläuche</strong> aus Polyamid, Polyester
+              oder Aramid für Kabelschutz, Isolation und Kabelbündelung.
+            </p>
+            <p>
+              <strong className="text-slate-900">Wellrohre</strong> geschlitzt und ungeschlitzt aus
+              PP, PA, PFA und TPE – sowie zweiteilige Wellrohre zur nachträglichen Installation.
+            </p>
+            <p>
+              <strong className="text-slate-900">Kabelbinder &amp; Verarbeitung</strong>: Standard-,
+              Edelstahl-, UV-beständige und wiederlösbare Kabelbinder, dazu Zangen, Heißluft- und
+              Schrumpfgeräte. Plus Konfektion: Zuschnitt, Bedruckung und Sätze nach Maß.
+            </p>
+          </Reveal>
+          <Reveal delay={120} className="mt-6 flex flex-wrap gap-3">
+            <Link href="/bit/produkte" className="bit-btn bit-btn-dark">
+              <span>Alle Produkte ansehen</span>
+              <ArrowRight className="bit-arrow h-4 w-4" />
+            </Link>
+            <Link href="/bit/kompetenzen" className="bit-btn bit-btn-outline">
+              <span>Konfektion &amp; Kompetenzen</span>
+            </Link>
+          </Reveal>
+        </div>
+      </section>
+
       {/* --------------------------------------------------------------- FAQ */}
       <section className="border-t border-slate-200 bg-white py-20 sm:py-24">
         <script
