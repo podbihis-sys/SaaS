@@ -31,7 +31,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = await getCmsNewsPost(slug);
   if (!post) return { title: "News" };
-  const metaTitle = clampText(post.title, 60);
+  const metaTitle = clampText(post.title, 55);
   const metaDesc = clampDesc(post.excerpt);
   return {
     title: { absolute: metaTitle },

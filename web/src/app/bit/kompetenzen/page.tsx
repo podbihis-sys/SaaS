@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/bit/kompetenzen" },
   title: "Kompetenzen",
   description:
-    "Konfektion, Bedruckung, Sonderwerkstoffe (PTFE/FEP/Kynar), UL-Zulassung, farbige Schrumpfschläuche & viele Abmessungen – die Kompetenzen der BIT Bierther.",
+    "Konfektion, Bedruckung, Sonderwerkstoffe, UL-Zulassung, farbige Schrumpfschläuche & viele Abmessungen – die Kompetenzen der BIT Bierther.",
 };
 
 const COMPETENCES = [
