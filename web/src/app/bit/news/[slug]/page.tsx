@@ -198,14 +198,15 @@ export default async function NewsPostPage({
                     {n.date && (
                       <span className="text-xs font-medium text-slate-400">{formatDate(n.date)}</span>
                     )}
-                    <h3 className="mt-1.5 text-sm font-semibold leading-snug text-slate-900">{n.title}</h3>
-                    <Link
-                      href={`/bit/news/${n.slug}`}
-                      aria-label={n.title}
-                      className="mt-3 text-sm font-semibold text-[#1e4a7a] before:absolute before:inset-0"
-                    >
-                      Mehr lesen
-                    </Link>
+                    <h3 className="mt-1.5 text-sm font-semibold leading-snug text-slate-900">
+                      <Link
+                        href={`/bit/news/${n.slug}`}
+                        className="before:absolute before:inset-0 hover:text-[#1e4a7a]"
+                      >
+                        {n.title}
+                      </Link>
+                    </h3>
+                    <span className="mt-3 inline-block text-sm font-semibold text-[#1e4a7a]">Mehr lesen</span>
                   </div>
                 </article>
               ))}

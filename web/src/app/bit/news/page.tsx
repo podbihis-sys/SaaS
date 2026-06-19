@@ -67,18 +67,21 @@ export default async function NewsPage() {
                         <CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.date)}
                       </span>
                     )}
-                    <h2 className="mt-2 text-lg font-semibold leading-snug text-slate-900">{post.title}</h2>
+                    <h2 className="mt-2 text-lg font-semibold leading-snug text-slate-900">
+                      <Link
+                        href={`/bit/news/${post.slug}`}
+                        className="before:absolute before:inset-0 hover:text-[#1e4a7a]"
+                      >
+                        {post.title}
+                      </Link>
+                    </h2>
                     <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-slate-600">
                       {post.excerpt}
                     </p>
-                    <Link
-                      href={`/bit/news/${post.slug}`}
-                      aria-label={post.title}
-                      className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[#1e4a7a] before:absolute before:inset-0"
-                    >
+                    <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[#1e4a7a]">
                       Weiterlesen
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </Link>
+                    </span>
                   </div>
                 </article>
               </Reveal>
