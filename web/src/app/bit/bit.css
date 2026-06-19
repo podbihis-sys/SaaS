@@ -1,0 +1,368 @@
+/* bit.css — animated, non-generic design layer for the BIT Bierther site.
+   Dependency-free: CSS keyframes + utility classes, scoped via the `bit-`
+   prefix. Honors prefers-reduced-motion. Loaded from bit/layout.tsx. */
+
+/* ---------------------------------------------------------------- reveal -- */
+/* Toggled by the <Reveal> client component (IntersectionObserver). */
+.bit-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--bit-delay, 0ms);
+  will-change: opacity, transform;
+}
+.bit-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------- aurora --- */
+/* Animated mesh background for dark hero/CTA sections. */
+.bit-aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bit-aurora::before,
+.bit-aurora::after {
+  content: "";
+  position: absolute;
+  width: 65vw;
+  height: 65vw;
+  border-radius: 50%;
+  filter: blur(90px);
+  background: radial-gradient(circle at center, #1e4a7a, transparent 70%);
+  opacity: 0.55;
+  animation: bit-drift 20s ease-in-out infinite alternate;
+}
+.bit-aurora::before {
+  left: -12vw;
+  top: -18%;
+}
+.bit-aurora::after {
+  right: -12vw;
+  top: 18%;
+  background: radial-gradient(circle at center, #38bdf8, transparent 70%);
+  opacity: 0.3;
+  animation-duration: 26s;
+  animation-delay: -8s;
+}
+@keyframes bit-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(7vw, 9vh, 0) scale(1.28);
+  }
+}
+
+/* Faint technical grid, faded toward edges. */
+.bit-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 0%, #000 35%, transparent 100%);
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 0%, #000 35%, transparent 100%);
+}
+
+/* Same grid, tuned for light backgrounds (dark faint lines). */
+.bit-grid-light {
+  background-image:
+    linear-gradient(to right, rgba(15, 39, 66, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 39, 66, 0.05) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 70% 0%, #000 35%, transparent 100%);
+  mask-image: radial-gradient(ellipse 75% 70% at 70% 0%, #000 35%, transparent 100%);
+}
+
+/* Soft corporate-blue glow for the light hero. */
+.bit-hero-glow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bit-hero-glow::before {
+  content: "";
+  position: absolute;
+  right: -10vw;
+  top: -30%;
+  width: 55vw;
+  height: 55vw;
+  border-radius: 50%;
+  filter: blur(90px);
+  background: radial-gradient(circle at center, rgba(56, 189, 248, 0.22), transparent 70%);
+}
+
+/* --------------------------------------------------------------- buttons -- */
+/* Pill buttons with a sheen sweep on hover — replaces the standard boxes. */
+.bit-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.85rem 1.55rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s ease;
+}
+.bit-btn > * {
+  position: relative;
+  z-index: 1;
+}
+.bit-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 18%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 82%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.75s ease;
+}
+.bit-btn:hover {
+  transform: translateY(-2px);
+}
+.bit-btn:hover::after {
+  transform: translateX(130%);
+}
+.bit-btn:active {
+  transform: translateY(0);
+}
+.bit-btn .bit-arrow {
+  transition: transform 0.25s ease;
+}
+.bit-btn:hover .bit-arrow {
+  transform: translateX(4px);
+}
+.bit-btn-primary {
+  background: linear-gradient(135deg, #7dd3fc, #38bdf8);
+  color: #0f2742;
+  box-shadow: 0 12px 32px -12px rgba(56, 189, 248, 0.65);
+}
+.bit-btn-primary:hover {
+  box-shadow: 0 18px 44px -14px rgba(56, 189, 248, 0.8);
+}
+.bit-btn-dark {
+  background: linear-gradient(135deg, #1e4a7a, #163a61);
+  color: #fff;
+  box-shadow: 0 12px 32px -14px rgba(30, 74, 122, 0.7);
+}
+.bit-btn-ghost {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+}
+.bit-btn-ghost::after {
+  background: linear-gradient(
+    120deg,
+    transparent 18%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 82%
+  );
+}
+/* Outline button for light backgrounds. */
+.bit-btn-outline {
+  background: #fff;
+  color: #1e4a7a;
+  box-shadow: inset 0 0 0 1px rgba(30, 74, 122, 0.25);
+}
+.bit-btn-outline:hover {
+  box-shadow: inset 0 0 0 1px rgba(30, 74, 122, 0.55);
+}
+.bit-btn-outline::after {
+  background: linear-gradient(
+    120deg,
+    transparent 18%,
+    rgba(30, 74, 122, 0.1) 50%,
+    transparent 82%
+  );
+}
+
+/* ----------------------------------------------------------------- cards -- */
+.bit-card {
+  position: relative;
+  border-radius: 1.3rem;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(15, 39, 66, 0.08);
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.45s ease;
+}
+/* Gradient hairline border that fades in on hover (mask trick). */
+.bit-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.25px;
+  background: linear-gradient(135deg, #1e4a7a, #38bdf8);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+.bit-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 32px 60px -32px rgba(15, 39, 66, 0.45);
+}
+.bit-card:hover::before {
+  opacity: 1;
+}
+.bit-card-img {
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bit-card:hover .bit-card-img {
+  transform: scale(1.06);
+}
+/* Circular arrow that rotates on card hover. */
+.bit-arrow-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.25rem;
+  width: 2.25rem;
+  border-radius: 999px;
+  background: #0f2742;
+  color: #fff;
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.35s ease,
+    color 0.35s ease;
+}
+.bit-card:hover .bit-arrow-circle {
+  transform: rotate(-45deg);
+  background: #38bdf8;
+  color: #0f2742;
+}
+
+/* --------------------------------------------------------------- marquee -- */
+.bit-marquee {
+  display: flex;
+  overflow: hidden;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.bit-marquee__track {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 2.75rem;
+  padding-right: 2.75rem;
+  white-space: nowrap;
+  animation: bit-marquee 30s linear infinite;
+}
+.bit-marquee:hover .bit-marquee__track {
+  animation-play-state: paused;
+}
+@keyframes bit-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ------------------------------------------------------------- nav under -- */
+.bit-nav-link {
+  position: relative;
+}
+.bit-nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0.35rem;
+  height: 2px;
+  border-radius: 2px;
+  background: #38bdf8;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bit-nav-link:hover::after,
+.bit-nav-link[data-active="true"]::after {
+  transform: scaleX(1);
+}
+
+/* ------------------------------------------------------------ decorative -- */
+.bit-float {
+  animation: bit-float 6s ease-in-out infinite;
+}
+@keyframes bit-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+.bit-spin-slow {
+  animation: bit-spin 28s linear infinite;
+}
+@keyframes bit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.bit-pulse {
+  animation: bit-pulse 2.4s ease-in-out infinite;
+}
+@keyframes bit-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(56, 189, 248, 0);
+  }
+}
+
+/* Size / option pill micro-interaction. */
+.bit-pill {
+  transition:
+    transform 0.18s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.bit-pill:hover {
+  transform: translateY(-1px);
+}
+
+/* ----------------------------------------------------- reduced motion ----- */
+@media (prefers-reduced-motion: reduce) {
+  .bit-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .bit-aurora::before,
+  .bit-aurora::after,
+  .bit-float,
+  .bit-spin-slow,
+  .bit-marquee__track,
+  .bit-pulse {
+    animation: none !important;
+  }
+  .bit-btn::after {
+    display: none;
+  }
+}

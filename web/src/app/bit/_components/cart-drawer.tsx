@@ -111,7 +111,13 @@ export function CartDrawer() {
                         <Plus className="h-4 w-4" />
                       </button>
                     </div>
-                    <span className="text-xs text-slate-500">{item.unit}</span>
+                    <span className="text-right text-xs text-slate-500">
+                      {item.metersPerRoll
+                        ? `${item.quantity === 1 ? "Rolle" : "Rollen"} · ${item.quantity * item.metersPerRoll} m`
+                        : item.unitsPerPack
+                          ? `${item.quantity === 1 ? "Gebinde" : "Gebinde"} · ${item.quantity * item.unitsPerPack} Stück`
+                          : item.unit}
+                    </span>
                   </div>
                 </li>
               ))}
@@ -124,7 +130,7 @@ export function CartDrawer() {
             <Link
               href="/bit/warenkorb"
               onClick={closeCart}
-              className="block w-full rounded-lg bg-[#f59e0b] px-4 py-3 text-center text-sm font-semibold text-slate-900 hover:bg-[#e08e06]"
+              className="block w-full rounded-lg bg-[#38bdf8] px-4 py-3 text-center text-sm font-semibold text-slate-900 hover:bg-[#0ea5e9]"
             >
               Anfrage zusammenstellen
             </Link>

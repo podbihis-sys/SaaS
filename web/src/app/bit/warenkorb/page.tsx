@@ -39,11 +39,15 @@ export default function CartPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
-          items: items.map(({ name, size, color, unit, quantity }) => ({
+          items: items.map(({ name, size, color, unit, quantity, metersPerRoll, unitsPerPack }) => ({
             name,
             size,
             color,
-            unit,
+            unit: metersPerRoll
+              ? `Rolle (${metersPerRoll} m/Rolle, gesamt ${quantity * metersPerRoll} m)`
+              : unitsPerPack
+                ? `Gebinde (${unitsPerPack} Stück/Gebinde, gesamt ${quantity * unitsPerPack} Stück)`
+                : unit,
             quantity,
           })),
         }),
@@ -161,7 +165,13 @@ export default function CartPage() {
                             <Plus className="h-3.5 w-3.5" />
                           </button>
                         </div>
-                        <div className="mt-1 text-xs text-slate-400">{item.unit}</div>
+                        <div className="mt-1 text-xs text-slate-400">
+                          {item.metersPerRoll
+                            ? `${item.quantity === 1 ? "Rolle" : "Rollen"} · ${item.quantity * item.metersPerRoll} m gesamt`
+                            : item.unitsPerPack
+                              ? `Gebinde · ${item.quantity * item.unitsPerPack} Stück gesamt`
+                              : item.unit}
+                        </div>
                       </td>
                       <td className="px-3 py-4 text-right">
                         <button
@@ -222,7 +232,7 @@ export default function CartPage() {
               <button
                 type="submit"
                 disabled={status === "sending"}
-                className="mt-5 w-full rounded-xl bg-[#f59e0b] px-4 py-3.5 text-sm font-semibold text-slate-900 hover:bg-[#e08e06] disabled:opacity-60"
+                className="mt-5 w-full rounded-xl bg-[#38bdf8] px-4 py-3.5 text-sm font-semibold text-slate-900 hover:bg-[#0ea5e9] disabled:opacity-60"
               >
                 {status === "sending" ? "Wird gesendet …" : "Anfrage absenden"}
               </button>

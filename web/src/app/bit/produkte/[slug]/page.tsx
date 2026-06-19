@@ -8,6 +8,9 @@ import {
   getProduct,
   productsByCategory,
 } from "../../_data/catalog";
+import { applicationTaxa, formatMm, materialTaxa, propertyTaxonForText, slugify } from "../../_data/attributes";
+import { getRolls } from "../../_data/rolls";
+import { getPacks } from "../../_data/packs";
 import { ProductIllustration } from "../../_components/product-illustration";
 import { ProductCard } from "../../_components/product-card";
 import { AddToCart } from "../../_components/add-to-cart";
@@ -24,7 +27,18 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = getProduct(slug);
   if (!product) return { title: "Produkt nicht gefunden" };
-  return { title: product.name, description: product.description };
+  return {
+    title: product.name,
+    description: product.description,
+    alternates: { canonical: `/bit/produkte/${product.slug}` },
+    openGraph: {
+      type: "website",
+      title: `${product.name} · BIT Bierther GmbH`,
+      description: product.description,
+      url: `/bit/produkte/${product.slug}`,
+      images: product.image ? [{ url: product.image, alt: product.imageAlt }] : undefined,
+    },
+  };
 }
 
 export default async function ProductDetail({
@@ -40,9 +54,48 @@ export default async function ProductDetail({
   const related = productsByCategory(product.category)
     .filter((p) => p.slug !== product.slug)
     .slice(0, 3);
+  const applicationSlugs = new Set(applicationTaxa().map((t) => t.slug));
+  const materialLink = materialTaxa().find((t) => t.products.includes(product));
+  const rolls = getRolls(product.slug);
+  const packs = !rolls ? getPacks(product.slug) : undefined;
+
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
+  const imageUrl = product.image?.startsWith("/") ? `${base}${product.image}` : product.image;
+  const productLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description,
+    image: imageUrl,
+    sku: product.code,
+    category: category?.name,
+    brand: { "@type": "Brand", name: "BIT Bierther GmbH" },
+  };
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Start", item: `${base}/bit` },
+      { "@type": "ListItem", position: 2, name: "Produkte", item: `${base}/bit/produkte` },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: product.name,
+        item: `${base}/bit/produkte/${product.slug}`,
+      },
+    ],
+  };
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
       {/* Breadcrumb */}
       <nav className="border-b border-slate-200 bg-slate-50">
         <div className="container flex flex-wrap items-center gap-1.5 py-4 text-sm text-slate-500">
@@ -53,8 +106,8 @@ export default async function ProductDetail({
           <Link href={`/bit/produkte?kategorie=${product.category}`} className="hover:text-[#1e4a7a]">
             {category?.name}
           </Link>
-          <ChevronRight className="h-4 w-4" />
-          <span className="text-slate-900">{product.name}</span>
+          <ChevronRight className="h-4 w-4 shrink-0" />
+          <span className="min-w-0 break-words text-slate-900">{product.name}</span>
         </div>
       </nav>
 
@@ -70,9 +123,9 @@ export default async function ProductDetail({
                 className="aspect-[4/3] w-full"
               />
             </div>
-            <div className="mt-4 grid grid-cols-3 gap-3">
+            <div className="mt-4 grid grid-cols-3 gap-2">
               {product.applications.slice(0, 3).map((a) => (
-                <div key={a} className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-center text-xs font-medium text-slate-600">
+                <div key={a} className="flex items-center justify-center rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-center text-xs font-medium leading-tight text-slate-600 break-words hyphens-auto">
                   {a}
                 </div>
               ))}
@@ -99,7 +152,18 @@ export default async function ProductDetail({
             <dl className="mt-6 grid grid-cols-2 gap-4 rounded-xl border border-slate-200 p-5 text-sm">
               <div>
                 <dt className="text-slate-500">Material</dt>
-                <dd className="mt-0.5 font-medium text-slate-900">{product.material}</dd>
+                <dd className="mt-0.5 font-medium text-slate-900">
+                  {materialLink ? (
+                    <Link
+                      href={`/bit/produkte/material/${materialLink.slug}`}
+                      className="text-[#1e4a7a] underline decoration-[#1e4a7a]/30 underline-offset-2 hover:decoration-[#1e4a7a]"
+                    >
+                      {product.material}
+                    </Link>
+                  ) : (
+                    product.material
+                  )}
+                </dd>
               </div>
               {product.temperature && (
                 <div>
@@ -111,11 +175,19 @@ export default async function ProductDetail({
               )}
               <div>
                 <dt className="text-slate-500">Bezugseinheit</dt>
-                <dd className="mt-0.5 font-medium text-slate-900">{product.unit}</dd>
+                <dd className="mt-0.5 font-medium text-slate-900">
+                  {rolls
+                    ? "Rolle (nur ganze Rollen)"
+                    : packs
+                      ? "Gebinde (nur ganze Gebinde)"
+                      : product.unit}
+                </dd>
               </div>
               <div>
                 <dt className="text-slate-500">Verfügbare Größen</dt>
-                <dd className="mt-0.5 font-medium text-slate-900">{product.sizes.length}</dd>
+                <dd className="mt-0.5 font-medium text-slate-900">
+                  {rolls ? rolls.length : packs ? packs.length : product.sizes.length}
+                </dd>
               </div>
             </dl>
 
@@ -128,25 +200,64 @@ export default async function ProductDetail({
         {/* Features & applications */}
         <div className="mt-14 grid gap-8 md:grid-cols-2">
           <div className="rounded-2xl border border-slate-200 p-6">
-            <h2 className="text-lg font-semibold text-slate-900">Eigenschaften</h2>
-            <ul className="mt-4 space-y-2.5">
-              {product.features.map((f) => (
-                <li key={f} className="flex items-start gap-2.5 text-sm text-slate-700">
-                  <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#f59e0b]" />
-                  {f}
-                </li>
-              ))}
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="text-lg font-semibold text-slate-900">Eigenschaften</h2>
+              <span className="text-xs text-slate-400">Eigenschaft anklicken für passende Produkte</span>
+            </div>
+            <ul className="mt-4 space-y-1">
+              {product.features.map((f) => {
+                const taxon = propertyTaxonForText(f);
+                if (!taxon) {
+                  return (
+                    <li key={f} className="flex items-start gap-2.5 px-2 py-1.5 text-sm text-slate-700">
+                      <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#38bdf8]" />
+                      <span className="flex-1">{f}</span>
+                    </li>
+                  );
+                }
+                return (
+                  <li key={f}>
+                    <Link
+                      href={`/bit/produkte/eigenschaft/${taxon.slug}`}
+                      className="group/feat -mx-2 flex items-start gap-2.5 rounded-lg px-2 py-1.5 text-sm font-medium text-[#1e4a7a] transition-colors hover:bg-[#1e4a7a]/5"
+                    >
+                      <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#38bdf8]" />
+                      <span className="flex-1 underline decoration-[#1e4a7a]/30 underline-offset-2 group-hover/feat:decoration-[#1e4a7a]">
+                        {f}
+                      </span>
+                      <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 transition-transform group-hover/feat:translate-x-0.5" />
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
           <div className="rounded-2xl border border-slate-200 p-6">
             <h2 className="text-lg font-semibold text-slate-900">Typische Anwendungen</h2>
             <ul className="mt-4 space-y-2.5">
-              {product.applications.map((a) => (
-                <li key={a} className="flex items-start gap-2.5 text-sm text-slate-700">
-                  <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#1e4a7a]" />
-                  {a}
-                </li>
-              ))}
+              {product.applications.map((a) => {
+                const slug = slugify(a);
+                const li = (
+                  <>
+                    <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#1e4a7a]" />
+                    {a}
+                  </>
+                );
+                return applicationSlugs.has(slug) ? (
+                  <li key={a}>
+                    <Link
+                      href={`/bit/produkte/anwendung/${slug}`}
+                      className="flex items-start gap-2.5 text-sm text-slate-700 hover:text-[#1e4a7a]"
+                    >
+                      {li}
+                    </Link>
+                  </li>
+                ) : (
+                  <li key={a} className="flex items-start gap-2.5 text-sm text-slate-700">
+                    {li}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
@@ -183,6 +294,81 @@ export default async function ProductDetail({
                 </div>
               )}
             </dl>
+          </div>
+        )}
+
+        {/* Lieferform & Verpackung (VPE pro Rolle) */}
+        {rolls && (
+          <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200">
+            <div className="border-b border-slate-200 bg-slate-50 px-6 py-4">
+              <h2 className="text-lg font-semibold text-slate-900">Lieferform & Verpackung</h2>
+              <p className="mt-1 text-sm text-slate-600">
+                Lieferung in ganzen Rollen. Die Meterzahl je Rolle (VPE) hängt vom Durchmesser ab –
+                je kleiner der Durchmesser, desto mehr Meter pro Rolle.
+              </p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-white text-left text-xs uppercase tracking-wide text-slate-500">
+                  <tr className="border-b border-slate-100">
+                    <th className="px-6 py-3 font-medium">Ø vor Schrumpfung</th>
+                    <th className="px-3 py-3 font-medium">Ø nach Schrumpfung</th>
+                    <th className="px-3 py-3 font-medium">Wandstärke</th>
+                    <th className="px-6 py-3 text-right font-medium">VPE (m / Rolle)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {rolls.map((r) => (
+                    <tr key={r.label}>
+                      <td className="px-6 py-3 font-medium text-slate-900">{r.label}</td>
+                      <td className="px-3 py-3 text-slate-700">
+                        {r.dPost != null ? `Ø ${formatMm(r.dPost)} mm` : "–"}
+                      </td>
+                      <td className="px-3 py-3 text-slate-700">
+                        {r.wall != null ? `${formatMm(r.wall)} mm` : "–"}
+                      </td>
+                      <td className="px-6 py-3 text-right font-semibold text-slate-900">
+                        {r.metersPerRoll} m
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* Lieferform & Verpackung (VPE pro Gebinde – Stückware) */}
+        {packs && (
+          <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200">
+            <div className="border-b border-slate-200 bg-slate-50 px-6 py-4">
+              <h2 className="text-lg font-semibold text-slate-900">Lieferform & Verpackung</h2>
+              <p className="mt-1 text-sm text-slate-600">
+                Lieferung in ganzen Gebinden. Die Stückzahl je Gebinde (VPE) hängt von der Größe ab.
+              </p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-white text-left text-xs uppercase tracking-wide text-slate-500">
+                  <tr className="border-b border-slate-100">
+                    <th className="px-6 py-3 font-medium">Länge</th>
+                    <th className="px-3 py-3 font-medium">Breite</th>
+                    <th className="px-6 py-3 text-right font-medium">VPE (Stück / Gebinde)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {packs.map((p) => (
+                    <tr key={p.label}>
+                      <td className="px-6 py-3 font-medium text-slate-900">{formatMm(p.laenge)} mm</td>
+                      <td className="px-3 py-3 text-slate-700">
+                        {p.breite != null ? `${formatMm(p.breite)} mm` : "–"}
+                      </td>
+                      <td className="px-6 py-3 text-right font-semibold text-slate-900">{p.vpe}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
