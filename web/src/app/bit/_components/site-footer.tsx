@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import { CATEGORIES, COMPANY } from "../_data/catalog";
 import { materialTaxa, propertyTaxa, shrinkTaxa } from "../_data/attributes";
+import { ShareButtons } from "./share-buttons";
 
 export function SiteFooter() {
   const popular = [
@@ -47,6 +48,9 @@ export function SiteFooter() {
             >
               <Linkedin className="h-4 w-4" />
             </a>
+          </div>
+          <div className="mt-5">
+            <ShareButtons />
           </div>
         </div>
 
