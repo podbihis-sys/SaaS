@@ -124,7 +124,7 @@ export default async function ProductDetail({
           <ChevronRight className="h-4 w-4" />
           <Link href="/bit/produkte" className="hover:text-[#1e4a7a]">Produkte</Link>
           <ChevronRight className="h-4 w-4" />
-          <Link href={`/bit/produkte?kategorie=${product.category}`} className="hover:text-[#1e4a7a]">
+          <Link href={`/bit/produkte?kategorie=${product.category}`} rel="nofollow" className="hover:text-[#1e4a7a]">
             {category?.name}
           </Link>
           <ChevronRight className="h-4 w-4 shrink-0" />

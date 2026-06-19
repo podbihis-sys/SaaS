@@ -44,7 +44,7 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-2 text-sm">
             {CATEGORIES.map((c) => (
               <li key={c.id}>
-                <Link href={`/bit/produkte?kategorie=${c.id}`} className="text-slate-500 hover:text-[#1e4a7a]">
+                <Link href={`/bit/produkte?kategorie=${c.id}`} rel="nofollow" className="text-slate-500 hover:text-[#1e4a7a]">
                   {c.name}
                 </Link>
               </li>

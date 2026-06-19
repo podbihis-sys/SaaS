@@ -123,7 +123,7 @@ export default async function BitHome() {
               delay={90}
               className="mt-5 text-4xl font-bold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl xl:text-6xl"
             >
-              {c(content, "home.hero.title", "Ihr Partner für Schrumpfschläuche und Kabelschutzlösungen")}
+              {c(content, "home.hero.title", "Schrumpfschläuche, Isolierschläuche & Kabelschutz aus einer Hand")}
             </Reveal>
             <Reveal as="p" delay={170} className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">
               {c(
@@ -225,6 +225,7 @@ export default async function BitHome() {
             <Reveal key={cat.id} delay={i * 70} className="h-full">
               <Link
                 href={`/bit/produkte?kategorie=${cat.id}`}
+                rel="nofollow"
                 className="bit-card group flex h-full flex-col overflow-hidden"
               >
                 <div className="aspect-[16/9] overflow-hidden rounded-t-[1.3rem] bg-gradient-to-br from-slate-50 to-slate-100">
