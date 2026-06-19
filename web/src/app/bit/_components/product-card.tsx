@@ -61,9 +61,6 @@ export function ProductCard({ product }: { product: Product }) {
             {diameter}
           </p>
         )}
-        <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-slate-600">
-          {product.description}
-        </p>
 
         <div className="mt-4 flex flex-wrap gap-1.5">
           {product.features.slice(0, 2).map((f) => (

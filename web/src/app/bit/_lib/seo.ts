@@ -5,8 +5,8 @@
 
 export const BRAND = "BIT Bierther GmbH";
 
-const TITLE_MAX = 60;
-const DESC_MAX = 155;
+const TITLE_MAX = 55;
+const DESC_MAX = 148;
 
 /** Kürzt am Wortende und hängt bei Bedarf ein Auslassungszeichen an. */
 export function clampText(input: string, max: number): string {

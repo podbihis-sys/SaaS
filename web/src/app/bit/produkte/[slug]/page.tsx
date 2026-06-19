@@ -9,7 +9,7 @@ import {
   productsByCategory,
 } from "../../_data/catalog";
 import { applicationTaxa, formatMm, materialTaxa, propertyTaxonForText, slugify } from "../../_data/attributes";
-import { seoTitle, clampDesc } from "../../_lib/seo";
+import { clampText, clampDesc } from "../../_lib/seo";
 import { getRolls } from "../../_data/rolls";
 import { getPacks } from "../../_data/packs";
 import { ProductIllustration } from "../../_components/product-illustration";
@@ -30,10 +30,20 @@ export async function generateMetadata({
   if (!product) return { title: "Produkt nicht gefunden" };
   const categoryName = getCategory(product.category)?.name ?? "";
   let core = product.name.replace(/\s+/g, " ").trim().replace(/[\s:.]+$/u, "");
-  const pcode = (product.code || "").trim();
-  if (pcode && pcode !== product.name && !core.includes(pcode)) core = `${core} (${pcode})`;
-  if (core.length < 30 && categoryName) core = `${core} – ${categoryName}`;
-  const metaTitle = seoTitle(core, { brand: true });
+  const lc = core.toLowerCase();
+  // Artikelcode anhängen – aber nur Tokens, die nicht schon im Namen stehen
+  // (vermeidet Wortwiederholung, z. B. „… aus PTFE (PTFE AWG)").
+  const codeTokens = (product.code || "")
+    .trim()
+    .split(/\s+/)
+    .filter((t) => t && !lc.includes(t.toLowerCase()));
+  if (codeTokens.length) core = `${core} (${codeTokens.join(" ")})`;
+  // Kategorie nur bei kurzen Namen und wenn das Kategoriewort noch fehlt.
+  const catWord = categoryName.toLowerCase().replace(/e?n$/u, "");
+  if (core.length < 28 && catWord && !core.toLowerCase().includes(catWord)) {
+    core = `${core} – ${categoryName}`;
+  }
+  const metaTitle = clampText(core, 55);
   const metaDesc = clampDesc(product.description || product.tagline || core);
   return {
     title: { absolute: metaTitle },
@@ -153,9 +163,14 @@ export default async function ProductDetail({
               )}
             </div>
             <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">
-              {category && product.name.trim().split(/\s+/).length < 2
-                ? `${product.name} – ${category.name}`
-                : product.name}
+              {(() => {
+                const n = product.name.trim();
+                const short = n.length < 26 || n.split(/\s+/).length < 3;
+                const catWord = category?.name.toLowerCase().replace(/e?n$/u, "") ?? "";
+                return category && short && catWord && !n.toLowerCase().includes(catWord)
+                  ? `${n} – ${category.name}`
+                  : n;
+              })()}
             </h1>
             <p className="mt-2 text-lg text-slate-600">{product.tagline}</p>
             <p className="mt-5 leading-relaxed text-slate-700">{product.description}</p>

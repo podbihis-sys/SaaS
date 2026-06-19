@@ -384,7 +384,25 @@ function FilterChip({
 
 export default function ProductsPage() {
   return (
-    <Suspense fallback={<div className="container py-20 text-slate-500">Lädt …</div>}>
+    <Suspense
+      fallback={
+        <section className="border-b border-slate-200 bg-slate-50">
+          <div className="container py-14">
+            <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">Produkte</p>
+            <h1 className="mt-2 text-4xl font-bold tracking-tight text-slate-900">
+              Schläuche, Wellrohre &amp; Befestigung
+            </h1>
+            <p className="mt-3 max-w-2xl text-slate-600">
+              Über 1.000 Standardartikel aus Schrumpf-, Isolier-, Glasseiden- und
+              Geflechtschlauchtechnik, Wellrohre und Kabelbinder – filterbar nach Kategorie,
+              Material, Wandstärke, Schrumpfrate und Temperatur. Lieferung von Standardware in
+              der Regel innerhalb von 24 Stunden, Konfektion ab Losgröße 1.
+            </p>
+            <p className="mt-6 text-sm text-slate-400">Produkte werden geladen …</p>
+          </div>
+        </section>
+      }
+    >
       <Catalog />
     </Suspense>
   );
