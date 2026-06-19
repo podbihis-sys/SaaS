@@ -43,6 +43,7 @@ export async function generateMetadata({
   return {
     title: clampText(title, 60),
     description: clampDesc(description),
+    robots: { index: false, follow: true },
     alternates: { canonical: `${BASE_PATH}/${slug}/${kategorie}` },
     openGraph: {
       type: "website",

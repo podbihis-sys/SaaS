@@ -2,7 +2,6 @@ import type { MetadataRoute } from "next";
 import { PRODUCTS } from "./bit/_data/catalog";
 import {
   applicationTaxa,
-  categoriesForProducts,
   materialTaxa,
   propertyTaxa,
   shrinkTaxa,
@@ -25,31 +24,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
   const productPaths = PRODUCTS.map((p) => `/bit/produkte/${p.slug}`);
   const newsPaths = NEWS.map((n) => `/bit/news/${n.slug}`);
+  // Nur die Landing-Hauptseiten in die Sitemap aufnehmen. Die tief
+  // verschachtelten Kategorie-Varianten (…/[slug]/[kategorie]) sind bewusst
+  // noindex (Duplicate-Content/Kannibalisierung vermeiden) und gehören daher
+  // nicht in die Sitemap.
   const landingPaths = [
-    ...propertyTaxa().flatMap((t) => [
-      `/bit/produkte/eigenschaft/${t.slug}`,
-      ...categoriesForProducts(t.products).map(
-        (c) => `/bit/produkte/eigenschaft/${t.slug}/${c.id}`,
-      ),
-    ]),
-    ...applicationTaxa().flatMap((t) => [
-      `/bit/produkte/anwendung/${t.slug}`,
-      ...categoriesForProducts(t.products).map(
-        (c) => `/bit/produkte/anwendung/${t.slug}/${c.id}`,
-      ),
-    ]),
-    ...materialTaxa().flatMap((t) => [
-      `/bit/produkte/material/${t.slug}`,
-      ...categoriesForProducts(t.products).map(
-        (c) => `/bit/produkte/material/${t.slug}/${c.id}`,
-      ),
-    ]),
-    ...shrinkTaxa().flatMap((t) => [
-      `/bit/produkte/schrumpfrate/${t.slug}`,
-      ...categoriesForProducts(t.products).map(
-        (c) => `/bit/produkte/schrumpfrate/${t.slug}/${c.id}`,
-      ),
-    ]),
+    ...propertyTaxa().map((t) => `/bit/produkte/eigenschaft/${t.slug}`),
+    ...applicationTaxa().map((t) => `/bit/produkte/anwendung/${t.slug}`),
+    ...materialTaxa().map((t) => `/bit/produkte/material/${t.slug}`),
+    ...shrinkTaxa().map((t) => `/bit/produkte/schrumpfrate/${t.slug}`),
   ];
 
   return [...staticPaths, ...productPaths, ...newsPaths, ...landingPaths].map((path) => ({
