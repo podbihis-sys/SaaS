@@ -51,7 +51,9 @@ export function ProductCard({ product }: { product: Product }) {
             className="before:absolute before:inset-0 before:z-10"
             aria-label={`${product.name} – Details & Anfrage`}
           >
-            {product.name}
+            {product.code && product.code !== product.name && !product.name.includes(product.code)
+              ? `${product.name} (${product.code})`
+              : product.name}
           </Link>
         </h3>
         <p className="mt-1 text-sm text-[#1d4ed8]">{product.tagline}</p>
