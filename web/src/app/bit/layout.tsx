@@ -6,7 +6,7 @@ import { SiteChrome } from "./_components/site-chrome";
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
 
 const DESCRIPTION =
-  "Schrumpfschläuche, Isolier- und Geflechtschläuche, Wellrohre und Kabelbinder vom spezialisierten Hersteller. Über 1.000 Standardartikel, Lieferung in 24 h, Konfektion ab Losgröße 1.";
+  "Halogenfreie Schrumpfschläuche, Isolier- und Geflechtschläuche, Wellrohre und Kabelbinder vom spezialisierten Hersteller. Über 1.000 Standardartikel, Lieferung in 24 h, Konfektion ab Losgröße 1.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE),
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     apple: "/bit/logo.png",
   },
   title: {
-    default: "BIT Bierther GmbH – Schrumpf- & Isolierschlauchtechnik",
+    default: "Schrumpf- & Isolierschläuche halogenfrei – BIT Bierther",
     template: "%s · BIT Bierther GmbH",
   },
   description: DESCRIPTION,
@@ -53,13 +53,13 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "BIT Bierther GmbH",
     locale: "de_DE",
-    title: "BIT Bierther GmbH – Schrumpf- & Isolierschlauchtechnik",
+    title: "Schrumpf- & Isolierschläuche halogenfrei – BIT Bierther",
     description: DESCRIPTION,
     images: [{ url: "/bit/logo.png", alt: "BIT Bierther GmbH" }],
   },
   twitter: {
     card: "summary",
-    title: "BIT Bierther GmbH – Schrumpf- & Isolierschlauchtechnik",
+    title: "Schrumpf- & Isolierschläuche halogenfrei – BIT Bierther",
     description: DESCRIPTION,
   },
   robots: { index: true, follow: true },
