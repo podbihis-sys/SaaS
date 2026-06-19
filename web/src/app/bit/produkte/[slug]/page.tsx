@@ -29,22 +29,25 @@ export async function generateMetadata({
   const product = getProduct(slug);
   if (!product) return { title: "Produkt nicht gefunden" };
   const categoryName = getCategory(product.category)?.name ?? "";
-  let core = product.name.replace(/\s+/g, " ").trim().replace(/[\s:.]+$/u, "");
-  const lc = core.toLowerCase();
-  // Artikelcode anhängen – aber nur Tokens, die nicht schon im Namen stehen
-  // (vermeidet Wortwiederholung, z. B. „… aus PTFE (PTFE AWG)").
+  let base = product.name.replace(/\s+/g, " ").trim().replace(/[\s:.]+$/u, "");
+  const lc = base.toLowerCase();
+  // Artikelcode-Suffix – nur Tokens, die nicht schon im Namen stehen.
   const codeTokens = (product.code || "")
     .trim()
     .split(/\s+/)
     .filter((t) => t && !lc.includes(t.toLowerCase()));
-  if (codeTokens.length) core = `${core} (${codeTokens.join(" ")})`;
-  // Kategorie nur bei kurzen Namen und wenn das Kategoriewort noch fehlt.
+  const codeStr = codeTokens.length ? ` (${codeTokens.join(" ")})` : "";
+  // Kategorie bei kurzen Namen ergänzen, wenn das Kategoriewort fehlt.
   const catWord = categoryName.toLowerCase().replace(/e?n$/u, "");
-  if (core.length < 28 && catWord && !core.toLowerCase().includes(catWord)) {
-    core = `${core} – ${categoryName}`;
+  if (base.length + codeStr.length < 26 && catWord && !lc.includes(catWord)) {
+    base = `${base} – ${categoryName}`;
   }
-  const metaTitle = clampText(core, 55);
-  const metaDesc = clampDesc(product.description || product.tagline || core);
+  // Titel bauen: Code-Suffix immer erhalten (Eindeutigkeit), Basis ggf. kürzen.
+  let metaTitle = base + codeStr;
+  if (metaTitle.length > 58) metaTitle = clampText(base, Math.max(16, 58 - codeStr.length)) + codeStr;
+  // Sehr kurze Titel mit Marke verlängern (gegen „Titel zu kurz").
+  if (metaTitle.length < 34) metaTitle = `${metaTitle} · BIT Bierther GmbH`;
+  const metaDesc = clampDesc(product.description || product.tagline || product.name);
   return {
     title: { absolute: metaTitle },
     description: metaDesc,
@@ -165,11 +168,13 @@ export default async function ProductDetail({
             <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">
               {(() => {
                 const n = product.name.trim();
-                const short = n.length < 26 || n.split(/\s+/).length < 3;
+                const short = n.length < 28 || n.split(/\s+/).length < 3;
+                if (!short) return n;
                 const catWord = category?.name.toLowerCase().replace(/e?n$/u, "") ?? "";
-                return category && short && catWord && !n.toLowerCase().includes(catWord)
-                  ? `${n} – ${category.name}`
-                  : n;
+                if (category && catWord && !n.toLowerCase().includes(catWord)) return `${n} – ${category.name}`;
+                const tag = (product.tagline || "").trim();
+                if (tag && !n.toLowerCase().includes(tag.toLowerCase().slice(0, 6))) return `${n} – ${tag}`;
+                return category ? `${n} – ${category.name}` : n;
               })()}
             </h1>
             <p className="mt-2 text-lg text-slate-600">{product.tagline}</p>
