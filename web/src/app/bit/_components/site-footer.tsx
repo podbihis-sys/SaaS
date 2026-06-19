@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import { CATEGORIES, COMPANY } from "../_data/catalog";
 import { materialTaxa, propertyTaxa, shrinkTaxa } from "../_data/attributes";
 
@@ -37,6 +37,17 @@ export function SiteFooter() {
             {COMPANY.claim}. Seit {COMPANY.foundedYear} Ihr Partner für Schrumpf-,
             Isolier- und Geflechtschläuche, Wellrohre und Kabelbinder.
           </p>
+          <div className="mt-5 flex items-center gap-3">
+            <a
+              href="https://www.linkedin.com/company/bit-bierther-gmbh1"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="BIT Bierther GmbH auf LinkedIn"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 text-slate-600 transition-colors hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
+            >
+              <Linkedin className="h-4 w-4" />
+            </a>
+          </div>
         </div>
 
         <div>
