@@ -55,6 +55,29 @@ const KOMPETENZEN = [
   { title: "Farbige Schrumpfschläuche", image: "/bit/kompetenzen/farbig.jpg" },
 ];
 
+const FAQ = [
+  {
+    q: "Was ist ein Schrumpfschlauch und wofür wird er verwendet?",
+    a: "Ein Schrumpfschlauch ist ein Kunststoffschlauch, der sich bei Wärme auf einen definierten Durchmesser zusammenzieht. Er wird zur elektrischen Isolation, zur Bündelung und Kennzeichnung von Kabeln sowie zum mechanischen Schutz und zur Abdichtung von Verbindungen eingesetzt.",
+  },
+  {
+    q: "Welche Schrumpfraten bietet die BIT Bierther GmbH an?",
+    a: "Wir führen Schrumpfschläuche mit Schrumpfraten von 1,3:1 bis 6:1 – aus Polyolefin, PVC, PTFE, FEP, PVDF (Kynar®), Silikon und Elastomer, dünn- bis dickwandig und optional mit Innenkleber.",
+  },
+  {
+    q: "Wie schnell liefert BIT Bierther?",
+    a: "Standardartikel sind in der Regel ab Lager verfügbar und werden meist innerhalb von 24 Stunden versendet. Für Konfektion, Bedruckung und Sonderwerkstoffe nennen wir Ihnen mit dem Angebot einen verbindlichen Liefertermin.",
+  },
+  {
+    q: "Bietet BIT Bierther Konfektion und Bedruckung an?",
+    a: "Ja. Über sechs Produktionsstrecken schneiden, bedrucken und konfektionieren wir Schrumpf-, Isolier- und Glasseidenschläuche nach Ihren Vorgaben – vom einzelnen Zuschnitt bis zur Serie.",
+  },
+  {
+    q: "In welchen Branchen werden die Produkte eingesetzt?",
+    a: "Unsere Schläuche, Wellrohre und Kabelbinder kommen u. a. in Automotive, Energietechnik, Hausgeräten, Medizintechnik, Maschinen- und Anlagenbau, Licht- und Sicherheitstechnik zum Einsatz.",
+  },
+];
+
 const STATS = [
   { icon: Boxes, value: "1.000+", label: "Standardartikel" },
   { icon: Clock, value: "24 h", label: "Lieferung Standardware" },
@@ -393,6 +416,40 @@ export default async function BitHome() {
           </div>
         </section>
       )}
+
+      {/* --------------------------------------------------------------- FAQ */}
+      <section className="border-t border-slate-200 bg-white py-20 sm:py-24">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: FAQ.map((f) => ({
+                "@type": "Question",
+                name: f.q,
+                acceptedAnswer: { "@type": "Answer", text: f.a },
+              })),
+            }),
+          }}
+        />
+        <div className="container">
+          <Reveal className="mx-auto max-w-2xl text-center">
+            <span className="text-sm font-semibold uppercase tracking-wide text-[#c27803]">FAQ</span>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+              Häufige Fragen
+            </h2>
+          </Reveal>
+          <div className="mx-auto mt-10 max-w-3xl divide-y divide-slate-200 border-y border-slate-200">
+            {FAQ.map((f) => (
+              <Reveal key={f.q} as="div" className="py-5">
+                <h3 className="text-lg font-semibold text-slate-900">{f.q}</h3>
+                <p className="mt-2 leading-relaxed text-slate-600">{f.a}</p>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ----------------------------------------------------------------- CTA */}
       <section className="container py-20 sm:py-24">
