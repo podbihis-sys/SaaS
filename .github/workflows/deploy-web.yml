@@ -41,6 +41,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
           PRODUCTION: ${{ inputs.production }}
         run: |
           set -o pipefail
@@ -61,8 +62,15 @@ jobs:
           # Eigene BIT-Supabase-Instanz (oeffentliche Werte; Secrets ueberschreiben).
           BIT_URL="${NEXT_PUBLIC_BIT_SUPABASE_URL:-https://lhllsywxusrqtxcpnjbo.supabase.co}"
           BIT_KEY="${NEXT_PUBLIC_BIT_SUPABASE_ANON_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxobGxzeXd4dXNycXR4Y3BuamJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0OTY3NjEsImV4cCI6MjA5NzA3Mjc2MX0.hbqQU6MlbP7VJUpPdx9kTyqnGLW67702J8Us657iPG0}"
+          # Öffentliche Basis-URL für SEO (Canonical/Sitemap/robots/OG). Standard:
+          # die stabile BIT-Deployment-Domain, damit ein Crawler (z. B. Semrush)
+          # selbstkonsistente, gleichdomänige URLs sieht. Beim Umzug auf die echte
+          # Domain einfach das Secret NEXT_PUBLIC_SITE_URL=https://www.bit-gmbh.de setzen.
+          SITE_URL="${NEXT_PUBLIC_SITE_URL:-https://web-five-lime-bbyohdw5k8.vercel.app}"
           vercel deploy $PROD_FLAG --yes \
             --token="$VERCEL_TOKEN" \
+            --build-env NEXT_PUBLIC_SITE_URL="$SITE_URL" \
+            --env NEXT_PUBLIC_SITE_URL="$SITE_URL" \
             --build-env NEXT_PUBLIC_SUPABASE_URL="$SUPA_URL" \
             --build-env NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPA_KEY" \
             --build-env NEXT_PUBLIC_API_URL="$API_URL" \
