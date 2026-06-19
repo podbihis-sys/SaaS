@@ -10,10 +10,7 @@ export function ProductCard({ product }: { product: Product }) {
   const shrink = shrinkRatio(product);
   const diameter = diameterLabel(product);
   return (
-    <Link
-      href={`/bit/produkte/${product.slug}`}
-      className="bit-card group flex flex-col overflow-hidden"
-    >
+    <article className="bit-card group relative flex flex-col overflow-hidden">
       <div className="relative aspect-[4/3] overflow-hidden rounded-t-[1.3rem] bg-gradient-to-br from-slate-50 to-slate-100">
         <ProductIllustration
           category={product.category}
@@ -49,7 +46,13 @@ export function ProductCard({ product }: { product: Product }) {
 
       <div className="flex flex-1 flex-col p-5">
         <h3 className="text-lg font-semibold leading-snug text-slate-900 transition-colors group-hover:text-[#1e4a7a]">
-          {product.name}
+          <Link
+            href={`/bit/produkte/${product.slug}`}
+            className="before:absolute before:inset-0 before:z-10"
+            aria-label={`${product.name} – Details & Anfrage`}
+          >
+            {product.name}
+          </Link>
         </h3>
         <p className="mt-1 text-sm text-[#1d4ed8]">{product.tagline}</p>
         {diameter && (
@@ -84,6 +87,6 @@ export function ProductCard({ product }: { product: Product }) {
           </span>
         </div>
       </div>
-    </Link>
+    </article>
   );
 }
