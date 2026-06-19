@@ -51,10 +51,7 @@ export default async function NewsPage() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {posts.map((post, i) => (
               <Reveal key={post.slug} delay={(i % 3) * 70} className="h-full">
-                <Link
-                  href={`/bit/news/${post.slug}`}
-                  className="bit-card group flex h-full flex-col overflow-hidden"
-                >
+                <article className="bit-card group relative flex h-full flex-col overflow-hidden">
                   <div className="aspect-[16/10] overflow-hidden rounded-t-[1.3rem] bg-slate-100">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -74,12 +71,16 @@ export default async function NewsPage() {
                     <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-slate-600">
                       {post.excerpt}
                     </p>
-                    <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[#1e4a7a]">
+                    <Link
+                      href={`/bit/news/${post.slug}`}
+                      aria-label={post.title}
+                      className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[#1e4a7a] before:absolute before:inset-0"
+                    >
                       Weiterlesen
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </span>
+                    </Link>
                   </div>
-                </Link>
+                </article>
               </Reveal>
             ))}
           </div>
