@@ -7,6 +7,7 @@ import { getContent } from "../_data/content-server";
 import { ProductIllustration } from "../_components/product-illustration";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/bit/unternehmen" },
   title: "Unternehmen",
   description:
     "BIT Bierther GmbH – seit 1996 spezialisierter Hersteller und Lieferant für Schrumpf-, Isolier- und Geflechtschläuche aus Swisttal-Heimerzheim.",

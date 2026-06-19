@@ -16,6 +16,7 @@ import { Reveal } from "../_components/reveal";
 import { ProductIllustration } from "../_components/product-illustration";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/bit/kompetenzen" },
   title: "Kompetenzen",
   description:
     "Konfektion, Bedruckung, Sonderwerkstoffe (PTFE/FEP/Kynar), UL-Zulassung, farbige Schrumpfschläuche und ein breites Abmessungsspektrum: die Kompetenzen der BIT Bierther GmbH.",

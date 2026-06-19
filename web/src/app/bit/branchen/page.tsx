@@ -8,6 +8,7 @@ import { ProductIllustration } from "../_components/product-illustration";
 import { Reveal } from "../_components/reveal";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/bit/branchen" },
   title: "Branchen",
   description:
     "Schrumpf-, Isolier- und Geflechtschläuche, Wellrohre und Kabelbinder von BIT Bierther im Einsatz: Automotive, Energietechnik, Hausgeräte, Medizintechnik, Maschinenbau, Lichttechnik und Sicherheitstechnik.",

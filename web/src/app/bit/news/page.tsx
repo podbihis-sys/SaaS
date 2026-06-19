@@ -10,6 +10,7 @@ import { Reveal } from "../_components/reveal";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/bit/news" },
   title: "News",
   description:
     "Aktuelles von der BIT Bierther GmbH: Neuheiten, Produkttipps und Anwendungen rund um Schrumpf-, Isolier- und Geflechtschläuche, Wellrohre und Kabelbinder.",

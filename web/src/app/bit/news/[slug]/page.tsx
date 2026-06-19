@@ -5,8 +5,17 @@ import { ArrowLeft, CalendarDays } from "lucide-react";
 import { getCmsNewsPost, getCmsNews } from "../../_data/news-server";
 import { NEWS } from "../../_data/news";
 import { formatDate } from "../../_lib/format";
+import { COMPANY } from "../../_data/catalog";
 
 export const dynamic = "force-dynamic";
+
+const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
+
+/** Absolute URL für strukturierte Daten (Bilder/Canonical erwarten Volllinks). */
+function abs(path: string): string {
+  if (!path) return `${BASE}/bit/logo.png`;
+  return path.startsWith("http") ? path : `${BASE}${path}`;
+}
 
 export async function generateStaticParams() {
   return NEWS.map((n) => ({ slug: n.slug }));
@@ -23,9 +32,12 @@ export async function generateMetadata({
   return {
     title: post.title,
     description: post.excerpt,
+    alternates: { canonical: `/bit/news/${post.slug}` },
     openGraph: {
+      type: "article",
       title: post.title,
       description: post.excerpt,
+      publishedTime: post.date || undefined,
       images: post.image ? [{ url: post.image, alt: post.imageAlt }] : undefined,
     },
   };
@@ -86,8 +98,30 @@ export default async function NewsPostPage({
 
   const others = (await getCmsNews()).filter((n) => n.slug !== post.slug).slice(0, 3);
 
+  const articleLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: post.title,
+    description: post.excerpt,
+    image: [abs(post.image)],
+    datePublished: post.date || undefined,
+    dateModified: post.date || undefined,
+    inLanguage: "de-DE",
+    mainEntityOfPage: `${BASE}/bit/news/${post.slug}`,
+    author: { "@type": "Organization", name: COMPANY.legalName },
+    publisher: {
+      "@type": "Organization",
+      name: COMPANY.legalName,
+      logo: { "@type": "ImageObject", url: `${BASE}/bit/logo.png` },
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
+      />
       <article className="container max-w-3xl py-12">
         <Link
           href="/bit/news"

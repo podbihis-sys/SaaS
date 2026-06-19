@@ -6,6 +6,7 @@ import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/bit/kontakt" },
   title: "Kontakt",
   description: `Kontakt zur ${COMPANY.legalName} in ${COMPANY.city}: Telefon ${COMPANY.phone}, E-Mail ${COMPANY.email}.`,
 };

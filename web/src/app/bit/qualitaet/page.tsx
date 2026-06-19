@@ -5,6 +5,7 @@ import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/bit/qualitaet" },
   title: "Qualität",
   description:
     "Qualität bei BIT Bierther: DIN EN ISO 9001 seit 1997, dokumentierte Prozesse, RoHS- und REACH-Konformität sowie rückverfolgbare Konfektion.",
