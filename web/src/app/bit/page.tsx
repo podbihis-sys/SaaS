@@ -277,7 +277,7 @@ export default async function BitHome() {
               <Link href="/bit/kompetenzen" className="bit-card group flex h-full flex-col overflow-hidden">
                 <div className="aspect-[16/10] overflow-hidden rounded-t-[1.3rem] bg-slate-100">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={k.image} alt={k.title} className="bit-card-img h-full w-full object-cover" loading="lazy" />
+                  <img src={k.image} alt={k.title} className="bit-card-img h-full w-full object-contain" loading="lazy" />
                 </div>
                 <div className="flex flex-1 items-center justify-between gap-2 p-5">
                   <h3 className="font-semibold text-slate-900">{k.title}</h3>
@@ -373,7 +373,7 @@ export default async function BitHome() {
                 <Link href={`/bit/news/${post.slug}`} className="bit-card group flex h-full flex-col overflow-hidden">
                   <div className="aspect-[16/10] overflow-hidden rounded-t-[1.3rem] bg-slate-100">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={post.image} alt={post.imageAlt} className="bit-card-img h-full w-full object-cover" loading="lazy" />
+                    <img src={post.image} alt={post.imageAlt} className="bit-card-img h-full w-full object-contain" loading="lazy" />
                   </div>
                   <div className="flex flex-1 flex-col p-6">
                     {post.date && (

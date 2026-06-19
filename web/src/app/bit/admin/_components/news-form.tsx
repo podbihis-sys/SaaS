@@ -153,7 +153,7 @@ export function NewsForm({ initial }: { initial?: NewsInput }) {
           <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
             {f.image_path ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={publicUrl(f.image_path)} alt="" className="h-full w-full object-cover" />
+              <img src={publicUrl(f.image_path)} alt="" className="h-full w-full object-contain" />
             ) : (
               <span className="text-xs text-slate-400">kein Bild</span>
             )}

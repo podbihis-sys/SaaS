@@ -6,6 +6,7 @@ import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
 import { ProductIllustration } from "../_components/product-illustration";
 import { Reveal } from "../_components/reveal";
+import { BreadcrumbLd } from "../_components/breadcrumb-ld";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/bit/branchen" },
@@ -117,6 +118,7 @@ export default async function BranchenPage() {
   const content = await getContent();
   return (
     <>
+      <BreadcrumbLd items={[{ name: "Home", path: "/bit" }, { name: "Branchen", path: "/bit/branchen" }]} />
       {/* ----------------------------------------------------------------- Hero */}
       <section className="relative overflow-hidden bg-[#0f2742]">
         <div className="absolute inset-0 opacity-20">
@@ -153,7 +155,7 @@ export default async function BranchenPage() {
                 <img
                   src={ind.image}
                   alt={ind.imageAlt}
-                  className="aspect-[21/9] w-full object-cover lg:aspect-[16/10]"
+                  className="aspect-[21/9] w-full bg-slate-50 object-contain"
                   loading="lazy"
                 />
               </div>

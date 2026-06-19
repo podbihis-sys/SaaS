@@ -6,6 +6,7 @@ import { getCmsNewsPost, getCmsNews } from "../../_data/news-server";
 import { NEWS } from "../../_data/news";
 import { formatDate } from "../../_lib/format";
 import { COMPANY } from "../../_data/catalog";
+import { BreadcrumbLd } from "../../_components/breadcrumb-ld";
 
 export const dynamic = "force-dynamic";
 
@@ -118,6 +119,13 @@ export default async function NewsPostPage({
 
   return (
     <>
+      <BreadcrumbLd
+        items={[
+          { name: "Home", path: "/bit" },
+          { name: "News", path: "/bit/news" },
+          { name: post.title, path: `/bit/news/${post.slug}` },
+        ]}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
@@ -142,7 +150,7 @@ export default async function NewsPostPage({
         {post.image && (
           <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={post.image} alt={post.imageAlt} className="w-full object-cover" />
+            <img src={post.image} alt={post.imageAlt} className="w-full object-contain" />
           </div>
         )}
 
@@ -180,7 +188,7 @@ export default async function NewsPostPage({
                     <img
                       src={n.image}
                       alt={n.imageAlt}
-                      className="bit-card-img h-full w-full object-cover"
+                      className="bit-card-img h-full w-full object-contain"
                       loading="lazy"
                     />
                   </div>

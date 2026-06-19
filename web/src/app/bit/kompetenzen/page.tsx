@@ -14,6 +14,7 @@ import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
 import { Reveal } from "../_components/reveal";
 import { ProductIllustration } from "../_components/product-illustration";
+import { BreadcrumbLd } from "../_components/breadcrumb-ld";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/bit/kompetenzen" },
@@ -77,6 +78,7 @@ export default async function KompetenzenPage() {
   const content = await getContent();
   return (
     <>
+      <BreadcrumbLd items={[{ name: "Home", path: "/bit" }, { name: "Kompetenzen", path: "/bit/kompetenzen" }]} />
       {/* ----------------------------------------------------------------- Hero */}
       <section className="relative overflow-hidden bg-[#0f2742]">
         <div className="absolute inset-0 opacity-20">
@@ -106,7 +108,7 @@ export default async function KompetenzenPage() {
               <article className="bit-card flex h-full flex-col overflow-hidden">
                 <div className="aspect-[16/9] overflow-hidden rounded-t-[1.3rem] bg-slate-100">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={image} alt={imageAlt} className="bit-card-img h-full w-full object-cover" loading="lazy" />
+                  <img src={image} alt={imageAlt} className="bit-card-img h-full w-full object-contain" loading="lazy" />
                 </div>
                 <div className="flex flex-1 flex-col p-6">
                   <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#1e4a7a]/10 text-[#1e4a7a]">

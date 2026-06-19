@@ -6,6 +6,7 @@ import { getContent } from "../_data/content-server";
 import { getCmsNews } from "../_data/news-server";
 import { formatDate } from "../_lib/format";
 import { Reveal } from "../_components/reveal";
+import { BreadcrumbLd } from "../_components/breadcrumb-ld";
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +23,7 @@ export default async function NewsPage() {
 
   return (
     <>
+      <BreadcrumbLd items={[{ name: "Home", path: "/bit" }, { name: "News", path: "/bit/news" }]} />
       {/* ----------------------------------------------------------------- Hero */}
       <section className="border-b border-slate-200 bg-slate-50">
         <div className="container py-16">
@@ -58,7 +60,7 @@ export default async function NewsPage() {
                     <img
                       src={post.image}
                       alt={post.imageAlt}
-                      className="bit-card-img h-full w-full object-cover"
+                      className="bit-card-img h-full w-full object-contain"
                       loading="lazy"
                     />
                   </div>
