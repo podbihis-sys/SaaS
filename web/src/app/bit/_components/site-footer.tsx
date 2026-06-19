@@ -60,7 +60,7 @@ export function SiteFooter() {
             {CATEGORIES.map((c) => (
               <li key={c.id}>
                 <Link href={`/bit/produkte?kategorie=${c.id}`} rel="nofollow" className="text-slate-500 hover:text-[#1e4a7a]">
-                  {c.name}
+                  {c.name} kaufen
                 </Link>
               </li>
             ))}
