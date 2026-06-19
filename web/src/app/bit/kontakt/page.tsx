@@ -108,6 +108,61 @@ export default async function KontaktPage() {
           </div>
         </div>
       </section>
+
+      <section className="border-t border-slate-200 bg-slate-50">
+        <div className="container py-16">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+            {c(content, "kontakt.service.title", "Anfahrt, Lieferung & Service")}
+          </h2>
+          <p className="mt-4 max-w-3xl leading-relaxed text-slate-700">
+            {c(
+              content,
+              "kontakt.service.text",
+              `Unser Firmensitz liegt in ${COMPANY.street}, ${COMPANY.zip} ${COMPANY.city} – verkehrsgünstig zwischen Bonn und Euskirchen erreichbar. Standardartikel versenden wir in der Regel innerhalb von 24 Stunden; für Konfektion, Bedruckung und Sonderwerkstoffe erstellen wir Ihnen gerne ein individuelles Angebot. Sprechen Sie uns ${COMPANY.hours} telefonisch, per E-Mail oder über den Warenkorb an – wir beraten Sie technisch fundiert und lösungsorientiert.`,
+            )}
+          </p>
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { href: "/bit/produkte", title: "Sortiment", text: "Über 1.000 Standardartikel in 9 Kategorien." },
+              { href: "/bit/kompetenzen", title: "Kompetenzen", text: "Zuschnitt, Bedruckung & Sonderwerkstoffe." },
+              { href: "/bit/branchen", title: "Branchen", text: "Lösungen für Automotive bis Medizintechnik." },
+              { href: "/bit/news", title: "News", text: "Neuheiten und Anwendungstipps." },
+            ].map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-[#1e4a7a]"
+              >
+                <span className="font-semibold text-slate-900">{l.title}</span>
+                <span className="mt-1 block text-sm text-slate-600">{l.text}</span>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-10 grid gap-6 lg:grid-cols-3">
+            {[
+              {
+                q: "Wie schnell liefern Sie?",
+                a: "Standardartikel sind in der Regel ab Lager verfügbar und werden meist innerhalb von 24 Stunden versendet. Bei Konfektion oder Sonderanfertigungen nennen wir Ihnen mit dem Angebot einen verbindlichen Liefertermin.",
+              },
+              {
+                q: "Kann ich Schläuche nach Maß bestellen?",
+                a: "Ja. Wir schneiden, bedrucken und konfektionieren Schrumpf-, Isolier- und Glasseidenschläuche nach Ihren Vorgaben – über sechs Produktionsstrecken an unserem Standort in Heimerzheim.",
+              },
+              {
+                q: "Wie stelle ich eine Anfrage?",
+                a: "Legen Sie die gewünschten Artikel in allen benötigten Größen in den Warenkorb und senden Sie alles in einer einzigen Anfrage. Wir antworten mit einem individuellen Angebot – in der Regel innerhalb von 24 Stunden.",
+              },
+            ].map((f) => (
+              <div key={f.q} className="rounded-2xl border border-slate-200 bg-white p-6">
+                <h3 className="font-semibold text-slate-900">{f.q}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">{f.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </>
   );
 }

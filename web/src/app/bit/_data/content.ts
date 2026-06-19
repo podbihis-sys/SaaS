@@ -47,6 +47,8 @@ export const CONTENT_FIELDS: ContentField[] = [
   // Kontakt
   { key: "kontakt.title", label: "Überschrift", page: "Kontakt" },
   { key: "kontakt.intro", label: "Einleitung", page: "Kontakt", multiline: true },
+  { key: "kontakt.service.title", label: "Service-Abschnitt – Überschrift", page: "Kontakt" },
+  { key: "kontakt.service.text", label: "Service-Abschnitt – Text", page: "Kontakt", multiline: true },
 ];
 
 export type ContentMap = Record<string, string>;
