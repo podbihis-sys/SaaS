@@ -93,8 +93,8 @@ const ADVANTAGES = [
 ];
 
 export default async function BitHome() {
-  const content = await getContent();
-  const latestNews = (await getCmsNews()).slice(0, 3);
+  const [content, news] = await Promise.all([getContent(), getCmsNews()]);
+  const latestNews = news.slice(0, 3);
   const featured = PRODUCTS.filter((p) =>
     [
       "schrumpfschlauch-mit-kleber-bpdw-100",

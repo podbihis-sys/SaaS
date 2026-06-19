@@ -399,6 +399,29 @@ export default function ProductsPage() {
               der Regel innerhalb von 24 Stunden, Konfektion ab Losgröße 1.
             </p>
             <p className="mt-6 text-sm text-slate-400">Produkte werden geladen …</p>
+            <nav className="mt-10" aria-label="Alle Produkte">
+              {CATEGORIES.map((cat) => {
+                const items = PRODUCTS.filter((p) => p.category === cat.id);
+                if (items.length === 0) return null;
+                return (
+                  <div key={cat.id} className="mt-6">
+                    <h2 className="text-sm font-bold uppercase tracking-wide text-[#1e4a7a]">{cat.name}</h2>
+                    <ul className="mt-2 grid gap-x-6 gap-y-1 sm:grid-cols-2 lg:grid-cols-3">
+                      {items.map((p) => (
+                        <li key={p.slug}>
+                          <Link
+                            href={`/bit/produkte/${p.slug}`}
+                            className="text-sm text-slate-600 hover:text-[#1e4a7a]"
+                          >
+                            {p.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
+            </nav>
           </div>
         </section>
       }

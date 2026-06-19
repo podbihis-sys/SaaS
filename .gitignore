@@ -75,3 +75,6 @@ supabase/.temp/
 
 # Claude Code local (personal) settings – not for the repo
 .claude/settings.local.json
+
+# Geschäftsdokumente (kein Code)
+Angebot-*.html
