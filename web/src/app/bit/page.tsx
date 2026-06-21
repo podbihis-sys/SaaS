@@ -25,7 +25,7 @@ import { Reveal } from "./_components/reveal";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: { absolute: "Schrumpf- & Isolierschläuche halogenfrei – BIT Bierther" },
+  title: { absolute: "BIT Bierther GmbH – Schrumpf- & Isolierschlauchtechnik" },
   description:
     "Halogenfreie Schrumpf-, Isolier- & Geflechtschläuche, Wellrohre & Kabelbinder. 1.000+ Artikel, Lieferung in 24 h, Konfektion ab Losgröße 1.",
   alternates: { canonical: "/bit" },
