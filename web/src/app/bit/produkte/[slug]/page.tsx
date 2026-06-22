@@ -9,7 +9,7 @@ import {
   productsByCategory,
 } from "../../_data/catalog";
 import { applicationTaxa, formatMm, materialTaxa, propertyTaxonForText, slugify } from "../../_data/attributes";
-import { clampText, clampDesc } from "../../_lib/seo";
+import { clampText, clampDesc, productH1, distinctTitle } from "../../_lib/seo";
 import { getRolls } from "../../_data/rolls";
 import { getPacks } from "../../_data/packs";
 import { ProductIllustration } from "../../_components/product-illustration";
@@ -47,6 +47,8 @@ export async function generateMetadata({
   if (metaTitle.length > 58) metaTitle = clampText(base, Math.max(16, 58 - codeStr.length)) + codeStr;
   // Sehr kurze Titel mit Marke verlängern (gegen „Titel zu kurz").
   if (metaTitle.length < 34) metaTitle = `${metaTitle} · BIT Bierther GmbH`;
+  // Title darf nicht identisch mit der H1 sein (Duplicate h1/title).
+  metaTitle = distinctTitle(metaTitle, productH1(product.name, categoryName, product.tagline));
   const metaDesc = clampDesc(product.description || product.tagline || product.name);
   return {
     title: { absolute: metaTitle },
@@ -177,16 +179,7 @@ export default async function ProductDetail({
               )}
             </div>
             <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">
-              {(() => {
-                const n = product.name.trim();
-                const short = n.length < 28 || n.split(/\s+/).length < 3;
-                if (!short) return n;
-                const catWord = category?.name.toLowerCase().replace(/e?n$/u, "") ?? "";
-                if (category && catWord && !n.toLowerCase().includes(catWord)) return `${n} – ${category.name}`;
-                const tag = (product.tagline || "").trim();
-                if (tag && !n.toLowerCase().includes(tag.toLowerCase().slice(0, 6))) return `${n} – ${tag}`;
-                return category ? `${n} – ${category.name}` : n;
-              })()}
+              {productH1(product.name, category?.name, product.tagline)}
             </h1>
             <p className="mt-2 text-lg text-slate-600">{product.tagline}</p>
             <p className="mt-5 leading-relaxed text-slate-700">{product.description}</p>

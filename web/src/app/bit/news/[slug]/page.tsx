@@ -7,7 +7,7 @@ import { NEWS } from "../../_data/news";
 import { formatDate } from "../../_lib/format";
 import { COMPANY } from "../../_data/catalog";
 import { BreadcrumbLd } from "../../_components/breadcrumb-ld";
-import { clampText, clampDesc } from "../../_lib/seo";
+import { clampText, clampDesc, distinctTitle } from "../../_lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +31,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = await getCmsNewsPost(slug);
   if (!post) return { title: "News" };
-  const metaTitle = clampText(post.title, 55);
+  const metaTitle = distinctTitle(clampText(post.title, 55), post.title);
   const metaDesc = clampDesc(post.excerpt);
   return {
     title: { absolute: metaTitle },

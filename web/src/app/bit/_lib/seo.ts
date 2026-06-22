@@ -36,3 +36,31 @@ export function seoTitle(core: string, opts: { brand?: boolean } = {}): string {
 export function clampDesc(input: string, max: number = DESC_MAX): string {
   return clampText(input, max);
 }
+
+/**
+ * Baut die H1 einer Produktseite. Sehr kurze Namen werden mit Kategorie bzw.
+ * Tagline angereichert, damit die H1 sprechend ist. Wird sowohl in der Seite
+ * (sichtbare H1) als auch in der Metadaten-Funktion (Dedup gegen den Title)
+ * verwendet, damit beide garantiert konsistent sind.
+ */
+export function productH1(name: string, categoryName?: string, tagline?: string): string {
+  const n = (name ?? "").trim();
+  const short = n.length < 28 || n.split(/\s+/).length < 3;
+  if (!short) return n;
+  const catWord = categoryName ? categoryName.toLowerCase().replace(/e?n$/u, "") : "";
+  if (categoryName && catWord && !n.toLowerCase().includes(catWord)) return `${n} – ${categoryName}`;
+  const tag = (tagline ?? "").trim();
+  if (tag && !n.toLowerCase().includes(tag.toLowerCase().slice(0, 6))) return `${n} – ${tag}`;
+  return categoryName ? `${n} – ${categoryName}` : n;
+}
+
+/**
+ * Stellt sicher, dass der Seitentitel nicht identisch mit der H1 ist
+ * (Seobility/Semrush: „Duplicate content in h1 and title"). Bei Kollision wird
+ * der Marken-Suffix angehängt und der Title dabei ≤ 60 Zeichen gehalten.
+ */
+export function distinctTitle(title: string, h1: string): string {
+  const norm = (s: string) => s.replace(/\s+/g, " ").trim().toLowerCase();
+  if (norm(title) !== norm(h1)) return title;
+  return `${clampText(title, 60 - (BRAND.length + 3))} · ${BRAND}`;
+}
