@@ -1,6 +1,4 @@
-import { SITE_URL } from "../_lib/site";
-
-const BASE = SITE_URL;
+const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
 
 /**
  * Gibt BreadcrumbList-Structured-Data (schema.org) aus. `items` ist die

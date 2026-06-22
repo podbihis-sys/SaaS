@@ -8,11 +8,10 @@ import { formatDate } from "../../_lib/format";
 import { COMPANY } from "../../_data/catalog";
 import { BreadcrumbLd } from "../../_components/breadcrumb-ld";
 import { clampText, clampDesc, distinctTitle } from "../../_lib/seo";
-import { SITE_URL } from "../../_lib/site";
 
 export const dynamic = "force-dynamic";
 
-const BASE = SITE_URL;
+const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
 
 /** Absolute URL für strukturierte Daten (Bilder/Canonical erwarten Volllinks). */
 function abs(path: string): string {

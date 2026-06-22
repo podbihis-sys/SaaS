@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import type { Product } from "../_data/catalog";
 import { ProductCard } from "./product-card";
-import { SITE_URL } from "../_lib/site";
 
 export interface RefineLink {
   label: string;
@@ -46,7 +45,7 @@ export function TaxonLanding({
   /** Verfeinerung nach Kategorie – jede Variante hat eine eigene URL. */
   refine?: RefineLink[];
 }) {
-  const base = SITE_URL;
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
   const h1 = heading ?? `${label} – Schrumpf- & Isolierschläuche`;
   const canonicalPath = parent ? `${parent.href}` : basePath;
 
