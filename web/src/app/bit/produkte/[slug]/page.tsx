@@ -91,6 +91,17 @@ export default async function ProductDetail({
     sku: product.code,
     category: category?.name,
     brand: { "@type": "Brand", name: "BIT Bierther GmbH" },
+    // B2B-Anfragemodell: keine öffentlichen Preise. Ein gültiges Offer mit
+    // Verfügbarkeit, Währung, URL und Verkäufer behebt den Strukturdaten-Fehler
+    // „Either offers, review or aggregateRating should be specified" – ohne
+    // erfundene Preise.
+    offers: {
+      "@type": "Offer",
+      availability: "https://schema.org/InStock",
+      priceCurrency: "EUR",
+      url: `${base}/bit/produkte/${product.slug}`,
+      seller: { "@type": "Organization", name: "BIT Bierther GmbH" },
+    },
   };
   const breadcrumbLd = {
     "@context": "https://schema.org",
