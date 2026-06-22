@@ -224,7 +224,8 @@ export default async function BitHome() {
           {CATEGORIES.map((cat, i) => (
             <Reveal key={cat.id} delay={i * 70} className="h-full">
               <Link
-                href={`/bit/produkte/kategorie/${cat.id}`}
+                href={`/bit/produkte?kategorie=${cat.id}`}
+                rel="nofollow"
                 className="bit-card group flex h-full flex-col overflow-hidden"
               >
                 <div className="aspect-[16/9] overflow-hidden rounded-t-[1.3rem] bg-gradient-to-br from-slate-50 to-slate-100">
