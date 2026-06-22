@@ -26,7 +26,7 @@ export async function generateMetadata({
   return {
     title: clampText(title, 60),
     description: clampDesc(taxon.intro),
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     alternates: { canonical: `${BASE_PATH}/${taxon.slug}` },
     openGraph: {
       type: "website",

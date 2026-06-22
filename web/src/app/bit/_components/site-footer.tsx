@@ -59,7 +59,7 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-2 text-sm">
             {CATEGORIES.map((c) => (
               <li key={c.id}>
-                <Link href={`/bit/produkte?kategorie=${c.id}`} rel="nofollow" className="text-slate-500 hover:text-[#1e4a7a]">
+                <Link href={`/bit/produkte/kategorie/${c.id}`} className="text-slate-500 hover:text-[#1e4a7a]">
                   {c.name} kaufen
                 </Link>
               </li>
@@ -76,7 +76,7 @@ export function SiteFooter() {
             <li><Link href="/bit/unternehmen" className="text-slate-500 hover:text-[#1e4a7a]">Die BIT</Link></li>
             <li><Link href="/bit/qualitaet" className="text-slate-500 hover:text-[#1e4a7a]">Qualität & Zertifikate</Link></li>
             <li><Link href="/bit/kontakt" className="text-slate-500 hover:text-[#1e4a7a]">Kontakt</Link></li>
-            <li><Link href="/bit/warenkorb" rel="nofollow" className="text-slate-500 hover:text-[#1e4a7a]">Anfrage / Warenkorb</Link></li>
+            <li><Link href="/bit/warenkorb" className="text-slate-500 hover:text-[#1e4a7a]">Anfrage / Warenkorb</Link></li>
           </ul>
         </div>
 

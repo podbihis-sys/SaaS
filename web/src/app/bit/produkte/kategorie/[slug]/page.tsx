@@ -1,17 +1,16 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import {
-  categoriesForProducts,
-  getMaterialTaxon,
-  materialTaxa,
+  categoryTaxa,
+  getCategoryTaxon,
 } from "../../../_data/attributes";
 import { TaxonLanding } from "../../../_components/taxon-landing";
 import { clampDesc, clampText } from "../../../_lib/seo";
 
-const BASE_PATH = "/bit/produkte/material";
+const BASE_PATH = "/bit/produkte/kategorie";
 
 export function generateStaticParams() {
-  return materialTaxa().map((t) => ({ slug: t.slug }));
+  return categoryTaxa().map((t) => ({ slug: t.slug }));
 }
 
 export async function generateMetadata({
@@ -20,9 +19,10 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const taxon = getMaterialTaxon(slug);
-  if (!taxon) return { title: "Material nicht gefunden" };
-  const title = `${taxon.label} – Schläuche & Schrumpfschläuche`;
+  const taxon = getCategoryTaxon(slug);
+  if (!taxon) return { title: "Kategorie nicht gefunden" };
+  // Title bewusst ≠ H1 (H1 = reines Label), gegen „Duplicate h1/title".
+  const title = `${taxon.label} – Auswahl, Material & Größen`;
   return {
     title: clampText(title, 60),
     description: clampDesc(taxon.intro),
@@ -30,47 +30,36 @@ export async function generateMetadata({
     alternates: { canonical: `${BASE_PATH}/${taxon.slug}` },
     openGraph: {
       type: "website",
-      title: `${title} · BIT Bierther GmbH`,
+      title: `${taxon.label} · BIT Bierther GmbH`,
       description: clampDesc(taxon.intro),
       url: `${BASE_PATH}/${taxon.slug}`,
     },
   };
 }
 
-export default async function MaterialLanding({
+export default async function CategoryLanding({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const taxon = getMaterialTaxon(slug);
+  const taxon = getCategoryTaxon(slug);
   if (!taxon) notFound();
 
-  const related = materialTaxa()
+  const related = categoryTaxa()
     .filter((t) => t.slug !== taxon.slug)
     .map((t) => ({ slug: t.slug, label: t.label }));
 
-  const refine = [
-    { label: "Alle", href: `${BASE_PATH}/${taxon.slug}`, count: taxon.products.length, active: true },
-    ...categoriesForProducts(taxon.products).map((c) => ({
-      label: c.name,
-      href: `${BASE_PATH}/${taxon.slug}/${c.id}`,
-      count: c.count,
-      active: false,
-    })),
-  ];
-
   return (
     <TaxonLanding
-      kind="Material"
+      kind="Kategorie"
       label={taxon.label}
-      heading={`${taxon.label} – Schläuche & Schrumpfschläuche`}
+      heading={taxon.label}
       intro={taxon.intro}
       products={taxon.products}
       basePath={BASE_PATH}
-      baseLabel="Werkstoffe"
+      baseLabel="Kategorien"
       related={related}
-      refine={refine.length > 2 ? refine : undefined}
     />
   );
 }

@@ -1,6 +1,12 @@
 import type { MetadataRoute } from "next";
 import { PRODUCTS } from "./bit/_data/catalog";
 import { NEWS } from "./bit/_data/news";
+import {
+  categoryTaxa,
+  materialTaxa,
+  propertyTaxa,
+  shrinkTaxa,
+} from "./bit/_data/attributes";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
 
@@ -18,11 +24,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
   const productPaths = PRODUCTS.map((p) => `/bit/produkte/${p.slug}`);
   const newsPaths = NEWS.map((n) => `/bit/news/${n.slug}`);
-  // Die Filter-/Landing-Seiten (eigenschaft/anwendung/material/schrumpfrate und
-  // ihre Kategorie-Varianten) sind bewusst noindex (Duplicate-Content/
-  // Kannibalisierung) und daher nicht in der Sitemap.
+  // Indexierbare SEO-Landingpages (Kategorie, Material, Eigenschaft,
+  // Schrumpfrate) – keyword-reich und mit eigenem, einzigartigem Inhalt.
+  const categoryPaths = categoryTaxa().map((t) => `/bit/produkte/kategorie/${t.slug}`);
+  const materialPaths = materialTaxa().map((t) => `/bit/produkte/material/${t.slug}`);
+  const propertyPaths = propertyTaxa().map((t) => `/bit/produkte/eigenschaft/${t.slug}`);
+  const shrinkPaths = shrinkTaxa().map((t) => `/bit/produkte/schrumpfrate/${t.slug}`);
+  // Die Kategorie-Verfeinerungen (.../[slug]/[kategorie]) und die
+  // Anwendungs-Seiten bleiben bewusst noindex und sind nicht in der Sitemap.
 
-  return [...staticPaths, ...productPaths, ...newsPaths].map((path) => ({
+  return [
+    ...staticPaths,
+    ...categoryPaths,
+    ...materialPaths,
+    ...propertyPaths,
+    ...shrinkPaths,
+    ...productPaths,
+    ...newsPaths,
+  ].map((path) => ({
     url: `${BASE}${path}`,
     lastModified: now,
     changeFrequency:
