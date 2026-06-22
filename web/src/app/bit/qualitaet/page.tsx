@@ -52,6 +52,36 @@ export default async function QualitaetPage() {
         </div>
       </section>
 
+      <section className="container pb-4">
+        <div className="prose-slate max-w-3xl">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+            Qualitätssicherung von der Beschaffung bis zur Konfektion
+          </h2>
+          <p className="mt-4 leading-relaxed text-slate-600">
+            Als spezialisierter Hersteller und Lieferant von Schrumpfschläuchen, Isolier- und
+            Geflechtschläuchen, Wellrohren und Kabelbindern stehen wir für gleichbleibend hohe
+            Produktqualität. Unsere Werkstoffe – von halogenfreiem, vernetztem Polyolefin über
+            PVC, PTFE, FEP und Kynar® (PVDF) bis zu Silikon – werden ausschließlich von
+            qualifizierten Herstellern bezogen und bei der Wareneingangsprüfung auf
+            Maßhaltigkeit, Schrumpfverhalten und Materialgüte kontrolliert.
+          </p>
+          <p className="mt-4 leading-relaxed text-slate-600">
+            Zahlreiche Artikel sind nach UL 224 zugelassen, flammhemmend und entsprechen den
+            Anforderungen von VDE und einschlägigen Industrienormen. Für sicherheitsrelevante
+            Anwendungen in Bahntechnik, Automotive, Luftfahrt und Anlagenbau stellen wir auf
+            Anfrage Werkszeugnisse, Konformitätserklärungen sowie RoHS- und REACH-Nachweise
+            bereit. Die kundenspezifische Konfektion – Ablängen, Bedrucken und Bündeln ab
+            Losgröße 1 – erfolgt rückverfolgbar und dokumentiert bis zur einzelnen Charge.
+          </p>
+          <p className="mt-4 leading-relaxed text-slate-600">
+            Seit der Erstzertifizierung nach DIN EN ISO 9001 im Jahr 1997 entwickeln wir unser
+            Qualitätsmanagementsystem kontinuierlich weiter. Regelmäßige interne Audits und
+            externe Überwachungen durch den TÜV stellen sicher, dass unsere Prozesse den
+            steigenden Anforderungen unserer Kunden dauerhaft gerecht werden.
+          </p>
+        </div>
+      </section>
+
       <section className="border-t border-slate-200 bg-[#0f2742] py-16">
         <div className="container flex flex-col items-center justify-between gap-6 text-center sm:flex-row sm:text-left">
           <div>
