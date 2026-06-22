@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
+import { SITE_URL } from "./bit/_lib/site";
+
+const BASE = SITE_URL;
 
 export default function robots(): MetadataRoute.Robots {
   return {

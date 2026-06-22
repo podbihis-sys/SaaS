@@ -10,6 +10,7 @@ import {
 } from "../../_data/catalog";
 import { applicationTaxa, formatMm, materialTaxa, propertyTaxonForText, slugify } from "../../_data/attributes";
 import { clampText, clampDesc, productH1, distinctTitle } from "../../_lib/seo";
+import { SITE_URL } from "../../_lib/site";
 import { getRolls } from "../../_data/rolls";
 import { getPacks } from "../../_data/packs";
 import { ProductIllustration } from "../../_components/product-illustration";
@@ -82,7 +83,7 @@ export default async function ProductDetail({
   const rolls = getRolls(product.slug);
   const packs = !rolls ? getPacks(product.slug) : undefined;
 
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
+  const base = SITE_URL;
   const imageUrl = product.image?.startsWith("/") ? `${base}${product.image}` : product.image;
   const productLd = {
     "@context": "https://schema.org",

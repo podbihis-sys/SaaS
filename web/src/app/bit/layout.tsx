@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "./bit.css";
 import { COMPANY } from "./_data/catalog";
 import { SiteChrome } from "./_components/site-chrome";
+import { SITE_URL } from "./_lib/site";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
+const BASE = SITE_URL;
 
 const DESCRIPTION =
   "Halogenfreie Schrumpfschläuche, Isolier- und Geflechtschläuche, Wellrohre und Kabelbinder vom spezialisierten Hersteller. Über 1.000 Standardartikel, Lieferung in 24 h, Konfektion ab Losgröße 1.";
