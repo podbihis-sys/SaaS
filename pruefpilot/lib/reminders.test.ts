@@ -18,7 +18,7 @@ describe("reminderStageFor", () => {
     [8, "d30"],
     [7, "d7"],
     [1, "d7"],
-    [0, "d7"],
+    [0, "final"],
     [-1, "overdue"],
     [-90, "overdue"],
   ])("daysLeft=%i → %s", (daysLeft, expected) => {
@@ -46,6 +46,70 @@ describe("reminderStageFor", () => {
 
   it("liefert daysLeft mit", () => {
     expect(reminderStageFor(due(-3), TODAY, none)).toEqual({ stage: "overdue", daysLeft: -3 });
+  });
+});
+
+describe("reminderStageFor — letzter Arbeitstag (Wochenende/Feiertag)", () => {
+  // Fälligkeit Samstag 2026-06-20, letzter Arbeitstag davor ist Freitag 2026-06-19.
+  const due = "2026-06-20";
+  const finalDate = "2026-06-19";
+
+  it("schickt am letzten Arbeitstag die 'final'-Stufe", () => {
+    expect(reminderStageFor(due, "2026-06-19", none, finalDate)).toEqual({
+      stage: "final",
+      daysLeft: 1,
+    });
+  });
+
+  it("schickt am Tag davor weiterhin die d7-Stufe, nicht final", () => {
+    expect(reminderStageFor(due, "2026-06-18", none, finalDate)?.stage).toBe("d7");
+  });
+
+  it("sendet am Fälligkeits-Wochenende nichts mehr, wenn final schon raus ist", () => {
+    expect(
+      reminderStageFor(due, "2026-06-20", new Set<ReminderStage>(["final"]), finalDate),
+    ).toBeNull();
+  });
+
+  it("eskaliert nach dem Fälligkeitstag zu overdue", () => {
+    expect(
+      reminderStageFor(due, "2026-06-21", new Set<ReminderStage>(["final"]), finalDate)?.stage,
+    ).toBe("overdue");
+  });
+
+  it("ohne Verschiebung (Arbeitstag) fällt final auf den Fälligkeitstag", () => {
+    // finalReminderDate defaultet auf nextDueDate.
+    expect(reminderStageFor("2026-06-19", "2026-06-19", none)).toEqual({
+      stage: "final",
+      daysLeft: 0,
+    });
+  });
+});
+
+describe("final-Erinnerung (E-Mail-Texte)", () => {
+  const base = {
+    deviceName: "Leiter Lager",
+    categoryName: "Leiter / Tritt",
+    dueDate: "2026-06-20",
+    companyName: "Muster GmbH",
+    deviceUrl: "https://app.example.com/geraete/abc",
+  };
+
+  it("Betreff markiert die letzte Erinnerung", () => {
+    const subject = reminderSubject({ ...base, stage: "final", daysLeft: 1 });
+    expect(subject).toContain("Letzte Erinnerung");
+    expect(subject).toContain("Leiter Lager");
+  });
+
+  it("Body erklärt die Vorverlegung bei Wochenende/Feiertag (daysLeft > 0)", () => {
+    const body = reminderBody({ ...base, stage: "final", daysLeft: 1 });
+    expect(body).toContain("Wochenende oder einen Feiertag");
+    expect(body).toContain("letzten Arbeitstag");
+  });
+
+  it("Body am Fälligkeitstag selbst nennt 'heute' (daysLeft = 0)", () => {
+    const body = reminderBody({ ...base, stage: "final", daysLeft: 0 });
+    expect(body).toContain("heute");
   });
 });
 

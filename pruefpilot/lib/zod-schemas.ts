@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { CATEGORY_IDS } from "./categories";
+import { BUNDESLAND_CODES } from "./holidays";
 import { INSPECTION_RESULT_VALUES } from "./inspections";
 
 const isoDate = z
@@ -17,6 +18,11 @@ const optionalTrimmed = (max: number) =>
 export const companySchema = z.object({
   name: z.string().trim().min(1, "Betriebsname erforderlich").max(200, "Maximal 200 Zeichen"),
   contactEmail: z.string().trim().email("Gültige E-Mail-Adresse erforderlich"),
+  // Optional: steuert landesspezifische Feiertage für die Arbeitstag-Verschiebung der Erinnerungen.
+  bundesland: z.preprocess(
+    (value) => (value === "" || value == null ? null : value),
+    z.enum(BUNDESLAND_CODES).nullable(),
+  ),
 });
 
 export const deviceSchema = z
