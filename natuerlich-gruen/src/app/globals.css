@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-moss: #98c188;
+    --color-anthracite: #3f3e3e;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-sand text-anthracite-800 antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-anthracite-900;
+    text-wrap: balance;
+  }
+
+  /* Sichtbarer Fokus-Indikator für Tastaturbedienung (Barrierefreiheit). */
+  :focus-visible {
+    outline: 3px solid var(--color-moss);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Bewegungsreduktion respektieren. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-content {
+    @apply mx-auto w-full max-w-content px-5 sm:px-8;
+  }
+
+  .btn {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full px-7 py-3 text-base font-semibold transition-colors duration-200;
+  }
+
+  .btn-primary {
+    @apply btn bg-moss-600 text-white hover:bg-moss-700;
+  }
+
+  .btn-secondary {
+    @apply btn border-2 border-moss-600 bg-transparent text-moss-700 hover:bg-moss-50;
+  }
+
+  .btn-light {
+    @apply btn bg-white text-anthracite-900 hover:bg-moss-50;
+  }
+
+  .prose-natur {
+    @apply text-lg leading-relaxed text-anthracite-700;
+  }
+
+  .prose-natur h2 {
+    @apply mt-12 mb-4 text-2xl sm:text-3xl;
+  }
+
+  .prose-natur h3 {
+    @apply mt-8 mb-3 text-xl sm:text-2xl;
+  }
+
+  .prose-natur p {
+    @apply mb-5;
+  }
+
+  .prose-natur ul {
+    @apply mb-6 space-y-2 pl-1;
+  }
+
+  .prose-natur li {
+    @apply relative pl-7;
+  }
+
+  .prose-natur li::before {
+    content: "";
+    @apply absolute left-0 top-[0.6em] h-2.5 w-2.5 rounded-full bg-moss-400;
+  }
+}
