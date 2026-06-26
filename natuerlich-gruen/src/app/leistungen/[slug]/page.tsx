@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PageHeader from "@/components/PageHeader";
-import { services, getService } from "@/lib/services";
+import { services, getService, serviceNav } from "@/lib/services";
 import { JsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 
 export function generateStaticParams() {
@@ -39,25 +39,26 @@ export default async function ServicePage({
         data={breadcrumbJsonLd([
           { name: "Startseite", path: "/" },
           { name: "Leistungen", path: "/leistungen" },
-          { name: service.title, path: `/leistungen/${service.slug}` },
+          { name: serviceNav[service.slug], path: `/leistungen/${service.slug}` },
         ])}
       />
       <PageHeader
         title={service.title}
-        subtitle={service.intro}
+        subtitle={service.subtitle}
         crumbs={[
           { name: "Startseite", path: "/" },
           { name: "Leistungen", path: "/leistungen" },
-          { name: service.title, path: `/leistungen/${service.slug}` },
+          { name: serviceNav[service.slug], path: `/leistungen/${service.slug}` },
         ]}
       />
 
       <article className="container-content grid gap-12 py-16 lg:grid-cols-[1fr_320px]">
         <div className="prose-natur max-w-none">
+          <p>{service.intro}</p>
           {service.sections.map((section) => (
             <section key={section.heading}>
               <h2>{section.heading}</h2>
-              <p>{section.body}</p>
+              {section.body && <p>{section.body}</p>}
               {section.list && (
                 <ul>
                   {section.list.map((item) => (
@@ -94,7 +95,7 @@ export default async function ServicePage({
                       href={`/leistungen/${s.slug}`}
                       className="text-anthracite-600 hover:text-moss-700"
                     >
-                      {s.title}
+                      {serviceNav[s.slug]}
                     </Link>
                   </li>
                 ))}

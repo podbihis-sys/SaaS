@@ -1,162 +1,223 @@
 /**
  * Leistungen / Galabau-Bereiche. Jede Leistung erhält eine eigene Unterseite
  * unter /leistungen/[slug] (Ausnahme: Naturpools liegen unter /pools).
+ *
+ * Inhalte 1:1 von den Leistungsseiten auf natuerlichgruen.net übernommen.
  */
 
 export type Service = {
   slug: string;
   title: string;
+  subtitle: string;
   short: string;
   metaTitle: string;
   metaDescription: string;
   intro: string;
-  sections: { heading: string; body: string; list?: string[] }[];
-  href?: string; // abweichender Pfad (z. B. Pools)
+  sections: { heading: string; body?: string; list?: string[] }[];
 };
 
 export const services: Service[] = [
   {
     slug: "gartenplanung",
-    title: "Gartenplanung",
+    title: "Naturnahe Gartenplanung in Bad Münstereifel",
+    subtitle: "Ökologisch, individuell & lebendig",
     short:
-      "Durchdachte, ökologische Gartenplanung – vom ersten Standortverständnis bis zum fertigen Konzept.",
+      "Durchdachte, ökologische Gartenplanung – vom Erstgespräch bis zum fertigen Konzept.",
     metaTitle: "Gartenplanung Bad Münstereifel | naturnahe Gartenkonzepte",
     metaDescription:
-      "Naturnahe, standortgerechte Gartenplanung in der Eifel. Wir planen Gärten, die mit dem Standort arbeiten – ökologisch durchdacht für Bad Münstereifel, Mechernich & Euskirchen.",
+      "Naturnahe, individuelle Gartenplanung in der Eifel. Bioland-zertifiziert – ökologisch, regional abgestimmt und auf Ihre Bedürfnisse zugeschnitten. Bad Münstereifel & Umgebung.",
     intro:
-      "Eine gute Gartenplanung beginnt nicht mit der Pflanze und auch nicht mit dem ersten Spatenstich, sondern mit dem Verstehen des Ortes. Wir planen Gärten so, dass sie mit dem Standort arbeiten – nicht gegen ihn.",
+      "Naturnahe Gärten fördern Artenvielfalt, sind pflegeleicht und schaffen echte Lebensräume. Als Bioland-zertifizierter Gartenbaubetrieb gestalten wir in Bad Münstereifel und Umgebung Gärten mit Konzept – ökologisch, regional abgestimmt und auf Ihre Bedürfnisse zugeschnitten.",
     sections: [
       {
-        heading: "Planung als langfristiger Prozess",
-        body: "Nachhaltige Gartengestaltung ist kein kurzfristiges Projekt. Wir planen Gärten so, dass sie sich über Jahre entwickeln dürfen – mit Freiräumen für Veränderung und einer Pflege, die von Anfang an mitgedacht wird.",
+        heading: "Unsere Leistungen in der Gartenplanung",
         list: [
-          "Standortanalyse: Boden, Wasser, Licht und Mikroklima",
-          "Konzept, das nicht alles auf einmal umsetzt",
-          "Freiräume für spätere Entwicklung",
-          "Pflege und Nutzung von Beginn an eingeplant",
+          "Individuelle Gartenkonzepte",
+          "Heimische & insektenfreundliche Pflanzenauswahl",
+          "Integration ökologischer Strukturen",
+          "Nachhaltige Materialien & Bauweisen",
+          "Persönliche Beratung & Vor-Ort-Analyse",
         ],
       },
       {
-        heading: "Vom Erstgespräch bis zur Umsetzung",
-        body: "Wir begleiten Sie von der Erstberatung bis zur Umsetzung individueller Gartenkonzepte. Profitieren Sie von unserer ökologischen Expertise und maßgeschneiderten Lösungen für naturnahe Gärten.",
+        heading: "Ablauf – in 3 Schritten zu Ihrem Naturgarten",
+        list: [
+          "Erstgespräch und Ortsbegehung",
+          "Konzept und Pflanzplanung",
+          "Umsetzung mit Partnern oder Eigenleistung",
+        ],
       },
     ],
   },
   {
     slug: "gartenbau",
-    title: "Gartenbau",
+    title: "Naturnaher Garten- und Landschaftsbau in Bad Münstereifel",
+    subtitle: "Ökologisch, funktional und dauerhaft schön.",
     short:
-      "Klassischer Galabau mit Kreativität und Erfahrung – solide, funktional und naturnah.",
+      "Klassischer Galabau, verbunden mit naturnaher Gestaltung – wir bauen grün, im doppelten Sinne.",
     metaTitle: "Garten- & Landschaftsbau (Galabau) Bad Münstereifel | Eifel",
     metaDescription:
-      "Garten- und Landschaftsbau in der Eifel: Wege, Terrassen, Trockenmauern, Zaun- und Sichtschutzanlagen sowie Einsaaten – solide, funktional und naturnah.",
+      "Naturnaher Garten- und Landschaftsbau in der Eifel: Pflaster- & Terrassenbau, Naturstein- & Trockenmauern, Zaunbau, Rasenanlagen, Treppen & Hangbefestigungen – ökologisch und dauerhaft.",
     intro:
-      "Ob Wege, Terrassen, Mauern oder Rasenflächen – wir verbinden klassisches Galabau-Handwerk mit ökologischer Verantwortung. Mit hochwertigen, langlebigen Materialien gestalten wir Außenanlagen, die sowohl funktional als auch natürlich wirken. Regional, zuverlässig und mit Liebe zum Detail.",
+      "Nachhaltigkeit beginnt im eigenen Garten: Wir verbinden klassischen Garten- und Landschaftsbau mit naturnaher Gestaltung. Ob private Gärten, Höfe oder Außenanlagen – wir bauen grün. Und zwar im doppelten Sinne.",
     sections: [
       {
-        heading: "Unsere Leistungen im Galabau",
-        body: "Solide Handwerksarbeit ist die Grundlage für jeden naturnahen Garten. Wir setzen auf langlebige, regionale Materialien.",
+        heading: "Was ist naturnaher Garten- und Landschaftsbau?",
+        body: "Naturnaher Gartenbau bedeutet nicht Verzicht – sondern bewusstes Gestalten mit der Natur.",
         list: [
-          "Wege- und Terrassenbau",
-          "Naturstein und Trockenmauern",
-          "Zaun- und Sichtschutzanlagen",
-          "Einsaaten",
+          "Heimische Pflanzen statt Exoten",
+          "Wasserdurchlässige Beläge statt versiegelter Flächen",
+          "Lebensräume statt steriler Ordnung",
+        ],
+      },
+      {
+        heading: "Unsere Leistungen im Garten- und Landschaftsbau",
+        list: [
+          "Pflasterarbeiten & Terrassenbau",
+          "Naturstein- & Trockenmauern",
+          "Zaunbau & Sichtschutzanlagen",
+          "Rasenanlagen & Erdarbeiten",
+          "Treppen & Hangbefestigungen",
         ],
       },
     ],
   },
   {
     slug: "natursteinmauern",
-    title: "Natursteinmauern",
+    title: "Natursteinmauern aus Bad Münstereifel",
+    subtitle: "Ökologisch, stabil und stilvoll gebaut",
     short:
-      "Naturstein- und Trockenmauern als langlebige, lebendige Strukturelemente im Garten.",
-    metaTitle: "Natursteinmauern & Trockenmauern | naturnaher Galabau Eifel",
+      "Langlebige Naturstein- und Trockenmauern – Struktur, Halt und Lebensraum, ganz ohne Beton.",
+    metaTitle: "Natursteinmauern & Trockenmauern Bad Münstereifel | Eifel",
     metaDescription:
-      "Naturstein- und Trockenmauern aus regionalem Material: langlebig, ästhetisch und wertvoller Lebensraum. Fachgerecht gebaut in Bad Münstereifel und Umgebung.",
+      "Natursteinmauern aus Bad Münstereifel: Trockenmauern, Stützmauern, Schichtmauern & Gabionen. Traditionelle Handwerkskunst, ökologische Bauweise – langlebig und insektenfreundlich.",
     intro:
-      "Naturstein- und Trockenmauern sind weit mehr als reine Begrenzungen. Fachgerecht gesetzt sind sie langlebige Gestaltungselemente und gleichzeitig wertvoller Lebensraum für zahlreiche Tiere und Pflanzen.",
+      "Natursteinmauern sind langlebig, stabil und fügen sich harmonisch in jede Gartenlandschaft ein. Als Bioland-zertifizierter Garten- und Landschaftsbaubetrieb in Bad Münstereifel verbinden wir traditionelle Handwerkskunst mit ökologischer Bauweise. Ob Stützmauer, Hangbefestigung oder Sichtschutz: Unsere Natursteinmauern schaffen Struktur, Halt und Lebensräume – ganz ohne Beton, ganz natürlich.",
     sections: [
       {
-        heading: "Handwerk mit regionalem Stein",
-        body: "Wir arbeiten bevorzugt mit hochwertigen, langlebigen Materialien aus der Region. Trockenmauern entstehen ohne Mörtel – ihre Fugen werden zum Rückzugsort für Eidechsen, Insekten und Mauerpflanzen.",
+        heading: "Unsere Mauertypen",
         list: [
-          "Trockenmauern ohne Mörtel",
-          "Hang- und Stützmauern",
-          "Beeteinfassungen und Sitzmauern",
-          "Regionale Natursteine",
+          "Trockenmauer (ökologisch & insektenfreundlich)",
+          "Naturstein-Stützmauer (mit Mörtel oder als Schwergewichtsmauer)",
+          "Schichtmauer aus regionalem Bruchstein",
+          "Gabionenmauer mit Natursteinfüllung",
+        ],
+      },
+      {
+        heading: "Warum natürlich grün?",
+        list: [
+          "Einsatz von regionalen und ökologisch unbedenklichen Materialien",
+          "Mauern mit Mehrwert: Lebensräume für Tiere & Pflanzen",
+          "Planung, Bau & Pflege aus einer Hand",
+          "Jahrzehntelange Haltbarkeit ohne Betonfundament (bei Trockenmauern)",
+          "Fachgerechte Umsetzung nach landschaftsbaulichen Richtlinien",
         ],
       },
     ],
   },
   {
     slug: "gartenpflege",
-    title: "Gartenpflege",
+    title: "Gartenpflege in Bad Münstereifel",
+    subtitle: "Nachhaltig, zuverlässig & naturnah",
     short:
-      "Umweltfreundliche Gartenpflege – beobachten, verstehen, gezielt eingreifen.",
+      "Pflege mit Verständnis für Boden, Klima und Pflanze – erhalten, fördern, entwickeln.",
     metaTitle: "Gartenpflege Bad Münstereifel | ökologisch & nachhaltig",
     metaDescription:
-      "Ökologische Gartenpflege in der Eifel: vom biologischen Gehölzschnitt bis zur Erhaltung der Artenvielfalt. Weniger Eingriffe, mehr Stabilität – zuverlässig und lokal.",
+      "Nachhaltige, naturnahe Gartenpflege in der Eifel: Rückschnitt, Rasenpflege, Unkrautregulierung & Pflegeberatung – ohne chemisch-synthetische Mittel. Pflegeabo möglich.",
     intro:
-      "Pflege bedeutet für uns nicht, möglichst viel zu machen. Pflege bedeutet: beobachten, verstehen, gezielt eingreifen. Gerade im Naturgarten ist Zurückhaltung oft der entscheidende Faktor.",
+      "Ein gepflegter Garten braucht mehr als einen Schnitt – er braucht Verständnis für Boden, Klima und Pflanze. Ob Dauerpflege, Saisonstart oder gezielte Pflegemaßnahmen: Wir erhalten, fördern und entwickeln Ihren Garten mit Blick auf Biodiversität, Standort und Ihre individuellen Wünsche.",
     sections: [
       {
-        heading: "Was wir unter sinnvoller Pflege verstehen",
-        body: "Viele Bereiche entwickeln sich stabiler, wenn Pflanzen Zeit bekommen, Böden möglichst wenig gestört werden und natürliche Abläufe zugelassen werden. Das bedeutet nicht, den Garten sich selbst zu überlassen – sondern Eingriffe bewusster zu setzen und den richtigen Zeitpunkt dafür zu wählen.",
+        heading: "Unser Pflegeverständnis",
         list: [
-          "Biologischer Gehölz- und Staudenschnitt",
-          "Standortgerechte, abgestimmte Pflege statt ständiger Eingriffe",
-          "Erhalt von Strukturen und Lebensräumen",
-          "Langfristige Begleitung über das Gartenjahr",
+          "Kein Einsatz von chemisch-synthetischen Pflanzenschutzmitteln",
+          "Förderung von Bestäubern durch gezielte Pflegemaßnahmen",
+          "Standortgerechte Maßnahmen statt standardisierter Rasenkosmetik",
+          "Langfristige Entwicklung statt kurzfristigem Aufräumen",
         ],
       },
       {
-        heading: "Pflege verändert sich über das Jahr",
-        body: "Pflege ist nicht in jeder Jahreszeit gleich. Im Frühjahr geht es um Beobachtung und behutsame Entwicklung, im Sommer um den sinnvollen Einsatz von Wasser, im Herbst um den Erhalt von Rückzugsorten – und im Winter häufig darum, bewusst nicht zu viel zu tun.",
+        heading: "Unsere Pflegeleistungen",
+        list: [
+          "Regelmäßige Gartenpflege (Pflegeabo möglich)",
+          "Rückschnitt von Stauden & Gehölzen",
+          "Unkrautregulierung & Mulcharbeiten",
+          "Rasenpflege & Nachsaat",
+          "Laubarbeiten & Flächenreinigung",
+          "Pflegeberatung & Gartenentwicklung",
+        ],
       },
     ],
   },
   {
     slug: "dachbegruenung",
-    title: "Dachbegrünung",
+    title: "Dachbegrünung in Bad Münstereifel",
+    subtitle: "Ökologisch, klimawirksam und langlebig",
     short:
-      "Ökologische Dachbegrünung für mehr Biodiversität, Kühlung und Wasserrückhalt.",
-    metaTitle: "Dachbegrünung Eifel | ökologisch & klimafreundlich",
+      "Extensive und intensive Gründächer – wasserspeichernd, biodivers und immobilienaufwertend.",
+    metaTitle: "Dachbegrünung Bad Münstereifel | ökologisch & klimawirksam",
     metaDescription:
-      "Naturnahe Dachbegrünung in der Region Euskirchen: speichert Wasser, kühlt die Umgebung und schafft Lebensraum. Fachgerecht geplant und umgesetzt.",
+      "Dachbegrünung in der Eifel: extensive & intensive Gründächer nach FLL-Standard, dazu Fassadenbegrünung. Klima- und Wasserschutz, förderfähig – Bioland-zertifiziert.",
     intro:
-      "Begrünte Dächer schaffen Lebensraum, wo sonst versiegelte Flächen wären. Sie speichern Regenwasser, kühlen ihre Umgebung und leisten einen wichtigen Beitrag zur Biodiversität – gerade in Zeiten zunehmender Hitze und Starkregen.",
+      "Grüne Dächer sind mehr als ein Trend – sie sind ein aktiver Beitrag zum Klima- und Wasserschutz. Als ökologisch ausgerichteter Garten- und Landschaftsbauer mit Bioland-Zertifizierung planen, bauen und pflegen wir extensive und intensive Dachbegrünungen in Bad Münstereifel und Umgebung. Ob Carport, Garagendach oder Wohnhaus: Wir schaffen lebendige, wasserspeichernde Flächen, die Biodiversität fördern und Ihre Immobilie aufwerten – dauerhaft, funktional und pflegeleicht.",
     sections: [
       {
-        heading: "Naturnahe Dächer mit Mehrwert",
-        body: "Wir planen und realisieren extensive Dachbegrünungen mit standortgerechten, trockenheitsverträglichen Pflanzen. So entstehen pflegeleichte, lebendige Flächen, die mit dem Klima arbeiten.",
+        heading: "Unsere Leistungen im Bereich Dachbegrünung",
         list: [
-          "Wasser speichern und Starkregen abpuffern",
-          "Umgebung kühlen",
-          "Lebensraum für Insekten schaffen",
-          "Geringer Pflegeaufwand",
+          "Beratung & Vorplanung: statische Voraussetzungen, Dachaufbau und Standortfaktoren",
+          "Aufbau & Umsetzung fachgerecht nach aktuellem FLL-Standard",
+          "Extensive Begrünung mit Sedum, Gräsern und Kräutern",
+          "Intensive Begrünung mit Stauden, Gehölzen und Rasenflächen",
+          "Pflege & Entwicklungspflege",
         ],
+      },
+      {
+        heading: "Vorteile der Dachbegrünung auf einen Blick",
+        list: [
+          "Verbesserung des Mikroklimas",
+          "Wasserrückhaltung & Entlastung der Kanalisation",
+          "Schutz der Dachabdichtung & längere Lebensdauer",
+          "Lebensraum für Insekten & Vögel",
+          "Förderfähig über kommunale Klimaprogramme",
+        ],
+      },
+      {
+        heading: "Fassadenbegrünung – ökologisch und ästhetisch",
+        body: "Vertikal grün gedacht: Begrünte Fassaden senken die Oberflächentemperatur, binden Feinstaub und verwandeln kahle Wände in blühende Lebensräume. Wir bieten Beratung, Bau und Pflege von Rankhilfen, Pflanzsystemen und Fassadenmodulen – für Wohnhäuser, Gewerbeobjekte oder Carports. Tipp: Verfolgen Sie stets die aktuellen Fördermöglichkeiten in Ihren Kommunen – das kann sich lohnen, sprechen Sie uns an.",
       },
     ],
   },
   {
     slug: "pflanzenanlagen",
-    title: "Pflanzenanlagen",
+    title: "Pflanzanlagen in Bad Münstereifel",
+    subtitle: "Ökologisch sinnvoll, standortgerecht und nachhaltig",
     short:
-      "Standortgerechte Pflanzungen für mehr Biodiversität und blühende Vielfalt.",
-    metaTitle: "Pflanzenanlagen & Pflanzungen | naturnaher Garten Eifel",
+      "Pflanzen sind das Herz eines lebendigen Gartens – wir planen, pflanzen und pflegen sie.",
+    metaTitle: "Pflanzanlagen & Pflanzungen Bad Münstereifel | Naturgarten",
     metaDescription:
-      "Naturnahe Pflanzanlagen mit heimischen, standortgerechten Arten. Lebensraum für Bienen, Schmetterlinge und Vögel – stabil, pflegeleicht und biodivers.",
+      "Bioland-zertifizierte Pflanzanlagen in der Eifel: heimische, pestizidfreie Pflanzen, torffreie Substrate, Staudenbeete, Blühflächen & Hangbegrünung – Lebensräume für Mensch und Tier.",
     intro:
-      "Wir planen und bauen naturnahe Pflanzanlagen, die heimische Arten fördern und Lebensraum für Bienen, Schmetterlinge und Vögel bieten. Unsere nachhaltigen Gartenkonzepte stärken lokale Ökosysteme und sorgen für blühende Vielfalt direkt vor Ihrer Haustür.",
+      "Pflanzen sind das Herz eines lebendigen Gartens. Als Bioland-zertifizierter Garten- und Landschaftsbau-Betrieb in Bad Münstereifel planen, pflanzen und pflegen wir Pflanzanlagen, die ökologisch sinnvoll, standortgerecht und nachhaltig sind. Ob kompletter Gartenneubau oder gezielte Bepflanzung einzelner Bereiche – wir gestalten Lebensräume für Menschen, Tiere und Pflanzen.",
     sections: [
       {
-        heading: "Pflanzen vom Standort her denken",
-        body: "Für uns beginnt Pflanzenauswahl nicht mit der Frage „Was gefällt?“, sondern mit „Was funktioniert hier langfristig?“. Auf Grundlage von Bodenbeschaffenheit, Wasserverfügbarkeit, Lichtverhältnissen und Mikroklima wählen wir Pflanzen, die sich natürlich entwickeln können.",
+        heading: "Warum Pflanzanlagen mit Bioland-Siegel?",
         list: [
-          "Heimische und standortgerechte Arten",
-          "Robuste Stauden und Gehölze",
-          "Stabilere Entwicklung, geringerer Pflegeaufwand",
-          "Mehr Lebensraum für Tiere",
+          "Verwendung heimischer & pestizidfreier Pflanzen",
+          "Torffreie Substrate & ökologische Düngung",
+          "Förderung von Insekten- & Vogelvielfalt",
+          "Dauerhaft gesunde Pflanzflächen durch naturnahe Pflege",
+          "Beratung und Umsetzung durch ein zertifiziertes Bioland-Unternehmen",
+        ],
+      },
+      {
+        heading: "Unsere Leistungen im Bereich Pflanzanlagen",
+        list: [
+          "Individuelle Pflanzplanung – abgestimmt auf Boden, Licht, Klima und Nutzung",
+          "Staudenbeete & Wildstaudenflächen – pflegearm und insektenfreundlich",
+          "Heimische Gehölze & Sträucher – Hecken und Sichtschutz mit Mehrwert",
+          "Blühflächen & Wiesenansaaten – artenreich als Beetalternative",
+          "Pflanzung von Bodendeckern & Hangbegrünung – Erosionssicherung & Unkrautunterdrückung",
+          "Pflege und Nachsorge – Entwicklungspflege, Schnitt, Nachpflanzung",
         ],
       },
     ],
@@ -166,3 +227,13 @@ export const services: Service[] = [
 export function getService(slug: string): Service | undefined {
   return services.find((s) => s.slug === slug);
 }
+
+/** Kurzlabel (Navigation/Karten/Breadcrumb) je Leistung. */
+export const serviceNav: Record<string, string> = {
+  gartenplanung: "Gartenplanung",
+  gartenbau: "Gartenbau",
+  natursteinmauern: "Natursteinmauern",
+  gartenpflege: "Gartenpflege",
+  dachbegruenung: "Dachbegrünung",
+  pflanzenanlagen: "Pflanzenanlagen",
+};

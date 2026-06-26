@@ -47,12 +47,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "/" },
   icons: {
-    icon: [
-      {
-        url: "https://natuerlichgruen.net/wp-content/uploads/2025/10/Favicon.svg",
-        type: "image/svg+xml",
-      },
-    ],
+    icon: [{ url: site.assets.favicon, type: "image/svg+xml" }],
   },
   openGraph: {
     type: "website",

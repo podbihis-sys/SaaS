@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
 import Reveal from "@/components/Reveal";
-import { services } from "@/lib/services";
+import { services, serviceNav } from "@/lib/services";
 import { JsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 
 export const metadata: Metadata = {
@@ -13,15 +13,21 @@ export const metadata: Metadata = {
 };
 
 const extra = {
-  slug: "pools",
-  title: "Natürliche Pools",
+  label: "Natürliche Pools",
   short:
     "Naturpools und Schwimmteiche ohne Chlor – natürlich baden im eigenen Garten.",
   href: "/pools",
 };
 
 export default function LeistungenPage() {
-  const cards = [...services.map((s) => ({ ...s, href: `/leistungen/${s.slug}` })), extra];
+  const cards = [
+    ...services.map((s) => ({
+      label: serviceNav[s.slug],
+      short: s.short,
+      href: `/leistungen/${s.slug}`,
+    })),
+    extra,
+  ];
 
   return (
     <>
@@ -44,11 +50,11 @@ export default function LeistungenPage() {
           {cards.map((c, i) => (
             <Reveal key={c.href} delay={(i % 3) * 80}>
               <Link
-                href={c.href!}
+                href={c.href}
                 className="group flex h-full flex-col rounded-organic border border-moss-100 bg-white p-7 transition-shadow hover:shadow-lg"
               >
                 <h2 className="text-xl text-anthracite-900 group-hover:text-moss-700">
-                  {c.title}
+                  {c.label}
                 </h2>
                 <p className="mt-3 flex-1 text-anthracite-600">{c.short}</p>
                 <span className="mt-5 font-medium text-moss-700">

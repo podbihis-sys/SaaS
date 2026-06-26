@@ -78,7 +78,7 @@ export default function Footer() {
             <Image
               src={site.assets.naturgardenSeal}
               alt="Bioland-, Naturgarten- und Galabauverband-Siegel"
-              width={180}
+              width={417}
               height={68}
               className="h-14 w-auto rounded bg-white/95 p-1.5"
             />

@@ -31,8 +31,8 @@ export default function Header() {
           <Image
             src={site.assets.logo}
             alt={`${site.legalName} Logo`}
-            width={150}
-            height={48}
+            width={180}
+            height={54}
             className="h-11 w-auto"
             priority
           />

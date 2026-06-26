@@ -9,7 +9,7 @@ const ContentSecurityPolicy = [
   "object-src 'none'",
   "frame-ancestors 'none'",
   "form-action 'self'",
-  "img-src 'self' data: https://natuerlichgruen.net https://www.natuerlichgruen.net",
+  "img-src 'self' data:",
   "font-src 'self' data:",
   "style-src 'self' 'unsafe-inline'",
   // 'unsafe-inline' nur für die von Next.js erzeugten Bootstrap-Skripte;
@@ -40,18 +40,6 @@ const nextConfig = {
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "natuerlichgruen.net",
-        pathname: "/wp-content/uploads/**",
-      },
-      {
-        protocol: "https",
-        hostname: "www.natuerlichgruen.net",
-        pathname: "/wp-content/uploads/**",
-      },
-    ],
   },
   async headers() {
     return [

@@ -23,14 +23,14 @@ export const site = {
     facebook: "https://www.facebook.com/p/Natürlich-grün-100067311920555/",
     instagram: "https://www.instagram.com/natuerlich_gruen_",
   },
-  // Bestehende Assets der WordPress-Installation (werden via next/image
-  // automatisch zu WebP/AVIF optimiert und responsiv ausgeliefert).
+  // Von der Originalseite übernommene, nun lokal gehostete Assets
+  // (werden via next/image automatisch zu WebP/AVIF optimiert und responsiv
+  // ausgeliefert). Quelldateien liegen unter /public/img.
   assets: {
-    logo: "https://natuerlichgruen.net/wp-content/uploads/2025/09/Logo.png",
-    biolandSeal:
-      "https://natuerlichgruen.net/wp-content/uploads/2025/09/5bcb0c7d04a7aad16503d5c12e85853f4b4648c4-300x113.jpg",
-    naturgardenSeal:
-      "https://natuerlichgruen.net/wp-content/uploads/2025/09/natuerlich-gruen_naturgarten-ev_bioland_galabauverband_rgb-1.png",
+    logo: "/img/logo.png",
+    favicon: "/img/favicon.svg",
+    biolandSeal: "/img/bioland-naturgarten-banner.jpg",
+    naturgardenSeal: "/img/siegel-verbaende.png",
   },
 } as const;
 
