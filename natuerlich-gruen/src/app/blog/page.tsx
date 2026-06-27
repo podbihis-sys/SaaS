@@ -1,8 +1,10 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
 import Reveal from "@/components/Reveal";
 import { sortedPosts } from "@/lib/blog";
+import { blogImage } from "@/lib/photos";
 import { JsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 
 export const metadata: Metadata = {
@@ -33,8 +35,20 @@ export default function BlogIndexPage() {
         <div className="grid gap-8">
           {sortedPosts.map((post, i) => (
             <Reveal key={post.slug} delay={(i % 3) * 80}>
-              <article className="grid gap-6 rounded-organic border border-moss-100 bg-white p-7 sm:grid-cols-[1fr_auto] sm:items-center">
-                <div>
+              <article className="grid gap-6 overflow-hidden rounded-organic border border-moss-100 bg-white sm:grid-cols-[260px_1fr] sm:items-stretch">
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="relative block aspect-[3/2] sm:aspect-auto"
+                >
+                  <Image
+                    src={blogImage[post.slug]}
+                    alt={post.title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 260px"
+                    className="object-cover"
+                  />
+                </Link>
+                <div className="flex flex-col justify-center p-7 sm:pl-0">
                   <time
                     className="text-sm text-anthracite-500"
                     dateTime={post.date}
@@ -54,13 +68,13 @@ export default function BlogIndexPage() {
                     {post.subtitle}
                   </p>
                   <p className="mt-3 text-anthracite-600">{post.excerpt}</p>
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="mt-4 font-medium text-moss-700 hover:text-moss-800"
+                  >
+                    Weiterlesen →
+                  </Link>
                 </div>
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className="btn-secondary shrink-0 sm:self-center"
-                >
-                  Weiterlesen
-                </Link>
               </article>
             </Reveal>
           ))}

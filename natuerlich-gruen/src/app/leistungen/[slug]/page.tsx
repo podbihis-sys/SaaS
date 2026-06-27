@@ -1,8 +1,10 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PageHeader from "@/components/PageHeader";
 import { services, getService, serviceNav } from "@/lib/services";
+import { serviceImage } from "@/lib/photos";
 import { JsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 
 export function generateStaticParams() {
@@ -51,6 +53,21 @@ export default async function ServicePage({
           { name: serviceNav[service.slug], path: `/leistungen/${service.slug}` },
         ]}
       />
+
+      {serviceImage[service.slug] && (
+        <div className="container-content pt-10">
+          <div className="relative aspect-[16/7] overflow-hidden rounded-organic">
+            <Image
+              src={serviceImage[service.slug]}
+              alt={service.title}
+              fill
+              priority
+              sizes="(max-width: 1152px) 100vw, 1152px"
+              className="object-cover"
+            />
+          </div>
+        </div>
+      )}
 
       <article className="container-content grid gap-12 py-16 lg:grid-cols-[1fr_320px]">
         <div className="prose-natur max-w-none">

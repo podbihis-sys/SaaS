@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import PageHeader from "@/components/PageHeader";
 import ContactForm from "@/components/ContactForm";
 import { site } from "@/lib/site";
+import { photos } from "@/lib/photos";
 import { JsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 
 export const metadata: Metadata = {
@@ -43,6 +45,15 @@ export default function KontaktPage() {
           </div>
 
           <aside className="space-y-6">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-organic">
+              <Image
+                src={photos.kontakt}
+                alt="natürlich grün – Garten- und Landschaftsbau in der Eifel"
+                fill
+                sizes="(max-width: 1024px) 100vw, 360px"
+                className="object-cover"
+              />
+            </div>
             <div className="rounded-organic bg-moss-50 p-7">
               <h2 className="text-xl">Direkt erreichen</h2>
               <dl className="mt-4 space-y-4 text-anthracite-700">

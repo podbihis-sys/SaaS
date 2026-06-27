@@ -1,9 +1,11 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PageHeader from "@/components/PageHeader";
 import BlogContent from "@/components/BlogContent";
 import { posts, getPost, sortedPosts } from "@/lib/blog";
+import { blogImage } from "@/lib/photos";
 import { JsonLd, breadcrumbJsonLd, articleJsonLd } from "@/lib/jsonld";
 
 export function generateStaticParams() {
@@ -64,6 +66,18 @@ export default async function BlogPostPage({
 
       <article className="container-content py-16">
         <div className="mx-auto max-w-3xl">
+          {blogImage[post.slug] && (
+            <div className="relative mb-8 aspect-[16/9] overflow-hidden rounded-organic">
+              <Image
+                src={blogImage[post.slug]}
+                alt={post.title}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 768px"
+                className="object-cover"
+              />
+            </div>
+          )}
           <time className="text-sm text-anthracite-500" dateTime={post.date}>
             {new Date(post.date).toLocaleDateString("de-DE", {
               year: "numeric",

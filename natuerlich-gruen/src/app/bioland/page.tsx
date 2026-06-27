@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
 import { site } from "@/lib/site";
+import { photos } from "@/lib/photos";
 import { JsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 
 export const metadata: Metadata = {
@@ -93,13 +94,24 @@ export default function BiolandPage() {
             Unsere Leistungen im Überblick
           </h2>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {offerings.map((o) => (
+            {offerings.map((o, i) => (
               <article
                 key={o.title}
-                className="rounded-organic border border-moss-100 bg-sand p-7"
+                className="flex flex-col overflow-hidden rounded-organic border border-moss-100 bg-sand"
               >
-                <h3 className="text-xl">{o.title}</h3>
-                <p className="mt-3 text-anthracite-600">{o.text}</p>
+                <div className="relative aspect-[3/2]">
+                  <Image
+                    src={photos.bioland[i].src}
+                    alt={photos.bioland[i].alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-7">
+                  <h3 className="text-xl">{o.title}</h3>
+                  <p className="mt-3 text-anthracite-600">{o.text}</p>
+                </div>
               </article>
             ))}
           </div>

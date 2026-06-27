@@ -1,7 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
 import { site } from "@/lib/site";
+import { photos } from "@/lib/photos";
 import { JsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 
 export const metadata: Metadata = {
@@ -51,19 +53,30 @@ export default function UeberUnsPage() {
       />
 
       <section className="container-content py-16">
-        <div className="prose-natur mx-auto max-w-3xl">
-          <p>
-            Mein Name ist Benedikt Brockmann – Gärtnermeister, Familienvater und
-            leidenschaftlicher Verfechter naturnaher Gartengestaltung.
-          </p>
-          <p>
-            Mit meiner Firma natürlich grün – Garten- und Landschaftsbau e.K.
-            gestalte ich mit meinem Team lebendige Gärten in und um Bad
-            Münstereifel – ökologisch, zukunftsorientiert und mit echter
-            Überzeugung. Seit {site.foundedYear} stehen wir für Gärten, die sich
-            entwickeln dürfen und langfristig zum Standort, zu den Menschen und
-            zur Natur passen.
-          </p>
+        <div className="grid items-center gap-10 lg:grid-cols-2">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-organic shadow-lg">
+            <Image
+              src={photos.ueberuns}
+              alt="natürlich grün – Benedikt Brockmann und Team bei der Arbeit"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
+            />
+          </div>
+          <div className="prose-natur">
+            <p>
+              Mein Name ist Benedikt Brockmann – Gärtnermeister, Familienvater
+              und leidenschaftlicher Verfechter naturnaher Gartengestaltung.
+            </p>
+            <p>
+              Mit meiner Firma natürlich grün – Garten- und Landschaftsbau e.K.
+              gestalte ich mit meinem Team lebendige Gärten in und um Bad
+              Münstereifel – ökologisch, zukunftsorientiert und mit echter
+              Überzeugung. Seit {site.foundedYear} stehen wir für Gärten, die
+              sich entwickeln dürfen und langfristig zum Standort, zu den
+              Menschen und zur Natur passen.
+            </p>
+          </div>
         </div>
       </section>
 

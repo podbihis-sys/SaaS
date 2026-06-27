@@ -1,6 +1,8 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
+import { photos } from "@/lib/photos";
 import { JsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 
 export const metadata: Metadata = {
@@ -62,6 +64,16 @@ export default function PoolsPage() {
       />
 
       <section className="container-content py-16">
+        <div className="relative mb-12 aspect-[16/7] overflow-hidden rounded-organic">
+          <Image
+            src={photos.poolsPage[0].src}
+            alt={photos.poolsPage[0].alt}
+            fill
+            priority
+            sizes="(max-width: 1152px) 100vw, 1152px"
+            className="object-cover"
+          />
+        </div>
         <div className="prose-natur mx-auto max-w-3xl">
           <p>
             Ein Schwimmteich oder Naturpool vereint das Erlebnis von Wasser mit

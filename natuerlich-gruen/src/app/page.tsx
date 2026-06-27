@@ -5,6 +5,8 @@ import Reveal from "@/components/Reveal";
 import Gallery from "@/components/Gallery";
 import { sortedPosts } from "@/lib/blog";
 import { site } from "@/lib/site";
+import { photos } from "@/lib/photos";
+import { blogImage } from "@/lib/photos";
 
 export const metadata: Metadata = {
   title: "Naturnaher Garten- & Landschaftsbau in der Eifel",
@@ -80,14 +82,21 @@ export default function HomePage() {
             </div>
           </div>
           <Reveal className="relative">
-            <div className="rounded-organic bg-gradient-to-br from-moss-300 to-moss-600 p-1 shadow-xl">
-              <div className="flex aspect-[4/3] flex-col justify-end rounded-[1.6rem] bg-gradient-to-br from-moss-400/90 to-moss-700/90 p-8 text-white">
-                <p className="font-display text-2xl">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-organic shadow-xl">
+              <Image
+                src={photos.heroHome}
+                alt="Naturnaher Garten von natürlich grün in der Eifel"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-anthracite-900/70 via-anthracite-900/10 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-7 text-white">
+                <p className="font-display text-xl sm:text-2xl">
                   „Gärten, die mit dem Standort arbeiten – nicht gegen ihn.“
                 </p>
-                <p className="mt-3 text-moss-50">
-                  {site.owner} · Gärtnermeister
-                </p>
+                <p className="mt-2 text-moss-100">{site.owner} · Gärtnermeister</p>
               </div>
             </div>
           </Reveal>
@@ -137,12 +146,20 @@ export default function HomePage() {
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {competencies.map((c, i) => (
               <Reveal key={c.title} delay={i * 100}>
-                <article className="h-full rounded-organic border border-moss-100 bg-sand p-7">
-                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-moss-100 text-moss-700">
-                    <span className="font-display text-xl">{i + 1}</span>
+                <article className="flex h-full flex-col overflow-hidden rounded-organic border border-moss-100 bg-sand">
+                  <div className="relative aspect-[3/2]">
+                    <Image
+                      src={photos.competence[i].src}
+                      alt={photos.competence[i].alt}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover"
+                    />
                   </div>
-                  <h3 className="text-xl">{c.title}</h3>
-                  <p className="mt-3 text-anthracite-600">{c.text}</p>
+                  <div className="flex flex-1 flex-col p-7">
+                    <h3 className="text-xl">{c.title}</h3>
+                    <p className="mt-3 text-anthracite-600">{c.text}</p>
+                  </div>
                 </article>
               </Reveal>
             ))}
@@ -176,12 +193,17 @@ export default function HomePage() {
               {galabauServices.map((s) => (
                 <li
                   key={s}
-                  className="flex items-center gap-3 rounded-2xl border border-moss-100 bg-white p-5 font-medium text-anthracite-800"
+                  className="relative flex aspect-[3/2] items-end overflow-hidden rounded-2xl"
                 >
-                  <svg className="h-6 w-6 shrink-0 text-moss-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                  </svg>
-                  {s}
+                  <Image
+                    src={photos.galabau[s]}
+                    alt={s}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 25vw"
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-anthracite-900/75 to-transparent" />
+                  <span className="relative p-4 font-semibold text-white">{s}</span>
                 </li>
               ))}
             </ul>
@@ -209,22 +231,14 @@ export default function HomePage() {
             </Link>
           </Reveal>
           <Reveal delay={100}>
-            <div className="rounded-organic bg-gradient-to-br from-moss-500/30 to-anthracite-700 p-8">
-              <ul className="space-y-4">
-                {[
-                  "Ohne Chlor – natürliche Wasserqualität",
-                  "Biologische Filtersysteme & Pflanzenzonen",
-                  "Individuell für Ihren Garten geplant",
-                  "Steigert Grundstückswert & Artenvielfalt",
-                ].map((p) => (
-                  <li key={p} className="flex items-start gap-3 text-anthracite-100">
-                    <svg className="mt-1 h-5 w-5 shrink-0 text-moss-300" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                      <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 011.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
-                    </svg>
-                    {p}
-                  </li>
-                ))}
-              </ul>
+            <div className="relative aspect-[4/3] overflow-hidden rounded-organic shadow-xl">
+              <Image
+                src={photos.pool}
+                alt="Schwimmteich / Naturpool in Bad Münstereifel"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
             </div>
           </Reveal>
         </div>
@@ -255,26 +269,39 @@ export default function HomePage() {
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {sortedPosts.slice(0, 3).map((post, i) => (
               <Reveal key={post.slug} delay={i * 100}>
-                <article className="flex h-full flex-col rounded-organic border border-moss-100 bg-sand p-7">
-                  <time className="text-sm text-anthracite-500" dateTime={post.date}>
-                    {new Date(post.date).toLocaleDateString("de-DE", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </time>
-                  <h3 className="mt-2 text-xl">
-                    <Link href={`/blog/${post.slug}`} className="hover:text-moss-700">
-                      {post.title}
+                <article className="flex h-full flex-col overflow-hidden rounded-organic border border-moss-100 bg-sand">
+                  {blogImage[post.slug] && (
+                    <Link href={`/blog/${post.slug}`} className="relative block aspect-[3/2]">
+                      <Image
+                        src={blogImage[post.slug]}
+                        alt={post.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover"
+                      />
                     </Link>
-                  </h3>
-                  <p className="mt-3 flex-1 text-anthracite-600">{post.excerpt}</p>
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="mt-4 font-medium text-moss-700 hover:text-moss-800"
-                  >
-                    Weiterlesen →
-                  </Link>
+                  )}
+                  <div className="flex flex-1 flex-col p-7">
+                    <time className="text-sm text-anthracite-500" dateTime={post.date}>
+                      {new Date(post.date).toLocaleDateString("de-DE", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </time>
+                    <h3 className="mt-2 text-xl">
+                      <Link href={`/blog/${post.slug}`} className="hover:text-moss-700">
+                        {post.title}
+                      </Link>
+                    </h3>
+                    <p className="mt-3 flex-1 text-anthracite-600">{post.excerpt}</p>
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="mt-4 font-medium text-moss-700 hover:text-moss-800"
+                    >
+                      Weiterlesen →
+                    </Link>
+                  </div>
                 </article>
               </Reveal>
             ))}
