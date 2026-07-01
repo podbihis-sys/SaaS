@@ -1,12 +1,10 @@
 name: Deploy Stomatologija Maglajlić (GitHub Pages)
 
+# Runs manually (or automatically once GitHub Pages is enabled for this repo).
+# To deploy: repo Settings -> Actions -> General -> Workflow permissions ->
+# "Read and write permissions", and Settings -> Pages -> Source -> "GitHub Actions".
+# Then trigger this workflow (Actions tab -> Run workflow) or push to the branch.
 on:
-  push:
-    branches:
-      - claude/dental-clinic-website-iid7lt
-    paths:
-      - "stomatologija-maglajlic/**"
-      - ".github/workflows/deploy-dental-pages.yml"
   workflow_dispatch:
 
 permissions:
