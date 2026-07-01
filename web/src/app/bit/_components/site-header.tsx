@@ -75,7 +75,7 @@ export function SiteHeader() {
           />
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav aria-label="Hauptnavigation" className="hidden items-center gap-1 md:flex">
           {NAV.map((item) => (
             <Link
               key={item.href}
@@ -107,7 +107,9 @@ export function SiteHeader() {
           <button
             onClick={() => setMobileOpen((v) => !v)}
             className="rounded-full border border-slate-200 p-2 text-slate-700 md:hidden"
-            aria-label="Menü"
+            aria-label={mobileOpen ? "Menü schließen" : "Menü öffnen"}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav"
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -124,7 +126,7 @@ export function SiteHeader() {
 
       {/* Mobile nav */}
       {mobileOpen && (
-        <nav className="border-t border-slate-200 bg-white md:hidden">
+        <nav id="mobile-nav" aria-label="Mobile Navigation" className="border-t border-slate-200 bg-white md:hidden">
           <div className="container flex flex-col py-2">
             {NAV.map((item) => (
               <Link
