@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import PageHeader from "@/components/PageHeader";
+import Reveal from "@/components/Reveal";
 import ContactForm from "@/components/ContactForm";
 import { site } from "@/lib/site";
 import { photos } from "@/lib/photos";
@@ -33,7 +34,7 @@ export default function KontaktPage() {
 
       <section className="container-content py-16">
         <div className="grid gap-12 lg:grid-cols-[1fr_360px]">
-          <div className="rounded-organic border border-moss-100 bg-white p-7 sm:p-10">
+          <Reveal className="rounded-organic border border-moss-100 bg-white p-7 sm:p-10">
             <h2 className="text-2xl">Schreiben Sie uns</h2>
             <p className="mt-2 text-anthracite-600">
               Felder mit <span className="text-moss-600">*</span> sind
@@ -42,9 +43,9 @@ export default function KontaktPage() {
             <div className="mt-8">
               <ContactForm />
             </div>
-          </div>
+          </Reveal>
 
-          <aside className="space-y-6">
+          <Reveal as="aside" variant="left" delay={100} className="space-y-6">
             <div className="relative aspect-[4/3] overflow-hidden rounded-organic">
               <Image
                 src={photos.kontakt}
@@ -106,7 +107,7 @@ export default function KontaktPage() {
                 </a>
               </div>
             </div>
-          </aside>
+          </Reveal>
         </div>
       </section>
     </>

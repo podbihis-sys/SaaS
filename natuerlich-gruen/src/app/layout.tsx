@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
+import ScrollProgress from "@/components/ScrollProgress";
 import { site } from "@/lib/site";
 import { JsonLd, localBusinessJsonLd } from "@/lib/jsonld";
 
@@ -82,6 +83,7 @@ export default function RootLayout({
     <html lang="de" className={`${inter.variable} ${fraunces.variable}`}>
       <body className="flex min-h-screen flex-col font-sans">
         <JsonLd data={localBusinessJsonLd()} />
+        <ScrollProgress />
         <Header />
         <main id="main" className="flex-1">
           {children}

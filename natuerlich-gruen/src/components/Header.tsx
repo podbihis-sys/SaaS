@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -9,20 +9,38 @@ import { mainNav, site, type NavItem } from "@/lib/site";
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-moss-100 bg-sand/90 backdrop-blur supports-[backdrop-filter]:bg-sand/80">
+    <header
+      className={`sticky top-0 z-50 border-b bg-sand/90 backdrop-blur transition-all duration-300 supports-[backdrop-filter]:bg-sand/80 ${
+        scrolled
+          ? "border-moss-100 shadow-md shadow-moss-900/5"
+          : "border-transparent"
+      }`}
+    >
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-md focus:bg-moss-600 focus:px-4 focus:py-2 focus:text-white"
       >
         Zum Inhalt springen
       </a>
-      <div className="container-content flex items-center justify-between py-3">
+      <div
+        className={`container-content flex items-center justify-between transition-all duration-300 ${
+          scrolled ? "py-2" : "py-3.5"
+        }`}
+      >
         <Link
           href="/"
           className="flex items-center gap-3"

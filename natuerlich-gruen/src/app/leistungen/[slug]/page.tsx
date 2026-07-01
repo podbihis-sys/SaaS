@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PageHeader from "@/components/PageHeader";
+import Reveal from "@/components/Reveal";
 import { services, getService, serviceNav } from "@/lib/services";
 import { serviceImage } from "@/lib/photos";
 import { JsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
@@ -56,21 +57,23 @@ export default async function ServicePage({
 
       {serviceImage[service.slug] && (
         <div className="container-content pt-10">
-          <div className="relative aspect-[16/7] overflow-hidden rounded-organic">
-            <Image
-              src={serviceImage[service.slug]}
-              alt={service.title}
-              fill
-              priority
-              sizes="(max-width: 1152px) 100vw, 1152px"
-              className="object-cover"
-            />
-          </div>
+          <Reveal variant="scale">
+            <div className="relative aspect-[16/7] overflow-hidden rounded-organic">
+              <Image
+                src={serviceImage[service.slug]}
+                alt={service.title}
+                fill
+                priority
+                sizes="(max-width: 1152px) 100vw, 1152px"
+                className="animate-kenburns object-cover"
+              />
+            </div>
+          </Reveal>
         </div>
       )}
 
       <article className="container-content grid gap-12 py-16 lg:grid-cols-[1fr_320px]">
-        <div className="prose-natur max-w-none">
+        <Reveal className="prose-natur max-w-none">
           <p>{service.intro}</p>
           {service.sections.map((section) => (
             <section key={section.heading}>
@@ -85,9 +88,9 @@ export default async function ServicePage({
               )}
             </section>
           ))}
-        </div>
+        </Reveal>
 
-        <aside className="lg:sticky lg:top-24 lg:self-start">
+        <Reveal as="aside" variant="right" delay={100} className="lg:sticky lg:top-24 lg:self-start">
           <div className="rounded-organic bg-moss-50 p-7">
             <h2 className="text-xl">Interesse geweckt?</h2>
             <p className="mt-3 text-anthracite-600">
@@ -123,7 +126,7 @@ export default async function ServicePage({
               </li>
             </ul>
           </div>
-        </aside>
+        </Reveal>
       </article>
     </>
   );

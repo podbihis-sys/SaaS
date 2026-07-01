@@ -50,11 +50,11 @@ export default function HomePage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-moss-100 via-sand to-moss-50">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-moss-200/50 blur-3xl"
+          className="animate-floaty pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-moss-200/50 blur-3xl"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -bottom-32 -left-24 h-80 w-80 rounded-full bg-moss-300/40 blur-3xl"
+          className="animate-floaty-slow pointer-events-none absolute -bottom-32 -left-24 h-80 w-80 rounded-full bg-moss-300/40 blur-3xl"
         />
         <div className="container-content relative grid items-center gap-10 py-20 sm:py-28 lg:grid-cols-2">
           <div>
@@ -81,15 +81,15 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <Reveal className="relative">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-organic shadow-xl">
+          <Reveal className="relative" variant="left" delay={150}>
+            <div className="group relative aspect-[4/3] overflow-hidden rounded-organic shadow-xl">
               <Image
                 src={photos.heroHome}
                 alt="Naturnaher Garten von natürlich grün in der Eifel"
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
+                className="animate-kenburns object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-anthracite-900/70 via-anthracite-900/10 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-7 text-white">
@@ -146,14 +146,14 @@ export default function HomePage() {
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {competencies.map((c, i) => (
               <Reveal key={c.title} delay={i * 100}>
-                <article className="flex h-full flex-col overflow-hidden rounded-organic border border-moss-100 bg-sand">
-                  <div className="relative aspect-[3/2]">
+                <article className="card-hover group flex h-full flex-col overflow-hidden rounded-organic border border-moss-100 bg-sand">
+                  <div className="relative aspect-[3/2] overflow-hidden">
                     <Image
                       src={photos.competence[i].src}
                       alt={photos.competence[i].alt}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover"
+                      className="img-zoom object-cover"
                     />
                   </div>
                   <div className="flex flex-1 flex-col p-7">
@@ -269,15 +269,15 @@ export default function HomePage() {
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {sortedPosts.slice(0, 3).map((post, i) => (
               <Reveal key={post.slug} delay={i * 100}>
-                <article className="flex h-full flex-col overflow-hidden rounded-organic border border-moss-100 bg-sand">
+                <article className="card-hover group flex h-full flex-col overflow-hidden rounded-organic border border-moss-100 bg-sand">
                   {blogImage[post.slug] && (
-                    <Link href={`/blog/${post.slug}`} className="relative block aspect-[3/2]">
+                    <Link href={`/blog/${post.slug}`} className="relative block aspect-[3/2] overflow-hidden">
                       <Image
                         src={blogImage[post.slug]}
                         alt={post.title}
                         fill
                         sizes="(max-width: 768px) 100vw, 33vw"
-                        className="object-cover"
+                        className="img-zoom object-cover"
                       />
                     </Link>
                   )}

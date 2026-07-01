@@ -51,7 +51,7 @@ export default function LeistungenPage() {
             <Reveal key={c.href} delay={(i % 3) * 80}>
               <Link
                 href={c.href}
-                className="group flex h-full flex-col rounded-organic border border-moss-100 bg-white p-7 transition-shadow hover:shadow-lg"
+                className="card-hover group flex h-full flex-col rounded-organic border border-moss-100 bg-white p-7"
               >
                 <h2 className="text-xl text-anthracite-900 group-hover:text-moss-700">
                   {c.label}

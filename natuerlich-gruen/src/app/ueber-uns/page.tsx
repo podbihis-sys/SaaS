@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
+import Reveal from "@/components/Reveal";
 import { site } from "@/lib/site";
 import { photos } from "@/lib/photos";
 import { JsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
@@ -85,17 +86,17 @@ export default function UeberUnsPage() {
           <h2 className="text-center text-3xl sm:text-4xl">
             Werte, für die wir stehen
           </h2>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <Reveal className="mt-10 grid gap-6 md:grid-cols-3">
             {values.map((v) => (
               <article
                 key={v.title}
-                className="rounded-organic border border-moss-100 bg-sand p-7"
+                className="card-hover rounded-organic border border-moss-100 bg-sand p-7"
               >
                 <h3 className="text-xl">{v.title}</h3>
                 <p className="mt-3 text-anthracite-600">{v.text}</p>
               </article>
             ))}
-          </div>
+          </Reveal>
         </div>
       </section>
 

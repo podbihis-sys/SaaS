@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
+import Reveal from "@/components/Reveal";
 import { photos } from "@/lib/photos";
 import { JsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 
@@ -95,11 +96,11 @@ export default function PoolsPage() {
           <h2 className="text-center text-3xl sm:text-4xl">
             Naturpool oder Schwimmteich? – Gemeinsamkeiten &amp; Unterschiede
           </h2>
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
+          <Reveal className="mt-10 grid gap-6 md:grid-cols-2">
             {variants.map((v) => (
               <article
                 key={v.title}
-                className="rounded-organic border border-moss-100 bg-sand p-7"
+                className="card-hover rounded-organic border border-moss-100 bg-sand p-7"
               >
                 <h3 className="text-2xl">{v.title}</h3>
                 <ul className="mt-4 space-y-2">
@@ -112,7 +113,7 @@ export default function PoolsPage() {
                 </ul>
               </article>
             ))}
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -120,17 +121,17 @@ export default function PoolsPage() {
         <h2 className="text-3xl sm:text-4xl">
           Unsere Leistungen rund um Schwimmteiche &amp; Naturpools
         </h2>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <Reveal className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {servicesList.map((s) => (
             <article
               key={s.title}
-              className="rounded-organic border border-moss-100 bg-white p-7"
+              className="card-hover rounded-organic border border-moss-100 bg-white p-7"
             >
               <h3 className="text-xl">{s.title}</h3>
               <p className="mt-3 text-anthracite-600">{s.text}</p>
             </article>
           ))}
-        </div>
+        </Reveal>
       </section>
 
       <section className="container-content pb-24">

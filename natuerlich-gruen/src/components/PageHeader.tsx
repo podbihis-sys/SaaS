@@ -33,9 +33,14 @@ export default function PageHeader({
             </ol>
           </nav>
         )}
-        <h1 className="max-w-3xl text-3xl sm:text-4xl md:text-5xl">{title}</h1>
+        <h1 className="max-w-3xl animate-fade-up text-3xl sm:text-4xl md:text-5xl">
+          {title}
+        </h1>
         {subtitle && (
-          <p className="mt-4 max-w-2xl text-lg text-anthracite-600">
+          <p
+            className="mt-4 max-w-2xl animate-fade-up text-lg text-anthracite-600"
+            style={{ animationDelay: "120ms" }}
+          >
             {subtitle}
           </p>
         )}

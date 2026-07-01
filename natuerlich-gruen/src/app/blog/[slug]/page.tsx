@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PageHeader from "@/components/PageHeader";
+import Reveal from "@/components/Reveal";
 import BlogContent from "@/components/BlogContent";
 import { posts, getPost, sortedPosts } from "@/lib/blog";
 import { blogImage } from "@/lib/photos";
@@ -67,16 +68,19 @@ export default async function BlogPostPage({
       <article className="container-content py-16">
         <div className="mx-auto max-w-3xl">
           {blogImage[post.slug] && (
-            <div className="relative mb-8 aspect-[16/9] overflow-hidden rounded-organic">
+            <Reveal
+              variant="scale"
+              className="relative mb-8 block aspect-[16/9] overflow-hidden rounded-organic"
+            >
               <Image
                 src={blogImage[post.slug]}
                 alt={post.title}
                 fill
                 priority
                 sizes="(max-width: 768px) 100vw, 768px"
-                className="object-cover"
+                className="animate-kenburns object-cover"
               />
-            </div>
+            </Reveal>
           )}
           <time className="text-sm text-anthracite-500" dateTime={post.date}>
             {new Date(post.date).toLocaleDateString("de-DE", {
@@ -110,7 +114,7 @@ export default async function BlogPostPage({
             {related.map((p) => (
               <article
                 key={p.slug}
-                className="rounded-organic border border-moss-100 bg-sand p-7"
+                className="card-hover rounded-organic border border-moss-100 bg-sand p-7"
               >
                 <h3 className="text-xl">
                   <Link href={`/blog/${p.slug}`} className="hover:text-moss-700">

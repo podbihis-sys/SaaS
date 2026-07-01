@@ -52,7 +52,8 @@
   }
 
   .btn {
-    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full px-7 py-3 text-base font-semibold transition-colors duration-200;
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full px-7 py-3 text-base font-semibold transition-all duration-200;
+    @apply hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.98];
   }
 
   .btn-primary {
@@ -65,6 +66,28 @@
 
   .btn-light {
     @apply btn bg-white text-anthracite-900 hover:bg-moss-50;
+  }
+
+  /* Karten mit sanftem Hover-Lift */
+  .card-hover {
+    @apply transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl;
+  }
+
+  /* Bild-Zoom im übergeordneten .group:hover */
+  .img-zoom {
+    @apply transition-transform duration-[600ms] ease-out group-hover:scale-105;
+  }
+
+  /* Animierter Link-Unterstrich */
+  .link-underline {
+    @apply relative;
+  }
+  .link-underline::after {
+    content: "";
+    @apply absolute -bottom-0.5 left-0 h-0.5 w-full origin-right scale-x-0 bg-moss-500 transition-transform duration-300 ease-out;
+  }
+  .link-underline:hover::after {
+    @apply origin-left scale-x-100;
   }
 
   .prose-natur {
@@ -94,5 +117,45 @@
   .prose-natur li::before {
     content: "";
     @apply absolute left-0 top-[0.6em] h-2.5 w-2.5 rounded-full bg-moss-400;
+  }
+}
+
+@layer utilities {
+  @keyframes floaty {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(18px, -22px) scale(1.06);
+    }
+  }
+  @keyframes floaty-slow {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(-24px, 18px) scale(1.08);
+    }
+  }
+  .animate-floaty {
+    animation: floaty 11s ease-in-out infinite;
+  }
+  .animate-floaty-slow {
+    animation: floaty-slow 15s ease-in-out infinite;
+  }
+
+  /* Sanftes Ken-Burns für Hero-Bilder */
+  @keyframes kenburns {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.08);
+    }
+  }
+  .animate-kenburns {
+    animation: kenburns 18s ease-out both;
   }
 }

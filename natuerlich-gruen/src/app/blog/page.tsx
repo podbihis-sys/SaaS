@@ -35,17 +35,17 @@ export default function BlogIndexPage() {
         <div className="grid gap-8">
           {sortedPosts.map((post, i) => (
             <Reveal key={post.slug} delay={(i % 3) * 80}>
-              <article className="grid gap-6 overflow-hidden rounded-organic border border-moss-100 bg-white sm:grid-cols-[260px_1fr] sm:items-stretch">
+              <article className="card-hover group grid gap-6 overflow-hidden rounded-organic border border-moss-100 bg-white sm:grid-cols-[260px_1fr] sm:items-stretch">
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="relative block aspect-[3/2] sm:aspect-auto"
+                  className="relative block aspect-[3/2] overflow-hidden sm:aspect-auto"
                 >
                   <Image
                     src={blogImage[post.slug]}
                     alt={post.title}
                     fill
                     sizes="(max-width: 640px) 100vw, 260px"
-                    className="object-cover"
+                    className="img-zoom object-cover"
                   />
                 </Link>
                 <div className="flex flex-col justify-center p-7 sm:pl-0">

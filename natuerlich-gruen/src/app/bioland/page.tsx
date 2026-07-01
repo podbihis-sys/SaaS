@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
+import Reveal from "@/components/Reveal";
 import { site } from "@/lib/site";
 import { photos } from "@/lib/photos";
 import { JsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
@@ -93,19 +94,19 @@ export default function BiolandPage() {
           <h2 className="text-center text-3xl sm:text-4xl">
             Unsere Leistungen im Überblick
           </h2>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <Reveal className="mt-10 grid gap-6 md:grid-cols-3">
             {offerings.map((o, i) => (
               <article
                 key={o.title}
-                className="flex flex-col overflow-hidden rounded-organic border border-moss-100 bg-sand"
+                className="card-hover group flex flex-col overflow-hidden rounded-organic border border-moss-100 bg-sand"
               >
-                <div className="relative aspect-[3/2]">
+                <div className="relative aspect-[3/2] overflow-hidden">
                   <Image
                     src={photos.bioland[i].src}
                     alt={photos.bioland[i].alt}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover"
+                    className="img-zoom object-cover"
                   />
                 </div>
                 <div className="p-7">
@@ -114,7 +115,7 @@ export default function BiolandPage() {
                 </div>
               </article>
             ))}
-          </div>
+          </Reveal>
         </div>
       </section>
 
