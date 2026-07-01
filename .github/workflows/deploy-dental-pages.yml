@@ -1,0 +1,41 @@
+name: Deploy Stomatologija Maglajlić (GitHub Pages)
+
+# Runs manually (or automatically once GitHub Pages is enabled for this repo).
+# To deploy: repo Settings -> Actions -> General -> Workflow permissions ->
+# "Read and write permissions", and Settings -> Pages -> Source -> "GitHub Actions".
+# Then trigger this workflow (Actions tab -> Run workflow) or push to the branch.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages (auto-enable)
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: stomatologija-maglajlic
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
