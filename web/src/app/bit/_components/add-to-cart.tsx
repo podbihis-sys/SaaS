@@ -67,6 +67,7 @@ export function AddToCart({ product }: { product: Product }) {
                 <button
                   key={v.label}
                   type="button"
+                  aria-pressed={size === v.label}
                   onClick={() => {
                     setSize(v.label);
                     setError(false);
@@ -87,6 +88,7 @@ export function AddToCart({ product }: { product: Product }) {
                 <button
                   key={s}
                   type="button"
+                  aria-pressed={size === s}
                   onClick={() => {
                     setSize(s);
                     setError(false);
@@ -102,7 +104,7 @@ export function AddToCart({ product }: { product: Product }) {
               ))}
         </div>
         {error && (
-          <p className="mt-2 animate-[bit-pulse_0.4s] text-sm font-medium text-red-600">
+          <p role="alert" className="mt-2 animate-[bit-pulse_0.4s] text-sm font-medium text-red-600">
             Bitte wählen Sie zuerst eine Größe aus.
           </p>
         )}
@@ -117,6 +119,7 @@ export function AddToCart({ product }: { product: Product }) {
               <button
                 key={c}
                 type="button"
+                aria-pressed={color === c}
                 onClick={() => setColor(c)}
                 className={`bit-pill rounded-full border px-3.5 py-2 text-sm font-medium ${
                   color === c
