@@ -1,0 +1,75 @@
+name: Publish site to DentalBL
+
+# Publishes the stomatologija-maglajlic/ folder to podbihis-sys/DentalBL (branch main)
+# and enables GitHub Pages there (main / root).
+#
+# Requires the repo secret DENTALBL_TOKEN: a fine-grained PAT with access to
+# podbihis-sys/DentalBL and permissions "Contents: Read and write" +
+# "Pages: Read and write". Without the secret the run skips with a warning
+# instead of failing.
+
+on:
+  push:
+    branches:
+      - claude/dental-clinic-website-iid7lt
+    paths:
+      - "stomatologija-maglajlic/**"
+      - ".github/workflows/publish-dentalbl.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check for DENTALBL_TOKEN secret
+        id: token
+        env:
+          TOKEN: ${{ secrets.DENTALBL_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "have=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Secret DENTALBL_TOKEN fehlt — Publish übersprungen. Fine-grained PAT mit Zugriff auf podbihis-sys/DentalBL (Contents: Read and write, Pages: Read and write) unter Settings → Secrets and variables → Actions → New repository secret anlegen."
+          else
+            echo "have=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Push site to DentalBL (branch main)
+        if: steps.token.outputs.have == 'true'
+        env:
+          TOKEN: ${{ secrets.DENTALBL_TOKEN }}
+        run: |
+          set -euo pipefail
+          cd stomatologija-maglajlic
+          git init -b main
+          git config user.name "podbihis-sys"
+          git config user.email "podbihis@gmail.com"
+          git add -A
+          git commit -m "Deploy: Stomatologija Maglajlić website (${GITHUB_SHA})"
+          git push --force "https://x-access-token:${TOKEN}@github.com/podbihis-sys/DentalBL.git" main
+
+      - name: Enable GitHub Pages on DentalBL (main / root)
+        if: steps.token.outputs.have == 'true'
+        continue-on-error: true
+        env:
+          TOKEN: ${{ secrets.DENTALBL_TOKEN }}
+        run: |
+          status=$(curl -sS -o /tmp/pages.json -w "%{http_code}" -X POST \
+            -H "Authorization: Bearer ${TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/podbihis-sys/DentalBL/pages \
+            -d '{"source":{"branch":"main","path":"/"}}')
+          cat /tmp/pages.json
+          if [ "$status" = "201" ]; then
+            echo "Pages aktiviert."
+          elif [ "$status" = "409" ]; then
+            echo "Pages war bereits aktiviert."
+          else
+            echo "::warning::Pages-Aktivierung fehlgeschlagen (HTTP $status). Einmalig manuell: DentalBL → Settings → Pages → Deploy from a branch → main / (root)."
+          fi
+          echo "Live-URL (nach 1–2 Min): https://podbihis-sys.github.io/DentalBL/"
