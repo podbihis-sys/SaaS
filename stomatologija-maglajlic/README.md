@@ -39,4 +39,5 @@ assets/
 - Radno vrijeme: Pon–Pet 9.00–19.00h, subotom po dogovoru
 
 ---
-Deploy: GitHub Pages.
+Repo: https://github.com/podbihis-sys/DentalBL
+Deploy: GitHub Pages — live unter https://podbihis-sys.github.io/DentalBL/
