@@ -90,6 +90,35 @@
     @apply origin-left scale-x-100;
   }
 
+  /* Ranken-Unterstrich: „wächst“ von links, sobald der umgebende
+     Reveal-Wrapper sichtbar wird (data-visible). */
+  .vine-underline {
+    @apply relative inline-block pb-2;
+  }
+  .vine-underline::after {
+    content: "";
+    @apply absolute bottom-0 left-0 h-[3px] w-full rounded-full;
+    background: linear-gradient(90deg, #5f8c50, #98c188 65%, rgba(152, 193, 136, 0));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+  }
+  [data-visible="true"] .vine-underline::after {
+    transform: scaleX(1);
+  }
+
+  /* Variante für Seitentitel: zeichnet sich beim Laden. */
+  .vine-load {
+    @apply relative inline-block pb-2;
+  }
+  .vine-load::after {
+    content: "";
+    @apply absolute bottom-0 left-0 h-[3px] w-full rounded-full;
+    background: linear-gradient(90deg, #5f8c50, #98c188 65%, rgba(152, 193, 136, 0));
+    transform-origin: left;
+    animation: vine-draw 1s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+  }
+
   .prose-natur {
     @apply text-lg leading-relaxed text-anthracite-700;
   }
@@ -157,5 +186,79 @@
   }
   .animate-kenburns {
     animation: kenburns 18s ease-out both;
+  }
+
+  /* Ranken-Unterstrich (Seitentitel) */
+  @keyframes vine-draw {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  /* Sanft wiegendes Blatt */
+  @keyframes leaf-sway {
+    0%,
+    100% {
+      transform: rotate(-6deg);
+    }
+    50% {
+      transform: rotate(7deg);
+    }
+  }
+  .animate-leaf {
+    animation: leaf-sway 4.5s ease-in-out infinite;
+    transform-origin: 20% 90%;
+  }
+
+  /* Aufsteigende Pollen/Samen im Hero */
+  @keyframes pollen-rise {
+    0% {
+      transform: translate(0, 0);
+      opacity: 0;
+    }
+    12% {
+      opacity: 0.75;
+    }
+    85% {
+      opacity: 0.4;
+    }
+    100% {
+      transform: translate(var(--drift, 20px), -190px);
+      opacity: 0;
+    }
+  }
+  .pollen {
+    position: absolute;
+    border-radius: 9999px;
+    background: radial-gradient(circle at 35% 35%, #e3efdd, #98c188);
+    animation: pollen-rise linear infinite;
+  }
+
+  /* Wasser-Schimmer für Pool-/Teichbilder */
+  @keyframes water-shimmer {
+    0% {
+      background-position: 130% 0;
+    }
+    100% {
+      background-position: -80% 0;
+    }
+  }
+  .water-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      115deg,
+      transparent 32%,
+      rgba(255, 255, 255, 0.16) 46%,
+      rgba(255, 255, 255, 0.05) 52%,
+      transparent 65%
+    );
+    background-size: 240% 100%;
+    animation: water-shimmer 7s ease-in-out infinite;
   }
 }

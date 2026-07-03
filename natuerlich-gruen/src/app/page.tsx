@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import Reveal from "@/components/Reveal";
 import Gallery from "@/components/Gallery";
+import { Leaf, OrganicDivider, Pollen } from "@/components/decor";
 import { sortedPosts } from "@/lib/blog";
 import { site } from "@/lib/site";
 import { photos } from "@/lib/photos";
@@ -56,6 +57,7 @@ export default function HomePage() {
           aria-hidden="true"
           className="animate-floaty-slow pointer-events-none absolute -bottom-32 -left-24 h-80 w-80 rounded-full bg-moss-300/40 blur-3xl"
         />
+        <Pollen />
         <div className="container-content relative grid items-center gap-10 py-20 sm:py-28 lg:grid-cols-2">
           <div>
             <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-1.5 text-sm font-medium text-moss-700">
@@ -114,7 +116,9 @@ export default function HomePage() {
             className="mx-auto mb-6 h-16 w-auto"
           />
           <h2 className="text-3xl sm:text-4xl">
-            Bioland-zertifizierter Gartenbau in der Eifel
+            <span className="vine-underline">
+              Bioland-zertifizierter Gartenbau in der Eifel
+            </span>
           </h2>
           <p className="mt-5 text-lg text-anthracite-600">
             Ihr nachhaltiger Partner für ökologische Gartenplanung, Pflanzungen
@@ -124,13 +128,16 @@ export default function HomePage() {
           </p>
         </Reveal>
         <ul className="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-3">
-          {badges.map((badge) => (
-            <li
+          {badges.map((badge, i) => (
+            <Reveal
+              as="li"
               key={badge}
+              variant="grow"
+              delay={i * 90}
               className="rounded-full border border-moss-200 bg-moss-50 px-5 py-2 text-sm font-semibold tracking-wide text-moss-700"
             >
               {badge}
-            </li>
+            </Reveal>
           ))}
         </ul>
       </section>
@@ -138,14 +145,17 @@ export default function HomePage() {
       {/* 3. Kompetenzen */}
       <section className="bg-white py-20">
         <div className="container-content">
-          <Reveal>
-            <h2 className="text-center text-3xl sm:text-4xl">
-              Unsere Kompetenzen für Ihren Garten
+          <Reveal className="text-center">
+            <Leaf className="animate-leaf mx-auto mb-3 block h-7 w-7" />
+            <h2 className="text-3xl sm:text-4xl">
+              <span className="vine-underline">
+                Unsere Kompetenzen für Ihren Garten
+              </span>
             </h2>
           </Reveal>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {competencies.map((c, i) => (
-              <Reveal key={c.title} delay={i * 100}>
+              <Reveal key={c.title} variant="grow" delay={i * 120}>
                 <article className="card-hover group flex h-full flex-col overflow-hidden rounded-organic border border-moss-100 bg-sand">
                   <div className="relative aspect-[3/2] overflow-hidden">
                     <Image
@@ -175,7 +185,9 @@ export default function HomePage() {
               Klassischer Galabau mit Kreativität und Erfahrung? Kein Problem.
             </p>
             <h2 className="mt-3 text-3xl sm:text-4xl">
-              Garten- und Landschaftsbau – solide, funktional &amp; naturnah
+              <span className="vine-underline">
+                Garten- und Landschaftsbau – solide, funktional &amp; naturnah
+              </span>
             </h2>
             <p className="mt-5 text-lg text-anthracite-600">
               Ob Wege, Terrassen, Mauern oder Rasenflächen – wir verbinden
@@ -212,7 +224,8 @@ export default function HomePage() {
       </section>
 
       {/* 5. Pools / Schwimmteiche */}
-      <section className="bg-anthracite-900 py-20 text-white">
+      <OrganicDivider className="text-anthracite-900" />
+      <section className="bg-anthracite-900 pb-20 pt-10 text-white">
         <div className="container-content grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
             <h2 className="text-3xl text-white sm:text-4xl">
@@ -230,8 +243,8 @@ export default function HomePage() {
               Mehr erfahren
             </Link>
           </Reveal>
-          <Reveal delay={100}>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-organic shadow-xl">
+          <Reveal delay={100} variant="left">
+            <div className="water-shimmer relative aspect-[4/3] overflow-hidden rounded-organic shadow-xl">
               <Image
                 src={photos.pool}
                 alt="Schwimmteich / Naturpool in Bad Münstereifel"
@@ -243,13 +256,17 @@ export default function HomePage() {
           </Reveal>
         </div>
       </section>
+      <OrganicDivider flip className="text-anthracite-900" />
 
       {/* 6. Galerie */}
       <section className="container-content py-20">
         <Reveal>
+          <Leaf className="animate-leaf mb-3 block h-7 w-7" />
           <h2 className="max-w-3xl text-3xl sm:text-4xl">
-            Wir können ja viel erzählen! Machen Sie sich doch selber ein Bild von
-            unserer Arbeit.
+            <span className="vine-underline">
+              Wir können ja viel erzählen! Machen Sie sich doch selber ein Bild
+              von unserer Arbeit.
+            </span>
           </h2>
         </Reveal>
         <Reveal delay={100} className="mt-10">
@@ -260,12 +277,14 @@ export default function HomePage() {
       {/* 7. Blog-Teaser */}
       <section className="bg-white py-20">
         <div className="container-content">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <h2 className="text-3xl sm:text-4xl">Aus unserem Blog</h2>
+          <Reveal className="flex flex-wrap items-end justify-between gap-4">
+            <h2 className="text-3xl sm:text-4xl">
+              <span className="vine-underline">Aus unserem Blog</span>
+            </h2>
             <Link href="/blog" className="font-medium text-moss-700 hover:text-moss-800">
               Alle Beiträge →
             </Link>
-          </div>
+          </Reveal>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {sortedPosts.slice(0, 3).map((post, i) => (
               <Reveal key={post.slug} delay={i * 100}>
@@ -311,9 +330,13 @@ export default function HomePage() {
 
       {/* 8. Testimonials – PLATZHALTER */}
       <section className="container-content py-20">
-        <Reveal>
-          <h2 className="text-center text-3xl sm:text-4xl">
-            Lassen wir die wichtigsten zu Wort kommen: Das sagen unsere Kunden.
+        <Reveal className="text-center">
+          <Leaf className="animate-leaf mx-auto mb-3 block h-7 w-7" />
+          <h2 className="text-3xl sm:text-4xl">
+            <span className="vine-underline">
+              Lassen wir die wichtigsten zu Wort kommen: Das sagen unsere
+              Kunden.
+            </span>
           </h2>
         </Reveal>
         {/* ⚠️ PLATZHALTER-INHALT – durch echte Kundenstimmen ersetzen.

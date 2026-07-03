@@ -34,7 +34,7 @@ export default function PageHeader({
           </nav>
         )}
         <h1 className="max-w-3xl animate-fade-up text-3xl sm:text-4xl md:text-5xl">
-          {title}
+          <span className="vine-load">{title}</span>
         </h1>
         {subtitle && (
           <p

@@ -65,16 +65,19 @@ export default function PoolsPage() {
       />
 
       <section className="container-content py-16">
-        <div className="relative mb-12 aspect-[16/7] overflow-hidden rounded-organic">
+        <Reveal
+          variant="scale"
+          className="water-shimmer relative mb-12 block aspect-[16/7] overflow-hidden rounded-organic"
+        >
           <Image
             src={photos.poolsPage[0].src}
             alt={photos.poolsPage[0].alt}
             fill
             priority
             sizes="(max-width: 1152px) 100vw, 1152px"
-            className="object-cover"
+            className="animate-kenburns object-cover"
           />
-        </div>
+        </Reveal>
         <div className="prose-natur mx-auto max-w-3xl">
           <p>
             Ein Schwimmteich oder Naturpool vereint das Erlebnis von Wasser mit
