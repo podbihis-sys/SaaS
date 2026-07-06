@@ -64,18 +64,33 @@ const LANGUAGE_SURCHARGE: Record<LanguagesScope, number> = {
   many: 890,
 };
 
+/**
+ * Aligned with typical local agency rates so quotes stay competitive:
+ * Croatia ~30% below DACH, Bosnia/Serbia ~45% below, Montenegro in between.
+ */
 const REGION_FACTOR: Record<Country, number> = {
   de: 1,
   at: 1,
   ch: 1.15,
-  hr: 0.85,
-  ba: 0.75,
-  rs: 0.75,
-  me: 0.8,
+  hr: 0.68,
+  ba: 0.55,
+  rs: 0.55,
+  me: 0.62,
   other: 1,
 };
 
-const MAINTENANCE_PRICES = { basic: 39, business: 89, premium: 179 } as const;
+type MaintenanceTierPrices = { basic: number; business: number; premium: number };
+
+const MAINTENANCE_PRICES_BY_COUNTRY: Record<Country, MaintenanceTierPrices> = {
+  de: { basic: 39, business: 89, premium: 179 },
+  at: { basic: 39, business: 89, premium: 179 },
+  ch: { basic: 45, business: 99, premium: 199 },
+  hr: { basic: 29, business: 59, premium: 119 },
+  me: { basic: 29, business: 59, premium: 119 },
+  ba: { basic: 19, business: 49, premium: 99 },
+  rs: { basic: 19, business: 49, premium: 99 },
+  other: { basic: 39, business: 89, premium: 179 },
+};
 
 function round10(value: number): number {
   return Math.round(value / 10) * 10;
@@ -158,7 +173,8 @@ export function buildQuote(input: LeadInput, analysis: SiteAnalysis | null): Quo
     timelineWeeksMin: weeksMin,
     timelineWeeksMax: weeksMax,
     recommendedMaintenance,
-    maintenancePriceMonthly: MAINTENANCE_PRICES[recommendedMaintenance],
+    maintenancePriceMonthly:
+      MAINTENANCE_PRICES_BY_COUNTRY[input.country][recommendedMaintenance],
     currency: "EUR",
     regionFactor,
   };

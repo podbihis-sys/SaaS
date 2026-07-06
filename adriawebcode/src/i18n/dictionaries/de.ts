@@ -150,7 +150,7 @@ const de = {
         ],
       },
     ],
-    note: "Alle Preise zzgl. USt. Hosting bieten wir bewusst nicht an – Ihre Website läuft auf Ihrem eigenen Hosting-Account. Wir richten alles ein und Sie bleiben unabhängig.",
+    note: "Alle Preise zzgl. USt. – Richtwerte für die DACH-Region. Für Kroatien, Bosnien, Serbien und Montenegro gelten reduzierte, lokal marktübliche Preise (siehe jeweilige Sprachversion); das Sofort-Angebot berechnet Ihren Markt automatisch. Hosting bieten wir bewusst nicht an – Ihre Website läuft auf Ihrem eigenen Hosting-Account. Wir richten alles ein und Sie bleiben unabhängig.",
   },
   maintenance: {
     kicker: "Wartungsverträge",

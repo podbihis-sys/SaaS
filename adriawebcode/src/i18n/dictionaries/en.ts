@@ -152,7 +152,7 @@ const en: Dictionary = {
         ],
       },
     ],
-    note: "All prices excl. VAT. We deliberately do not offer hosting – your website runs on your own hosting account. We set everything up and you stay independent.",
+    note: "All prices excl. VAT – benchmarks for the DACH region. Reduced, locally competitive prices apply in Croatia, Bosnia, Serbia and Montenegro (see the respective language version); the instant quote prices your market automatically. We deliberately do not offer hosting – your website runs on your own hosting account. We set everything up and you stay independent.",
   },
   maintenance: {
     kicker: "Maintenance Plans",

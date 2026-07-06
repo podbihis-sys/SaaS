@@ -104,7 +104,7 @@ const sr: Dictionary = {
     kicker: "Paketi sajtova",
     title: "Transparentne cene, bez iznenađenja",
     subtitle:
-      "Tržišne fiksne cene za DACH i jadranski region. Svaki projekat unapred dobija individualnu ponudu – paketi vam pokazuju okvirne vrednosti.",
+      "Fer fiksne cene prilagođene srpskom tržištu. Svaki projekat unapred dobija individualnu ponudu – paketi vam pokazuju okvirne vrednosti.",
     from: "od",
     once: "jednokratno",
     popular: "Popularno",
@@ -112,7 +112,7 @@ const sr: Dictionary = {
     plans: [
       {
         name: "Starter",
-        price: "890 €",
+        price: "490 €",
         desc: "Savršeno za profesionalan početak – onepager ili kompaktan sajt.",
         features: [
           "Do 3 stranice / sekcije",
@@ -125,7 +125,7 @@ const sr: Dictionary = {
       },
       {
         name: "Business",
-        price: "1.890 €",
+        price: "990 €",
         desc: "Za rastuće firme koje žele da pridobiju klijente online.",
         features: [
           "Do 10 stranica",
@@ -139,7 +139,7 @@ const sr: Dictionary = {
       },
       {
         name: "Premium",
-        price: "3.490 €",
+        price: "1.990 €",
         desc: "Individualno rešenje s prodavnicom, rezervacijama ili posebnim funkcijama.",
         features: [
           "Neograničen broj stranica",
@@ -165,7 +165,7 @@ const sr: Dictionary = {
     plans: [
       {
         name: "Basic",
-        price: "39 €",
+        price: "19 €",
         desc: "Osnovna tehnička zaštita.",
         features: [
           "Softverska i bezbednosna ažuriranja",
@@ -177,7 +177,7 @@ const sr: Dictionary = {
       },
       {
         name: "Business",
-        price: "89 €",
+        price: "49 €",
         desc: "Za sajtove koji aktivno donose klijente.",
         features: [
           "Sve iz paketa Basic",
@@ -189,7 +189,7 @@ const sr: Dictionary = {
       },
       {
         name: "Premium",
-        price: "179 €",
+        price: "99 €",
         desc: "Kompletna briga s prioritetom.",
         features: [
           "Sve iz paketa Business",
@@ -225,7 +225,7 @@ const sr: Dictionary = {
       },
       {
         q: "Koliko sajt stvarno košta?",
-        a: "Profesionalni onepager počinje od oko 890 €, poslovni sajt od oko 1.890 €, prodavnice i individualna rešenja od oko 3.490 €. Automatska ponuda izračunava tačnu cenu za vaš projekat – transparentno i neobavezujuće.",
+        a: "Profesionalni onepager počinje od oko 490 €, poslovni sajt od oko 990 €, prodavnice i individualna rešenja od oko 1.990 €. Automatska ponuda izračunava tačnu cenu za vaš projekat – transparentno i neobavezujuće.",
       },
       {
         q: "Da li nudite i hosting?",
@@ -301,9 +301,9 @@ const sr: Dictionary = {
     maintenanceQ: "Da li želite ugovor o održavanju?",
     maintenanceOptions: {
       none: "Ne / odlučiću kasnije",
-      basic: "Basic – 39 €/mesečno",
-      business: "Business – 89 €/mesečno",
-      premium: "Premium – 179 €/mesečno",
+      basic: "Basic – 19 €/mesečno",
+      business: "Business – 49 €/mesečno",
+      premium: "Premium – 99 €/mesečno",
       unsure: "Da, molim savet",
     },
     message: "Opišite svoj projekat",
