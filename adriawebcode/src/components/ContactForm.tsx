@@ -398,8 +398,15 @@ function OfferResult({
             <div className="rounded-xl bg-gradient-to-br from-adriatic-500/20 to-adriatic-500/5 p-5 sm:col-span-1">
               <p className="text-xs text-slate-400">{dict.totalLabel}</p>
               <p className="mt-1 font-display text-xl font-bold text-white">
-                {euro(quote.totalMin)} – {euro(quote.totalMax)}
+                {quote.localCurrency
+                  ? `${quote.localCurrency.totalMin.toLocaleString("de-DE")} – ${quote.localCurrency.totalMax.toLocaleString("de-DE")} ${quote.localCurrency.code}`
+                  : `${euro(quote.totalMin)} – ${euro(quote.totalMax)}`}
               </p>
+              {quote.localCurrency && (
+                <p className="text-xs text-adriatic-300">
+                  ≈ {euro(quote.totalMin)} – {euro(quote.totalMax)}
+                </p>
+              )}
               <p className="mt-1 text-[11px] text-slate-500">{dict.vatNote}</p>
             </div>
             <div className="rounded-xl border border-white/10 p-5">
@@ -413,7 +420,12 @@ function OfferResult({
               <p className="mt-1 font-display text-xl font-bold text-white">
                 {maintenanceNames[quote.recommendedMaintenance]}
               </p>
-              <p className="text-xs text-adriatic-300">{euro(quote.maintenancePriceMonthly)} / mo</p>
+              <p className="text-xs text-adriatic-300">
+                {quote.localCurrency
+                  ? `${quote.localCurrency.maintenanceMonthly.toLocaleString("de-DE")} ${quote.localCurrency.code} (≈ ${euro(quote.maintenancePriceMonthly)})`
+                  : euro(quote.maintenancePriceMonthly)}{" "}
+                / mo
+              </p>
             </div>
           </div>
 

@@ -135,6 +135,7 @@ export function Pricing({ dict }: { dict: Dictionary["pricing"] }) {
                     <span className="font-display text-4xl font-bold text-white">{plan.price}</span>
                     <span className="text-sm text-slate-500">{dict.once}</span>
                   </p>
+                  {plan.eurHint && <p className="mt-1 text-xs text-slate-500">{plan.eurHint}</p>}
                   <ul className="mt-7 flex flex-col gap-3">
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-2.5 text-sm text-slate-300">
@@ -191,6 +192,7 @@ export function Maintenance({ dict }: { dict: Dictionary["maintenance"] }) {
                     <span className="font-display text-4xl font-bold text-white">{plan.price}</span>
                     <span className="text-sm text-slate-500">{dict.perMonth}</span>
                   </p>
+                  {plan.eurHint && <p className="mt-1 text-xs text-slate-500">{plan.eurHint}</p>}
                   <ul className="mt-7 flex flex-col gap-3">
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-2.5 text-sm text-slate-300">

@@ -28,6 +28,13 @@ export interface QuoteItem {
   amount: number;
 }
 
+export interface LocalCurrencyQuote {
+  code: string;
+  totalMin: number;
+  totalMax: number;
+  maintenanceMonthly: number;
+}
+
 export interface Quote {
   items: QuoteItem[];
   totalMin: number;
@@ -38,6 +45,8 @@ export interface Quote {
   maintenancePriceMonthly: number;
   currency: "EUR";
   regionFactor: number;
+  /** Amounts converted to the market's local currency (BA → KM, RS → RSD). */
+  localCurrency: LocalCurrencyQuote | null;
 }
 
 /**
@@ -92,8 +101,21 @@ const MAINTENANCE_PRICES_BY_COUNTRY: Record<Country, MaintenanceTierPrices> = {
   other: { basic: 39, business: 89, premium: 179 },
 };
 
+/**
+ * Local currencies of the target markets. Croatia and Montenegro use the
+ * euro; Bosnia's KM is pegged at 1.95583, the Serbian dinar floats (~117).
+ */
+const LOCAL_CURRENCY: Partial<Record<Country, { code: string; rate: number; roundTo: number }>> = {
+  ba: { code: "KM", rate: 1.95583, roundTo: 10 },
+  rs: { code: "RSD", rate: 117, roundTo: 100 },
+};
+
 function round10(value: number): number {
   return Math.round(value / 10) * 10;
+}
+
+function roundTo(value: number, step: number): number {
+  return Math.round(value / step) * step;
 }
 
 export function buildQuote(input: LeadInput, analysis: SiteAnalysis | null): Quote {
@@ -166,6 +188,19 @@ export function buildQuote(input: LeadInput, analysis: SiteAnalysis | null): Quo
           ? "basic"
           : "business";
 
+  const maintenancePriceMonthly =
+    MAINTENANCE_PRICES_BY_COUNTRY[input.country][recommendedMaintenance];
+
+  const local = LOCAL_CURRENCY[input.country];
+  const localCurrency: LocalCurrencyQuote | null = local
+    ? {
+        code: local.code,
+        totalMin: roundTo(totalMin * local.rate, local.roundTo),
+        totalMax: roundTo(totalMax * local.rate, local.roundTo),
+        maintenanceMonthly: roundTo(maintenancePriceMonthly * local.rate, local.roundTo / 10),
+      }
+    : null;
+
   return {
     items,
     totalMin,
@@ -173,10 +208,10 @@ export function buildQuote(input: LeadInput, analysis: SiteAnalysis | null): Quo
     timelineWeeksMin: weeksMin,
     timelineWeeksMax: weeksMax,
     recommendedMaintenance,
-    maintenancePriceMonthly:
-      MAINTENANCE_PRICES_BY_COUNTRY[input.country][recommendedMaintenance],
+    maintenancePriceMonthly,
     currency: "EUR",
     regionFactor,
+    localCurrency,
   };
 }
 

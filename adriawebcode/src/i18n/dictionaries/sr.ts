@@ -112,7 +112,8 @@ const sr: Dictionary = {
     plans: [
       {
         name: "Starter",
-        price: "490 €",
+        price: "57.000 RSD",
+        eurHint: "≈ 490 €",
         desc: "Savršeno za profesionalan početak – onepager ili kompaktan sajt.",
         features: [
           "Do 3 stranice / sekcije",
@@ -125,7 +126,8 @@ const sr: Dictionary = {
       },
       {
         name: "Business",
-        price: "990 €",
+        price: "116.000 RSD",
+        eurHint: "≈ 990 €",
         desc: "Za rastuće firme koje žele da pridobiju klijente online.",
         features: [
           "Do 10 stranica",
@@ -139,7 +141,8 @@ const sr: Dictionary = {
       },
       {
         name: "Premium",
-        price: "1.990 €",
+        price: "233.000 RSD",
+        eurHint: "≈ 1.990 €",
         desc: "Individualno rešenje s prodavnicom, rezervacijama ili posebnim funkcijama.",
         features: [
           "Neograničen broj stranica",
@@ -165,7 +168,8 @@ const sr: Dictionary = {
     plans: [
       {
         name: "Basic",
-        price: "19 €",
+        price: "2.200 RSD",
+        eurHint: "≈ 19 €",
         desc: "Osnovna tehnička zaštita.",
         features: [
           "Softverska i bezbednosna ažuriranja",
@@ -177,7 +181,8 @@ const sr: Dictionary = {
       },
       {
         name: "Business",
-        price: "49 €",
+        price: "5.700 RSD",
+        eurHint: "≈ 49 €",
         desc: "Za sajtove koji aktivno donose klijente.",
         features: [
           "Sve iz paketa Basic",
@@ -189,7 +194,8 @@ const sr: Dictionary = {
       },
       {
         name: "Premium",
-        price: "99 €",
+        price: "11.600 RSD",
+        eurHint: "≈ 99 €",
         desc: "Kompletna briga s prioritetom.",
         features: [
           "Sve iz paketa Business",
@@ -225,7 +231,7 @@ const sr: Dictionary = {
       },
       {
         q: "Koliko sajt stvarno košta?",
-        a: "Profesionalni onepager počinje od oko 490 €, poslovni sajt od oko 990 €, prodavnice i individualna rešenja od oko 1.990 €. Automatska ponuda izračunava tačnu cenu za vaš projekat – transparentno i neobavezujuće.",
+        a: "Profesionalni onepager počinje od oko 57.000 RSD (≈ 490 €), poslovni sajt od oko 116.000 RSD (≈ 990 €), prodavnice i individualna rešenja od oko 233.000 RSD (≈ 1.990 €). Automatska ponuda izračunava tačnu cenu za vaš projekat – transparentno i neobavezujuće.",
       },
       {
         q: "Da li nudite i hosting?",
@@ -301,9 +307,9 @@ const sr: Dictionary = {
     maintenanceQ: "Da li želite ugovor o održavanju?",
     maintenanceOptions: {
       none: "Ne / odlučiću kasnije",
-      basic: "Basic – 19 €/mesečno",
-      business: "Business – 49 €/mesečno",
-      premium: "Premium – 99 €/mesečno",
+      basic: "Basic – 2.200 RSD/mesečno",
+      business: "Business – 5.700 RSD/mesečno",
+      premium: "Premium – 11.600 RSD/mesečno",
       unsure: "Da, molim savet",
     },
     message: "Opišite svoj projekat",

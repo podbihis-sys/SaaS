@@ -113,6 +113,7 @@ const hr: Dictionary = {
       {
         name: "Starter",
         price: "590 €",
+        eurHint: "",
         desc: "Savršeno za profesionalan početak – onepager ili kompaktna stranica.",
         features: [
           "Do 3 stranice / sekcije",
@@ -126,6 +127,7 @@ const hr: Dictionary = {
       {
         name: "Business",
         price: "1.290 €",
+        eurHint: "",
         desc: "Za rastuće tvrtke koje žele pridobiti klijente online.",
         features: [
           "Do 10 stranica",
@@ -140,6 +142,7 @@ const hr: Dictionary = {
       {
         name: "Premium",
         price: "2.490 €",
+        eurHint: "",
         desc: "Individualno rješenje s trgovinom, rezervacijama ili posebnim funkcijama.",
         features: [
           "Neograničen broj stranica",
@@ -166,6 +169,7 @@ const hr: Dictionary = {
       {
         name: "Basic",
         price: "29 €",
+        eurHint: "",
         desc: "Osnovna tehnička zaštita.",
         features: [
           "Softverska i sigurnosna ažuriranja",
@@ -178,6 +182,7 @@ const hr: Dictionary = {
       {
         name: "Business",
         price: "59 €",
+        eurHint: "",
         desc: "Za stranice koje aktivno donose klijente.",
         features: [
           "Sve iz paketa Basic",
@@ -190,6 +195,7 @@ const hr: Dictionary = {
       {
         name: "Premium",
         price: "119 €",
+        eurHint: "",
         desc: "Cjelovita briga s prioritetom.",
         features: [
           "Sve iz paketa Business",

@@ -92,7 +92,11 @@ function jsonLd(locale: Locale) {
         "@type": "Offer",
         name: plan.name,
         description: plan.desc,
-        priceCurrency: "EUR",
+        priceCurrency: plan.price.includes("KM")
+          ? "BAM"
+          : plan.price.includes("RSD")
+            ? "RSD"
+            : "EUR",
         price: plan.price.replace(/[^\d]/g, ""),
       })),
     },

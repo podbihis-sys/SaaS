@@ -113,6 +113,7 @@ const en: Dictionary = {
       {
         name: "Starter",
         price: "€890",
+        eurHint: "",
         desc: "Perfect for a professional start – one-pager or compact website.",
         features: [
           "Up to 3 pages / sections",
@@ -126,6 +127,7 @@ const en: Dictionary = {
       {
         name: "Business",
         price: "€1,890",
+        eurHint: "",
         desc: "For growing businesses that want to win customers online.",
         features: [
           "Up to 10 pages",
@@ -140,6 +142,7 @@ const en: Dictionary = {
       {
         name: "Premium",
         price: "€3,490",
+        eurHint: "",
         desc: "Custom solution with shop, booking or special features.",
         features: [
           "Unlimited pages",
@@ -166,6 +169,7 @@ const en: Dictionary = {
       {
         name: "Basic",
         price: "€39",
+        eurHint: "",
         desc: "The essential technical protection.",
         features: [
           "Software & security updates",
@@ -178,6 +182,7 @@ const en: Dictionary = {
       {
         name: "Business",
         price: "€89",
+        eurHint: "",
         desc: "For websites that actively bring customers.",
         features: [
           "Everything in Basic",
@@ -190,6 +195,7 @@ const en: Dictionary = {
       {
         name: "Premium",
         price: "€179",
+        eurHint: "",
         desc: "All-round care with priority.",
         features: [
           "Everything in Business",

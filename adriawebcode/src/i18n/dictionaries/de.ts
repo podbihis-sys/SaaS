@@ -111,6 +111,7 @@ const de = {
       {
         name: "Starter",
         price: "890 €",
+        eurHint: "",
         desc: "Perfekt für den professionellen Einstieg – Onepager oder kompakte Website.",
         features: [
           "Bis zu 3 Seiten / Sektionen",
@@ -124,6 +125,7 @@ const de = {
       {
         name: "Business",
         price: "1.890 €",
+        eurHint: "",
         desc: "Für wachsende Unternehmen, die Kunden online gewinnen wollen.",
         features: [
           "Bis zu 10 Seiten",
@@ -138,6 +140,7 @@ const de = {
       {
         name: "Premium",
         price: "3.490 €",
+        eurHint: "",
         desc: "Individuelle Lösung mit Shop, Buchung oder Sonderfunktionen.",
         features: [
           "Unbegrenzte Seiten",
@@ -164,6 +167,7 @@ const de = {
       {
         name: "Basic",
         price: "39 €",
+        eurHint: "",
         desc: "Die technische Grundabsicherung.",
         features: [
           "Software- & Sicherheitsupdates",
@@ -176,6 +180,7 @@ const de = {
       {
         name: "Business",
         price: "89 €",
+        eurHint: "",
         desc: "Für Websites, die aktiv Kunden bringen.",
         features: [
           "Alles aus Basic",
@@ -188,6 +193,7 @@ const de = {
       {
         name: "Premium",
         price: "179 €",
+        eurHint: "",
         desc: "Rundum-Betreuung mit Priorität.",
         features: [
           "Alles aus Business",

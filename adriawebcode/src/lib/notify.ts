@@ -39,7 +39,11 @@ function offerHtml(lead: LeadInput, quote: Quote, analysis: SiteAnalysis | null)
       <p>Angebot für <strong>${esc(lead.company)}</strong> (${esc(lead.name)})</p>
       ${analysisBlock}
       <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:14px">${rows}</table>
-      <p style="font-size:18px"><strong>Gesamt: ${euro(quote.totalMin)} – ${euro(quote.totalMax)}</strong> <span style="font-size:12px;color:#666">(zzgl. USt.)</span></p>
+      <p style="font-size:18px"><strong>Gesamt: ${euro(quote.totalMin)} – ${euro(quote.totalMax)}</strong>${
+        quote.localCurrency
+          ? ` <span style="font-size:14px;color:#1e6d77">(≈ ${quote.localCurrency.totalMin.toLocaleString("de-DE")} – ${quote.localCurrency.totalMax.toLocaleString("de-DE")} ${quote.localCurrency.code})</span>`
+          : ""
+      } <span style="font-size:12px;color:#666">(zzgl. USt.)</span></p>
       <p style="font-size:14px">Umsetzung: ca. ${quote.timelineWeeksMin}–${quote.timelineWeeksMax} Wochen · Empfohlener Wartungsvertrag: <strong>${quote.recommendedMaintenance}</strong> (${euro(quote.maintenancePriceMonthly)}/Monat)</p>
       <p style="font-size:12px;color:#666">Dieses Angebot wurde automatisch erstellt, ist unverbindlich und 14 Tage gültig. Wir melden uns innerhalb von 24 Stunden persönlich.</p>
     </div>

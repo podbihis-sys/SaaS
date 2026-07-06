@@ -112,7 +112,8 @@ const bs: Dictionary = {
     plans: [
       {
         name: "Starter",
-        price: "490 €",
+        price: "950 KM",
+        eurHint: "≈ 490 €",
         desc: "Savršeno za profesionalan početak – onepager ili kompaktna stranica.",
         features: [
           "Do 3 stranice / sekcije",
@@ -125,7 +126,8 @@ const bs: Dictionary = {
       },
       {
         name: "Business",
-        price: "990 €",
+        price: "1.950 KM",
+        eurHint: "≈ 990 €",
         desc: "Za rastuće firme koje žele pridobiti klijente online.",
         features: [
           "Do 10 stranica",
@@ -139,7 +141,8 @@ const bs: Dictionary = {
       },
       {
         name: "Premium",
-        price: "1.990 €",
+        price: "3.900 KM",
+        eurHint: "≈ 1.990 €",
         desc: "Individualno rješenje sa shopom, rezervacijama ili posebnim funkcijama.",
         features: [
           "Neograničen broj stranica",
@@ -165,7 +168,8 @@ const bs: Dictionary = {
     plans: [
       {
         name: "Basic",
-        price: "19 €",
+        price: "39 KM",
+        eurHint: "≈ 19 €",
         desc: "Osnovna tehnička zaštita.",
         features: [
           "Softverska i sigurnosna ažuriranja",
@@ -177,7 +181,8 @@ const bs: Dictionary = {
       },
       {
         name: "Business",
-        price: "49 €",
+        price: "95 KM",
+        eurHint: "≈ 49 €",
         desc: "Za stranice koje aktivno donose klijente.",
         features: [
           "Sve iz paketa Basic",
@@ -189,7 +194,8 @@ const bs: Dictionary = {
       },
       {
         name: "Premium",
-        price: "99 €",
+        price: "195 KM",
+        eurHint: "≈ 99 €",
         desc: "Kompletna briga s prioritetom.",
         features: [
           "Sve iz paketa Business",
@@ -225,7 +231,7 @@ const bs: Dictionary = {
       },
       {
         q: "Koliko web stranica stvarno košta?",
-        a: "Profesionalni onepager počinje od oko 490 €, poslovna web stranica od oko 990 €, shopovi i individualna rješenja od oko 1.990 €. Automatska ponuda izračunava tačnu cijenu za vaš projekat – transparentno i neobavezujuće.",
+        a: "Profesionalni onepager počinje od oko 950 KM, poslovna web stranica od oko 1.950 KM, shopovi i individualna rješenja od oko 3.900 KM. Automatska ponuda izračunava tačnu cijenu za vaš projekat – transparentno i neobavezujuće.",
       },
       {
         q: "Nudite li i hosting?",
@@ -301,9 +307,9 @@ const bs: Dictionary = {
     maintenanceQ: "Želite li ugovor o održavanju?",
     maintenanceOptions: {
       none: "Ne / odlučiću kasnije",
-      basic: "Basic – 19 €/mjesečno",
-      business: "Business – 49 €/mjesečno",
-      premium: "Premium – 99 €/mjesečno",
+      basic: "Basic – 39 KM/mjesečno",
+      business: "Business – 95 KM/mjesečno",
+      premium: "Premium – 195 KM/mjesečno",
       unsure: "Da, molim savjet",
     },
     message: "Opišite svoj projekat",
