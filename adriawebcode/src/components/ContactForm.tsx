@@ -98,11 +98,14 @@ export function ContactForm({
   }
 
   return (
-    <section id="contact" className="scroll-mt-24 py-24">
+    <section id="contact" className="scroll-mt-24 border-t border-white/[0.06] py-24 sm:py-32">
       <div className="container-site max-w-4xl">
         <Reveal className="text-center">
-          <h2 className="section-title">{dict.title}</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-slate-400">{dict.subtitle}</p>
+          <p className="section-index justify-center">
+            <span className="text-adriatic-400">/</span> {dict.kicker.toLowerCase()}
+          </p>
+          <h2 className="section-title mt-4">{dict.title}</h2>
+          <p className="mx-auto mt-5 max-w-2xl text-[1.02rem] leading-relaxed text-slate-400">{dict.subtitle}</p>
         </Reveal>
 
         <AnimatePresence mode="wait">

@@ -6,7 +6,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-white/5 bg-navy-950 py-14">
+    <footer className="border-t border-white/[0.06] bg-[#04060f] py-16">
       <div className="container-site">
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-2">

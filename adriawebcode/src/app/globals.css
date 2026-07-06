@@ -4,67 +4,130 @@
 
 :root {
   color-scheme: dark;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 html {
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  @apply bg-navy-950 text-slate-200 antialiased;
+  @apply bg-[#04060f] text-slate-300 antialiased;
+  font-feature-settings: "ss01", "cv01";
 }
 
 ::selection {
-  background: rgba(60, 197, 201, 0.35);
+  background: rgba(60, 197, 201, 0.3);
+  color: #eafcfb;
+}
+
+/* Thin scrollbar that matches the surface */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #04060f;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a2b6b;
+  border-radius: 10px;
+  border: 2px solid #04060f;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #21a8ae;
 }
 
 @layer components {
   .container-site {
-    @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+    @apply mx-auto w-full max-w-[80rem] px-5 sm:px-8;
+  }
+  /* Section eyebrow used ONCE as a deliberate wayfinding index, not on every block */
+  .section-index {
+    @apply inline-flex items-center gap-2 font-mono text-xs font-medium tracking-tight text-adriatic-300/80;
   }
   .section-title {
-    @apply font-display text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl;
+    @apply font-display text-[2rem] font-semibold leading-[1.02] tracking-[-0.03em] text-white sm:text-[2.75rem] lg:text-[3.4rem];
+    text-wrap: balance;
   }
   .input-field {
-    @apply w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none transition focus:border-adriatic-400 focus:bg-white/10 focus:ring-2 focus:ring-adriatic-400/30;
+    @apply w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none transition duration-200 focus:border-adriatic-400/70 focus:bg-white/[0.06] focus:ring-4 focus:ring-adriatic-400/10;
   }
   .label-field {
-    @apply mb-1.5 block text-sm font-medium text-slate-300;
+    @apply mb-1.5 block text-[0.8rem] font-medium tracking-tight text-slate-300;
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-adriatic-500 to-adriatic-400 px-7 py-3.5 text-sm font-semibold text-navy-950 shadow-lg shadow-adriatic-500/25 transition-all hover:shadow-adriatic-400/40 hover:brightness-110 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60;
+    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-adriatic-400 px-7 py-3.5 text-sm font-semibold tracking-tight text-navy-950 transition-all duration-300 hover:bg-adriatic-300 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-primary::after {
+    content: "";
+    @apply absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-700;
+  }
+  .btn-primary:hover::after {
+    @apply translate-x-full;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur transition-all hover:border-adriatic-400/50 hover:bg-white/10 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-7 py-3.5 text-sm font-semibold tracking-tight text-white backdrop-blur transition-all duration-300 hover:border-adriatic-400/60 hover:bg-white/[0.07] active:scale-[0.97];
   }
+  .card-surface {
+    @apply relative overflow-hidden rounded-[1.25rem] border border-white/[0.08] bg-gradient-to-b from-white/[0.05] to-white/[0.01];
+  }
+  /* Backward-compatible alias used by the form / FAQ surfaces */
   .card-glass {
-    @apply rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm;
+    @apply relative overflow-hidden rounded-[1.25rem] border border-white/[0.08] bg-gradient-to-b from-white/[0.05] to-white/[0.01] backdrop-blur-sm;
   }
 }
 
-/* Animated hero gradient */
-.hero-gradient {
-  background: linear-gradient(
-    120deg,
-    #050a1c 0%,
-    #0a1230 30%,
-    #1e6d77 55%,
-    #0a1230 75%,
-    #050a1c 100%
-  );
-  background-size: 300% 300%;
-  animation: gradient 14s ease infinite;
+/* ---- Atmosphere: aurora mesh, animated slowly, GPU-friendly ---- */
+.aurora {
+  background:
+    radial-gradient(38rem 32rem at 78% -8%, rgba(33, 168, 174, 0.28), transparent 60%),
+    radial-gradient(30rem 28rem at 8% 12%, rgba(255, 107, 74, 0.12), transparent 55%),
+    radial-gradient(46rem 40rem at 50% 118%, rgba(30, 109, 119, 0.35), transparent 60%),
+    #04060f;
+}
+.aurora-drift {
+  background-size: 140% 140%;
+  animation: drift 22s ease-in-out infinite alternate;
 }
 
-/* Highlighted word in the hero: solid brand colour, emphasis via a soft
-   underline swash rather than gradient-filled text. */
-.text-accent {
-  color: theme("colors.adriatic.300");
+@keyframes drift {
+  0% {
+    background-position: 0% 0%, 0% 0%, 50% 100%, 0 0;
+  }
+  100% {
+    background-position: 20% 10%, 10% 20%, 60% 90%, 0 0;
+  }
+}
+
+/* Fine dot-field — reads as a print/technical surface, not a decorative CSS grid */
+.dotfield {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(60% 55% at 50% 40%, #000 30%, transparent 100%);
+}
+
+.hairline {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .aurora-drift {
+    animation: none;
   }
   *,
   *::before,

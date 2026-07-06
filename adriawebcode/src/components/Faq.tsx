@@ -9,12 +9,15 @@ export function Faq({ dict }: { dict: Dictionary["faq"] }) {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="scroll-mt-24 border-y border-white/5 bg-navy-900/30 py-24">
+    <section id="faq" className="scroll-mt-24 py-24 sm:py-32">
       <div className="container-site max-w-3xl">
         <Reveal className="text-center">
-          <h2 className="section-title">{dict.title}</h2>
+          <p className="section-index justify-center">
+            <span className="text-adriatic-400">/</span> {dict.kicker.toLowerCase()}
+          </p>
+          <h2 className="section-title mt-4">{dict.title}</h2>
         </Reveal>
-        <div className="mt-12 flex flex-col gap-3">
+        <div className="mt-14 flex flex-col gap-3">
           {dict.items.map((item, i) => {
             const isOpen = open === i;
             return (

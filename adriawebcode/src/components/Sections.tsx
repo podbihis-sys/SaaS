@@ -1,5 +1,6 @@
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { Reveal, Stagger, StaggerItem } from "./Reveal";
+import { GlowCard } from "./ui/GlowCard";
 
 const SERVICE_ICONS = [
   <path key="0" d="M4 6h16M4 6v12h16V6M4 6l2-2h12l2 2M9 14l2 2 4-5" strokeLinecap="round" strokeLinejoin="round" />,
@@ -10,20 +11,55 @@ const SERVICE_ICONS = [
   <path key="5" d="M10.5 6.5 12 3l1.5 3.5L17 8l-3.5 1.5L12 13l-1.5-3.5L7 8l3.5-1.5ZM5 15l.9 2.1L8 18l-2.1.9L5 21l-.9-2.1L2 18l2.1-.9L5 15Zm13 1 .7 1.6L20.3 18l-1.6.7L18 20.3l-.7-1.6L15.7 18l1.6-.7L18 16Z" strokeLinecap="round" strokeLinejoin="round" />,
 ];
 
+function ServiceIcon({ i, size = "h-6 w-6" }: { i: number; size?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={size} fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+      {SERVICE_ICONS[i]}
+    </svg>
+  );
+}
+
+/** Editorial section header: a monospace wayfinding tag + a large title. */
+function SectionHead({
+  tag,
+  title,
+  lead,
+  align = "left",
+}: {
+  tag: string;
+  title: string;
+  lead?: string;
+  align?: "left" | "center";
+}) {
+  return (
+    <Reveal className={align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
+      <p className={`section-index ${align === "center" ? "justify-center" : ""}`}>
+        <span className="text-adriatic-400">/</span> {tag.toLowerCase()}
+      </p>
+      <h2 className="section-title mt-4">{title}</h2>
+      {lead && <p className="mt-5 text-[1.02rem] leading-relaxed text-slate-400">{lead}</p>}
+    </Reveal>
+  );
+}
+
 export function TrustMarquee({ dict }: { dict: Dictionary["trust"] }) {
   const items = [...dict.items, ...dict.items];
   return (
-    <section className="border-y border-white/5 bg-navy-900/40 py-8" aria-label={dict.title}>
-      <p className="container-site mb-5 text-center text-xs font-semibold uppercase tracking-widest text-slate-500">
-        {dict.title}
-      </p>
+    <section className="relative border-y border-white/[0.06] bg-white/[0.015] py-7" aria-label={dict.title}>
+      <div className="container-site mb-5 flex items-center gap-4">
+        <span className="h-px flex-1 hairline" aria-hidden />
+        <p className="whitespace-nowrap text-[0.7rem] font-medium uppercase tracking-[0.2em] text-slate-500">
+          {dict.title}
+        </p>
+        <span className="h-px flex-1 hairline" aria-hidden />
+      </div>
       <div className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-navy-950 to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-navy-950 to-transparent" />
-        <div className="flex w-max animate-marquee gap-12">
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-28 bg-gradient-to-r from-[#04060f] to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-28 bg-gradient-to-l from-[#04060f] to-transparent" />
+        <div className="flex w-max animate-marquee gap-10">
           {items.map((item, i) => (
-            <span key={i} className="flex items-center gap-2 whitespace-nowrap text-sm font-medium text-slate-400">
-              <span className="h-1.5 w-1.5 rounded-full bg-adriatic-400" aria-hidden />
+            <span key={i} className="flex items-center gap-2.5 whitespace-nowrap font-display text-lg font-medium text-slate-400">
+              <span className="h-1 w-1 rounded-full bg-adriatic-400/70" aria-hidden />
               {item}
             </span>
           ))}
@@ -34,27 +70,42 @@ export function TrustMarquee({ dict }: { dict: Dictionary["trust"] }) {
 }
 
 export function Services({ dict }: { dict: Dictionary["services"] }) {
+  // Bento: first tile spans two columns and is the "hero" service.
+  const spans = [
+    "sm:col-span-2 lg:col-span-2 lg:row-span-2",
+    "lg:col-span-2",
+    "lg:col-span-2",
+    "sm:col-span-2 lg:col-span-2",
+    "lg:col-span-2",
+    "lg:col-span-2",
+  ];
+
   return (
-    <section id="services" className="scroll-mt-24 py-24">
+    <section id="services" className="scroll-mt-24 py-24 sm:py-32">
       <div className="container-site">
-        <Reveal>
-          <h2 className="section-title max-w-2xl">{dict.title}</h2>
-          <p className="mt-4 max-w-2xl text-slate-400">{dict.subtitle}</p>
-        </Reveal>
-        <Stagger className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {dict.items.map((item, i) => (
-            <StaggerItem key={item.title}>
-              <article className="card-glass group h-full p-7 transition-all duration-300 hover:-translate-y-1.5 hover:border-adriatic-400/40 hover:bg-white/[0.07]">
-                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-adriatic-500/25 to-adriatic-500/5 text-adriatic-300 transition group-hover:scale-110">
-                  <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
-                    {SERVICE_ICONS[i]}
-                  </svg>
-                </div>
-                <h3 className="mb-2.5 font-display text-lg font-semibold text-white">{item.title}</h3>
-                <p className="text-sm leading-relaxed text-slate-400">{item.desc}</p>
-              </article>
-            </StaggerItem>
-          ))}
+        <SectionHead tag={dict.kicker} title={dict.title} lead={dict.subtitle} />
+        <Stagger className="mt-14 grid auto-rows-[minmax(11rem,auto)] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6">
+          {dict.items.map((item, i) => {
+            const featured = i === 0;
+            return (
+              <StaggerItem key={item.title} className={spans[i] ?? "lg:col-span-2"}>
+                <GlowCard className="h-full">
+                  <div className={`flex h-full flex-col ${featured ? "p-8" : "p-7"}`}>
+                    <div className={`mb-5 inline-flex items-center justify-center rounded-xl bg-adriatic-500/10 text-adriatic-300 ring-1 ring-inset ring-adriatic-400/20 ${featured ? "h-14 w-14" : "h-11 w-11"}`}>
+                      <ServiceIcon i={i} size={featured ? "h-7 w-7" : "h-5 w-5"} />
+                    </div>
+                    <h3 className={`font-display font-semibold text-white ${featured ? "text-2xl" : "text-lg"}`}>
+                      {item.title}
+                    </h3>
+                    <p className={`mt-2.5 leading-relaxed text-slate-400 ${featured ? "text-[0.98rem] max-w-md" : "text-sm"}`}>
+                      {item.desc}
+                    </p>
+                    {featured && <div className="mt-auto pt-6"><span className="h-px w-full block hairline" /></div>}
+                  </div>
+                </GlowCard>
+              </StaggerItem>
+            );
+          })}
         </Stagger>
       </div>
     </section>
@@ -63,23 +114,19 @@ export function Services({ dict }: { dict: Dictionary["services"] }) {
 
 export function Process({ dict }: { dict: Dictionary["process"] }) {
   return (
-    <section id="process" className="scroll-mt-24 border-y border-white/5 bg-navy-900/30 py-24">
+    <section id="process" className="relative scroll-mt-24 overflow-hidden border-y border-white/[0.06] bg-white/[0.015] py-24 sm:py-32">
       <div className="container-site">
-        <Reveal className="text-center">
-          <h2 className="section-title">{dict.title}</h2>
-        </Reveal>
-        <Stagger className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <SectionHead tag={dict.kicker} title={dict.title} align="center" />
+        <Stagger className="relative mt-16 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+          <div
+            className="absolute left-0 right-0 top-8 hidden h-px hairline lg:block"
+            aria-hidden
+          />
           {dict.steps.map((step, i) => (
             <StaggerItem key={step.title}>
-              <div className="relative h-full">
-                {i < dict.steps.length - 1 && (
-                  <div
-                    className="absolute left-14 top-7 hidden h-px w-[calc(100%-2rem)] bg-gradient-to-r from-adriatic-400/50 to-transparent lg:block"
-                    aria-hidden
-                  />
-                )}
-                <div className="relative mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-adriatic-400/30 bg-navy-900 font-display text-xl font-bold text-adriatic-300">
-                  {i + 1}
+              <div className="relative">
+                <div className="relative z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-adriatic-400/25 bg-[#070b1a] font-display text-2xl font-semibold text-adriatic-300 shadow-[0_0_40px_-12px_rgba(60,197,201,0.5)]">
+                  {String(i + 1).padStart(2, "0")}
                 </div>
                 <h3 className="mb-2 font-display text-lg font-semibold text-white">{step.title}</h3>
                 <p className="text-sm leading-relaxed text-slate-400">{step.desc}</p>
@@ -95,62 +142,65 @@ export function Process({ dict }: { dict: Dictionary["process"] }) {
 function CheckIcon() {
   return (
     <svg viewBox="0 0 16 16" className="mt-0.5 h-4 w-4 shrink-0 text-adriatic-400" fill="none" aria-hidden>
-      <path d="M3 8.5 6.5 12 13 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M3 8.5 6.5 12 13 4.5" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
 export function Pricing({ dict }: { dict: Dictionary["pricing"] }) {
   return (
-    <section id="pricing" className="scroll-mt-24 py-24">
+    <section id="pricing" className="scroll-mt-24 py-24 sm:py-32">
       <div className="container-site">
-        <Reveal className="text-center">
-          <h2 className="section-title">{dict.title}</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-slate-400">{dict.subtitle}</p>
-        </Reveal>
-        <Stagger className="mt-14 grid gap-6 lg:grid-cols-3">
+        <SectionHead tag={dict.kicker} title={dict.title} lead={dict.subtitle} align="center" />
+        <Stagger className="mt-16 grid items-stretch gap-5 lg:grid-cols-3">
           {dict.plans.map((plan, i) => {
             const highlighted = i === 1;
             return (
-              <StaggerItem key={plan.name}>
-                <article
-                  className={`relative flex h-full flex-col rounded-2xl border p-8 transition-all duration-300 hover:-translate-y-1.5 ${
-                    highlighted
-                      ? "border-adriatic-400/50 bg-gradient-to-b from-adriatic-500/15 to-white/[0.03] shadow-2xl shadow-adriatic-500/10"
-                      : "border-white/10 bg-white/[0.04] hover:border-white/25"
-                  }`}
+              <StaggerItem key={plan.name} className={highlighted ? "lg:-my-3" : ""}>
+                <GlowCard
+                  glow={highlighted ? "rgba(60,197,201,0.2)" : "rgba(60,197,201,0.12)"}
+                  className={`h-full ${highlighted ? "border-adriatic-400/40 shadow-[0_30px_80px_-40px_rgba(33,168,174,0.6)]" : ""}`}
                 >
-                  {highlighted && (
-                    <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-adriatic-500 to-adriatic-400 px-4 py-1 text-xs font-bold text-navy-950">
-                      {dict.popular}
-                    </span>
-                  )}
-                  <h3 className="font-display text-xl font-semibold text-white">{plan.name}</h3>
-                  <p className="mt-2 min-h-10 text-sm text-slate-400">{plan.desc}</p>
-                  <p className="mt-5 flex items-baseline gap-2">
-                    <span className="text-sm text-slate-400">{dict.from}</span>
-                    <span className="font-display text-4xl font-bold text-white">{plan.price}</span>
-                    <span className="text-sm text-slate-500">{dict.once}</span>
-                  </p>
-                  {plan.eurHint && <p className="mt-1 text-xs text-slate-500">{plan.eurHint}</p>}
-                  <ul className="mt-7 flex flex-col gap-3">
-                    {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-2.5 text-sm text-slate-300">
-                        <CheckIcon />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <a href="#contact" className={`${highlighted ? "btn-primary" : "btn-secondary"} mt-8 w-full`}>
-                    {dict.cta}
-                  </a>
-                </article>
+                  <div className="flex h-full flex-col p-8">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-display text-xl font-semibold text-white">{plan.name}</h3>
+                      {highlighted && (
+                        <span className="rounded-full bg-adriatic-400/15 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-wide text-adriatic-300 ring-1 ring-inset ring-adriatic-400/30">
+                          {dict.popular}
+                        </span>
+                      )}
+                    </div>
+                    <p className="mt-2 min-h-10 text-sm text-slate-400">{plan.desc}</p>
+                    <div className="mt-6 flex items-end gap-2">
+                      <span className="mb-1.5 text-sm text-slate-400">{dict.from}</span>
+                      <span className="font-display text-[2.75rem] font-semibold leading-none tracking-tight text-white">
+                        {plan.price}
+                      </span>
+                    </div>
+                    <p className="mt-1.5 text-xs text-slate-500">
+                      {plan.eurHint ? `${plan.eurHint} · ` : ""}
+                      {dict.once}
+                    </p>
+                    <div className="my-6 h-px w-full hairline" />
+                    <ul className="flex flex-col gap-3">
+                      {plan.features.map((feature) => (
+                        <li key={feature} className="flex items-start gap-2.5 text-sm text-slate-300">
+                          <CheckIcon />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    <a href="#contact" className={`${highlighted ? "btn-primary" : "btn-secondary"} mt-8 w-full`}>
+                      {dict.cta}
+                    </a>
+                  </div>
+                </GlowCard>
               </StaggerItem>
             );
           })}
         </Stagger>
-        <Reveal delay={0.15}>
-          <p className="mx-auto mt-10 max-w-3xl text-center text-sm text-slate-500">{dict.note}</p>
+        <Reveal delay={0.1}>
+          <p className="mx-auto mt-10 max-w-3xl text-center text-sm leading-relaxed text-slate-500">{dict.note}</p>
         </Reveal>
       </div>
     </section>
@@ -159,48 +209,49 @@ export function Pricing({ dict }: { dict: Dictionary["pricing"] }) {
 
 export function Maintenance({ dict }: { dict: Dictionary["maintenance"] }) {
   return (
-    <section id="maintenance" className="scroll-mt-24 border-y border-white/5 bg-navy-900/30 py-24">
+    <section id="maintenance" className="scroll-mt-24 border-y border-white/[0.06] bg-white/[0.015] py-24 sm:py-32">
       <div className="container-site">
-        <Reveal className="text-center">
-          <h2 className="section-title">{dict.title}</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-slate-400">{dict.subtitle}</p>
-        </Reveal>
-        <Stagger className="mt-14 grid gap-6 lg:grid-cols-3">
+        <SectionHead tag={dict.kicker} title={dict.title} lead={dict.subtitle} align="center" />
+        <Stagger className="mt-16 grid gap-5 lg:grid-cols-3">
           {dict.plans.map((plan, i) => {
             const highlighted = i === 1;
             return (
               <StaggerItem key={plan.name}>
-                <article
-                  className={`relative flex h-full flex-col rounded-2xl border p-8 transition-all duration-300 hover:-translate-y-1.5 ${
-                    highlighted
-                      ? "border-coral-500/50 bg-gradient-to-b from-coral-500/10 to-white/[0.03]"
-                      : "border-white/10 bg-white/[0.04] hover:border-white/25"
-                  }`}
+                <GlowCard
+                  glow="rgba(255,107,74,0.14)"
+                  className={`h-full ${highlighted ? "border-coral-500/35" : ""}`}
                 >
-                  {highlighted && (
-                    <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-coral-500 to-coral-400 px-4 py-1 text-xs font-bold text-navy-950">
-                      {dict.recommended}
-                    </span>
-                  )}
-                  <h3 className="font-display text-xl font-semibold text-white">{plan.name}</h3>
-                  <p className="mt-2 text-sm text-slate-400">{plan.desc}</p>
-                  <p className="mt-5 flex items-baseline gap-1.5">
-                    <span className="font-display text-4xl font-bold text-white">{plan.price}</span>
-                    <span className="text-sm text-slate-500">{dict.perMonth}</span>
-                  </p>
-                  {plan.eurHint && <p className="mt-1 text-xs text-slate-500">{plan.eurHint}</p>}
-                  <ul className="mt-7 flex flex-col gap-3">
-                    {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-2.5 text-sm text-slate-300">
-                        <CheckIcon />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <a href="#contact" className="btn-secondary mt-8 w-full">
-                    {dict.cta}
-                  </a>
-                </article>
+                  <div className="flex h-full flex-col p-8">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-display text-xl font-semibold text-white">{plan.name}</h3>
+                      {highlighted && (
+                        <span className="rounded-full bg-coral-500/15 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-wide text-coral-400 ring-1 ring-inset ring-coral-500/30">
+                          {dict.recommended}
+                        </span>
+                      )}
+                    </div>
+                    <p className="mt-2 text-sm text-slate-400">{plan.desc}</p>
+                    <div className="mt-6 flex items-end gap-1.5">
+                      <span className="font-display text-[2.5rem] font-semibold leading-none tracking-tight text-white">
+                        {plan.price}
+                      </span>
+                      <span className="mb-1 text-sm text-slate-500">{dict.perMonth}</span>
+                    </div>
+                    {plan.eurHint && <p className="mt-1.5 text-xs text-slate-500">{plan.eurHint}</p>}
+                    <div className="my-6 h-px w-full hairline" />
+                    <ul className="flex flex-col gap-3">
+                      {plan.features.map((feature) => (
+                        <li key={feature} className="flex items-start gap-2.5 text-sm text-slate-300">
+                          <CheckIcon />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    <a href="#contact" className="btn-secondary mt-8 w-full">
+                      {dict.cta}
+                    </a>
+                  </div>
+                </GlowCard>
               </StaggerItem>
             );
           })}
@@ -212,33 +263,30 @@ export function Maintenance({ dict }: { dict: Dictionary["maintenance"] }) {
 
 export function Regions({ dict }: { dict: Dictionary["regions"] }) {
   return (
-    <section className="py-24">
+    <section className="py-24 sm:py-32">
       <div className="container-site">
-        <Reveal>
-          <h2 className="section-title max-w-2xl">{dict.title}</h2>
-          <p className="mt-4 max-w-3xl text-slate-400">{dict.subtitle}</p>
-        </Reveal>
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
-          <Reveal delay={0.05}>
-            <article className="card-glass relative h-full overflow-hidden p-8">
-              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-adriatic-500/10 blur-2xl" aria-hidden />
-              <p className="mb-3 text-3xl" aria-hidden>
-                🇩🇪 🇦🇹 🇨🇭
-              </p>
-              <h3 className="mb-2 font-display text-xl font-semibold text-white">{dict.dach.title}</h3>
-              <p className="text-sm leading-relaxed text-slate-400">{dict.dach.desc}</p>
-            </article>
-          </Reveal>
-          <Reveal delay={0.15}>
-            <article className="card-glass relative h-full overflow-hidden p-8">
-              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-coral-500/10 blur-2xl" aria-hidden />
-              <p className="mb-3 text-3xl" aria-hidden>
-                🇭🇷 🇧🇦 🇷🇸 🇲🇪
-              </p>
-              <h3 className="mb-2 font-display text-xl font-semibold text-white">{dict.adria.title}</h3>
-              <p className="text-sm leading-relaxed text-slate-400">{dict.adria.desc}</p>
-            </article>
-          </Reveal>
+        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <SectionHead tag={dict.kicker} title={dict.title} lead={dict.subtitle} />
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Reveal delay={0.05}>
+              <GlowCard className="h-full">
+                <div className="p-7">
+                  <p className="mb-4 text-2xl" aria-hidden>🇩🇪 🇦🇹 🇨🇭</p>
+                  <h3 className="mb-2 font-display text-lg font-semibold text-white">{dict.dach.title}</h3>
+                  <p className="text-sm leading-relaxed text-slate-400">{dict.dach.desc}</p>
+                </div>
+              </GlowCard>
+            </Reveal>
+            <Reveal delay={0.14}>
+              <GlowCard glow="rgba(255,107,74,0.14)" className="h-full sm:mt-8">
+                <div className="p-7">
+                  <p className="mb-4 text-2xl" aria-hidden>🇭🇷 🇧🇦 🇷🇸 🇲🇪</p>
+                  <h3 className="mb-2 font-display text-lg font-semibold text-white">{dict.adria.title}</h3>
+                  <p className="text-sm leading-relaxed text-slate-400">{dict.adria.desc}</p>
+                </div>
+              </GlowCard>
+            </Reveal>
+          </div>
         </div>
       </div>
     </section>

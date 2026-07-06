@@ -1,12 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Sora } from "next/font/google";
+import { Bricolage_Grotesque, Manrope } from "next/font/google";
 import { notFound } from "next/navigation";
 import { locales, isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import "../globals.css";
 
-const inter = Inter({ subsets: ["latin", "latin-ext"], variable: "--font-sans" });
-const sora = Sora({ subsets: ["latin", "latin-ext"], variable: "--font-display" });
+const manrope = Manrope({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-sans",
+  display: "swap",
+});
+const bricolage = Bricolage_Grotesque({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-display",
+  display: "swap",
+  weight: ["500", "600", "700", "800"],
+});
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://adriawebcode.com";
 
@@ -166,7 +175,7 @@ export default async function LocaleLayout({
   if (!isLocale(locale)) notFound();
 
   return (
-    <html lang={locale} className={`${inter.variable} ${sora.variable}`}>
+    <html lang={locale} className={`${manrope.variable} ${bricolage.variable}`}>
       <body>
         <script
           type="application/ld+json"

@@ -38,7 +38,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary["nav
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "border-b border-white/10 bg-navy-950/85 py-3 backdrop-blur-xl"
+          ? "border-b border-white/[0.07] bg-[#04060f]/80 py-3 backdrop-blur-xl"
           : "bg-transparent py-5"
       }`}
     >
