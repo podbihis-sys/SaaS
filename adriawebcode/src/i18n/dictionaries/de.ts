@@ -1,8 +1,8 @@
 const de = {
   meta: {
-    title: "adriawebcode – Webdesign Agentur für DACH & Adria-Region",
+    title: "Webdesign Agentur für DACH & Adria-Region | adriawebcode",
     description:
-      "Moderne Websites, Webshops und SEO für Unternehmen in Deutschland, Österreich, der Schweiz, Kroatien, Bosnien, Serbien und Montenegro. Sofort-Angebot in 60 Sekunden – automatisch & kostenlos.",
+      "Website erstellen lassen vom Profi: moderne Websites, Webshops & SEO für Deutschland, Österreich, die Schweiz und den Balkan. Kostenloses Sofort-Angebot in 60 Sekunden ✓ Festpreise ab 890 €.",
     keywords:
       "Webdesign Agentur, Website erstellen lassen, Webdesign Kroatien, Webdesign Bosnien, Webdesign Serbien, Webdesign Montenegro, Webdesign DACH, SEO Agentur, Wartungsvertrag Website",
   },

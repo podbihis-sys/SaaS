@@ -2,9 +2,9 @@ import type { Dictionary } from "./de";
 
 const en: Dictionary = {
   meta: {
-    title: "adriawebcode – Web Design Agency for DACH & the Adriatic Region",
+    title: "Web Design Agency for DACH & the Adriatic Region | adriawebcode",
     description:
-      "Modern websites, online shops and SEO for businesses in Germany, Austria, Switzerland, Croatia, Bosnia, Serbia and Montenegro. Instant quote in 60 seconds – automatic & free.",
+      "Professional website development: modern websites, online shops & SEO for Germany, Austria, Switzerland and the Balkans. Free instant quote in 60 seconds ✓ fixed prices from €890.",
     keywords:
       "web design agency, website development, web design Croatia, web design Bosnia, web design Serbia, web design Montenegro, web design Germany, SEO agency, website maintenance plan",
   },

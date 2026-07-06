@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Sora } from "next/font/google";
 import { notFound } from "next/navigation";
 import { locales, isLocale, type Locale } from "@/i18n/config";
@@ -14,6 +14,35 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
+export const viewport: Viewport = {
+  themeColor: "#050a1c",
+  width: "device-width",
+  initialScale: 1,
+};
+
+/**
+ * hreflang set with regional targeting: each language additionally claims
+ * its primary country markets (de → DE/AT/CH, sr → RS/ME, …).
+ */
+function hreflangAlternates(): Record<string, string> {
+  const url = (l: string) => `${SITE_URL}/${l}`;
+  return {
+    de: url("de"),
+    "de-DE": url("de"),
+    "de-AT": url("de"),
+    "de-CH": url("de"),
+    en: url("en"),
+    hr: url("hr"),
+    "hr-HR": url("hr"),
+    bs: url("bs"),
+    "bs-BA": url("bs"),
+    sr: url("sr"),
+    "sr-RS": url("sr"),
+    "sr-ME": url("sr"),
+    "x-default": url("de"),
+  };
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -23,8 +52,6 @@ export async function generateMetadata({
   if (!isLocale(locale)) return {};
   const dict = getDictionary(locale);
 
-  const languages = Object.fromEntries(locales.map((l) => [l, `${SITE_URL}/${l}`]));
-
   return {
     metadataBase: new URL(SITE_URL),
     title: {
@@ -33,11 +60,16 @@ export async function generateMetadata({
     },
     description: dict.meta.description,
     keywords: dict.meta.keywords,
+    applicationName: "adriawebcode",
+    category: "Web Design",
     authors: [{ name: "adriawebcode" }],
     creator: "adriawebcode",
+    verification: process.env.GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+      : undefined,
     alternates: {
       canonical: `${SITE_URL}/${locale}`,
-      languages: { ...languages, "x-default": `${SITE_URL}/de` },
+      languages: hreflangAlternates(),
     },
     openGraph: {
       type: "website",
@@ -70,10 +102,21 @@ function jsonLd(locale: Locale) {
   return [
     {
       "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: "adriawebcode",
+      url: SITE_URL,
+      inLanguage: locale,
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+    {
+      "@context": "https://schema.org",
       "@type": "ProfessionalService",
       "@id": `${SITE_URL}/#organization`,
       name: "adriawebcode",
       url: SITE_URL,
+      logo: `${SITE_URL}/icon.svg`,
+      image: `${SITE_URL}/${locale}/opengraph-image`,
       foundingDate: "2024",
       description: dict.meta.description,
       email: "hello@adriawebcode.com",

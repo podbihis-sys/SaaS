@@ -2,9 +2,9 @@ import type { Dictionary } from "./de";
 
 const bs: Dictionary = {
   meta: {
-    title: "adriawebcode – Agencija za web dizajn za DACH i jadransku regiju",
+    title: "Izrada web stranica i web dizajn | adriawebcode",
     description:
-      "Moderne web stranice, web shopovi i SEO za firme u Njemačkoj, Austriji, Švicarskoj, Hrvatskoj, Bosni, Srbiji i Crnoj Gori. Instant ponuda za 60 sekundi – automatski i besplatno.",
+      "Profesionalna izrada web stranica: moderne stranice, web shopovi i SEO za Bosnu i Hercegovinu i DACH regiju. Besplatna ponuda za 60 sekundi ✓ fiksne cijene već od 950 KM.",
     keywords:
       "agencija za web dizajn, izrada web stranica, web dizajn Bosna, web dizajn Hrvatska, web dizajn Srbija, web dizajn Crna Gora, web dizajn Njemačka, SEO agencija, održavanje web stranice",
   },
