@@ -104,10 +104,17 @@ const MAINTENANCE_PRICES_BY_COUNTRY: Record<Country, MaintenanceTierPrices> = {
 /**
  * Local currencies of the target markets. Croatia and Montenegro use the
  * euro; Bosnia's KM is pegged at 1.95583, the Serbian dinar floats (~117).
+ * `maintenance` holds the exact per-tier prices advertised in the local
+ * dictionaries so the generated quote never contradicts the pricing page.
  */
-const LOCAL_CURRENCY: Partial<Record<Country, { code: string; rate: number; roundTo: number }>> = {
-  ba: { code: "KM", rate: 1.95583, roundTo: 10 },
-  rs: { code: "RSD", rate: 117, roundTo: 100 },
+const LOCAL_CURRENCY: Partial<
+  Record<
+    Country,
+    { code: string; rate: number; roundTo: number; maintenance: MaintenanceTierPrices }
+  >
+> = {
+  ba: { code: "KM", rate: 1.95583, roundTo: 10, maintenance: { basic: 39, business: 95, premium: 195 } },
+  rs: { code: "RSD", rate: 117, roundTo: 100, maintenance: { basic: 2200, business: 5700, premium: 11600 } },
 };
 
 function round10(value: number): number {
@@ -130,13 +137,13 @@ export function buildQuote(input: LeadInput, analysis: SiteAnalysis | null): Quo
     items.push({ key: "multilingual", amount: round10(langSurcharge * regionFactor) });
   }
 
-  // SEO package is included as a line item for build projects.
-  if (input.projectType !== "seo") {
-    items.push({ key: "seo_setup", amount: round10(290 * regionFactor) });
-  }
+  // Basic SEO is included in the base package price (it is advertised as a
+  // package feature), so it is not billed as a separate line item here.
 
-  // Findings from the live analysis adjust the quote.
-  if (analysis?.reachable) {
+  // Findings from the live analysis adjust the quote. These only apply when the
+  // existing site is kept and improved (redesign) — for a new build the old
+  // site is discarded, so its shortcomings are not surcharged.
+  if (analysis?.reachable && input.projectType === "redesign") {
     if (analysis.issues.includes("not-mobile-optimized")) {
       items.push({ key: "responsive_rebuild", amount: round10(350 * regionFactor) });
     }
@@ -144,10 +151,9 @@ export function buildQuote(input: LeadInput, analysis: SiteAnalysis | null): Quo
       items.push({ key: "https_migration", amount: round10(120 * regionFactor) });
     }
     if (
-      input.projectType === "redesign" &&
-      (analysis.techStack.includes("Wix") ||
-        analysis.techStack.includes("Jimdo") ||
-        analysis.techStack.includes("Squarespace"))
+      analysis.techStack.includes("Wix") ||
+      analysis.techStack.includes("Jimdo") ||
+      analysis.techStack.includes("Squarespace")
     ) {
       items.push({ key: "platform_migration", amount: round10(450 * regionFactor) });
     }
@@ -197,7 +203,9 @@ export function buildQuote(input: LeadInput, analysis: SiteAnalysis | null): Quo
         code: local.code,
         totalMin: roundTo(totalMin * local.rate, local.roundTo),
         totalMax: roundTo(totalMax * local.rate, local.roundTo),
-        maintenanceMonthly: roundTo(maintenancePriceMonthly * local.rate, local.roundTo / 10),
+        // Use the exact advertised local-currency tier price so the offer
+        // never contradicts the pricing page (avoids conversion rounding drift).
+        maintenanceMonthly: local.maintenance[recommendedMaintenance],
       }
     : null;
 

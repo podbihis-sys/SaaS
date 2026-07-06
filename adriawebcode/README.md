@@ -14,7 +14,10 @@ Sofort-Angebotserstellung für die Webdesign-Agentur **adriawebcode** (gegründe
   Zielmarkt und Analyse-Ergebnis wird sofort ein Angebot mit marktüblichen
   Preisen berechnet und angezeigt – inkl. Positionen, Preisspanne, Zeitplan
   und Wartungsempfehlung.
-- **Regionale Preise**: DACH (Faktor 1.0–1.15) vs. Adria-Region (0.75–0.85).
+- **Regionale Preise**: DACH (Faktor 1.0, CH 1.15) vs. Adria-Region –
+  Kroatien 0.68, Montenegro 0.62, Bosnien & Serbien 0.55 (siehe
+  `REGION_FACTOR` in `src/lib/quote.ts`). Bosnien wird in KM, Serbien in RSD
+  angezeigt und abgerechnet.
 - **3 Wartungsverträge**: Basic 39 € / Business 89 € / Premium 179 € pro Monat.
 - **Kein Hosting-Angebot** – bewusst kommuniziert.
 - **SEO**: Metadata pro Sprache, `sitemap.xml`, `robots.txt`, JSON-LD

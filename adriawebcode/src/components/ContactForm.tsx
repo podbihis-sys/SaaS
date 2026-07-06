@@ -18,22 +18,35 @@ function euro(amount: number): string {
   return `${amount.toLocaleString("de-DE")} €`;
 }
 
+// Pre-select the market that matches the visitor's language so the quote is
+// priced (and shown in the currency) for their region by default.
+const LOCALE_DEFAULT_COUNTRY: Record<Locale, string> = {
+  de: "de",
+  en: "de",
+  hr: "hr",
+  bs: "ba",
+  sr: "rs",
+};
+
 export function ContactForm({
   locale,
   dict,
   offerDict,
   maintenanceNames,
+  maintenancePerMonth,
 }: {
   locale: Locale;
   dict: Dictionary["contact"];
   offerDict: Dictionary["offer"];
   maintenanceNames: { basic: string; business: string; premium: string };
+  maintenancePerMonth: string;
 }) {
   const [hasWebsite, setHasWebsite] = useState<boolean | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ApiResult | null>(null);
   const [company, setCompany] = useState("");
+  const defaultCountry = LOCALE_DEFAULT_COUNTRY[locale] ?? "de";
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -102,6 +115,7 @@ export function ContactForm({
               locale={locale}
               dict={offerDict}
               maintenanceNames={maintenanceNames}
+              maintenancePerMonth={maintenancePerMonth}
               onReset={() => {
                 setResult(null);
                 setHasWebsite(null);
@@ -142,7 +156,7 @@ export function ContactForm({
                 </div>
                 <div>
                   <label htmlFor="country" className="label-field">{dict.country}</label>
-                  <select id="country" name="country" className="input-field" defaultValue="de">
+                  <select id="country" name="country" className="input-field" defaultValue={defaultCountry}>
                     {Object.entries(dict.countries).map(([code, label]) => (
                       <option key={code} value={code} className="bg-navy-900">{label}</option>
                     ))}
@@ -291,6 +305,7 @@ function OfferResult({
   locale,
   dict,
   maintenanceNames,
+  maintenancePerMonth,
   onReset,
 }: {
   result: ApiResult;
@@ -298,6 +313,7 @@ function OfferResult({
   locale: Locale;
   dict: Dictionary["offer"];
   maintenanceNames: { basic: string; business: string; premium: string };
+  maintenancePerMonth: string;
   onReset: () => void;
 }) {
   const { quote, analysis, emailSent } = result;
@@ -424,7 +440,7 @@ function OfferResult({
                 {quote.localCurrency
                   ? `${quote.localCurrency.maintenanceMonthly.toLocaleString("de-DE")} ${quote.localCurrency.code} (≈ ${euro(quote.maintenancePriceMonthly)})`
                   : euro(quote.maintenancePriceMonthly)}{" "}
-                / mo
+                {maintenancePerMonth}
               </p>
             </div>
           </div>

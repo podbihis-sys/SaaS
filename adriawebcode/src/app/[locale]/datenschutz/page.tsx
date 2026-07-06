@@ -12,7 +12,14 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const dict = getDictionary(locale);
-  return { title: dict.legal.privacyTitle, robots: { index: false } };
+  const url = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://adriawebcode.com"}/${locale}/datenschutz`;
+  return {
+    title: dict.legal.privacyTitle,
+    robots: { index: false, follow: true },
+    // Override the layout's home-page canonical/hreflang so this noindex page
+    // doesn't send contradictory signals for the localized home page.
+    alternates: { canonical: url, languages: {} },
+  };
 }
 
 export default async function PrivacyPage({

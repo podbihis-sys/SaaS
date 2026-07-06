@@ -23,6 +23,57 @@ export interface SiteAnalysis {
 const FETCH_TIMEOUT_MS = 12_000;
 const MAX_HTML_BYTES = 2_000_000;
 
+/**
+ * Best-effort SSRF guard: reject hosts that are not clearly public. Blocks
+ * localhost, private/link-local/loopback IPv4 (incl. decimal & hex encodings),
+ * IPv6 literals, and cloud metadata IPs. DNS-rebinding is further mitigated by
+ * the caller using redirect: "manual" and re-validating each hop.
+ */
+function isPublicHost(rawUrl: string): boolean {
+  let host: string;
+  let protocol: string;
+  try {
+    const parsed = new URL(rawUrl);
+    host = parsed.hostname.toLowerCase();
+    protocol = parsed.protocol;
+  } catch {
+    return false;
+  }
+  if (protocol !== "http:" && protocol !== "https:") return false;
+  if (!host || host === "localhost") return false;
+  if (host.endsWith(".local") || host.endsWith(".internal") || host.endsWith(".localhost"))
+    return false;
+  // IPv6 literal (URL keeps the brackets) — refuse all; we only expect public DNS names.
+  if (host.includes(":") || rawUrl.includes("[")) return false;
+
+  // Numeric hosts: dotted-quad, bare decimal (2130706433), or hex (0x7f000001).
+  const asNumber = (() => {
+    if (/^0x[0-9a-f]+$/.test(host)) return parseInt(host, 16);
+    if (/^\d+$/.test(host)) return parseInt(host, 10);
+    const m = host.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+    if (m) {
+      const o = m.slice(1).map(Number);
+      if (o.some((n) => n > 255)) return NaN;
+      return ((o[0] << 24) | (o[1] << 16) | (o[2] << 8) | o[3]) >>> 0;
+    }
+    return NaN;
+  })();
+  if (!Number.isNaN(asNumber)) {
+    const ip = asNumber >>> 0;
+    const a = (ip >>> 24) & 0xff;
+    const b = (ip >>> 16) & 0xff;
+    if (a === 10 || a === 127 || a === 0) return false; // private / loopback / this-network
+    if (a === 172 && b >= 16 && b <= 31) return false; // 172.16.0.0/12
+    if (a === 192 && b === 168) return false; // 192.168.0.0/16
+    if (a === 169 && b === 254) return false; // link-local incl. 169.254.169.254 metadata
+    if (a === 100 && b >= 64 && b <= 127) return false; // 100.64.0.0/10 CGNAT
+    return true;
+  }
+
+  // A real hostname must contain a dot (rejects "intranet", container names, etc.).
+  return host.includes(".");
+}
+
 function extract(regex: RegExp, html: string): string | null {
   const match = html.match(regex);
   return match ? match[1].replace(/\s+/g, " ").trim() : null;
@@ -50,7 +101,7 @@ function detectTech(html: string, headers: Headers): string[] {
   return [...new Set(tech)];
 }
 
-export async function analyzeSite(rawUrl: string): Promise<SiteAnalysis> {
+export async function analyzeSite(rawUrl: string, redirectsLeft = 3): Promise<SiteAnalysis> {
   let url = rawUrl.trim();
   if (!/^https?:\/\//i.test(url)) url = `https://${url}`;
 
@@ -76,45 +127,71 @@ export async function analyzeSite(rawUrl: string): Promise<SiteAnalysis> {
     issues: [],
   };
 
-  // Basic SSRF guard: refuse obviously internal targets before fetching.
-  try {
-    const host = new URL(url).hostname.toLowerCase();
-    const blocked =
-      host === "localhost" ||
-      host.endsWith(".local") ||
-      host.endsWith(".internal") ||
-      /^\d+\.\d+\.\d+\.\d+$/.test(host) ||
-      host.includes("[");
-    if (blocked || !host.includes(".")) return base;
-  } catch {
-    return base;
-  }
+  if (!isPublicHost(url)) return base;
 
   const started = Date.now();
   let html = "";
   try {
     const controller = new AbortController();
+    // Single deadline that also covers the body read (not just the headers).
     const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    // redirect: "manual" so an attacker cannot 302 us onto an internal host
+    // after the pre-fetch guard has already passed.
     const res = await fetch(url, {
       signal: controller.signal,
-      redirect: "follow",
+      redirect: "manual",
       headers: {
         "User-Agent":
           "Mozilla/5.0 (compatible; AdriaWebCodeBot/1.0; +https://adriawebcode.com)",
         Accept: "text/html,application/xhtml+xml",
       },
     });
-    clearTimeout(timer);
     base.responseTimeMs = Date.now() - started;
-    if (!res.ok) return base;
 
-    const buffer = await res.arrayBuffer();
-    html = new TextDecoder("utf-8", { fatal: false }).decode(
-      buffer.slice(0, MAX_HTML_BYTES),
-    );
-    base.htmlSizeKb = Math.round(buffer.byteLength / 1024);
+    // A redirect is reported as an opaque/`type: "opaqueredirect"` response or a
+    // 3xx status; follow it once ourselves, re-validating the target host.
+    if (res.status >= 300 && res.status < 400) {
+      const location = res.headers.get("location");
+      const next = location ? new URL(location, url).toString() : null;
+      clearTimeout(timer);
+      if (next && next !== url && redirectsLeft > 0 && isPublicHost(next)) {
+        return analyzeSite(next, redirectsLeft - 1);
+      }
+      return base;
+    }
+    if (!res.ok || !res.body) {
+      clearTimeout(timer);
+      return base;
+    }
+
+    // Stream the body with a hard byte cap so a huge/slow response cannot
+    // exhaust memory or run past the request deadline.
+    const reader = res.body.getReader();
+    const chunks: Uint8Array[] = [];
+    let received = 0;
+    while (received < MAX_HTML_BYTES) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (value) {
+        chunks.push(value);
+        received += value.byteLength;
+      }
+    }
+    await reader.cancel().catch(() => {});
+    clearTimeout(timer);
+
+    const merged = new Uint8Array(Math.min(received, MAX_HTML_BYTES));
+    let offset = 0;
+    for (const chunk of chunks) {
+      const take = Math.min(chunk.byteLength, merged.byteLength - offset);
+      if (take <= 0) break;
+      merged.set(chunk.subarray(0, take), offset);
+      offset += take;
+    }
+    html = new TextDecoder("utf-8", { fatal: false }).decode(merged);
+    base.htmlSizeKb = Math.round(received / 1024);
     base.reachable = true;
-    base.https = res.url.startsWith("https://");
+    base.https = url.startsWith("https://");
     base.techStack = detectTech(html, res.headers);
   } catch {
     base.responseTimeMs = Date.now() - started;

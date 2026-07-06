@@ -38,6 +38,7 @@ export default async function HomePage({
             business: dict.maintenance.plans[1].name,
             premium: dict.maintenance.plans[2].name,
           }}
+          maintenancePerMonth={dict.maintenance.perMonth}
         />
       </main>
       <Footer locale={locale} dict={dict} />

@@ -1,3 +1,5 @@
+import { isLocale, defaultLocale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/get-dictionary";
 import type { LeadInput, Quote } from "./quote";
 import { ITEM_LABELS } from "./quote";
 import type { SiteAnalysis } from "./scraper";
@@ -17,35 +19,52 @@ function esc(value: string | undefined): string {
     .replace(/"/g, "&quot;");
 }
 
+/** Collapse control characters so a company name can't inject email headers. */
+function headerSafe(value: string | undefined): string {
+  return (value ?? "").replace(/[\r\n]+/g, " ").trim();
+}
+
 function offerHtml(lead: LeadInput, quote: Quote, analysis: SiteAnalysis | null): string {
+  const locale = isLocale(lead.locale) ? lead.locale : defaultLocale;
+  const dict = getDictionary(locale);
+  const t = dict.offer;
+  const maintenanceName = dict.maintenance.plans[
+    quote.recommendedMaintenance === "basic" ? 0 : quote.recommendedMaintenance === "business" ? 1 : 2
+  ].name;
+
   const rows = quote.items
     .map((item) => {
-      const label = ITEM_LABELS[item.key]?.[lead.locale] ?? ITEM_LABELS[item.key]?.de ?? item.key;
+      const label = esc(
+        ITEM_LABELS[item.key]?.[locale] ?? ITEM_LABELS[item.key]?.de ?? item.key,
+      );
       return `<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">${label}</td><td style="padding:8px 12px;border-bottom:1px solid #eee;text-align:right;white-space:nowrap">${euro(item.amount)}</td></tr>`;
     })
     .join("");
 
   const analysisBlock = analysis?.reachable
-    ? `<p style="margin:16px 0 4px"><strong>Website-Analyse (${esc(analysis.url)}):</strong> Score ${analysis.score}/100, ${analysis.issues.length} Optimierungspunkte, Technologie: ${analysis.techStack.join(", ") || "unbekannt"}</p>`
+    ? `<p style="margin:16px 0 4px"><strong>${esc(t.analysisTitle)} (${esc(analysis.url)}):</strong> ${esc(t.scoreLabel)} ${analysis.score}/100 · ${esc(analysis.techStack.join(", ")) || "—"}</p>`
     : "";
+
+  const localTotal = quote.localCurrency
+    ? ` <span style="font-size:14px;color:#1e6d77">(≈ ${quote.localCurrency.totalMin.toLocaleString("de-DE")} – ${quote.localCurrency.totalMax.toLocaleString("de-DE")} ${esc(quote.localCurrency.code)})</span>`
+    : "";
+  const maintenancePrice = quote.localCurrency
+    ? `${quote.localCurrency.maintenanceMonthly.toLocaleString("de-DE")} ${esc(quote.localCurrency.code)} (≈ ${euro(quote.maintenancePriceMonthly)})`
+    : euro(quote.maintenancePriceMonthly);
 
   return `
   <div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;color:#0a1230">
     <div style="background:linear-gradient(135deg,#0a1230,#1e6d77);padding:28px 32px;border-radius:12px 12px 0 0">
       <h1 style="color:#fff;margin:0;font-size:22px">adriawebcode</h1>
-      <p style="color:#79dede;margin:6px 0 0;font-size:14px">Ihr automatisches Angebot / Your automatic quote</p>
+      <p style="color:#79dede;margin:6px 0 0;font-size:14px">${esc(t.title)}</p>
     </div>
     <div style="border:1px solid #e5e7eb;border-top:0;padding:28px 32px;border-radius:0 0 12px 12px">
-      <p>Angebot für <strong>${esc(lead.company)}</strong> (${esc(lead.name)})</p>
+      <p>${esc(t.forCompany)} <strong>${esc(lead.company)}</strong> (${esc(lead.name)})</p>
       ${analysisBlock}
       <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:14px">${rows}</table>
-      <p style="font-size:18px"><strong>Gesamt: ${euro(quote.totalMin)} – ${euro(quote.totalMax)}</strong>${
-        quote.localCurrency
-          ? ` <span style="font-size:14px;color:#1e6d77">(≈ ${quote.localCurrency.totalMin.toLocaleString("de-DE")} – ${quote.localCurrency.totalMax.toLocaleString("de-DE")} ${quote.localCurrency.code})</span>`
-          : ""
-      } <span style="font-size:12px;color:#666">(zzgl. USt.)</span></p>
-      <p style="font-size:14px">Umsetzung: ca. ${quote.timelineWeeksMin}–${quote.timelineWeeksMax} Wochen · Empfohlener Wartungsvertrag: <strong>${quote.recommendedMaintenance}</strong> (${euro(quote.maintenancePriceMonthly)}/Monat)</p>
-      <p style="font-size:12px;color:#666">Dieses Angebot wurde automatisch erstellt, ist unverbindlich und 14 Tage gültig. Wir melden uns innerhalb von 24 Stunden persönlich.</p>
+      <p style="font-size:18px"><strong>${esc(t.totalLabel)}: ${euro(quote.totalMin)} – ${euro(quote.totalMax)}</strong>${localTotal} <span style="font-size:12px;color:#666">${esc(t.vatNote)}</span></p>
+      <p style="font-size:14px">${esc(t.timelineLabel)}: ${quote.timelineWeeksMin}–${quote.timelineWeeksMax} ${esc(t.weeks)} · ${esc(t.maintenanceLabel)}: <strong>${esc(maintenanceName)}</strong> (${maintenancePrice})</p>
+      <p style="font-size:12px;color:#666">${esc(t.validity)}</p>
     </div>
   </div>`;
 }
@@ -74,18 +93,21 @@ export async function sendEmails(
 
   const html = offerHtml(lead, quote, analysis);
 
+  const leadLocale = isLocale(lead.locale) ? lead.locale : defaultLocale;
+  const leadSubject = getDictionary(leadLocale).offer.title;
+
   try {
     const [toLead, toOwner] = await Promise.all([
       send({
         from: FROM,
         to: [lead.email],
-        subject: "Ihr Angebot von adriawebcode / Your quote",
+        subject: `adriawebcode – ${headerSafe(leadSubject)}`,
         html,
       }),
       send({
         from: FROM,
         to: [OWNER],
-        subject: `🔥 Neuer Lead: ${esc(lead.company)} (${lead.country.toUpperCase()}, ${euro(quote.totalMin)}–${euro(quote.totalMax)})`,
+        subject: `🔥 Neuer Lead: ${headerSafe(lead.company)} (${lead.country.toUpperCase()}, ${euro(quote.totalMin)}–${euro(quote.totalMax)})`,
         html:
           `<h2>Neuer Lead über adriawebcode.com</h2>
            <ul>

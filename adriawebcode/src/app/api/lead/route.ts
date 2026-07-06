@@ -21,10 +21,24 @@ const COUNTRIES: Country[] = ["de", "at", "ch", "hr", "ba", "rs", "me", "other"]
 
 // Naive in-memory rate limit per instance (Vercel serverless: best effort).
 const hits = new Map<string, { count: number; reset: number }>();
+const MAX_TRACKED_IPS = 10_000;
+
 function rateLimited(ip: string): boolean {
   const now = Date.now();
   const entry = hits.get(ip);
   if (!entry || entry.reset < now) {
+    // Opportunistically evict expired entries so the Map can't grow unbounded
+    // from unique / spoofed client IPs on a warm instance.
+    if (hits.size >= MAX_TRACKED_IPS) {
+      for (const [key, value] of hits) {
+        if (value.reset < now) hits.delete(key);
+      }
+      // Still full of live entries? Drop the oldest to cap memory.
+      if (hits.size >= MAX_TRACKED_IPS) {
+        const oldest = hits.keys().next().value;
+        if (oldest !== undefined) hits.delete(oldest);
+      }
+    }
     hits.set(ip, { count: 1, reset: now + 60_000 });
     return false;
   }
