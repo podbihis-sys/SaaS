@@ -12,7 +12,6 @@ export function Faq({ dict }: { dict: Dictionary["faq"] }) {
     <section id="faq" className="scroll-mt-24 border-y border-white/5 bg-navy-900/30 py-24">
       <div className="container-site max-w-3xl">
         <Reveal className="text-center">
-          <span className="kicker">{dict.kicker}</span>
           <h2 className="section-title">{dict.title}</h2>
         </Reveal>
         <div className="mt-12 flex flex-col gap-3">

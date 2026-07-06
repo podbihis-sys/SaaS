@@ -38,7 +38,6 @@ export function Services({ dict }: { dict: Dictionary["services"] }) {
     <section id="services" className="scroll-mt-24 py-24">
       <div className="container-site">
         <Reveal>
-          <span className="kicker">{dict.kicker}</span>
           <h2 className="section-title max-w-2xl">{dict.title}</h2>
           <p className="mt-4 max-w-2xl text-slate-400">{dict.subtitle}</p>
         </Reveal>
@@ -67,7 +66,6 @@ export function Process({ dict }: { dict: Dictionary["process"] }) {
     <section id="process" className="scroll-mt-24 border-y border-white/5 bg-navy-900/30 py-24">
       <div className="container-site">
         <Reveal className="text-center">
-          <span className="kicker">{dict.kicker}</span>
           <h2 className="section-title">{dict.title}</h2>
         </Reveal>
         <Stagger className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
@@ -107,7 +105,6 @@ export function Pricing({ dict }: { dict: Dictionary["pricing"] }) {
     <section id="pricing" className="scroll-mt-24 py-24">
       <div className="container-site">
         <Reveal className="text-center">
-          <span className="kicker">{dict.kicker}</span>
           <h2 className="section-title">{dict.title}</h2>
           <p className="mx-auto mt-4 max-w-2xl text-slate-400">{dict.subtitle}</p>
         </Reveal>
@@ -165,7 +162,6 @@ export function Maintenance({ dict }: { dict: Dictionary["maintenance"] }) {
     <section id="maintenance" className="scroll-mt-24 border-y border-white/5 bg-navy-900/30 py-24">
       <div className="container-site">
         <Reveal className="text-center">
-          <span className="kicker">{dict.kicker}</span>
           <h2 className="section-title">{dict.title}</h2>
           <p className="mx-auto mt-4 max-w-2xl text-slate-400">{dict.subtitle}</p>
         </Reveal>
@@ -219,7 +215,6 @@ export function Regions({ dict }: { dict: Dictionary["regions"] }) {
     <section className="py-24">
       <div className="container-site">
         <Reveal>
-          <span className="kicker">{dict.kicker}</span>
           <h2 className="section-title max-w-2xl">{dict.title}</h2>
           <p className="mt-4 max-w-3xl text-slate-400">{dict.subtitle}</p>
         </Reveal>

@@ -64,7 +64,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           </div>
         </div>
 
-        <p className="mt-12 border-t border-white/5 pt-6 text-center text-xs text-slate-600">
+        <p className="mt-12 border-t border-white/5 pt-6 text-center text-xs text-slate-500">
           © {year} adriawebcode. {dict.footer.rights}
         </p>
       </div>

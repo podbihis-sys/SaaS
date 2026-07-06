@@ -14,7 +14,6 @@ export function Hero({ dict }: { dict: Dictionary["hero"] }) {
 
   return (
     <section className="hero-gradient relative overflow-hidden pb-24 pt-36 sm:pt-44">
-      <div className="bg-grid pointer-events-none absolute inset-0" aria-hidden />
       <div
         className="pointer-events-none absolute -right-40 top-20 h-96 w-96 rounded-full bg-adriatic-500/20 blur-3xl animate-pulse-soft"
         aria-hidden
@@ -40,7 +39,17 @@ export function Hero({ dict }: { dict: Dictionary["hero"] }) {
           {...fadeUp(0.1)}
           className="max-w-4xl font-display text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-7xl"
         >
-          {dict.title1} <span className="text-gradient">{dict.titleHighlight}</span>
+          {dict.title1}{" "}
+          <span className="relative inline-block text-accent">
+            {dict.titleHighlight}
+            <motion.span
+              aria-hidden
+              className="absolute -bottom-1 left-0 h-[0.09em] w-full origin-left rounded-full bg-adriatic-400"
+              initial={reduced ? false : { scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.7, delay: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
+            />
+          </span>
           <br className="hidden sm:block" /> {dict.title2}
         </motion.h1>
 

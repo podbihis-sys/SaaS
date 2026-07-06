@@ -101,7 +101,6 @@ export function ContactForm({
     <section id="contact" className="scroll-mt-24 py-24">
       <div className="container-site max-w-4xl">
         <Reveal className="text-center">
-          <span className="kicker">{dict.kicker}</span>
           <h2 className="section-title">{dict.title}</h2>
           <p className="mx-auto mt-4 max-w-2xl text-slate-400">{dict.subtitle}</p>
         </Reveal>
