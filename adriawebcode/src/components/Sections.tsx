@@ -70,37 +70,56 @@ export function TrustMarquee({ dict }: { dict: Dictionary["trust"] }) {
 }
 
 export function Services({ dict }: { dict: Dictionary["services"] }) {
-  // Bento: first tile spans two columns and is the "hero" service.
+  // Bento that fills without gaps: a tall 2x2 feature, four compact tiles,
+  // and a full-width banner across the bottom.
   const spans = [
-    "sm:col-span-2 lg:col-span-2 lg:row-span-2",
-    "lg:col-span-2",
-    "lg:col-span-2",
-    "sm:col-span-2 lg:col-span-2",
-    "lg:col-span-2",
-    "lg:col-span-2",
+    "sm:col-span-2 sm:row-span-2 lg:col-span-2 lg:row-span-2",
+    "lg:col-span-1",
+    "lg:col-span-1",
+    "lg:col-span-1",
+    "lg:col-span-1",
+    "sm:col-span-2 lg:col-span-4",
   ];
 
   return (
     <section id="services" className="scroll-mt-24 py-24 sm:py-32">
       <div className="container-site">
         <SectionHead tag={dict.kicker} title={dict.title} lead={dict.subtitle} />
-        <Stagger className="mt-14 grid auto-rows-[minmax(11rem,auto)] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6">
+        <Stagger className="mt-14 grid auto-rows-[minmax(9.5rem,1fr)] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {dict.items.map((item, i) => {
             const featured = i === 0;
+            const wide = i === dict.items.length - 1;
             return (
-              <StaggerItem key={item.title} className={spans[i] ?? "lg:col-span-2"}>
+              <StaggerItem key={item.title} className={`${spans[i] ?? "lg:col-span-1"} min-h-0`}>
                 <GlowCard className="h-full">
-                  <div className={`flex h-full flex-col ${featured ? "p-8" : "p-7"}`}>
-                    <div className={`mb-5 inline-flex items-center justify-center rounded-xl bg-adriatic-500/10 text-adriatic-300 ring-1 ring-inset ring-adriatic-400/20 ${featured ? "h-14 w-14" : "h-11 w-11"}`}>
+                  <div
+                    className={`flex h-full ${
+                      wide ? "flex-col gap-4 p-7 sm:flex-row sm:items-center sm:gap-6" : "flex-col p-6"
+                    } ${featured ? "p-8" : ""}`}
+                  >
+                    <div
+                      className={`inline-flex shrink-0 items-center justify-center rounded-xl bg-adriatic-500/10 text-adriatic-300 ring-1 ring-inset ring-adriatic-400/20 ${
+                        featured ? "mb-5 h-14 w-14" : wide ? "h-12 w-12" : "mb-4 h-11 w-11"
+                      }`}
+                    >
                       <ServiceIcon i={i} size={featured ? "h-7 w-7" : "h-5 w-5"} />
                     </div>
-                    <h3 className={`font-display font-semibold text-white ${featured ? "text-2xl" : "text-lg"}`}>
-                      {item.title}
-                    </h3>
-                    <p className={`mt-2.5 leading-relaxed text-slate-400 ${featured ? "text-[0.98rem] max-w-md" : "text-sm"}`}>
-                      {item.desc}
-                    </p>
-                    {featured && <div className="mt-auto pt-6"><span className="h-px w-full block hairline" /></div>}
+                    <div className={wide ? "flex-1" : "flex flex-1 flex-col"}>
+                      <h3
+                        className={`font-display font-semibold text-white ${
+                          featured ? "text-2xl" : "text-lg"
+                        }`}
+                      >
+                        {item.title}
+                      </h3>
+                      <p
+                        className={`mt-2 leading-relaxed text-slate-400 ${
+                          featured ? "max-w-md text-[0.98rem]" : "text-sm"
+                        }`}
+                      >
+                        {item.desc}
+                      </p>
+                    </div>
                   </div>
                 </GlowCard>
               </StaggerItem>

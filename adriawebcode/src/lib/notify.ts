@@ -3,6 +3,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import type { LeadInput, Quote } from "./quote";
 import { ITEM_LABELS } from "./quote";
 import type { SiteAnalysis } from "./scraper";
+import type { RegionCheck } from "./region";
 
 const FROM = process.env.MAIL_FROM ?? "adriawebcode <onboarding@resend.dev>";
 const OWNER = process.env.LEAD_NOTIFY_EMAIL ?? "podbihis@gmail.com";
@@ -77,6 +78,7 @@ export async function sendEmails(
   lead: LeadInput,
   quote: Quote,
   analysis: SiteAnalysis | null,
+  region?: RegionCheck,
 ): Promise<boolean> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return false;
@@ -96,6 +98,17 @@ export async function sendEmails(
   const leadLocale = isLocale(lead.locale) ? lead.locale : defaultLocale;
   const leadSubject = getDictionary(leadLocale).offer.title;
 
+  const mismatchBanner =
+    region?.mismatch
+      ? `<p style="margin:0 0 12px;padding:12px 14px;border-radius:8px;background:#fff4e5;border:1px solid #ffb877;color:#8a4b00">
+           ⚠️ <strong>Standort-Warnung:</strong> Der Interessent wählte
+           „${esc(region.claimed.toUpperCase())}", die Signale deuten aber auf
+           <strong>${esc(region.effective.toUpperCase())}</strong> hin
+           (${esc(region.reasons.join(", ")) || "—"}). Das Angebot wurde daher
+           zu DACH-Preisen berechnet.
+         </p>`
+      : "";
+
   try {
     const [toLead, toOwner] = await Promise.all([
       send({
@@ -107,16 +120,17 @@ export async function sendEmails(
       send({
         from: FROM,
         to: [OWNER],
-        subject: `🔥 Neuer Lead: ${headerSafe(lead.company)} (${lead.country.toUpperCase()}, ${euro(quote.totalMin)}–${euro(quote.totalMax)})`,
+        subject: `${region?.mismatch ? "⚠️ " : "🔥 "}Neuer Lead: ${headerSafe(lead.company)} (${lead.country.toUpperCase()}, ${euro(quote.totalMin)}–${euro(quote.totalMax)})`,
         html:
           `<h2>Neuer Lead über adriawebcode.com</h2>
+           ${mismatchBanner}
            <ul>
              <li><strong>Name:</strong> ${esc(lead.name)}</li>
              <li><strong>Firma:</strong> ${esc(lead.company)}</li>
              <li><strong>E-Mail:</strong> ${esc(lead.email)}</li>
              <li><strong>Telefon:</strong> ${esc(lead.phone) || "–"}</li>
              <li><strong>Adresse:</strong> ${esc(lead.address)}</li>
-             <li><strong>Markt:</strong> ${lead.country}</li>
+             <li><strong>Markt (gewählt):</strong> ${esc(lead.country)}${region?.mismatch ? ` → <strong>berechnet als ${esc(region.effective)}</strong>` : ""}</li>
              <li><strong>Projekt:</strong> ${lead.projectType}, ${lead.pages}, Sprachen: ${lead.languages}</li>
              <li><strong>Wartung:</strong> ${lead.maintenance}</li>
              <li><strong>Website:</strong> ${esc(lead.websiteUrl) || "keine"}</li>

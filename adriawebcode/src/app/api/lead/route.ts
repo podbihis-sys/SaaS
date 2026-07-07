@@ -9,6 +9,7 @@ import {
   type ProjectType,
 } from "@/lib/quote";
 import { sendEmails } from "@/lib/notify";
+import { checkRegion } from "@/lib/region";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -101,8 +102,16 @@ export async function POST(request: NextRequest) {
     analysis = await analyzeSite(lead.websiteUrl);
   }
 
-  const quote = buildQuote(lead, analysis);
-  const emailSent = await sendEmails(lead, quote, analysis);
+  // Anti-fraud: a DACH company must not obtain Balkan pricing by selecting a
+  // cheaper market in the form. Price on the corrected country and flag it.
+  const ipCountry =
+    request.headers.get("x-vercel-ip-country") ?? request.headers.get("cf-ipcountry");
+  const region = checkRegion(lead, ipCountry);
+  const pricingLead: LeadInput =
+    region.mismatch ? { ...lead, country: region.effective } : lead;
+
+  const quote = buildQuote(pricingLead, analysis);
+  const emailSent = await sendEmails(lead, quote, analysis, region);
 
   console.log(
     JSON.stringify({
@@ -110,7 +119,10 @@ export async function POST(request: NextRequest) {
       at: new Date().toISOString(),
       company: lead.company,
       email: lead.email,
-      country: lead.country,
+      claimedCountry: lead.country,
+      pricedCountry: region.effective,
+      regionMismatch: region.mismatch,
+      regionReasons: region.reasons,
       projectType: lead.projectType,
       total: [quote.totalMin, quote.totalMax],
       emailSent,
