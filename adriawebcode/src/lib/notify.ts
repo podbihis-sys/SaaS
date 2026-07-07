@@ -109,37 +109,48 @@ export async function sendEmails(
          </p>`
       : "";
 
-  try {
-    const [toLead, toOwner] = await Promise.all([
-      send({
-        from: FROM,
-        to: [lead.email],
-        subject: `adriawebcode – ${headerSafe(leadSubject)}`,
-        html,
-      }),
-      send({
-        from: FROM,
-        to: [OWNER],
-        subject: `${region?.mismatch ? "⚠️ " : "🔥 "}Neuer Lead: ${headerSafe(lead.company)} (${lead.country.toUpperCase()}, ${euro(quote.totalMin)}–${euro(quote.totalMax)})`,
-        html:
-          `<h2>Neuer Lead über adriawebcode.com</h2>
-           ${mismatchBanner}
-           <ul>
-             <li><strong>Name:</strong> ${esc(lead.name)}</li>
-             <li><strong>Firma:</strong> ${esc(lead.company)}</li>
-             <li><strong>E-Mail:</strong> ${esc(lead.email)}</li>
-             <li><strong>Telefon:</strong> ${esc(lead.phone) || "–"}</li>
-             <li><strong>Adresse:</strong> ${esc(lead.address)}</li>
-             <li><strong>Markt (gewählt):</strong> ${esc(lead.country)}${region?.mismatch ? ` → <strong>berechnet als ${esc(region.effective)}</strong>` : ""}</li>
-             <li><strong>Projekt:</strong> ${lead.projectType}, ${lead.pages}, Sprachen: ${lead.languages}</li>
-             <li><strong>Wartung:</strong> ${lead.maintenance}</li>
-             <li><strong>Website:</strong> ${esc(lead.websiteUrl) || "keine"}</li>
-             <li><strong>Nachricht:</strong> ${esc(lead.message) || "–"}</li>
-           </ul>` + html,
-      }),
-    ]);
-    return toLead.ok && toOwner.ok;
-  } catch {
-    return false;
+  const ownerEmail = send({
+    from: FROM,
+    to: [OWNER],
+    subject: `${region?.mismatch ? "⚠️ " : "🔥 "}Neuer Lead: ${headerSafe(lead.company)} (${lead.country.toUpperCase()}, ${euro(quote.totalMin)}–${euro(quote.totalMax)})`,
+    html:
+      `<h2>Neuer Lead über adriawebcode.com</h2>
+       ${mismatchBanner}
+       <ul>
+         <li><strong>Name:</strong> ${esc(lead.name)}</li>
+         <li><strong>Firma:</strong> ${esc(lead.company)}</li>
+         <li><strong>E-Mail:</strong> ${esc(lead.email)}</li>
+         <li><strong>Telefon:</strong> ${esc(lead.phone) || "–"}</li>
+         <li><strong>Adresse:</strong> ${esc(lead.address)}</li>
+         <li><strong>Markt (gewählt):</strong> ${esc(lead.country)}${region?.mismatch ? ` → <strong>berechnet als ${esc(region.effective)}</strong>` : ""}</li>
+         <li><strong>Projekt:</strong> ${lead.projectType}, ${lead.pages}, Sprachen: ${lead.languages}</li>
+         <li><strong>Wartung:</strong> ${lead.maintenance}</li>
+         <li><strong>Website:</strong> ${esc(lead.websiteUrl) || "keine"}</li>
+         <li><strong>Nachricht:</strong> ${esc(lead.message) || "–"}</li>
+       </ul>` + html,
+  });
+
+  const leadEmail = send({
+    from: FROM,
+    to: [lead.email],
+    subject: `adriawebcode – ${headerSafe(leadSubject)}`,
+    html,
+  });
+
+  // Owner notification and the customer copy are independent: a failed
+  // customer copy (e.g. Resend still in test mode) must not swallow the lead.
+  const [ownerRes, leadRes] = await Promise.allSettled([ownerEmail, leadEmail]);
+  const ownerOk = ownerRes.status === "fulfilled" && ownerRes.value.ok;
+  const leadOk = leadRes.status === "fulfilled" && leadRes.value.ok;
+
+  if (!ownerOk) {
+    const detail =
+      ownerRes.status === "fulfilled"
+        ? await ownerRes.value.text().catch(() => "")
+        : String(ownerRes.reason);
+    console.error(JSON.stringify({ type: "owner_email_failed", detail: detail.slice(0, 300) }));
   }
+
+  // `emailSent` reflects the customer copy — that's what the UI promises them.
+  return leadOk;
 }
