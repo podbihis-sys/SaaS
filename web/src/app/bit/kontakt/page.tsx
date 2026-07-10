@@ -4,6 +4,7 @@ import { Clock, Mail, MapPin, Phone, Printer, ShoppingCart } from "lucide-react"
 import { COMPANY } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
+import { ContactForm } from "../_components/contact-form";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/bit/kontakt" },
@@ -105,6 +106,15 @@ export default async function KontaktPage() {
             >
               Auf der Karte öffnen
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Kontaktformular */}
+      <section className="border-t border-slate-200">
+        <div className="container py-16">
+          <div className="mx-auto max-w-3xl">
+            <ContactForm />
           </div>
         </div>
       </section>
