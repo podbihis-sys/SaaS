@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Menu, Phone, ShoppingCart, X } from "lucide-react";
+import { Mail, Menu, Phone, ShoppingCart, X } from "lucide-react";
 import { useCart } from "../_lib/cart";
 import { COMPANY } from "../_data/catalog";
 
@@ -49,7 +49,7 @@ export function SiteHeader() {
       <div className="hidden border-b border-slate-100 bg-slate-50/80 md:block">
         <div className="container flex h-9 items-center justify-between text-xs text-slate-500">
           <span>
-            {COMPANY.legalName} · {COMPANY.city}
+            {COMPANY.legalName} · {COMPANY.city} · Nur für Gewerbekunden
           </span>
           <div className="flex items-center gap-4">
             <a
@@ -58,7 +58,12 @@ export function SiteHeader() {
             >
               <Phone className="h-3.5 w-3.5" /> {COMPANY.phone}
             </a>
-            <span>{COMPANY.hours}</span>
+            <a
+              href={`mailto:${COMPANY.email}`}
+              className="flex items-center gap-1 transition-colors hover:text-[#1e4a7a]"
+            >
+              <Mail className="h-3.5 w-3.5" /> {COMPANY.email}
+            </a>
           </div>
         </div>
       </div>
@@ -69,13 +74,13 @@ export function SiteHeader() {
           <img
             src="/bit/logo.png"
             alt="BIT Bierther GmbH"
-            className="h-12 w-auto transition-transform duration-300 hover:scale-105"
-            width={245}
-            height={48}
+            className="h-16 w-auto transition-transform duration-300 hover:scale-105"
+            width={327}
+            height={64}
           />
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav aria-label="Hauptnavigation" className="hidden items-center gap-1 md:flex">
           {NAV.map((item) => (
             <Link
               key={item.href}
@@ -107,7 +112,9 @@ export function SiteHeader() {
           <button
             onClick={() => setMobileOpen((v) => !v)}
             className="rounded-full border border-slate-200 p-2 text-slate-700 md:hidden"
-            aria-label="Menü"
+            aria-label={mobileOpen ? "Menü schließen" : "Menü öffnen"}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav"
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -124,7 +131,7 @@ export function SiteHeader() {
 
       {/* Mobile nav */}
       {mobileOpen && (
-        <nav className="border-t border-slate-200 bg-white md:hidden">
+        <nav id="mobile-nav" aria-label="Mobile Navigation" className="border-t border-slate-200 bg-white md:hidden">
           <div className="container flex flex-col py-2">
             {NAV.map((item) => (
               <Link

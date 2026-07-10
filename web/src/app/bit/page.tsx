@@ -27,7 +27,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: { absolute: "BIT Bierther GmbH – Schrumpf- & Isolierschlauchtechnik" },
   description:
-    "Halogenfreie Schrumpf-, Isolier- & Geflechtschläuche, Wellrohre & Kabelbinder. 1.000+ Artikel, Lieferung in 24 h, Konfektion ab Losgröße 1.",
+    "Halogenfreie Schrumpf-, Isolier- & Geflechtschläuche, Wellrohre & Kabelbinder. 1.000+ Artikel, Lieferung in 24 h, Konfektion nach Maß.",
   alternates: { canonical: "/bit" },
 };
 
@@ -45,7 +45,7 @@ const HERO_SLIDES: HeroSlide[] = [
 const HERO_TRUST = [
   { icon: Headset, title: "Technische Beratung", text: "Persönlich, kompetent und lösungsorientiert." },
   { icon: Truck, title: "Schnelle Lieferung", text: "Standardware in der Regel in 24 h." },
-  { icon: PencilRuler, title: "Individuelle Konfektion", text: "Zuschnitt & Sätze ab Losgröße 1." },
+  { icon: PencilRuler, title: "Individuelle Konfektion", text: "Zuschnitt & Bedruckung." },
   { icon: ShieldCheck, title: "Zertifizierte Qualität", text: "DIN EN ISO 9001 seit 1997." },
 ];
 
@@ -87,7 +87,7 @@ const STATS = [
 
 const ADVANTAGES = [
   { icon: Truck, title: "Lieferfähig in 24 h", text: "Umfassende Lagerhaltung und kundenorientierte Logistik für Standardartikel." },
-  { icon: PencilRuler, title: "Konfektion ab Losgröße 1", text: "Zuschnitt, Kennzeichnung und Sätze exakt nach Ihrer Zeichnung." },
+  { icon: PencilRuler, title: "Konfektion & Bedruckung", text: "Zuschnitt, Kennzeichnung und Sätze exakt nach Ihrer Zeichnung." },
   { icon: Layers, title: "Werkstoffvielfalt", text: "Polyolefin, PVC, PTFE, Silikon, Glasseide, PVDF und mehr – für jede Anforderung." },
   { icon: ShieldCheck, title: "Geprüfte Qualität", text: "Seit 1997 nach DIN EN ISO 9001 zertifiziert – dokumentiert und rückverfolgbar." },
 ];
@@ -179,12 +179,16 @@ export default async function BitHome() {
         {/* Category marquee */}
         <div className="relative border-t border-slate-200 py-4">
           <div className="bit-marquee">
-            <div className="bit-marquee__track text-sm font-medium uppercase tracking-[0.18em] text-slate-400">
+            <div className="bit-marquee__track text-sm font-medium uppercase tracking-[0.18em] text-slate-500">
               {[...CATEGORIES, ...CATEGORIES].map((c, i) => (
-                <span key={i} className="flex items-center gap-3">
+                <Link
+                  key={i}
+                  href={`/bit/produkte?kategorie=${c.id}`}
+                  className="flex items-center gap-3 transition-colors hover:text-[#1e4a7a]"
+                >
                   <span className="h-1.5 w-1.5 rounded-full bg-[#38bdf8]" />
                   {c.name}
-                </span>
+                </Link>
               ))}
             </div>
           </div>
@@ -213,7 +217,7 @@ export default async function BitHome() {
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="text-sm font-semibold uppercase tracking-wide text-[#1d4ed8]">Sortiment</span>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            Sechs Produktwelten
+            Unsere Produktwelten
           </h2>
           <p className="mt-3 text-slate-600">
             Für Isolation, Schutz und Bündelung – jeder Artikel mit allen verfügbaren Größen direkt
@@ -256,7 +260,7 @@ export default async function BitHome() {
       <section className="border-y border-slate-200 bg-slate-50 py-20 sm:py-24">
         <div className="container">
           <Reveal as="h2" className="text-center text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            Warum BIT Bierther
+            Warum BIT?
           </Reveal>
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {ADVANTAGES.map(({ icon: Icon, title, text }, i) => (

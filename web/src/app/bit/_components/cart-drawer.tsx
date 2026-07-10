@@ -1,11 +1,49 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { Minus, Plus, ShoppingCart, Trash2, X } from "lucide-react";
 import { useCart } from "../_lib/cart";
 
 export function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity, removeItem, count } = useCart();
+  const panelRef = useRef<HTMLElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const restoreRef = useRef<HTMLElement | null>(null);
+
+  // Fokus-Management für den modalen Drawer: Fokus hinein verschieben, mit Tab
+  // einfangen (Fokus-Trap), ESC schließt, beim Schließen Fokus zurückgeben.
+  useEffect(() => {
+    if (!isOpen) return;
+    restoreRef.current = document.activeElement as HTMLElement | null;
+    closeRef.current?.focus();
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        closeCart();
+        return;
+      }
+      if (e.key !== "Tab" || !panelRef.current) return;
+      const focusable = panelRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!first || !last) return;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      restoreRef.current?.focus();
+    };
+  }, [isOpen, closeCart]);
 
   return (
     <div
@@ -21,7 +59,9 @@ export function CartDrawer() {
       />
       {/* Panel */}
       <aside
+        ref={panelRef}
         role="dialog"
+        aria-modal="true"
         aria-label="Warenkorb"
         className={`absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-white shadow-2xl transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "translate-x-full"
@@ -36,9 +76,10 @@ export function CartDrawer() {
             </span>
           </div>
           <button
+            ref={closeRef}
             onClick={closeCart}
-            aria-label="Schließen"
-            className="rounded-md p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+            aria-label="Warenkorb schließen"
+            className="rounded-md p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1e4a7a]"
           >
             <X className="h-5 w-5" />
           </button>
@@ -97,11 +138,12 @@ export function CartDrawer() {
                       <input
                         type="number"
                         min={1}
+                        aria-label={`Menge – ${item.name}`}
                         value={item.quantity}
                         onChange={(e) =>
                           updateQuantity(item.id, parseInt(e.target.value || "1", 10))
                         }
-                        className="w-12 border-x border-slate-200 py-1 text-center text-sm text-slate-900 outline-none"
+                        className="w-12 border-x border-slate-200 py-1 text-center text-sm text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#1e4a7a]"
                       />
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}

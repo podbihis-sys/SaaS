@@ -151,11 +151,12 @@ export default function CartPage() {
                           <input
                             type="number"
                             min={1}
+                            aria-label={`Menge – ${item.name}`}
                             value={item.quantity}
                             onChange={(e) =>
                               updateQuantity(item.id, parseInt(e.target.value || "1", 10))
                             }
-                            className="w-12 border-x border-slate-200 py-1 text-center text-slate-900 outline-none"
+                            className="w-12 border-x border-slate-200 py-1 text-center text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#1e4a7a]"
                           />
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
@@ -165,7 +166,7 @@ export default function CartPage() {
                             <Plus className="h-3.5 w-3.5" />
                           </button>
                         </div>
-                        <div className="mt-1 text-xs text-slate-400">
+                        <div className="mt-1 text-xs text-slate-500">
                           {item.metersPerRoll
                             ? `${item.quantity === 1 ? "Rolle" : "Rollen"} · ${item.quantity * item.metersPerRoll} m gesamt`
                             : item.unitsPerPack
@@ -214,8 +215,9 @@ export default function CartPage() {
                 <Field label="E-Mail *" type="email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} required />
                 <Field label="Telefon" value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} />
                 <div>
-                  <label className="text-sm font-medium text-slate-700">Nachricht</label>
+                  <label htmlFor="feld-nachricht" className="text-sm font-medium text-slate-700">Nachricht</label>
                   <textarea
+                    id="feld-nachricht"
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
                     rows={3}
@@ -226,7 +228,7 @@ export default function CartPage() {
               </div>
 
               {status === "error" && (
-                <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
+                <p role="alert" className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
               )}
 
               <button
@@ -261,15 +263,17 @@ function Field({
   type?: string;
   required?: boolean;
 }) {
+  const id = "feld-" + label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
   return (
     <div>
-      <label className="text-sm font-medium text-slate-700">{label}</label>
+      <label htmlFor={id} className="text-sm font-medium text-slate-700">{label}</label>
       <input
+        id={id}
         type={type}
         required={required}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-[#1e4a7a] focus:ring-1 focus:ring-[#1e4a7a]"
+        className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-[#1e4a7a] focus:ring-1 focus:ring-[#1e4a7a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#1e4a7a]"
       />
     </div>
   );

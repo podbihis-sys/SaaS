@@ -4,6 +4,7 @@ import { Clock, Mail, MapPin, Phone, Printer, ShoppingCart } from "lucide-react"
 import { COMPANY } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
+import { ContactForm } from "../_components/contact-form";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/bit/kontakt" },
@@ -35,7 +36,14 @@ export default async function KontaktPage() {
         </div>
       </section>
 
+      {/* Kontaktformular – bewusst an erster Stelle, vor Firmendaten und Karte */}
       <section className="container py-16">
+        <div className="mx-auto max-w-3xl">
+          <ContactForm />
+        </div>
+      </section>
+
+      <section className="container border-t border-slate-200 py-16">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
             <h2 className="text-2xl font-bold text-slate-900">{COMPANY.legalName}</h2>
