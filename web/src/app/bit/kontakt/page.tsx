@@ -36,7 +36,14 @@ export default async function KontaktPage() {
         </div>
       </section>
 
+      {/* Kontaktformular – bewusst an erster Stelle, vor Firmendaten und Karte */}
       <section className="container py-16">
+        <div className="mx-auto max-w-3xl">
+          <ContactForm />
+        </div>
+      </section>
+
+      <section className="container border-t border-slate-200 py-16">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
             <h2 className="text-2xl font-bold text-slate-900">{COMPANY.legalName}</h2>
@@ -106,15 +113,6 @@ export default async function KontaktPage() {
             >
               Auf der Karte öffnen
             </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Kontaktformular */}
-      <section className="border-t border-slate-200">
-        <div className="container py-16">
-          <div className="mx-auto max-w-3xl">
-            <ContactForm />
           </div>
         </div>
       </section>
