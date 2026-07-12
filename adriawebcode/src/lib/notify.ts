@@ -5,6 +5,16 @@ import { ITEM_LABELS } from "./quote";
 import type { SiteAnalysis } from "./scraper";
 import { COUNTRY_NAME, type RegionCheck } from "./region";
 import { createAcceptToken, type AcceptPayload } from "./accept-token";
+import {
+  emailShell,
+  emailButton,
+  emailHighlight,
+  emailRow,
+  emailParagraph,
+  emailSmall,
+  emailHeading,
+  escHtml as esc,
+} from "./email-template";
 
 const OWNER = process.env.LEAD_NOTIFY_EMAIL ?? "adriawebcode@gmail.com";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://adriawebcode.com";
@@ -37,6 +47,7 @@ const ACCEPT_L10N: Record<
     confirmSubject: string;
     confirmTitle: string;
     confirmBody: string;
+    greeting: string;
   }
 > = {
   de: {
@@ -49,6 +60,7 @@ const ACCEPT_L10N: Record<
     confirmTitle: "Vielen Dank für Ihren Auftrag!",
     confirmBody:
       "Sie haben unser Angebot angenommen. Wir melden uns innerhalb von 24 Stunden mit den nächsten Schritten und dem Zeitplan. Bei Fragen antworten Sie einfach auf diese E-Mail.",
+    greeting: "Guten Tag",
   },
   en: {
     acceptCta: "Accept this offer",
@@ -60,6 +72,7 @@ const ACCEPT_L10N: Record<
     confirmTitle: "Thank you for your order!",
     confirmBody:
       "You have accepted our offer. We'll get back to you within 24 hours with the next steps and the timeline. If you have questions, just reply to this e-mail.",
+    greeting: "Hello",
   },
   hr: {
     acceptCta: "Prihvati ponudu",
@@ -71,6 +84,7 @@ const ACCEPT_L10N: Record<
     confirmTitle: "Hvala vam na narudžbi!",
     confirmBody:
       "Prihvatili ste našu ponudu. Javit ćemo vam se u roku od 24 sata s daljnjim koracima i vremenskim planom. Za pitanja jednostavno odgovorite na ovaj e-mail.",
+    greeting: "Poštovani",
   },
   bs: {
     acceptCta: "Prihvati ponudu",
@@ -81,7 +95,8 @@ const ACCEPT_L10N: Record<
     confirmSubject: "Potvrda narudžbe – krećemo! 🚀",
     confirmTitle: "Hvala vam na narudžbi!",
     confirmBody:
-      "Prihvatili ste našu ponudu. Javit ćemo vam se u roku od 24 sata s daljnjim koracima i vremenskim planom. Za pitanja jednostavno odgovorite na ovaj e-mail.",
+      "Prihvatili ste našu ponudu. Javit ćemo vam se u roku od 24 sata s daljim koracima i vremenskim planom. Za pitanja jednostavno odgovorite na ovaj e-mail.",
+    greeting: "Poštovani",
   },
   sr: {
     acceptCta: "Prihvati ponudu",
@@ -93,6 +108,7 @@ const ACCEPT_L10N: Record<
     confirmTitle: "Hvala vam na porudžbini!",
     confirmBody:
       "Prihvatili ste našu ponudu. Javićemo vam se u roku od 24 sata sa daljim koracima i vremenskim planom. Za pitanja jednostavno odgovorite na ovaj e-mail.",
+    greeting: "Poštovani",
   },
 };
 
@@ -100,27 +116,9 @@ function euro(amount: number): string {
   return `${amount.toLocaleString("de-DE")} €`;
 }
 
-function esc(value: string | undefined): string {
-  return (value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
 /** Collapse control characters so a company name can't inject email headers. */
 function headerSafe(value: string | undefined): string {
   return (value ?? "").replace(/[\r\n]+/g, " ").trim();
-}
-
-function acceptButton(acceptUrl: string, l: (typeof ACCEPT_L10N)[Locale]): string {
-  return `
-    <div style="text-align:center;margin:24px 0 8px">
-      <a href="${esc(acceptUrl)}" style="display:inline-block;background:linear-gradient(135deg,#1e6d77,#2a9d8f);color:#ffffff;text-decoration:none;font-weight:bold;font-size:16px;padding:14px 36px;border-radius:999px">
-        ✓ ${esc(l.acceptCta)}
-      </a>
-      <p style="font-size:12px;color:#666;margin:10px 0 0">${esc(l.acceptHint)}</p>
-    </div>`;
 }
 
 function offerHtml(
@@ -138,41 +136,48 @@ function offerHtml(
   ].name;
 
   const rows = quote.items
-    .map((item) => {
-      const label = esc(
-        ITEM_LABELS[item.key]?.[locale] ?? ITEM_LABELS[item.key]?.de ?? item.key,
-      );
-      return `<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">${label}</td><td style="padding:8px 12px;border-bottom:1px solid #eee;text-align:right;white-space:nowrap">${euro(item.amount)}</td></tr>`;
-    })
+    .map((item) =>
+      emailRow(
+        esc(ITEM_LABELS[item.key]?.[locale] ?? ITEM_LABELS[item.key]?.de ?? item.key),
+        euro(item.amount),
+      ),
+    )
     .join("");
 
   const analysisBlock = analysis?.reachable
-    ? `<p style="margin:16px 0 4px"><strong>${esc(t.analysisTitle)} (${esc(analysis.url)}):</strong> ${esc(t.scoreLabel)} ${analysis.score}/100 · ${esc(analysis.techStack.join(", ")) || "—"}</p>`
+    ? emailParagraph(
+        `<strong>${esc(t.analysisTitle)}</strong> (${esc(analysis.url)}): ${esc(t.scoreLabel)} <strong>${analysis.score}/100</strong>${analysis.techStack.length ? ` · ${esc(analysis.techStack.join(", "))}` : ""}`,
+      )
     : "";
 
-  const localTotal = quote.localCurrency
-    ? ` <span style="font-size:14px;color:#1e6d77">(≈ ${quote.localCurrency.totalMax.toLocaleString("de-DE")} ${esc(quote.localCurrency.code)})</span>`
-    : "";
+  const totalStr = quote.localCurrency
+    ? `${quote.localCurrency.totalMax.toLocaleString("de-DE")} ${quote.localCurrency.code}`
+    : euro(quote.totalMax);
+  const totalSub = quote.localCurrency
+    ? `≈ ${euro(quote.totalMax)} · ${t.vatNote}`
+    : t.vatNote;
+
   const maintenancePrice = quote.localCurrency
-    ? `${quote.localCurrency.maintenanceMonthly.toLocaleString("de-DE")} ${esc(quote.localCurrency.code)} (≈ ${euro(quote.maintenancePriceMonthly)})`
+    ? `${quote.localCurrency.maintenanceMonthly.toLocaleString("de-DE")} ${quote.localCurrency.code} (≈ ${euro(quote.maintenancePriceMonthly)})`
     : euro(quote.maintenancePriceMonthly);
 
-  return `
-  <div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;color:#0a1230">
-    <div style="background:linear-gradient(135deg,#0a1230,#1e6d77);padding:28px 32px;border-radius:12px 12px 0 0">
-      <h1 style="color:#fff;margin:0;font-size:22px">adriawebcode</h1>
-      <p style="color:#79dede;margin:6px 0 0;font-size:14px">${esc(t.title)}</p>
-    </div>
-    <div style="border:1px solid #e5e7eb;border-top:0;padding:28px 32px;border-radius:0 0 12px 12px">
-      <p>${esc(t.forCompany)} <strong>${esc(lead.company)}</strong> (${esc(lead.name)})</p>
-      ${analysisBlock}
-      <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:14px">${rows}</table>
-      <p style="font-size:18px"><strong>${esc(t.totalLabel)}: ${euro(quote.totalMax)}</strong>${localTotal} <span style="font-size:12px;color:#666">${esc(t.vatNote)}</span></p>
-      <p style="font-size:14px">${esc(t.timelineLabel)}: ${quote.timelineWeeksMin}–${quote.timelineWeeksMax} ${esc(t.weeks)} · ${esc(t.maintenanceLabel)}: <strong>${esc(maintenanceName)}</strong> (${maintenancePrice})</p>
-      ${acceptUrl ? acceptButton(acceptUrl, l) : ""}
-      <p style="font-size:12px;color:#666">${esc(t.validity)}</p>
-    </div>
-  </div>`;
+  const content = `
+    ${emailParagraph(`${esc(l.greeting)} ${esc(lead.name)},`)}
+    ${emailParagraph(`${esc(t.forCompany)} <strong>${esc(lead.company)}</strong>:`)}
+    ${analysisBlock}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:8px 0 4px">${rows}</table>
+    ${emailHighlight(t.totalLabel, totalStr, totalSub)}
+    ${emailParagraph(`${esc(t.timelineLabel)}: <strong>${quote.timelineWeeksMin}–${quote.timelineWeeksMax} ${esc(t.weeks)}</strong> &nbsp;·&nbsp; ${esc(t.maintenanceLabel)}: <strong>${esc(maintenanceName)}</strong> (${esc(maintenancePrice)})`)}
+    ${acceptUrl ? emailButton(acceptUrl, l.acceptCta, l.acceptHint) : ""}
+    ${emailSmall(esc(t.validity))}
+  `;
+
+  return emailShell({
+    preheader: `${t.totalLabel}: ${totalStr}`,
+    tagline: t.title,
+    content,
+    siteUrl: SITE_URL,
+  });
 }
 
 type SendFn = (payload: object) => Promise<Response>;
@@ -237,6 +242,16 @@ export async function sendEmails(
   if (followupToken) {
     const followupAccept = `${SITE_URL}/api/offer/accept?t=${followupToken}`;
     const scheduledAt = new Date(Date.now() + FOLLOWUP_DELAY_DAYS * 86_400_000).toISOString();
+    const followupHtml = emailShell({
+      preheader: l.followupSubject,
+      tagline: l.followupSubject,
+      content: `
+        ${emailParagraph(`${esc(l.greeting)} ${esc(lead.name)},`)}
+        ${emailParagraph(esc(l.followupBody))}
+        ${emailButton(followupAccept, l.acceptCta, l.acceptHint)}
+      `,
+      siteUrl: SITE_URL,
+    });
     try {
       const res = await send({
         from,
@@ -244,13 +259,7 @@ export async function sendEmails(
         reply_to: OWNER,
         subject: `adriawebcode – ${headerSafe(l.followupSubject)}`,
         scheduled_at: scheduledAt,
-        html: `
-          <div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;color:#0a1230">
-            <p>${esc(lead.name)},</p>
-            <p>${esc(l.followupBody)}</p>
-            ${acceptButton(followupAccept, l)}
-            <p style="font-size:12px;color:#666">adriawebcode · ${esc(SITE_URL)}</p>
-          </div>`,
+        html: followupHtml,
       });
       if (res.ok) {
         const body = (await res.json()) as { id?: string };
@@ -269,15 +278,40 @@ export async function sendEmails(
 
   const mismatchBanner =
     region?.mismatch
-      ? `<p style="margin:0 0 12px;padding:12px 14px;border-radius:8px;background:#fff4e5;border:1px solid #ffb877;color:#8a4b00">
-           ⚠️ <strong>Standort-Hinweis:</strong> Der Interessent wählte
-           „${esc(COUNTRY_NAME[region.claimed] ?? region.claimed)}", der Firmensitz
-           laut Adresse liegt aber in
-           <strong>${esc(COUNTRY_NAME[region.effective] ?? region.effective)}</strong>
-           (${esc(region.reasons.join(", ")) || "—"}). Das Angebot wurde daher
-           zum Preis für ${esc(COUNTRY_NAME[region.effective] ?? region.effective)} berechnet.
-         </p>`
+      ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 16px"><tr>
+           <td style="background:#fff4e5;border:1px solid #ffb877;border-radius:10px;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#8a4b00">
+             ⚠️ <strong>Standort-Hinweis:</strong> Der Interessent wählte
+             „${esc(COUNTRY_NAME[region.claimed] ?? region.claimed)}", der Firmensitz
+             laut Adresse liegt aber in
+             <strong>${esc(COUNTRY_NAME[region.effective] ?? region.effective)}</strong>
+             (${esc(region.reasons.join(", ")) || "—"}). Das Angebot wurde daher
+             zum Preis für ${esc(COUNTRY_NAME[region.effective] ?? region.effective)} berechnet.
+           </td>
+         </tr></table>`
       : "";
+
+  const detail = (label: string, value: string) =>
+    emailRow(`<strong>${label}</strong>`, value);
+
+  const ownerContent = `
+    ${mismatchBanner}
+    ${emailHeading("🔥 Neuer Lead über adriawebcode.com")}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0 8px">
+      ${detail("Name", esc(lead.name))}
+      ${detail("Firma", esc(lead.company))}
+      ${detail("E-Mail", esc(lead.email))}
+      ${detail("Telefon", esc(lead.phone) || "–")}
+      ${detail("Adresse", esc(lead.address))}
+      ${detail("Markt (gewählt)", esc(lead.country) + (region?.mismatch ? ` → <strong>berechnet als ${esc(region.effective)}</strong>` : ""))}
+      ${detail("Projekt", `${lead.projectType}, ${lead.pages}, Sprachen: ${lead.languages}`)}
+      ${detail("Wartung", esc(lead.maintenance))}
+      ${detail("Website", esc(lead.websiteUrl) || "keine")}
+      ${detail("Nachricht", esc(lead.message) || "–")}
+      ${detail("Nachfass-Erinnerung", followupId ? `geplant in ${FOLLOWUP_DELAY_DAYS} Tagen (wird bei Annahme storniert)` : "nicht geplant")}
+    </table>
+    ${emailHighlight("Angebotssumme", euro(quote.totalMax), localTotalStr ? `≈ ${localTotalStr}` : undefined)}
+    ${emailSmall("Antworten auf diese E-Mail gehen direkt an den Interessenten.")}
+  `;
 
   const ownerEmail = send({
     from: FROM_OWNER,
@@ -285,22 +319,12 @@ export async function sendEmails(
     // Replying to the notification should reach the customer directly.
     reply_to: lead.email,
     subject: `${region?.mismatch ? "⚠️ " : "🔥 "}Neuer Lead: ${headerSafe(lead.company)} (${lead.country.toUpperCase()}, ${euro(quote.totalMax)})`,
-    html:
-      `<h2>Neuer Lead über adriawebcode.com</h2>
-       ${mismatchBanner}
-       <ul>
-         <li><strong>Name:</strong> ${esc(lead.name)}</li>
-         <li><strong>Firma:</strong> ${esc(lead.company)}</li>
-         <li><strong>E-Mail:</strong> ${esc(lead.email)}</li>
-         <li><strong>Telefon:</strong> ${esc(lead.phone) || "–"}</li>
-         <li><strong>Adresse:</strong> ${esc(lead.address)}</li>
-         <li><strong>Markt (gewählt):</strong> ${esc(lead.country)}${region?.mismatch ? ` → <strong>berechnet als ${esc(region.effective)}</strong>` : ""}</li>
-         <li><strong>Projekt:</strong> ${lead.projectType}, ${lead.pages}, Sprachen: ${lead.languages}</li>
-         <li><strong>Wartung:</strong> ${lead.maintenance}</li>
-         <li><strong>Website:</strong> ${esc(lead.websiteUrl) || "keine"}</li>
-         <li><strong>Nachricht:</strong> ${esc(lead.message) || "–"}</li>
-         <li><strong>Nachfass-Erinnerung:</strong> ${followupId ? `geplant in ${FOLLOWUP_DELAY_DAYS} Tagen (wird bei Annahme storniert)` : "nicht geplant"}</li>
-       </ul>` + html,
+    html: emailShell({
+      preheader: `Neuer Lead: ${lead.company}`,
+      tagline: "Interne Lead-Benachrichtigung",
+      content: ownerContent,
+      siteUrl: SITE_URL,
+    }),
   });
 
   const leadEmail = send({
@@ -320,11 +344,11 @@ export async function sendEmails(
   const leadOk = leadRes.status === "fulfilled" && leadRes.value.ok;
 
   if (!ownerOk) {
-    const detail =
+    const detailText =
       ownerRes.status === "fulfilled"
         ? await ownerRes.value.text().catch(() => "")
         : String(ownerRes.reason);
-    console.error(JSON.stringify({ type: "owner_email_failed", detail: detail.slice(0, 300) }));
+    console.error(JSON.stringify({ type: "owner_email_failed", detail: detailText.slice(0, 300) }));
   }
 
   return { leadOk, acceptUrl };
@@ -343,9 +367,8 @@ export async function sendAcceptanceEmails(payload: AcceptPayload): Promise<bool
   const locale = isLocale(payload.locale) ? payload.locale : defaultLocale;
   const l = ACCEPT_L10N[locale];
   const from = FROM_BY_LOCALE[locale];
-  const totalStr = payload.localTotal
-    ? `${payload.localTotal} (≈ ${euro(payload.total)})`
-    : euro(payload.total);
+  const totalStr = payload.localTotal ?? euro(payload.total);
+  const totalSub = payload.localTotal ? `≈ ${euro(payload.total)}` : undefined;
 
   // Cancel the pending follow-up reminder — best effort.
   if (payload.followupId) {
@@ -366,20 +389,22 @@ export async function sendAcceptanceEmails(payload: AcceptPayload): Promise<bool
     to: [OWNER],
     reply_to: payload.email,
     subject: `✅ ANGENOMMEN: ${headerSafe(payload.company)} (${euro(payload.total)})`,
-    html: `
-      <h2>🎉 Angebot angenommen!</h2>
-      <ul>
-        <li><strong>Firma:</strong> ${esc(payload.company)}</li>
-        <li><strong>Name:</strong> ${esc(payload.name)}</li>
-        <li><strong>E-Mail:</strong> ${esc(payload.email)}</li>
-        <li><strong>Angebotssumme:</strong> ${esc(totalStr)}</li>
-      </ul>
-      <p><strong>Nächste Schritte:</strong></p>
-      <ol>
-        <li>Kunde hat automatisch eine Auftragsbestätigung erhalten.</li>
-        <li>${invoiceConfigured ? "Rechnung wurde automatisch versendet." : "⚠️ Rechnungsdaten noch nicht hinterlegt – bitte Rechnung manuell senden (Anzahlung)."}</li>
-        <li>Mit der Arbeit beginnen 🚀</li>
-      </ol>`,
+    html: emailShell({
+      preheader: `Angebot angenommen: ${payload.company}`,
+      tagline: "Auftrag bestätigt 🎉",
+      content: `
+        ${emailHeading("🎉 Angebot angenommen!")}
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0 8px">
+          ${emailRow("<strong>Firma</strong>", esc(payload.company))}
+          ${emailRow("<strong>Name</strong>", esc(payload.name))}
+          ${emailRow("<strong>E-Mail</strong>", esc(payload.email))}
+        </table>
+        ${emailHighlight("Auftragssumme", totalStr, totalSub)}
+        ${emailParagraph("<strong>Nächste Schritte:</strong>")}
+        ${emailParagraph(`1. Kunde hat automatisch eine Auftragsbestätigung erhalten.<br/>2. ${invoiceConfigured ? "Rechnung wurde automatisch versendet." : "⚠️ Rechnungsdaten noch nicht hinterlegt – bitte Rechnung manuell senden (Anzahlung)."}<br/>3. Mit der Arbeit beginnen 🚀`)}
+      `,
+      siteUrl: SITE_URL,
+    }),
   });
 
   const customerEmail = send({
@@ -387,19 +412,16 @@ export async function sendAcceptanceEmails(payload: AcceptPayload): Promise<bool
     to: [payload.email],
     reply_to: OWNER,
     subject: `adriawebcode – ${headerSafe(l.confirmSubject)}`,
-    html: `
-      <div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;color:#0a1230">
-        <div style="background:linear-gradient(135deg,#0a1230,#1e6d77);padding:28px 32px;border-radius:12px 12px 0 0">
-          <h1 style="color:#fff;margin:0;font-size:22px">adriawebcode</h1>
-          <p style="color:#79dede;margin:6px 0 0;font-size:14px">${esc(l.confirmTitle)}</p>
-        </div>
-        <div style="border:1px solid #e5e7eb;border-top:0;padding:28px 32px;border-radius:0 0 12px 12px">
-          <p>${esc(payload.name)},</p>
-          <p>${esc(l.confirmBody)}</p>
-          <p style="font-size:16px"><strong>${esc(payload.company)}</strong> · ${esc(totalStr)}</p>
-          <p style="font-size:12px;color:#666">adriawebcode · ${esc(SITE_URL)}</p>
-        </div>
-      </div>`,
+    html: emailShell({
+      preheader: l.confirmTitle,
+      tagline: l.confirmTitle,
+      content: `
+        ${emailParagraph(`${esc(l.greeting)} ${esc(payload.name)},`)}
+        ${emailParagraph(esc(l.confirmBody))}
+        ${emailHighlight(esc(payload.company), totalStr, totalSub)}
+      `,
+      siteUrl: SITE_URL,
+    }),
   });
 
   const [ownerRes, customerRes] = await Promise.allSettled([ownerEmail, customerEmail]);
