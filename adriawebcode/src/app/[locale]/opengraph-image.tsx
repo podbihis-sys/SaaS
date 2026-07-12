@@ -33,24 +33,19 @@ export default async function Image({
           fontFamily: "sans-serif",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <svg width="72" height="72" viewBox="0 0 64 64">
-            <rect width="64" height="64" rx="14" fill="#111d4a" />
-            <path
-              d="M14 46 L28 18 L34 30 L40 18 L54 46"
-              fill="none"
-              stroke="#3cc5c9"
-              strokeWidth="5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <circle cx="34" cy="46" r="3.5" fill="#ff6b4a" />
-          </svg>
-          <div style={{ display: "flex", fontSize: 40, fontWeight: 700, color: "#ffffff" }}>
-            adria
-            <span style={{ color: "#ffffff" }}>web</span>
-            code
-          </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            background: "#0B1F33",
+            borderRadius: 14,
+            padding: "16px 26px",
+            alignSelf: "flex-start",
+          }}
+        >
+          <span style={{ fontSize: 34, fontWeight: 700, color: "#33C6DC" }}>{"<"}</span>
+          <span style={{ fontSize: 34, fontWeight: 700, color: "#ffffff" }}>adriawebcode</span>
+          <span style={{ fontSize: 34, fontWeight: 700, color: "#33C6DC" }}>{"/>"}</span>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
@@ -86,7 +81,7 @@ export default async function Image({
             {dict.hero.cta1}
           </div>
           <div style={{ display: "flex", fontSize: 24, color: "rgba(255,255,255,0.7)" }}>
-            adriawebcode.vercel.app
+            adriawebcode.com
           </div>
         </div>
       </div>

@@ -5,15 +5,23 @@
  */
 
 const BRAND = {
-  navy: "#0a1230",
-  teal: "#1e6d77",
-  tealBright: "#2a9d8f",
-  aqua: "#79dede",
-  bg: "#eef1f6",
-  text: "#1e293b",
-  muted: "#64748b",
-  border: "#e2e8f0",
+  navy: "#0B1F33",
+  teal: "#0E4B5A",
+  tealBright: "#093642",
+  aqua: "#33C6DC",
+  bg: "#F2F4F5",
+  text: "#1A2126",
+  muted: "#46525A",
+  border: "#C9D2D6",
 };
+
+/** The <adriawebcode/> wordmark as an email-safe chip (mono stack, no cursor). */
+export function emailWordmark(size = 14): string {
+  const mono = "font-family:'JetBrains Mono',Consolas,Menlo,monospace;font-weight:bold";
+  return `<span style="display:inline-block;background:${BRAND.navy};border-radius:8px;padding:${Math.round(size * 0.55)}px ${Math.round(size * 0.9)}px;white-space:nowrap">
+    <span style="${mono};font-size:${size}px;color:${BRAND.aqua}">&lt;</span><span style="${mono};font-size:${size}px;color:#ffffff;letter-spacing:-0.5px">adriawebcode</span><span style="${mono};font-size:${size}px;color:${BRAND.aqua}">/&gt;</span>
+  </span>`;
+}
 
 export function escHtml(value: string | undefined): string {
   return (value ?? "")
@@ -96,10 +104,8 @@ export function emailShell(opts: {
         <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%">
           <!-- Header -->
           <tr>
-            <td bgcolor="${BRAND.navy}" style="background:linear-gradient(135deg,${BRAND.navy} 0%,${BRAND.teal} 100%);border-radius:16px 16px 0 0;padding:32px 36px">
-              <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:24px;font-weight:bold;color:#ffffff;letter-spacing:.5px">
-                adria<span style="color:${BRAND.aqua}">web</span>code<span style="color:${BRAND.tealBright}">.</span>
-              </p>
+            <td bgcolor="${BRAND.teal}" style="background:${BRAND.teal};border-radius:16px 16px 0 0;padding:32px 36px">
+              ${emailWordmark(16)}
               <p style="margin:8px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:${BRAND.aqua}">${escHtml(opts.tagline)}</p>
             </td>
           </tr>

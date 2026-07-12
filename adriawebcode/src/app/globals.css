@@ -69,6 +69,22 @@ h3 {
   }
 }
 
+/* Logo cursor: blinks on the website chip, solid under reduced motion. */
+.logo-cursor {
+  animation: logo-blink 1.1s step-end infinite;
+}
+@keyframes logo-blink {
+  0%, 45% {
+    opacity: 1;
+  }
+  50%, 95% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 /* Prices and figures always align. */
 .tabular {
   font-variant-numeric: tabular-nums;

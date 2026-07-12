@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { locales, localeNames, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
+import { Logo } from "./Logo";
 
 export function Header({ locale, dict }: { locale: Locale; dict: Dictionary["nav"] }) {
   const [scrolled, setScrolled] = useState(false);
@@ -41,12 +42,8 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary["nav
       }`}
     >
       <div className="container-site flex items-center justify-between">
-        <Link
-          href={`/${locale}`}
-          className="text-[1.05rem] font-semibold tracking-tight text-ink"
-          aria-label="adriawebcode"
-        >
-          adriawebcode
+        <Link href={`/${locale}`} aria-label="adriawebcode">
+          <Logo size="nav" cursor />
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex" aria-label="Main">

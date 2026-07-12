@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import { buildQuote, ITEM_LABELS, MARKET_BY_LOCALE, type LeadInput } from "@/lib/quote";
+import { Logo } from "./Logo";
 
 /** The few words the specimen document needs beyond the shared dictionaries. */
 const DOC_L10N: Record<
@@ -97,7 +98,7 @@ export function Hero({ dict, locale }: { dict: Dictionary["hero"]; locale: Local
           <div className="lg:col-span-7">
             <div className="mx-auto max-w-xl bg-paper p-7 text-ink sm:p-9" aria-label={`${l.doc} (${l.sample})`}>
               <div className="print-row flex items-baseline justify-between gap-4 border-b border-rule pb-4" style={delay(0.5)}>
-                <p className="text-sm font-semibold">adriawebcode</p>
+                <Logo size="doc" />
                 <p className="text-xs uppercase tracking-[0.08em] text-muted">
                   {l.doc} · {l.sample}
                 </p>

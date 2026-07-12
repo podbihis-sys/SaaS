@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { locales, localeNames, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
+import { Logo } from "./Logo";
 
 /** Continues the tiefsee plane of the contact section above it. */
 export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
@@ -11,7 +12,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       <div className="container-site border-t border-white/20 pt-12">
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-2">
-            <p className="text-[1.05rem] font-semibold tracking-tight text-white">adriawebcode</p>
+            <Logo size="sm" inverted />
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/70">{dict.footer.tagline}</p>
             <p className="mt-3 text-xs text-white/60">{dict.footer.noHosting}</p>
             <a

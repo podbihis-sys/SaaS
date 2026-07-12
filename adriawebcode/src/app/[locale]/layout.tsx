@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo } from "next/font/google";
+import { Archivo, JetBrains_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { locales, isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -10,6 +10,13 @@ import "../globals.css";
 const archivo = Archivo({
   subsets: ["latin", "latin-ext"],
   variable: "--font-sans",
+  display: "swap",
+});
+// The wordmark <adriawebcode/> is set in JetBrains Mono Bold per the logo spec.
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["700"],
+  variable: "--font-logo",
   display: "swap",
 });
 
@@ -171,7 +178,7 @@ export default async function LocaleLayout({
   if (!isLocale(locale)) notFound();
 
   return (
-    <html lang={locale} className={archivo.variable}>
+    <html lang={locale} className={`${archivo.variable} ${jetbrains.variable}`}>
       <body>
         <script
           type="application/ld+json"
