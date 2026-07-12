@@ -112,6 +112,8 @@ export async function sendEmails(
   const ownerEmail = send({
     from: FROM,
     to: [OWNER],
+    // Replying to the notification should reach the customer directly.
+    reply_to: lead.email,
     subject: `${region?.mismatch ? "⚠️ " : "🔥 "}Neuer Lead: ${headerSafe(lead.company)} (${lead.country.toUpperCase()}, ${euro(quote.totalMin)}–${euro(quote.totalMax)})`,
     html:
       `<h2>Neuer Lead über adriawebcode.com</h2>
@@ -133,6 +135,9 @@ export async function sendEmails(
   const leadEmail = send({
     from: FROM,
     to: [lead.email],
+    // Customer replies to the offer land in the business inbox, since the
+    // sending identity (angebot@) is not a monitored mailbox.
+    reply_to: OWNER,
     subject: `adriawebcode – ${headerSafe(leadSubject)}`,
     html,
   });
