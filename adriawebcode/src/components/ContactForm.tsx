@@ -18,8 +18,18 @@ interface ApiResult {
   quote: Quote;
   analysis: SiteAnalysis | null;
   emailSent: boolean;
+  acceptUrl?: string | null;
   region?: RegionInfo;
 }
+
+// Label for the binding-acceptance button shown with the on-screen offer.
+const ACCEPT_CTA: Record<Locale, { label: string; hint: string }> = {
+  de: { label: "Angebot verbindlich annehmen", hint: "Sie erhalten sofort eine Auftragsbestätigung – wir legen direkt los." },
+  en: { label: "Accept this offer", hint: "You'll receive an order confirmation right away – we'll get started immediately." },
+  hr: { label: "Prihvati ponudu", hint: "Odmah dobivate potvrdu narudžbe – krećemo s radom." },
+  bs: { label: "Prihvati ponudu", hint: "Odmah dobijate potvrdu narudžbe – krećemo s radom." },
+  sr: { label: "Prihvati ponudu", hint: "Odmah dobijate potvrdu porudžbine – krećemo s radom." },
+};
 
 // Shown when the price was calculated for the company's registered seat
 // (from the address) instead of the country the visitor picked in the form.
@@ -497,6 +507,15 @@ function OfferResult({
               </p>
             </div>
           </div>
+
+          {result.acceptUrl && (
+            <div className="mt-8 rounded-xl border border-adriatic-400/30 bg-adriatic-500/10 p-6 text-center">
+              <a href={result.acceptUrl} className="btn-primary inline-flex">
+                ✓ {ACCEPT_CTA[locale].label}
+              </a>
+              <p className="mt-3 text-xs text-slate-400">{ACCEPT_CTA[locale].hint}</p>
+            </div>
+          )}
 
           <p className="mt-8 text-xs leading-relaxed text-slate-500">{dict.validity}</p>
           {emailSent && <p className="mt-2 text-xs text-adriatic-300">✓ {dict.emailSent}</p>}

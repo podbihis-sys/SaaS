@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
     region.effective !== lead.country ? { ...lead, country: region.effective } : lead;
 
   const quote = buildQuote(pricingLead, analysis);
-  const emailSent = await sendEmails(lead, quote, analysis, region);
+  const { leadOk: emailSent, acceptUrl } = await sendEmails(lead, quote, analysis, region);
 
   console.log(
     JSON.stringify({
@@ -133,6 +133,7 @@ export async function POST(request: NextRequest) {
     quote,
     analysis,
     emailSent,
+    acceptUrl,
     region: { claimed: region.claimed, effective: region.effective, mismatch: region.mismatch },
   });
 }
