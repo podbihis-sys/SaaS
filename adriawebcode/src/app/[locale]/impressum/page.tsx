@@ -33,13 +33,13 @@ export default async function ImprintPage({
 
   return (
     <main className="container-site max-w-3xl py-28">
-      <Link href={`/${locale}`} className="text-sm text-adriatic-300 hover:text-adriatic-200">
+      <Link href={`/${locale}`} className="text-sm font-medium text-tiefsee hover:text-tiefsee-press">
         ← adriawebcode
       </Link>
-      <h1 className="mt-6 font-display text-4xl font-bold text-white">{dict.legal.imprintTitle}</h1>
-      <div className="prose-invert mt-8 flex flex-col gap-4 text-sm leading-relaxed text-slate-300">
+      <h1 className="mt-6 text-4xl font-semibold text-ink">{dict.legal.imprintTitle}</h1>
+      <div className="mt-8 flex flex-col gap-4 text-sm leading-relaxed text-muted">
         <p>
-          <strong className="text-white">adriawebcode</strong>
+          <strong className="text-ink">adriawebcode</strong>
           <br />
           {/* TODO: Vollständige Anschrift des Unternehmens eintragen */}
           Inhaber: [Name eintragen]

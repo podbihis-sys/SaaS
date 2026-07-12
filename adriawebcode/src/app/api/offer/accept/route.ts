@@ -56,11 +56,11 @@ function page(locale: Locale, ok: boolean): string {
   <meta name="robots" content="noindex" />
   <title>adriawebcode</title>
   <style>
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#04060f;color:#e2e8f0;display:grid;place-items:center;min-height:100vh;padding:24px}
-    .card{max-width:520px;text-align:center;background:rgba(255,255,255,.04);border:1px solid rgba(121,222,222,.25);border-radius:20px;padding:48px 36px}
-    h1{font-size:1.5rem;margin:0 0 14px;color:#fff}
-    p{line-height:1.65;color:#94a3b8;margin:0 0 28px}
-    a{display:inline-block;background:linear-gradient(135deg,#1e6d77,#2a9d8f);color:#fff;text-decoration:none;font-weight:600;padding:12px 32px;border-radius:999px}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#F2F4F5;color:#1A2126;display:grid;place-items:center;min-height:100vh;padding:24px}
+    .card{max-width:520px;text-align:center;background:#ffffff;border:1px solid #C9D2D6;border-radius:6px;padding:48px 36px}
+    h1{font-size:1.5rem;margin:0 0 14px;color:#1A2126}
+    p{line-height:1.65;color:#46525A;margin:0 0 28px}
+    a{display:inline-block;background:#0E4B5A;color:#fff;text-decoration:none;font-weight:600;padding:12px 32px;border-radius:6px}
     .mark{font-size:2.6rem;margin-bottom:18px}
   </style>
 </head>

@@ -101,6 +101,22 @@ export function Stagger({
   );
 }
 
+/** A horizontal rule that draws itself (scaleX) when scrolled into view. */
+export function DrawRule({ className }: { className?: string }) {
+  const { ref, shown, reduced } = useReveal();
+  return (
+    <motion.div
+      ref={ref}
+      aria-hidden
+      className={className}
+      initial={reduced ? false : { scaleX: 0 }}
+      animate={shown ? { scaleX: 1 } : undefined}
+      transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
+      style={{ transformOrigin: "left" }}
+    />
+  );
+}
+
 export function StaggerItem({
   children,
   className,

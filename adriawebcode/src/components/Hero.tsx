@@ -1,166 +1,135 @@
-"use client";
-
-import { useRef } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-  useMotionValue,
-  useMotionTemplate,
-} from "framer-motion";
+import type { CSSProperties } from "react";
 import type { Dictionary } from "@/i18n/get-dictionary";
-import { Magnetic } from "./ui/Magnetic";
-import { CountUp } from "./ui/CountUp";
+import type { Locale } from "@/i18n/config";
+import { buildQuote, ITEM_LABELS, MARKET_BY_LOCALE, type LeadInput } from "@/lib/quote";
 
-function KineticLine({ text, delay = 0, className }: { text: string; delay?: number; className?: string }) {
-  const reduced = useReducedMotion();
-  const words = text.split(" ");
-  return (
-    <span className={className}>
-      {words.map((word, i) => (
-        <span
-          key={`${word}-${i}`}
-          className="inline-block overflow-hidden align-bottom pb-[0.14em] -mb-[0.14em]"
-        >
-          <motion.span
-            className="inline-block"
-            initial={reduced ? false : { y: "115%" }}
-            animate={{ y: 0 }}
-            transition={{
-              duration: 0.9,
-              delay: delay + i * 0.06,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-          >
-            {word}
-            {i < words.length - 1 ? " " : ""}
-          </motion.span>
-        </span>
-      ))}
-    </span>
-  );
+/** The few words the specimen document needs beyond the shared dictionaries. */
+const DOC_L10N: Record<
+  Locale,
+  { doc: string; sample: string; total: string; vat: string }
+> = {
+  de: { doc: "Kostenvoranschlag", sample: "Muster", total: "Festpreis", vat: "zzgl. USt." },
+  en: { doc: "Cost estimate", sample: "Sample", total: "Fixed price", vat: "plus VAT" },
+  hr: { doc: "Ponuda", sample: "Primjer", total: "Fiksna cijena", vat: "bez PDV-a" },
+  bs: { doc: "Ponuda", sample: "Primjer", total: "Fiksna cijena", vat: "bez PDV-a" },
+  sr: { doc: "Ponuda", sample: "Primer", total: "Fiksna cena", vat: "bez PDV-a" },
+};
+
+function money(amount: number, currency?: string): string {
+  return `${amount.toLocaleString("de-DE")} ${currency ?? "€"}`;
 }
 
-export function Hero({ dict }: { dict: Dictionary["hero"] }) {
-  const reduced = useReducedMotion();
-  const sectionRef = useRef<HTMLElement>(null);
+/** Sets the CSS animation delay for the load choreography. */
+function delay(seconds: number): CSSProperties {
+  return { "--d": `${seconds}s` } as CSSProperties;
+}
 
-  // Pointer spotlight
-  const mx = useMotionValue(50);
-  const my = useMotionValue(30);
-  const spotlight = useMotionTemplate`radial-gradient(28rem 28rem at ${mx}% ${my}%, rgba(60,197,201,0.16), transparent 70%)`;
+/**
+ * Server component: the whole hero — headline wipe and document print run as
+ * pure CSS animations, so the content exists and becomes visible without JS.
+ */
+export function Hero({ dict, locale }: { dict: Dictionary["hero"]; locale: Locale }) {
+  const l = DOC_L10N[locale];
 
-  // Parallax drift on scroll
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
-  const yFore = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : 90]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
-  const fade = (delay: number) => ({
-    initial: reduced ? false : { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] as const },
-  });
-
-  const stats = [
-    [dict.stat1Value, dict.stat1Label],
-    [dict.stat2Value, dict.stat2Label],
-    [dict.stat3Value, dict.stat3Label],
-  ] as const;
+  // The specimen shows what the engine actually produces for this market:
+  // a representative new-website project, priced by the real quote logic.
+  const specimenInput: LeadInput = {
+    name: "",
+    email: "",
+    company: "",
+    address: "",
+    country: MARKET_BY_LOCALE[locale] ?? "de",
+    hasWebsite: false,
+    projectType: "new",
+    pages: "small",
+    languages: "two",
+    maintenance: "unsure",
+    locale,
+  };
+  const quote = buildQuote(specimenInput, null);
+  const rows = quote.items.map((item) => ({
+    label: ITEM_LABELS[item.key]?.[locale] ?? ITEM_LABELS[item.key]?.de ?? item.key,
+    amount: money(item.amount),
+  }));
+  const total = quote.localCurrency
+    ? money(quote.localCurrency.totalMax, quote.localCurrency.code)
+    : money(quote.totalMax);
+  const totalSub = quote.localCurrency ? `≈ ${money(quote.totalMax)} · ${l.vat}` : l.vat;
 
   return (
-    <section
-      ref={sectionRef}
-      className="aurora aurora-drift relative overflow-hidden pb-20 pt-36 sm:pt-44"
-      onPointerMove={(e) => {
-        const r = sectionRef.current?.getBoundingClientRect();
-        if (!r) return;
-        mx.set(((e.clientX - r.left) / r.width) * 100);
-        my.set(((e.clientY - r.top) / r.height) * 100);
-      }}
-    >
-      {/* pointer spotlight */}
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 mix-blend-screen"
-        style={{ background: spotlight }}
-      />
-      <div className="dotfield pointer-events-none absolute inset-0" aria-hidden />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-[#04060f]" aria-hidden />
-
-      <motion.div style={{ y: yFore, opacity }} className="container-site relative">
-        <motion.div {...fade(0)} className="mb-8 flex items-center gap-3">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-adriatic-400 opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-adriatic-400" />
-          </span>
-          <span className="text-xs font-medium tracking-tight text-adriatic-200/90">{dict.badge}</span>
-        </motion.div>
-
-        <h1 className="max-w-[16ch] font-display text-[clamp(2.6rem,7.5vw,6rem)] font-semibold leading-[0.98] tracking-[-0.035em] text-white">
-          <KineticLine text={dict.title1} delay={0.1} className="block" />{" "}
-          <span className="relative inline-block">
-            <KineticLine text={dict.titleHighlight} delay={0.2} className="block text-adriatic-300" />
-            <motion.span
-              aria-hidden
-              className="absolute -bottom-2 left-0 h-[3px] w-full origin-left rounded-full bg-gradient-to-r from-adriatic-400 to-coral-400"
-              initial={reduced ? false : { scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.9, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            />
-          </span>
-          <KineticLine text={dict.title2} delay={0.42} className="block text-slate-400" />
+    <section className="pt-32 sm:pt-40">
+      {/* Kalk top: the claim, set plainly in ink. */}
+      <div className="container-site pb-16 sm:pb-20">
+        <h1
+          className="max-w-[13ch] font-semibold text-ink [font-size:clamp(2.75rem,6.5vw,5.25rem)] [letter-spacing:-0.02em] [line-height:1.06]"
+          style={{ hyphens: "auto", overflowWrap: "break-word" }}
+        >
+          <span className="wipe-line block" style={delay(0.05)}>{dict.title1}</span>
+          <span className="wipe-line block" style={delay(0.13)}>{dict.titleHighlight}</span>
+          <span className="wipe-line block" style={delay(0.21)}>{dict.title2}</span>
         </h1>
-
-        <motion.p
-          {...fade(0.7)}
-          className="mt-8 max-w-xl text-[1.05rem] leading-relaxed text-slate-300/90"
+        <p
+          className="print-row mt-7 max-w-[62ch] text-[1.05rem] leading-[1.65] text-muted"
+          style={delay(0.35)}
         >
           {dict.subtitle}
-        </motion.p>
+        </p>
+      </div>
 
-        <motion.div {...fade(0.82)} className="mt-10 flex flex-wrap items-center gap-4">
-          <Magnetic strength={0.35}>
-            <a href="#contact" className="btn-primary">
+      {/* Tiefsee stage: the product itself — a specimen cost estimate. */}
+      <div className="bg-tiefsee">
+        <div className="container-site grid gap-10 py-16 sm:py-20 lg:grid-cols-12 lg:items-center">
+          <div className="lg:col-span-5">
+            <p className="text-[1.35rem] font-semibold leading-snug text-white sm:text-[1.6rem]">
+              {dict.stat1Label} {dict.stat1Value}
+            </p>
+            <p className="mt-4 max-w-[46ch] text-[0.95rem] leading-relaxed text-white/70">
+              {dict.badge}
+            </p>
+            <a href="#contact" className="btn-inverse mt-8">
               {dict.cta1}
               <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none" aria-hidden>
                 <path d="M3 8h10m0 0L9 4m4 4l-4 4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </a>
-          </Magnetic>
-          <Magnetic strength={0.25}>
-            <a href="#pricing" className="btn-secondary">
-              {dict.cta2}
-            </a>
-          </Magnetic>
-        </motion.div>
+          </div>
 
-        <motion.dl {...fade(0.95)} className="mt-16 grid max-w-2xl grid-cols-3 gap-px overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.02]">
-          {stats.map(([value, label]) => (
-            <div key={label} className="bg-[#04060f]/40 px-5 py-6 backdrop-blur-sm">
-              <dd className="font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                <CountUp value={value} />
-              </dd>
-              <dt className="mt-1.5 text-xs text-slate-400">{label}</dt>
+          <div className="lg:col-span-7">
+            <div className="mx-auto max-w-xl bg-paper p-7 text-ink sm:p-9" aria-label={`${l.doc} (${l.sample})`}>
+              <div className="print-row flex items-baseline justify-between gap-4 border-b border-rule pb-4" style={delay(0.5)}>
+                <p className="text-sm font-semibold">adriawebcode</p>
+                <p className="text-xs uppercase tracking-[0.08em] text-muted">
+                  {l.doc} · {l.sample}
+                </p>
+              </div>
+
+              <div className="flex flex-col">
+                {rows.map((row, i) => (
+                  <div
+                    key={row.label}
+                    className="print-row flex items-baseline justify-between gap-6 border-b border-rule py-3.5"
+                    style={delay(0.62 + i * 0.12)}
+                  >
+                    <p className="text-[0.9rem] leading-snug text-muted">{row.label}</p>
+                    <p className="tabular whitespace-nowrap text-[0.95rem] font-semibold">{row.amount}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div
+                className="print-row mt-5 flex items-end justify-between gap-6"
+                style={delay(0.62 + rows.length * 0.12)}
+              >
+                <div>
+                  <p className="text-[0.8rem] font-medium uppercase tracking-[0.08em] text-tiefsee">{l.total}</p>
+                  <p className="mt-0.5 text-xs text-muted">{totalSub}</p>
+                </div>
+                <p className="tabular text-[2rem] font-semibold leading-none sm:text-[2.4rem]">{total}</p>
+              </div>
             </div>
-          ))}
-        </motion.dl>
-      </motion.div>
-
-      {/* scroll hint */}
-      <motion.div
-        {...fade(1.2)}
-        className="container-site relative mt-14 hidden items-center gap-3 text-xs text-slate-500 sm:flex"
-      >
-        <motion.span
-          aria-hidden
-          className="block h-8 w-px bg-gradient-to-b from-adriatic-400/60 to-transparent"
-          animate={reduced ? undefined : { scaleY: [1, 0.4, 1], opacity: [1, 0.4, 1] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          style={{ transformOrigin: "top" }}
-        />
-        {dict.scrollHint}
-      </motion.div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

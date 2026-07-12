@@ -29,7 +29,7 @@ export default async function Image({
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "72px 80px",
-          background: "linear-gradient(120deg, #050a1c 0%, #0a1230 45%, #1e6d77 130%)",
+          background: "#0E4B5A",
           fontFamily: "sans-serif",
         }}
       >
@@ -48,7 +48,7 @@ export default async function Image({
           </svg>
           <div style={{ display: "flex", fontSize: 40, fontWeight: 700, color: "#ffffff" }}>
             adria
-            <span style={{ color: "#3cc5c9" }}>web</span>
+            <span style={{ color: "#ffffff" }}>web</span>
             code
           </div>
         </div>
@@ -66,7 +66,7 @@ export default async function Image({
           >
             {`${dict.hero.title1} ${dict.hero.titleHighlight}`}
           </div>
-          <div style={{ display: "flex", fontSize: 28, color: "#a8c5cc", maxWidth: 920 }}>
+          <div style={{ display: "flex", fontSize: 28, color: "rgba(255,255,255,0.75)", maxWidth: 920 }}>
             {dict.hero.badge}
           </div>
         </div>
@@ -76,8 +76,8 @@ export default async function Image({
             style={{
               display: "flex",
               fontSize: 24,
-              color: "#050a1c",
-              background: "linear-gradient(90deg, #21a8ae, #3cc5c9)",
+              color: "#0E4B5A",
+              background: "#ffffff",
               padding: "14px 34px",
               borderRadius: 999,
               fontWeight: 700,
@@ -85,7 +85,7 @@ export default async function Image({
           >
             {dict.hero.cta1}
           </div>
-          <div style={{ display: "flex", fontSize: 24, color: "#79dede" }}>
+          <div style={{ display: "flex", fontSize: 24, color: "rgba(255,255,255,0.7)" }}>
             adriawebcode.vercel.app
           </div>
         </div>

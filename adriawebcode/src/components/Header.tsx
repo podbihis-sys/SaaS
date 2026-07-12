@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { locales, localeNames, localeFlags, type Locale } from "@/i18n/config";
+import { AnimatePresence, motion } from "framer-motion";
+import { locales, localeNames, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 
 export function Header({ locale, dict }: { locale: Locale; dict: Dictionary["nav"] }) {
@@ -36,29 +36,17 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary["nav
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "border-b border-white/[0.07] bg-[#04060f]/80 py-3 backdrop-blur-xl"
-          : "bg-transparent py-5"
+      className={`fixed inset-x-0 top-0 z-50 bg-kalk transition-[border-color,padding] duration-200 ${
+        scrolled ? "border-b border-rule py-3" : "border-b border-transparent py-5"
       }`}
     >
       <div className="container-site flex items-center justify-between">
-        <Link href={`/${locale}`} className="flex items-center gap-2.5" aria-label="adriawebcode">
-          <svg viewBox="0 0 64 64" className="h-9 w-9" aria-hidden>
-            <rect width="64" height="64" rx="14" fill="#111d4a" />
-            <path
-              d="M14 46 L28 18 L34 30 L40 18 L54 46"
-              fill="none"
-              stroke="#3cc5c9"
-              strokeWidth="5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <circle cx="34" cy="46" r="3.5" fill="#ff6b4a" />
-          </svg>
-          <span className="font-display text-lg font-bold text-white">
-            adria<span className="text-adriatic-400">web</span>code
-          </span>
+        <Link
+          href={`/${locale}`}
+          className="text-[1.05rem] font-semibold tracking-tight text-ink"
+          aria-label="adriawebcode"
+        >
+          adriawebcode
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex" aria-label="Main">
@@ -66,7 +54,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary["nav
             <a
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-slate-300 transition hover:text-adriatic-300"
+              className="text-sm font-medium text-ink transition-colors hover:text-tiefsee"
             >
               {link.label}
             </a>
@@ -77,12 +65,11 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary["nav
           <div className="relative">
             <button
               onClick={() => setLangOpen((v) => !v)}
-              className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3.5 py-2 text-sm font-medium text-white transition hover:border-adriatic-400/50"
+              className="flex items-center gap-1.5 rounded-md border border-rule bg-paper px-3.5 py-2 text-sm font-medium uppercase text-ink transition-colors hover:border-ink"
               aria-haspopup="listbox"
               aria-expanded={langOpen}
             >
-              <span aria-hidden>{localeFlags[locale]}</span>
-              <span className="uppercase">{locale}</span>
+              {locale}
               <svg className="h-3 w-3" viewBox="0 0 12 12" fill="none" aria-hidden>
                 <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
@@ -90,25 +77,25 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary["nav
             <AnimatePresence>
               {langOpen && (
                 <motion.ul
-                  initial={{ opacity: 0, y: -8 }}
+                  initial={{ opacity: 0, y: -6 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
+                  exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 mt-2 w-44 overflow-hidden rounded-xl border border-white/10 bg-navy-900/95 py-1 shadow-2xl backdrop-blur-xl"
+                  className="absolute right-0 mt-2 w-44 rounded-md border border-rule bg-paper py-1"
                   role="listbox"
                 >
                   {locales.map((l) => (
                     <li key={l}>
                       <button
                         onClick={() => switchLocale(l)}
-                        className={`flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm transition hover:bg-white/10 ${
-                          l === locale ? "text-adriatic-300" : "text-slate-200"
+                        className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-sm transition-colors hover:bg-kalk ${
+                          l === locale ? "font-semibold text-tiefsee" : "text-ink"
                         }`}
                         role="option"
                         aria-selected={l === locale}
                       >
-                        <span aria-hidden>{localeFlags[l]}</span>
                         {localeNames[l]}
+                        <span className="text-xs uppercase text-muted">{l}</span>
                       </button>
                     </li>
                   ))}
@@ -123,7 +110,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary["nav
 
           <button
             onClick={() => setMenuOpen((v) => !v)}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white lg:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-md border border-rule bg-paper text-ink lg:hidden"
             aria-label="Menu"
             aria-expanded={menuOpen}
           >
@@ -144,7 +131,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary["nav
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden border-t border-white/10 bg-navy-950/95 backdrop-blur-xl lg:hidden"
+            className="overflow-hidden border-t border-rule bg-kalk lg:hidden"
             aria-label="Mobile"
           >
             <div className="container-site flex flex-col gap-1 py-4">
@@ -153,7 +140,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary["nav
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="rounded-lg px-3 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/5 hover:text-adriatic-300"
+                  className="rounded-md px-3 py-3 text-sm font-medium text-ink transition-colors hover:bg-paper hover:text-tiefsee"
                 >
                   {link.label}
                 </a>

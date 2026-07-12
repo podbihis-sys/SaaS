@@ -6,7 +6,6 @@ import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import { ITEM_LABELS, ISSUE_LABELS, type Quote } from "@/lib/quote";
 import type { SiteAnalysis } from "@/lib/scraper";
-import { Reveal } from "./Reveal";
 
 interface RegionInfo {
   claimed: string;
@@ -140,15 +139,12 @@ export function ContactForm({
   }
 
   return (
-    <section id="contact" className="scroll-mt-24 border-t border-white/[0.06] py-24 sm:py-32">
+    <section id="contact" className="scroll-mt-24 bg-tiefsee py-24 sm:py-32">
       <div className="container-site max-w-4xl">
-        <Reveal className="text-center">
-          <p className="section-index justify-center">
-            <span className="text-adriatic-400">/</span> {dict.kicker.toLowerCase()}
-          </p>
-          <h2 className="section-title mt-4">{dict.title}</h2>
-          <p className="mx-auto mt-5 max-w-2xl text-[1.02rem] leading-relaxed text-slate-400">{dict.subtitle}</p>
-        </Reveal>
+        <div>
+          <h2 className="section-title !text-white">{dict.title}</h2>
+          <p className="mt-5 max-w-2xl text-[1.02rem] leading-relaxed text-white/70">{dict.subtitle}</p>
+        </div>
 
         <AnimatePresence mode="wait">
           {result ? (
@@ -170,12 +166,10 @@ export function ContactForm({
             <motion.form
               key="form"
               onSubmit={onSubmit}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={false}
               exit={{ opacity: 0, y: -24 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="card-glass mt-12 p-6 sm:p-10"
+              transition={{ duration: 0.4 }}
+              className="mt-12"
               noValidate
             >
               <div className="grid gap-5 sm:grid-cols-2">
@@ -203,7 +197,7 @@ export function ContactForm({
                   <label htmlFor="country" className="label-field">{dict.country}</label>
                   <select id="country" name="country" className="input-field" defaultValue={defaultCountry}>
                     {Object.entries(dict.countries).map(([code, label]) => (
-                      <option key={code} value={code} className="bg-navy-900">{label}</option>
+                      <option key={code} value={code}>{label}</option>
                     ))}
                   </select>
                 </div>
@@ -220,10 +214,10 @@ export function ContactForm({
                       key={String(option.value)}
                       type="button"
                       onClick={() => setHasWebsite(option.value)}
-                      className={`rounded-full px-8 py-2.5 text-sm font-semibold transition-all ${
+                      className={`rounded-md px-8 py-2.5 text-sm font-semibold transition-colors ${
                         hasWebsite === option.value
-                          ? "bg-gradient-to-r from-adriatic-500 to-adriatic-400 text-navy-950 shadow-lg shadow-adriatic-500/25"
-                          : "border border-white/15 bg-white/5 text-slate-300 hover:border-adriatic-400/50"
+                          ? "bg-paper text-tiefsee"
+                          : "border border-white/40 text-white hover:border-white"
                       }`}
                       aria-pressed={hasWebsite === option.value}
                     >
@@ -242,7 +236,7 @@ export function ContactForm({
                     transition={{ duration: 0.35 }}
                     className="overflow-hidden"
                   >
-                    <div className="mt-5 rounded-xl border border-adriatic-400/30 bg-adriatic-500/5 p-5">
+                    <div className="mt-5 border border-white/30 p-5">
                       <label htmlFor="websiteUrl" className="label-field">{dict.websiteUrl}</label>
                       <input
                         id="websiteUrl"
@@ -252,7 +246,7 @@ export function ContactForm({
                         placeholder={dict.websiteUrlPh}
                         className="input-field"
                       />
-                      <p className="mt-2 flex items-start gap-1.5 text-xs text-adriatic-300">
+                      <p className="mt-2 flex items-start gap-1.5 text-xs text-white/70">
                         <svg viewBox="0 0 16 16" className="mt-0.5 h-3.5 w-3.5 shrink-0" fill="none" aria-hidden>
                           <circle cx="8" cy="8" r="6.5" stroke="currentColor" />
                           <path d="M8 7.5V11M8 5v.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
@@ -269,7 +263,7 @@ export function ContactForm({
                   <label htmlFor="projectType" className="label-field">{dict.projectType}</label>
                   <select id="projectType" name="projectType" className="input-field" defaultValue="new">
                     {Object.entries(dict.projectTypes).map(([code, label]) => (
-                      <option key={code} value={code} className="bg-navy-900">{label}</option>
+                      <option key={code} value={code}>{label}</option>
                     ))}
                   </select>
                 </div>
@@ -277,7 +271,7 @@ export function ContactForm({
                   <label htmlFor="pages" className="label-field">{dict.pages}</label>
                   <select id="pages" name="pages" className="input-field" defaultValue="small">
                     {Object.entries(dict.pagesOptions).map(([code, label]) => (
-                      <option key={code} value={code} className="bg-navy-900">{label}</option>
+                      <option key={code} value={code}>{label}</option>
                     ))}
                   </select>
                 </div>
@@ -285,7 +279,7 @@ export function ContactForm({
                   <label htmlFor="languages" className="label-field">{dict.languagesLabel}</label>
                   <select id="languages" name="languages" className="input-field" defaultValue="one">
                     {Object.entries(dict.languagesOptions).map(([code, label]) => (
-                      <option key={code} value={code} className="bg-navy-900">{label}</option>
+                      <option key={code} value={code}>{label}</option>
                     ))}
                   </select>
                 </div>
@@ -293,7 +287,7 @@ export function ContactForm({
                   <label htmlFor="maintenancePlan" className="label-field">{dict.maintenanceQ}</label>
                   <select id="maintenancePlan" name="maintenance" className="input-field" defaultValue="unsure">
                     {Object.entries(dict.maintenanceOptions).map(([code, label]) => (
-                      <option key={code} value={code} className="bg-navy-900">{label}</option>
+                      <option key={code} value={code}>{label}</option>
                     ))}
                   </select>
                 </div>
@@ -308,7 +302,7 @@ export function ContactForm({
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="mt-5 rounded-xl border border-coral-500/40 bg-coral-500/10 px-4 py-3 text-sm text-coral-400"
+                  className="mt-5 rounded-md bg-paper px-4 py-3 text-sm font-medium text-[#B4231A]"
                   role="alert"
                 >
                   {error}
@@ -316,7 +310,7 @@ export function ContactForm({
               )}
 
               <div className="mt-8 flex flex-col items-center gap-4">
-                <button type="submit" disabled={submitting} className="btn-primary w-full sm:w-auto sm:min-w-72">
+                <button type="submit" disabled={submitting} className="btn-inverse w-full sm:w-auto sm:min-w-72">
                   {submitting ? (
                     <>
                       <svg className="h-4 w-4 animate-spin" viewBox="0 0 16 16" fill="none" aria-hidden>
@@ -334,7 +328,7 @@ export function ContactForm({
                     </>
                   )}
                 </button>
-                <p className="max-w-md text-center text-xs text-slate-500">{dict.privacy}</p>
+                <p className="max-w-md text-center text-xs text-white/60">{dict.privacy}</p>
               </div>
             </motion.form>
           )}
@@ -374,12 +368,12 @@ function OfferResult({
       transition={{ duration: 0.6 }}
       className="mt-12"
     >
-      <div className="overflow-hidden rounded-2xl border border-adriatic-400/30 bg-white/[0.04]">
-        <div className="bg-gradient-to-r from-adriatic-500/20 via-adriatic-500/10 to-transparent px-6 py-8 sm:px-10">
-          <p className="text-xs font-semibold uppercase tracking-widest text-adriatic-300">{dict.subtitle}</p>
-          <h3 className="mt-2 font-display text-2xl font-bold text-white sm:text-3xl">{dict.title}</h3>
-          <p className="mt-1 text-sm text-slate-400">
-            {dict.forCompany} <span className="font-semibold text-white">{company}</span>
+      <div className="overflow-hidden bg-paper text-ink">
+        <div className="border-b border-rule px-6 py-7 sm:px-10">
+          <p className="text-xs uppercase tracking-[0.08em] text-muted">adriawebcode · {dict.subtitle}</p>
+          <h3 className="mt-2 text-2xl font-semibold text-ink sm:text-[1.75rem]">{dict.title}</h3>
+          <p className="mt-1 text-sm text-muted">
+            {dict.forCompany} <span className="font-semibold text-ink">{company}</span>
           </p>
         </div>
 
@@ -401,39 +395,39 @@ function OfferResult({
             </div>
           )}
           {analysis?.reachable && (
-            <div className="mb-8 rounded-xl border border-white/10 bg-navy-900/60 p-5">
+            <div className="mb-8 border border-rule bg-kalk p-5">
               <div className="flex flex-wrap items-center justify-between gap-4">
-                <h4 className="font-semibold text-white">{dict.analysisTitle}</h4>
+                <h4 className="font-semibold text-ink">{dict.analysisTitle}</h4>
                 <div className="flex items-center gap-3">
-                  <span className="text-xs text-slate-400">{dict.scoreLabel}</span>
+                  <span className="text-xs text-muted">{dict.scoreLabel}</span>
                   <span
-                    className={`rounded-full px-3 py-1 font-display text-sm font-bold ${
+                    className={`tabular rounded-md px-3 py-1 text-sm font-semibold ${
                       analysis.score >= 70
-                        ? "bg-adriatic-500/20 text-adriatic-300"
+                        ? "bg-tiefsee text-white"
                         : analysis.score >= 40
-                          ? "bg-yellow-500/20 text-yellow-300"
-                          : "bg-coral-500/20 text-coral-400"
+                          ? "bg-[#8a6d00]/10 text-[#6b5500]"
+                          : "bg-[#B4231A]/10 text-[#B4231A]"
                     }`}
                   >
                     {analysis.score} / 100
                   </span>
                 </div>
               </div>
-              <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
+              <div className="mt-3 h-1.5 overflow-hidden bg-rule">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${analysis.score}%` }}
                   transition={{ duration: 1, delay: 0.3 }}
-                  className={`h-full rounded-full ${
-                    analysis.score >= 70 ? "bg-adriatic-400" : analysis.score >= 40 ? "bg-yellow-400" : "bg-coral-500"
+                  className={`h-full ${
+                    analysis.score >= 70 ? "bg-tiefsee" : analysis.score >= 40 ? "bg-[#8a6d00]" : "bg-[#B4231A]"
                   }`}
                 />
               </div>
               {analysis.issues.length > 0 && (
                 <ul className="mt-4 grid gap-1.5 sm:grid-cols-2">
                   {analysis.issues.map((issue) => (
-                    <li key={issue} className="flex items-start gap-2 text-xs text-slate-400">
-                      <svg viewBox="0 0 12 12" className="mt-0.5 h-3 w-3 shrink-0 text-coral-400" fill="none" aria-hidden>
+                    <li key={issue} className="flex items-start gap-2 text-xs text-muted">
+                      <svg viewBox="0 0 12 12" className="mt-0.5 h-3 w-3 shrink-0 text-[#B4231A]" fill="none" aria-hidden>
                         <path d="M6 1 11 10H1L6 1Z" stroke="currentColor" strokeLinejoin="round" />
                       </svg>
                       {ISSUE_LABELS[issue]?.[locale] ?? issue}
@@ -442,16 +436,16 @@ function OfferResult({
                 </ul>
               )}
               {analysis.techStack.length > 0 && (
-                <p className="mt-3 text-xs text-slate-500">Tech: {analysis.techStack.join(" · ")}</p>
+                <p className="mt-3 text-xs text-muted">Tech: {analysis.techStack.join(" · ")}</p>
               )}
             </div>
           )}
 
-          <h4 className="mb-4 font-semibold text-white">{dict.positionsTitle}</h4>
+          <h4 className="mb-4 font-semibold text-ink">{dict.positionsTitle}</h4>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/10 text-left text-xs uppercase tracking-wide text-slate-500">
+                <tr className="border-b border-ink/60 text-left text-xs uppercase tracking-[0.06em] text-muted">
                   <th className="pb-3 pr-4 font-medium">{dict.item}</th>
                   <th className="pb-3 text-right font-medium">{dict.price}</th>
                 </tr>
@@ -463,12 +457,12 @@ function OfferResult({
                     initial={{ opacity: 0, x: -12 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.15 + i * 0.08 }}
-                    className="border-b border-white/5"
+                    className="border-b border-rule"
                   >
-                    <td className="py-3.5 pr-4 text-slate-300">
+                    <td className="py-3.5 pr-4 text-muted">
                       {ITEM_LABELS[item.key]?.[locale] ?? ITEM_LABELS[item.key]?.de ?? item.key}
                     </td>
-                    <td className="py-3.5 text-right font-medium text-white">{euro(item.amount)}</td>
+                    <td className="tabular py-3.5 text-right font-semibold text-ink">{euro(item.amount)}</td>
                   </motion.tr>
                 ))}
               </tbody>
@@ -476,30 +470,30 @@ function OfferResult({
           </div>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
-            <div className="rounded-xl bg-gradient-to-br from-adriatic-500/20 to-adriatic-500/5 p-5 sm:col-span-1">
-              <p className="text-xs text-slate-400">{dict.totalLabel}</p>
-              <p className="mt-1 font-display text-xl font-bold text-white">
+            <div className="border border-rule bg-kalk p-5 sm:col-span-1">
+              <p className="text-[0.7rem] font-medium uppercase tracking-[0.08em] text-tiefsee">{dict.totalLabel}</p>
+              <p className="tabular mt-1 text-[1.6rem] font-semibold leading-none text-ink">
                 {quote.localCurrency
                   ? `${quote.localCurrency.totalMax.toLocaleString("de-DE")} ${quote.localCurrency.code}`
                   : euro(quote.totalMax)}
               </p>
               {quote.localCurrency && (
-                <p className="text-xs text-adriatic-300">≈ {euro(quote.totalMax)}</p>
+                <p className="mt-1 text-xs text-muted">≈ {euro(quote.totalMax)}</p>
               )}
-              <p className="mt-1 text-[11px] text-slate-500">{dict.vatNote}</p>
+              <p className="mt-1 text-[11px] text-muted">{dict.vatNote}</p>
             </div>
-            <div className="rounded-xl border border-white/10 p-5">
-              <p className="text-xs text-slate-400">{dict.timelineLabel}</p>
-              <p className="mt-1 font-display text-xl font-bold text-white">
+            <div className="border border-rule p-5">
+              <p className="text-xs text-muted">{dict.timelineLabel}</p>
+              <p className="tabular mt-1 text-[1.6rem] font-semibold leading-none text-ink">
                 {quote.timelineWeeksMin}–{quote.timelineWeeksMax} {dict.weeks}
               </p>
             </div>
-            <div className="rounded-xl border border-white/10 p-5">
-              <p className="text-xs text-slate-400">{dict.maintenanceLabel}</p>
-              <p className="mt-1 font-display text-xl font-bold text-white">
+            <div className="border border-rule p-5">
+              <p className="text-xs text-muted">{dict.maintenanceLabel}</p>
+              <p className="mt-1 text-[1.3rem] font-semibold leading-tight text-ink">
                 {maintenanceNames[quote.recommendedMaintenance]}
               </p>
-              <p className="text-xs text-adriatic-300">
+              <p className="mt-1 text-xs text-muted">
                 {quote.localCurrency
                   ? `${quote.localCurrency.maintenanceMonthly.toLocaleString("de-DE")} ${quote.localCurrency.code} (≈ ${euro(quote.maintenancePriceMonthly)})`
                   : euro(quote.maintenancePriceMonthly)}{" "}
@@ -509,16 +503,16 @@ function OfferResult({
           </div>
 
           {result.acceptUrl && (
-            <div className="mt-8 rounded-xl border border-adriatic-400/30 bg-adriatic-500/10 p-6 text-center">
+            <div className="mt-8 border border-rule bg-kalk p-6 text-center">
               <a href={result.acceptUrl} className="btn-primary inline-flex">
                 ✓ {ACCEPT_CTA[locale].label}
               </a>
-              <p className="mt-3 text-xs text-slate-400">{ACCEPT_CTA[locale].hint}</p>
+              <p className="mt-3 text-xs text-muted">{ACCEPT_CTA[locale].hint}</p>
             </div>
           )}
 
-          <p className="mt-8 text-xs leading-relaxed text-slate-500">{dict.validity}</p>
-          {emailSent && <p className="mt-2 text-xs text-adriatic-300">✓ {dict.emailSent}</p>}
+          <p className="mt-8 text-xs leading-relaxed text-muted">{dict.validity}</p>
+          {emailSent && <p className="mt-2 text-xs font-medium text-tiefsee">✓ {dict.emailSent}</p>}
 
           <button onClick={onReset} className="btn-secondary mt-8">
             {dict.newRequest}

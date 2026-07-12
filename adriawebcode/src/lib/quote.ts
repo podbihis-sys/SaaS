@@ -53,7 +53,7 @@ export interface Quote {
  * Market-standard base prices in EUR (DACH benchmark). The Adriatic markets
  * get a regional factor so quotes stay competitive with local agencies.
  */
-const BASE_PRICES: Record<ProjectType, number> = {
+export const BASE_PRICES: Record<ProjectType, number> = {
   landing: 890,
   new: 1890,
   redesign: 1590,
@@ -61,13 +61,13 @@ const BASE_PRICES: Record<ProjectType, number> = {
   seo: 690,
 };
 
-const PAGE_FACTOR: Record<PagesScope, number> = {
+export const PAGE_FACTOR: Record<PagesScope, number> = {
   small: 1,
   medium: 1.35,
   large: 1.9,
 };
 
-const LANGUAGE_SURCHARGE: Record<LanguagesScope, number> = {
+export const LANGUAGE_SURCHARGE: Record<LanguagesScope, number> = {
   one: 0,
   two: 390,
   many: 890,
@@ -77,7 +77,7 @@ const LANGUAGE_SURCHARGE: Record<LanguagesScope, number> = {
  * Aligned with typical local agency rates so quotes stay competitive:
  * Croatia ~30% below DACH, Bosnia/Serbia ~45% below, Montenegro in between.
  */
-const REGION_FACTOR: Record<Country, number> = {
+export const REGION_FACTOR: Record<Country, number> = {
   de: 1,
   at: 1,
   ch: 1.15,
@@ -117,7 +117,16 @@ const LOCAL_CURRENCY: Partial<
   rs: { code: "RSD", rate: 117, roundTo: 100, maintenance: { basic: 2200, business: 5700, premium: 11600 } },
 };
 
-function round10(value: number): number {
+/** Language version → the market whose prices that version presents. */
+export const MARKET_BY_LOCALE: Record<string, Country> = {
+  de: "de",
+  en: "de",
+  hr: "hr",
+  bs: "ba",
+  sr: "rs",
+};
+
+export function round10(value: number): number {
   return Math.round(value / 10) * 10;
 }
 

@@ -1,64 +1,39 @@
-"use client";
-
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import type { Dictionary } from "@/i18n/get-dictionary";
-import { Reveal } from "./Reveal";
 
+/**
+ * Every answer is visible — a reader (and a crawler) never has to click to
+ * see content. On large screens a sticky index of questions runs alongside.
+ */
 export function Faq({ dict }: { dict: Dictionary["faq"] }) {
-  const [open, setOpen] = useState<number | null>(0);
-
   return (
-    <section id="faq" className="scroll-mt-24 py-24 sm:py-32">
-      <div className="container-site max-w-3xl">
-        <Reveal className="text-center">
-          <p className="section-index justify-center">
-            <span className="text-adriatic-400">/</span> {dict.kicker.toLowerCase()}
-          </p>
-          <h2 className="section-title mt-4">{dict.title}</h2>
-        </Reveal>
-        <div className="mt-14 flex flex-col gap-3">
-          {dict.items.map((item, i) => {
-            const isOpen = open === i;
-            return (
-              <Reveal key={item.q} delay={i * 0.05} y={16}>
-                <div
-                  className={`card-glass overflow-hidden transition-colors ${
-                    isOpen ? "border-adriatic-400/40" : ""
-                  }`}
-                >
-                  <button
-                    onClick={() => setOpen(isOpen ? null : i)}
-                    className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
-                    aria-expanded={isOpen}
-                  >
-                    <span className="font-medium text-white">{item.q}</span>
-                    <motion.span
-                      animate={{ rotate: isOpen ? 45 : 0 }}
-                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/15 text-adriatic-300"
-                      aria-hidden
+    <section id="faq" className="scroll-mt-24 border-t border-rule py-24 sm:py-32">
+      <div className="container-site grid gap-12 lg:grid-cols-12">
+        <div className="lg:col-span-4">
+          <div>
+            <h2 className="section-title">{dict.title}</h2>
+            <nav aria-label={dict.title} className="mt-8 hidden lg:block">
+              <ul className="sticky top-28 flex flex-col gap-2.5 border-l border-rule pl-5">
+                {dict.items.map((item, i) => (
+                  <li key={item.q}>
+                    <a
+                      href={`#faq-${i}`}
+                      className="block text-sm leading-snug text-muted transition-colors hover:text-tiefsee"
                     >
-                      <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none">
-                        <path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-                      </svg>
-                    </motion.span>
-                  </button>
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <p className="px-6 pb-5 text-sm leading-relaxed text-slate-400">{item.a}</p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </Reveal>
-            );
-          })}
+                      {item.q}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <div className="lg:col-span-8">
+          {dict.items.map((item, i) => (
+            <div key={item.q} id={`faq-${i}`} className="scroll-mt-28 border-b border-rule py-7 first:pt-0">
+              <h3 className="text-[1.1rem] font-semibold leading-snug text-ink">{item.q}</h3>
+              <p className="mt-2.5 max-w-[68ch] text-[0.95rem] leading-relaxed text-muted">{item.a}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

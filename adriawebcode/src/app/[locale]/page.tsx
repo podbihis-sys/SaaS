@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { Header } from "@/components/Header";
-import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Hero } from "@/components/Hero";
 import { TrustMarquee, Services, Process, Pricing, Maintenance, Regions } from "@/components/Sections";
 import { Faq } from "@/components/Faq";
@@ -20,14 +19,13 @@ export default async function HomePage({
 
   return (
     <>
-      <ScrollProgress />
       <Header locale={locale} dict={dict.nav} />
       <main>
-        <Hero dict={dict.hero} />
+        <Hero dict={dict.hero} locale={locale} />
         <TrustMarquee dict={dict.trust} />
         <Services dict={dict.services} />
         <Process dict={dict.process} />
-        <Pricing dict={dict.pricing} />
+        <Pricing dict={dict.pricing} contact={dict.contact} locale={locale} />
         <Maintenance dict={dict.maintenance} />
         <Regions dict={dict.regions} />
         <Faq dict={dict.faq} />

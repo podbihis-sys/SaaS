@@ -1,20 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Manrope } from "next/font/google";
+import { Archivo } from "next/font/google";
 import { notFound } from "next/navigation";
 import { locales, isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import "../globals.css";
 
-const manrope = Manrope({
+// One family carries the whole voice — Archivo's grotesque width axis holds
+// long German compounds and the latin-ext set covers č ć š ž đ.
+const archivo = Archivo({
   subsets: ["latin", "latin-ext"],
   variable: "--font-sans",
   display: "swap",
-});
-const bricolage = Bricolage_Grotesque({
-  subsets: ["latin", "latin-ext"],
-  variable: "--font-display",
-  display: "swap",
-  weight: ["500", "600", "700", "800"],
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://adriawebcode.com";
@@ -24,7 +20,7 @@ export function generateStaticParams() {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#050a1c",
+  themeColor: "#F2F4F5",
   width: "device-width",
   initialScale: 1,
 };
@@ -175,7 +171,7 @@ export default async function LocaleLayout({
   if (!isLocale(locale)) notFound();
 
   return (
-    <html lang={locale} className={`${manrope.variable} ${bricolage.variable}`}>
+    <html lang={locale} className={archivo.variable}>
       <body>
         <script
           type="application/ld+json"
