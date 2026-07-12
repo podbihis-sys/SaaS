@@ -122,6 +122,24 @@ h3 {
   }
 }
 
+/*
+ * Hero sea chart: bathymetric depth lines drifting like current. The wave
+ * pattern repeats every 480 viewBox units, so travelling exactly one period
+ * loops seamlessly. Reduced motion leaves the lines standing still (the
+ * global override below caps the animation at a single instant iteration).
+ */
+.sea-line {
+  animation: sea-drift var(--dur, 70s) linear infinite;
+}
+.sea-line[data-dir="back"] {
+  animation-direction: reverse;
+}
+@keyframes sea-drift {
+  to {
+    transform: translateX(-480px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

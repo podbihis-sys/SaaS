@@ -27,6 +27,57 @@ function delay(seconds: number): CSSProperties {
 }
 
 /**
+ * Decorative sea chart behind the headline: bathymetric depth lines in pale
+ * tiefsee that drift like current and shelve closer together toward the
+ * deep-sea band below — the Adria as a nautical chart, not a particle field.
+ */
+function SeaChart() {
+  // One smooth repeating wave (period 480), drawn one period wider than the
+  // viewBox so the CSS drift of exactly 480 units loops without a seam.
+  const wave = (y: number, amp: number) => {
+    let d = `M -480 ${y} Q -360 ${y - amp} -240 ${y}`;
+    for (let x = 0; x <= 2880; x += 240) d += ` T ${x} ${y}`;
+    return d;
+  };
+  // Shelving profile: wider gaps and fainter ink near the surface (top),
+  // tighter and darker toward the deep water. Alternating drift directions.
+  const lines = [
+    { y: 90, amp: 12, opacity: 0.07, dur: 96 },
+    { y: 210, amp: 14, opacity: 0.09, dur: 84 },
+    { y: 320, amp: 15, opacity: 0.11, dur: 74 },
+    { y: 415, amp: 13, opacity: 0.14, dur: 64 },
+    { y: 495, amp: 12, opacity: 0.17, dur: 56 },
+    { y: 560, amp: 10, opacity: 0.2, dur: 48 },
+    { y: 610, amp: 8, opacity: 0.24, dur: 42 },
+    { y: 645, amp: 6, opacity: 0.28, dur: 36 },
+  ];
+  return (
+    <svg
+      className="absolute inset-0 h-full w-full"
+      viewBox="0 0 1440 660"
+      preserveAspectRatio="none"
+      aria-hidden
+      focusable="false"
+    >
+      {lines.map((line, i) => (
+        <path
+          key={line.y}
+          className="sea-line"
+          data-dir={i % 2 === 1 ? "back" : undefined}
+          style={{ "--dur": `${line.dur}s` } as CSSProperties}
+          d={wave(line.y, line.amp)}
+          fill="none"
+          stroke="#0E4B5A"
+          strokeOpacity={line.opacity}
+          strokeWidth="1.5"
+          vectorEffect="non-scaling-stroke"
+        />
+      ))}
+    </svg>
+  );
+}
+
+/**
  * Server component: the whole hero — headline wipe and document print run as
  * pure CSS animations, so the content exists and becomes visible without JS.
  */
@@ -72,9 +123,11 @@ export function Hero({ dict, locale }: { dict: Dictionary["hero"]; locale: Local
     .join(" · ");
 
   return (
-    <section className="pt-32 sm:pt-40">
-      {/* Kalk top: the claim, set plainly in ink. */}
-      <div className="container-site pb-16 sm:pb-20">
+    <section>
+      {/* Kalk top: the claim over a drifting sea chart of the Adria. */}
+      <div className="relative overflow-hidden pt-32 sm:pt-40">
+        <SeaChart />
+        <div className="container-site relative pb-16 sm:pb-20">
         <h1
           className="max-w-[13ch] font-semibold text-ink [font-size:clamp(2.75rem,6.5vw,5.25rem)] [letter-spacing:-0.02em] [line-height:1.06]"
           style={{ hyphens: "auto", overflowWrap: "break-word" }}
@@ -89,6 +142,7 @@ export function Hero({ dict, locale }: { dict: Dictionary["hero"]; locale: Local
         >
           {dict.subtitle}
         </p>
+        </div>
       </div>
 
       {/* Tiefsee stage: the product itself — a specimen cost estimate. */}
