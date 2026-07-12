@@ -168,9 +168,12 @@ export function buildQuote(input: LeadInput, analysis: SiteAnalysis | null): Quo
     }
   }
 
+  // A single fixed price (Festpreis) is shown instead of a range. We quote at
+  // the upper end so the fixed figure comfortably covers the agreed scope.
   const total = items.reduce((sum, item) => sum + item.amount, 0);
-  const totalMin = round10(total * 0.95);
-  const totalMax = round10(total * 1.2);
+  const fixedTotal = round10(total * 1.2);
+  const totalMin = fixedTotal;
+  const totalMax = fixedTotal;
 
   const timeline: Record<ProjectType, [number, number]> = {
     landing: [1, 2],

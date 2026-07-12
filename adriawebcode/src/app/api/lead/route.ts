@@ -102,13 +102,13 @@ export async function POST(request: NextRequest) {
     analysis = await analyzeSite(lead.websiteUrl);
   }
 
-  // Anti-fraud: a DACH company must not obtain Balkan pricing by selecting a
-  // cheaper market in the form. Price on the corrected country and flag it.
-  const ipCountry =
-    request.headers.get("x-vercel-ip-country") ?? request.headers.get("cf-ipcountry");
-  const region = checkRegion(lead, ipCountry);
+  // Price by the company's registered seat (Firmensitz) taken from the address,
+  // not the domain ending: an international company may run a .de domain while
+  // being based in the Balkans, and vice versa. The seat governs the fair local
+  // price, and any correction is surfaced to the visitor.
+  const region = checkRegion(lead);
   const pricingLead: LeadInput =
-    region.mismatch ? { ...lead, country: region.effective } : lead;
+    region.effective !== lead.country ? { ...lead, country: region.effective } : lead;
 
   const quote = buildQuote(pricingLead, analysis);
   const emailSent = await sendEmails(lead, quote, analysis, region);
@@ -129,5 +129,10 @@ export async function POST(request: NextRequest) {
     }),
   );
 
-  return NextResponse.json({ quote, analysis, emailSent });
+  return NextResponse.json({
+    quote,
+    analysis,
+    emailSent,
+    region: { claimed: region.claimed, effective: region.effective, mismatch: region.mismatch },
+  });
 }

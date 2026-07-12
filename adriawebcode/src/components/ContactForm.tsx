@@ -8,11 +8,43 @@ import { ITEM_LABELS, ISSUE_LABELS, type Quote } from "@/lib/quote";
 import type { SiteAnalysis } from "@/lib/scraper";
 import { Reveal } from "./Reveal";
 
+interface RegionInfo {
+  claimed: string;
+  effective: string;
+  mismatch: boolean;
+}
+
 interface ApiResult {
   quote: Quote;
   analysis: SiteAnalysis | null;
   emailSent: boolean;
+  region?: RegionInfo;
 }
+
+// Shown when the price was calculated for the company's registered seat
+// (from the address) instead of the country the visitor picked in the form.
+const REGION_NOTICE: Record<Locale, { title: string; body: string }> = {
+  de: {
+    title: "Hinweis zu Ihrem Land",
+    body: "Sie hatten {claimed} ausgewählt. Anhand Ihres Firmensitzes ({effective}) haben wir den Preis für {effective} berechnet – so gelten für Sie automatisch die korrekten, marktüblichen Preise.",
+  },
+  en: {
+    title: "A note on your country",
+    body: "You selected {claimed}. Based on your registered company address ({effective}) we calculated the price for {effective}, so you automatically get the correct local market pricing.",
+  },
+  hr: {
+    title: "Napomena o vašoj državi",
+    body: "Odabrali ste {claimed}. Na temelju sjedišta vaše tvrtke ({effective}) izračunali smo cijenu za {effective} – tako automatski dobivate ispravne, tržišno uobičajene cijene.",
+  },
+  bs: {
+    title: "Napomena o vašoj državi",
+    body: "Odabrali ste {claimed}. Na osnovu sjedišta vaše firme ({effective}) izračunali smo cijenu za {effective} – tako automatski dobijate ispravne, tržišno uobičajene cijene.",
+  },
+  sr: {
+    title: "Napomena o vašoj državi",
+    body: "Izabrali ste {claimed}. Na osnovu sedišta vaše firme ({effective}) izračunali smo cenu za {effective} – tako automatski dobijate ispravne, tržišno uobičajene cene.",
+  },
+};
 
 function euro(amount: number): string {
   return `${amount.toLocaleString("de-DE")} €`;
@@ -116,6 +148,7 @@ export function ContactForm({
               company={company}
               locale={locale}
               dict={offerDict}
+              countries={dict.countries}
               maintenanceNames={maintenanceNames}
               maintenancePerMonth={maintenancePerMonth}
               onReset={() => {
@@ -306,6 +339,7 @@ function OfferResult({
   company,
   locale,
   dict,
+  countries,
   maintenanceNames,
   maintenancePerMonth,
   onReset,
@@ -314,11 +348,14 @@ function OfferResult({
   company: string;
   locale: Locale;
   dict: Dictionary["offer"];
+  countries: Record<string, string>;
   maintenanceNames: { basic: string; business: string; premium: string };
   maintenancePerMonth: string;
   onReset: () => void;
 }) {
-  const { quote, analysis, emailSent } = result;
+  const { quote, analysis, emailSent, region } = result;
+  const notice = region?.mismatch ? REGION_NOTICE[locale] : null;
+  const countryName = (code: string) => countries[code] ?? code;
 
   return (
     <motion.div
@@ -337,6 +374,22 @@ function OfferResult({
         </div>
 
         <div className="px-6 py-8 sm:px-10">
+          {notice && region && (
+            <div className="mb-6 rounded-xl border border-yellow-400/30 bg-yellow-400/10 p-4">
+              <p className="flex items-center gap-2 text-sm font-semibold text-yellow-200">
+                <svg viewBox="0 0 16 16" className="h-4 w-4 shrink-0" fill="none" aria-hidden>
+                  <path d="M8 1.5 15 14H1L8 1.5Z" stroke="currentColor" strokeLinejoin="round" />
+                  <path d="M8 6.5v3.2M8 11.5v.4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                </svg>
+                {notice.title}
+              </p>
+              <p className="mt-1.5 text-sm leading-relaxed text-yellow-100/80">
+                {notice.body
+                  .replaceAll("{claimed}", countryName(region.claimed))
+                  .replaceAll("{effective}", countryName(region.effective))}
+              </p>
+            </div>
+          )}
           {analysis?.reachable && (
             <div className="mb-8 rounded-xl border border-white/10 bg-navy-900/60 p-5">
               <div className="flex flex-wrap items-center justify-between gap-4">
@@ -417,13 +470,11 @@ function OfferResult({
               <p className="text-xs text-slate-400">{dict.totalLabel}</p>
               <p className="mt-1 font-display text-xl font-bold text-white">
                 {quote.localCurrency
-                  ? `${quote.localCurrency.totalMin.toLocaleString("de-DE")} – ${quote.localCurrency.totalMax.toLocaleString("de-DE")} ${quote.localCurrency.code}`
-                  : `${euro(quote.totalMin)} – ${euro(quote.totalMax)}`}
+                  ? `${quote.localCurrency.totalMax.toLocaleString("de-DE")} ${quote.localCurrency.code}`
+                  : euro(quote.totalMax)}
               </p>
               {quote.localCurrency && (
-                <p className="text-xs text-adriatic-300">
-                  ≈ {euro(quote.totalMin)} – {euro(quote.totalMax)}
-                </p>
+                <p className="text-xs text-adriatic-300">≈ {euro(quote.totalMax)}</p>
               )}
               <p className="mt-1 text-[11px] text-slate-500">{dict.vatNote}</p>
             </div>

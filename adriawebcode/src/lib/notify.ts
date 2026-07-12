@@ -3,7 +3,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import type { LeadInput, Quote } from "./quote";
 import { ITEM_LABELS } from "./quote";
 import type { SiteAnalysis } from "./scraper";
-import type { RegionCheck } from "./region";
+import { COUNTRY_NAME, type RegionCheck } from "./region";
 
 const FROM = process.env.MAIL_FROM ?? "adriawebcode <onboarding@resend.dev>";
 const OWNER = process.env.LEAD_NOTIFY_EMAIL ?? "podbihis@gmail.com";
@@ -47,7 +47,7 @@ function offerHtml(lead: LeadInput, quote: Quote, analysis: SiteAnalysis | null)
     : "";
 
   const localTotal = quote.localCurrency
-    ? ` <span style="font-size:14px;color:#1e6d77">(≈ ${quote.localCurrency.totalMin.toLocaleString("de-DE")} – ${quote.localCurrency.totalMax.toLocaleString("de-DE")} ${esc(quote.localCurrency.code)})</span>`
+    ? ` <span style="font-size:14px;color:#1e6d77">(≈ ${quote.localCurrency.totalMax.toLocaleString("de-DE")} ${esc(quote.localCurrency.code)})</span>`
     : "";
   const maintenancePrice = quote.localCurrency
     ? `${quote.localCurrency.maintenanceMonthly.toLocaleString("de-DE")} ${esc(quote.localCurrency.code)} (≈ ${euro(quote.maintenancePriceMonthly)})`
@@ -63,7 +63,7 @@ function offerHtml(lead: LeadInput, quote: Quote, analysis: SiteAnalysis | null)
       <p>${esc(t.forCompany)} <strong>${esc(lead.company)}</strong> (${esc(lead.name)})</p>
       ${analysisBlock}
       <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:14px">${rows}</table>
-      <p style="font-size:18px"><strong>${esc(t.totalLabel)}: ${euro(quote.totalMin)} – ${euro(quote.totalMax)}</strong>${localTotal} <span style="font-size:12px;color:#666">${esc(t.vatNote)}</span></p>
+      <p style="font-size:18px"><strong>${esc(t.totalLabel)}: ${euro(quote.totalMax)}</strong>${localTotal} <span style="font-size:12px;color:#666">${esc(t.vatNote)}</span></p>
       <p style="font-size:14px">${esc(t.timelineLabel)}: ${quote.timelineWeeksMin}–${quote.timelineWeeksMax} ${esc(t.weeks)} · ${esc(t.maintenanceLabel)}: <strong>${esc(maintenanceName)}</strong> (${maintenancePrice})</p>
       <p style="font-size:12px;color:#666">${esc(t.validity)}</p>
     </div>
@@ -101,11 +101,12 @@ export async function sendEmails(
   const mismatchBanner =
     region?.mismatch
       ? `<p style="margin:0 0 12px;padding:12px 14px;border-radius:8px;background:#fff4e5;border:1px solid #ffb877;color:#8a4b00">
-           ⚠️ <strong>Standort-Warnung:</strong> Der Interessent wählte
-           „${esc(region.claimed.toUpperCase())}", die Signale deuten aber auf
-           <strong>${esc(region.effective.toUpperCase())}</strong> hin
+           ⚠️ <strong>Standort-Hinweis:</strong> Der Interessent wählte
+           „${esc(COUNTRY_NAME[region.claimed] ?? region.claimed)}", der Firmensitz
+           laut Adresse liegt aber in
+           <strong>${esc(COUNTRY_NAME[region.effective] ?? region.effective)}</strong>
            (${esc(region.reasons.join(", ")) || "—"}). Das Angebot wurde daher
-           zu DACH-Preisen berechnet.
+           zum Preis für ${esc(COUNTRY_NAME[region.effective] ?? region.effective)} berechnet.
          </p>`
       : "";
 
