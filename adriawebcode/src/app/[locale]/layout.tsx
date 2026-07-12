@@ -3,6 +3,7 @@ import { Archivo, JetBrains_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { locales, isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { planOffers } from "@/lib/pricing-display";
 import "../globals.css";
 
 // One family carries the whole voice — Archivo's grotesque width axis holds
@@ -111,6 +112,7 @@ export async function generateMetadata({
 
 function jsonLd(locale: Locale) {
   const dict = getDictionary(locale);
+  const offers = planOffers(locale);
   return [
     {
       "@context": "https://schema.org",
@@ -143,16 +145,13 @@ function jsonLd(locale: Locale) {
         "Montenegro",
       ],
       knowsLanguage: ["de", "en", "hr", "bs", "sr"],
-      makesOffer: dict.pricing.plans.map((plan) => ({
+      // Gross prices (incl. VAT) — what a visitor actually pays.
+      makesOffer: dict.pricing.plans.map((plan, i) => ({
         "@type": "Offer",
         name: plan.name,
         description: plan.desc,
-        priceCurrency: plan.price.includes("KM")
-          ? "BAM"
-          : plan.price.includes("RSD")
-            ? "RSD"
-            : "EUR",
-        price: plan.price.replace(/[^\d]/g, ""),
+        priceCurrency: offers[i].currency,
+        price: String(offers[i].price),
       })),
     },
     {

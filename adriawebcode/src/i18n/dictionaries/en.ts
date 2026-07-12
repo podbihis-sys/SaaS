@@ -4,7 +4,7 @@ const en: Dictionary = {
   meta: {
     title: "Web Design Agency for DACH & the Adriatic Region | adriawebcode",
     description:
-      "Professional website development: modern websites, online shops & SEO for Germany, Austria, Switzerland and the Balkans. Free instant quote in 60 seconds ✓ fixed prices from €890.",
+      "Professional website development: modern websites, online shops & SEO for Germany, Austria, Switzerland and the Balkans. Free instant quote in 60 seconds ✓ fixed prices from €1,060 incl. VAT.",
     keywords:
       "web design agency, website development, web design Croatia, web design Bosnia, web design Serbia, web design Montenegro, web design Germany, SEO agency, website maintenance plan",
   },
@@ -112,8 +112,6 @@ const en: Dictionary = {
     plans: [
       {
         name: "Starter",
-        price: "€890",
-        eurHint: "",
         desc: "Perfect for a professional start – one-pager or compact website.",
         features: [
           "Up to 3 pages / sections",
@@ -126,8 +124,6 @@ const en: Dictionary = {
       },
       {
         name: "Business",
-        price: "€1,890",
-        eurHint: "",
         desc: "For growing businesses that want to win customers online.",
         features: [
           "Up to 10 pages",
@@ -141,8 +137,6 @@ const en: Dictionary = {
       },
       {
         name: "Premium",
-        price: "€3,490",
-        eurHint: "",
         desc: "Custom solution with shop, booking or special features.",
         features: [
           "Unlimited pages",
@@ -155,7 +149,7 @@ const en: Dictionary = {
         ],
       },
     ],
-    note: "All prices excl. VAT – benchmarks for the DACH region. Reduced, locally competitive prices apply in Croatia, Bosnia, Serbia and Montenegro (see the respective language version); the instant quote prices your market automatically. We deliberately do not offer hosting – your website runs on your own hosting account. We set everything up and you stay independent.",
+    note: "All prices incl. statutory VAT (net amounts are shown) – benchmarks for the DACH region. Reduced, locally competitive prices apply in Croatia, Bosnia, Serbia and Montenegro (see the respective language version); the instant quote prices your market automatically. We deliberately do not offer hosting – your website runs on your own hosting account. We set everything up and you stay independent.",
   },
   maintenance: {
     kicker: "Maintenance Plans",
@@ -168,8 +162,6 @@ const en: Dictionary = {
     plans: [
       {
         name: "Basic",
-        price: "€39",
-        eurHint: "",
         desc: "The essential technical protection.",
         features: [
           "Software & security updates",
@@ -181,8 +173,6 @@ const en: Dictionary = {
       },
       {
         name: "Business",
-        price: "€89",
-        eurHint: "",
         desc: "For websites that actively bring customers.",
         features: [
           "Everything in Basic",
@@ -194,8 +184,6 @@ const en: Dictionary = {
       },
       {
         name: "Premium",
-        price: "€179",
-        eurHint: "",
         desc: "All-round care with priority.",
         features: [
           "Everything in Business",
@@ -231,7 +219,7 @@ const en: Dictionary = {
       },
       {
         q: "What does a website really cost?",
-        a: "A professional one-pager starts at around €890, a business website at around €1,890, shops and custom solutions from around €3,490. The automatic quote calculates the exact price for your project – transparent and non-binding.",
+        a: "A professional one-pager starts at around €1,060, a business website at around €2,250, shops and custom solutions from around €4,150 – all incl. VAT. The automatic quote calculates the exact price for your project – transparent and non-binding.",
       },
       {
         q: "Do you offer hosting?",
@@ -307,9 +295,9 @@ const en: Dictionary = {
     maintenanceQ: "Would you like a maintenance plan?",
     maintenanceOptions: {
       none: "No / decide later",
-      basic: "Basic – €39/month",
-      business: "Business – €89/month",
-      premium: "Premium – €179/month",
+      basic: "Basic – €46.41/month (incl. VAT)",
+      business: "Business – €105.91/month (incl. VAT)",
+      premium: "Premium – €213.01/month (incl. VAT)",
       unsure: "Yes, please advise me",
     },
     message: "Describe your project",
@@ -341,7 +329,7 @@ const en: Dictionary = {
       "This automatically generated quote is non-binding and valid for 14 days. We will contact you personally within 24 hours to discuss the details.",
     emailSent: "A copy has been sent to your e-mail address.",
     newRequest: "Submit a new request",
-    vatNote: "All prices excl. statutory VAT.",
+    vatNote: "All prices incl. statutory VAT.",
   },
   footer: {
     tagline:

@@ -26,7 +26,7 @@ export default async function HomePage({
         <Services dict={dict.services} />
         <Process dict={dict.process} />
         <Pricing dict={dict.pricing} contact={dict.contact} locale={locale} />
-        <Maintenance dict={dict.maintenance} />
+        <Maintenance dict={dict.maintenance} locale={locale} />
         <Regions dict={dict.regions} />
         <Faq dict={dict.faq} />
         <ContactForm

@@ -109,4 +109,16 @@ export function checkRegion(input: LeadInput): RegionCheck {
   return { claimed, effective: claimed, mismatch: false, reasons: [] };
 }
 
-export { COUNTRY_NAME };
+/** Flag shown next to a market wherever a country is picked or reported. */
+const COUNTRY_FLAG: Record<Country, string> = {
+  de: "🇩🇪",
+  at: "🇦🇹",
+  ch: "🇨🇭",
+  hr: "🇭🇷",
+  ba: "🇧🇦",
+  rs: "🇷🇸",
+  me: "🇲🇪",
+  other: "🌍",
+};
+
+export { COUNTRY_NAME, COUNTRY_FLAG };

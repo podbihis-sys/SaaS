@@ -2,22 +2,23 @@ import type { CSSProperties } from "react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import { buildQuote, ITEM_LABELS, MARKET_BY_LOCALE, type LeadInput } from "@/lib/quote";
+import { VAT_L10N, fmtAmount } from "@/lib/pricing-display";
 import { Logo } from "./Logo";
 
 /** The few words the specimen document needs beyond the shared dictionaries. */
 const DOC_L10N: Record<
   Locale,
-  { doc: string; sample: string; total: string; vat: string }
+  { doc: string; sample: string; total: string }
 > = {
-  de: { doc: "Kostenvoranschlag", sample: "Muster", total: "Festpreis", vat: "zzgl. USt." },
-  en: { doc: "Cost estimate", sample: "Sample", total: "Fixed price", vat: "plus VAT" },
-  hr: { doc: "Ponuda", sample: "Primjer", total: "Fiksna cijena", vat: "bez PDV-a" },
-  bs: { doc: "Ponuda", sample: "Primjer", total: "Fiksna cijena", vat: "bez PDV-a" },
-  sr: { doc: "Ponuda", sample: "Primer", total: "Fiksna cena", vat: "bez PDV-a" },
+  de: { doc: "Kostenvoranschlag", sample: "Muster", total: "Festpreis" },
+  en: { doc: "Cost estimate", sample: "Sample", total: "Fixed price" },
+  hr: { doc: "Ponuda", sample: "Primjer", total: "Fiksna cijena" },
+  bs: { doc: "Ponuda", sample: "Primjer", total: "Fiksna cijena" },
+  sr: { doc: "Ponuda", sample: "Primer", total: "Fiksna cena" },
 };
 
 function money(amount: number, currency?: string): string {
-  return `${amount.toLocaleString("de-DE")} ${currency ?? "€"}`;
+  return `${fmtAmount(amount)} ${currency ?? "€"}`;
 }
 
 /** Sets the CSS animation delay for the load choreography. */
@@ -52,10 +53,23 @@ export function Hero({ dict, locale }: { dict: Dictionary["hero"]; locale: Local
     label: ITEM_LABELS[item.key]?.[locale] ?? ITEM_LABELS[item.key]?.de ?? item.key,
     amount: money(item.amount),
   }));
+  // Gross fixed price up front, exact net + VAT of this market broken out.
+  const v = VAT_L10N[locale] ?? VAT_L10N.de;
+  const pct = `${(quote.vat.rate * 100).toLocaleString("de-DE")} %`;
   const total = quote.localCurrency
-    ? money(quote.localCurrency.totalMax, quote.localCurrency.code)
-    : money(quote.totalMax);
-  const totalSub = quote.localCurrency ? `≈ ${money(quote.totalMax)} · ${l.vat}` : l.vat;
+    ? money(quote.localCurrency.totalGross, quote.localCurrency.code)
+    : money(quote.vat.gross);
+  const totalSub = [
+    quote.localCurrency ? `≈ ${money(quote.vat.gross)}` : null,
+    quote.localCurrency
+      ? `${v.net} ${money(quote.localCurrency.totalMax, quote.localCurrency.code)}`
+      : `${v.net} ${money(quote.vat.net)}`,
+    quote.localCurrency
+      ? `${v.vat} (${pct}) ${money(quote.localCurrency.vatAmount, quote.localCurrency.code)}`
+      : `${v.vat} (${pct}) ${money(quote.vat.amount)}`,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
     <section className="pt-32 sm:pt-40">
@@ -122,7 +136,9 @@ export function Hero({ dict, locale }: { dict: Dictionary["hero"]; locale: Local
                 style={delay(0.62 + rows.length * 0.12)}
               >
                 <div>
-                  <p className="text-[0.8rem] font-medium uppercase tracking-[0.08em] text-tiefsee">{l.total}</p>
+                  <p className="text-[0.8rem] font-medium uppercase tracking-[0.08em] text-tiefsee">
+                    {l.total} · {v.incl} {pct} {v.vat}
+                  </p>
                   <p className="mt-0.5 text-xs text-muted">{totalSub}</p>
                 </div>
                 <p className="tabular text-[2rem] font-semibold leading-none sm:text-[2.4rem]">{total}</p>

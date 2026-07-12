@@ -9,6 +9,14 @@ import {
   round10,
   type ProjectType,
 } from "@/lib/quote";
+import {
+  VAT_L10N,
+  fmtAmount,
+  grossOf,
+  maintenancePrices,
+  planPrices,
+  vatPercent,
+} from "@/lib/pricing-display";
 
 function SectionTitle({ title, lead, id }: { title: string; lead?: string; id?: string }) {
   return (
@@ -94,8 +102,11 @@ function PriceDrivers({
   pricing: Dictionary["pricing"];
   locale: Locale;
 }) {
-  const factor = REGION_FACTOR[MARKET_BY_LOCALE[locale] ?? "de"] ?? 1;
-  const money = (v: number) => `${round10(v * factor).toLocaleString("de-DE")} €`;
+  const market = MARKET_BY_LOCALE[locale] ?? "de";
+  const factor = REGION_FACTOR[market] ?? 1;
+  // Guide values in EUR, shown gross: net = region-factored base, then VAT on top.
+  const money = (v: number) => `${fmtAmount(grossOf(round10(v * factor), market))} €`;
+  const l10n = VAT_L10N[locale] ?? VAT_L10N.de;
   const projectTypes = Object.entries(contact.projectTypes) as Array<[ProjectType, string]>;
 
   return (
@@ -133,6 +144,9 @@ function PriceDrivers({
           </tr>
         </tbody>
       </table>
+      <p className="mt-3 text-xs text-muted">
+        {l10n.allPrices} {l10n.incl} {vatPercent(market)} {l10n.vat}
+      </p>
     </div>
   );
 }
@@ -148,6 +162,8 @@ export function Pricing({
   locale: Locale;
 }) {
   const maxFeatures = Math.max(...dict.plans.map((p) => p.features.length));
+  const prices = planPrices(locale);
+  const l10n = VAT_L10N[locale] ?? VAT_L10N.de;
 
   return (
     <section id="pricing" className="scroll-mt-24 border-t border-rule py-24 sm:py-32">
@@ -161,7 +177,7 @@ export function Pricing({
             <table className="w-full min-w-[640px] border-collapse">
               <thead>
                 <tr>
-                  {dict.plans.map((plan) => (
+                  {dict.plans.map((plan, i) => (
                     <th
                       key={plan.name}
                       scope="col"
@@ -170,11 +186,11 @@ export function Pricing({
                       <p className="text-[1.15rem] font-semibold text-ink">{plan.name}</p>
                       <p className="tabular mt-3 text-[2rem] font-semibold leading-none text-ink lg:text-[2.4rem]">
                         <span className="mr-1.5 align-middle text-sm font-medium text-muted">{dict.from}</span>
-                        {plan.price}
+                        {prices[i].gross}
                       </p>
                       <p className="mt-2 text-xs font-normal text-muted">
-                        {plan.eurHint ? `${plan.eurHint} · ` : ""}
-                        {dict.once}
+                        {l10n.incl} {prices[i].vatPct} {l10n.vat} · {l10n.net} {prices[i].net}
+                        {prices[i].eurHint ? ` · ${prices[i].eurHint}` : ""} · {dict.once}
                       </p>
                       <p className="mt-3 text-sm font-normal leading-relaxed text-muted">{plan.desc}</p>
                     </th>
@@ -211,7 +227,15 @@ export function Pricing({
 }
 
 /** Maintenance as one tiefsee band: a segmented strip, not three cards. */
-export function Maintenance({ dict }: { dict: Dictionary["maintenance"] }) {
+export function Maintenance({
+  dict,
+  locale,
+}: {
+  dict: Dictionary["maintenance"];
+  locale: Locale;
+}) {
+  const tiers = maintenancePrices(locale);
+  const l10n = VAT_L10N[locale] ?? VAT_L10N.de;
   return (
     <section id="maintenance" className="scroll-mt-24 bg-tiefsee py-24 sm:py-32">
       <div className="container-site">
@@ -232,10 +256,13 @@ export function Maintenance({ dict }: { dict: Dictionary["maintenance"] }) {
                   )}
                 </div>
                 <p className="tabular mt-4 text-[2rem] font-semibold leading-none text-white">
-                  {plan.price}
+                  {tiers[i].gross}
                   <span className="ml-1.5 text-sm font-normal text-white/70">{dict.perMonth}</span>
                 </p>
-                {plan.eurHint && <p className="mt-1.5 text-xs text-white/60">{plan.eurHint}</p>}
+                <p className="mt-1.5 text-xs text-white/60">
+                  {l10n.incl} {tiers[i].vatPct} {l10n.vat} · {l10n.net} {tiers[i].net}
+                  {tiers[i].eurHint ? ` · ${tiers[i].eurHint}` : ""}
+                </p>
                 <p className="mt-4 text-sm leading-relaxed text-white/80">{plan.desc}</p>
                 <ul className="mt-4 flex flex-col gap-1.5">
                   {plan.features.map((feature) => (

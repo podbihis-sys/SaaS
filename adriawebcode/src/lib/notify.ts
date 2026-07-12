@@ -15,6 +15,7 @@ import {
   emailHeading,
   escHtml as esc,
 } from "./email-template";
+import { VAT_L10N, fmtAmount } from "./pricing-display";
 
 const OWNER = process.env.LEAD_NOTIFY_EMAIL ?? "adriawebcode@gmail.com";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://adriawebcode.com";
@@ -113,7 +114,17 @@ const ACCEPT_L10N: Record<
 };
 
 function euro(amount: number): string {
-  return `${amount.toLocaleString("de-DE")} €`;
+  return `${fmtAmount(amount)} €`;
+}
+
+/** "Netto 2.740 € · MwSt. (19 %) 520,60 €" for the offer's gross total. */
+function vatBreakdownLine(quote: Quote, locale: Locale): string {
+  const v = VAT_L10N[locale] ?? VAT_L10N.de;
+  const pct = `${(quote.vat.rate * 100).toLocaleString("de-DE")} %`;
+  const local = quote.localCurrency;
+  const net = local ? `${fmtAmount(local.totalMax)} ${local.code}` : euro(quote.vat.net);
+  const vatAmt = local ? `${fmtAmount(local.vatAmount)} ${local.code}` : euro(quote.vat.amount);
+  return `${v.net} ${net} · ${v.vat} (${pct}) ${vatAmt}`;
 }
 
 /** Collapse control characters so a company name can't inject email headers. */
@@ -150,16 +161,22 @@ function offerHtml(
       )
     : "";
 
+  const v = VAT_L10N[locale] ?? VAT_L10N.de;
+  const pct = `${(quote.vat.rate * 100).toLocaleString("de-DE")} %`;
   const totalStr = quote.localCurrency
-    ? `${quote.localCurrency.totalMax.toLocaleString("de-DE")} ${quote.localCurrency.code}`
-    : euro(quote.totalMax);
-  const totalSub = quote.localCurrency
-    ? `≈ ${euro(quote.totalMax)} · ${t.vatNote}`
-    : t.vatNote;
+    ? `${fmtAmount(quote.localCurrency.totalGross)} ${quote.localCurrency.code}`
+    : euro(quote.vat.gross);
+  const totalSub = [
+    quote.localCurrency ? `≈ ${euro(quote.vat.gross)}` : null,
+    `${v.incl} ${pct} ${v.vat}`,
+    vatBreakdownLine(quote, locale),
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   const maintenancePrice = quote.localCurrency
-    ? `${quote.localCurrency.maintenanceMonthly.toLocaleString("de-DE")} ${quote.localCurrency.code} (≈ ${euro(quote.maintenancePriceMonthly)})`
-    : euro(quote.maintenancePriceMonthly);
+    ? `${fmtAmount(quote.localCurrency.maintenanceMonthlyGross)} ${quote.localCurrency.code} (≈ ${euro(quote.maintenancePriceMonthlyGross)})`
+    : euro(quote.maintenancePriceMonthlyGross);
 
   const content = `
     ${emailParagraph(`${esc(l.greeting)} ${esc(lead.name)},`)}
@@ -221,8 +238,9 @@ export async function sendEmails(
   const from = FROM_BY_LOCALE[leadLocale];
   const leadSubject = getDictionary(leadLocale).offer.title;
 
+  // The figure the customer accepts is the gross fixed price (incl. VAT).
   const localTotalStr = quote.localCurrency
-    ? `${quote.localCurrency.totalMax.toLocaleString("de-DE")} ${quote.localCurrency.code}`
+    ? `${fmtAmount(quote.localCurrency.totalGross)} ${quote.localCurrency.code}`
     : undefined;
 
   // 1) Schedule the follow-up reminder first so its id can be embedded in the
@@ -233,7 +251,7 @@ export async function sendEmails(
     name: lead.name,
     email: lead.email,
     company: lead.company,
-    total: quote.totalMax,
+    total: quote.vat.gross,
     localTotal: localTotalStr,
     locale: leadLocale,
     ts: Date.now(),
@@ -309,7 +327,11 @@ export async function sendEmails(
       ${detail("Nachricht", esc(lead.message) || "–")}
       ${detail("Nachfass-Erinnerung", followupId ? `geplant in ${FOLLOWUP_DELAY_DAYS} Tagen (wird bei Annahme storniert)` : "nicht geplant")}
     </table>
-    ${emailHighlight("Angebotssumme", euro(quote.totalMax), localTotalStr ? `≈ ${localTotalStr}` : undefined)}
+    ${emailHighlight(
+      "Angebotssumme (brutto)",
+      localTotalStr ?? euro(quote.vat.gross),
+      `${localTotalStr ? `≈ ${euro(quote.vat.gross)} · ` : ""}${vatBreakdownLine(quote, "de")}`,
+    )}
     ${emailSmall("Antworten auf diese E-Mail gehen direkt an den Interessenten.")}
   `;
 
@@ -318,7 +340,7 @@ export async function sendEmails(
     to: [OWNER],
     // Replying to the notification should reach the customer directly.
     reply_to: lead.email,
-    subject: `${region?.mismatch ? "⚠️ " : "🔥 "}Neuer Lead: ${headerSafe(lead.company)} (${lead.country.toUpperCase()}, ${euro(quote.totalMax)})`,
+    subject: `${region?.mismatch ? "⚠️ " : "🔥 "}Neuer Lead: ${headerSafe(lead.company)} (${lead.country.toUpperCase()}, ${euro(quote.vat.gross)} brutto)`,
     html: emailShell({
       preheader: `Neuer Lead: ${lead.company}`,
       tagline: "Interne Lead-Benachrichtigung",
@@ -388,7 +410,7 @@ export async function sendAcceptanceEmails(payload: AcceptPayload): Promise<bool
     from: FROM_OWNER,
     to: [OWNER],
     reply_to: payload.email,
-    subject: `✅ ANGENOMMEN: ${headerSafe(payload.company)} (${euro(payload.total)})`,
+    subject: `✅ ANGENOMMEN: ${headerSafe(payload.company)} (${euro(payload.total)} brutto)`,
     html: emailShell({
       preheader: `Angebot angenommen: ${payload.company}`,
       tagline: "Auftrag bestätigt 🎉",
@@ -399,7 +421,7 @@ export async function sendAcceptanceEmails(payload: AcceptPayload): Promise<bool
           ${emailRow("<strong>Name</strong>", esc(payload.name))}
           ${emailRow("<strong>E-Mail</strong>", esc(payload.email))}
         </table>
-        ${emailHighlight("Auftragssumme", totalStr, totalSub)}
+        ${emailHighlight("Auftragssumme (brutto)", totalStr, totalSub)}
         ${emailParagraph("<strong>Nächste Schritte:</strong>")}
         ${emailParagraph(`1. Kunde hat automatisch eine Auftragsbestätigung erhalten.<br/>2. ${invoiceConfigured ? "Rechnung wurde automatisch versendet." : "⚠️ Rechnungsdaten noch nicht hinterlegt – bitte Rechnung manuell senden (Anzahlung)."}<br/>3. Mit der Arbeit beginnen 🚀`)}
       `,

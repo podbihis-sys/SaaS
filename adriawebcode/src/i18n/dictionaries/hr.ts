@@ -4,7 +4,7 @@ const hr: Dictionary = {
   meta: {
     title: "Izrada web stranica i web dizajn | adriawebcode",
     description:
-      "Profesionalna izrada web stranica: moderne stranice, web trgovine i SEO za Hrvatsku i DACH regiju. Besplatna ponuda u 60 sekundi ✓ fiksne cijene već od 590 €.",
+      "Profesionalna izrada web stranica: moderne stranice, web trgovine i SEO za Hrvatsku i DACH regiju. Besplatna ponuda u 60 sekundi ✓ fiksne cijene već od 740 € s PDV-om.",
     keywords:
       "agencija za web dizajn, izrada web stranica, web dizajn Hrvatska, web dizajn Bosna, web dizajn Srbija, web dizajn Crna Gora, web dizajn Njemačka, SEO agencija, održavanje web stranice",
   },
@@ -112,8 +112,6 @@ const hr: Dictionary = {
     plans: [
       {
         name: "Starter",
-        price: "590 €",
-        eurHint: "",
         desc: "Savršeno za profesionalan početak – onepager ili kompaktna stranica.",
         features: [
           "Do 3 stranice / sekcije",
@@ -126,8 +124,6 @@ const hr: Dictionary = {
       },
       {
         name: "Business",
-        price: "1.290 €",
-        eurHint: "",
         desc: "Za rastuće tvrtke koje žele pridobiti klijente online.",
         features: [
           "Do 10 stranica",
@@ -141,8 +137,6 @@ const hr: Dictionary = {
       },
       {
         name: "Premium",
-        price: "2.490 €",
-        eurHint: "",
         desc: "Individualno rješenje s trgovinom, rezervacijama ili posebnim funkcijama.",
         features: [
           "Neograničen broj stranica",
@@ -155,7 +149,7 @@ const hr: Dictionary = {
         ],
       },
     ],
-    note: "Sve cijene bez PDV-a. Hosting svjesno ne nudimo – vaša stranica radi na vašem vlastitom hosting računu. Mi sve postavljamo, a vi ostajete neovisni.",
+    note: "Sve cijene s uključenim PDV-om od 25 % (neto iznosi su iskazani). Hosting svjesno ne nudimo – vaša stranica radi na vašem vlastitom hosting računu. Mi sve postavljamo, a vi ostajete neovisni.",
   },
   maintenance: {
     kicker: "Ugovori o održavanju",
@@ -168,8 +162,6 @@ const hr: Dictionary = {
     plans: [
       {
         name: "Basic",
-        price: "29 €",
-        eurHint: "",
         desc: "Osnovna tehnička zaštita.",
         features: [
           "Softverska i sigurnosna ažuriranja",
@@ -181,8 +173,6 @@ const hr: Dictionary = {
       },
       {
         name: "Business",
-        price: "59 €",
-        eurHint: "",
         desc: "Za stranice koje aktivno donose klijente.",
         features: [
           "Sve iz paketa Basic",
@@ -194,8 +184,6 @@ const hr: Dictionary = {
       },
       {
         name: "Premium",
-        price: "119 €",
-        eurHint: "",
         desc: "Cjelovita briga s prioritetom.",
         features: [
           "Sve iz paketa Business",
@@ -231,7 +219,7 @@ const hr: Dictionary = {
       },
       {
         q: "Koliko web stranica stvarno košta?",
-        a: "Profesionalni onepager počinje od oko 590 €, poslovna web stranica od oko 1.290 €, trgovine i individualna rješenja od oko 2.490 €. Automatska ponuda izračunava točnu cijenu za vaš projekt – transparentno i neobvezujuće.",
+        a: "Profesionalni onepager počinje od oko 740 €, poslovna web stranica od oko 1.610 €, trgovine i individualna rješenja od oko 3.110 € – sve s PDV-om. Automatska ponuda izračunava točnu cijenu za vaš projekt – transparentno i neobvezujuće.",
       },
       {
         q: "Nudite li i hosting?",
@@ -307,9 +295,9 @@ const hr: Dictionary = {
     maintenanceQ: "Želite li ugovor o održavanju?",
     maintenanceOptions: {
       none: "Ne / odlučit ću kasnije",
-      basic: "Basic – 29 €/mjesečno",
-      business: "Business – 59 €/mjesečno",
-      premium: "Premium – 119 €/mjesečno",
+      basic: "Basic – 36,25 €/mjesečno (s PDV-om)",
+      business: "Business – 73,75 €/mjesečno (s PDV-om)",
+      premium: "Premium – 148,75 €/mjesečno (s PDV-om)",
       unsure: "Da, molim savjet",
     },
     message: "Opišite svoj projekt",
@@ -341,7 +329,7 @@ const hr: Dictionary = {
       "Ova automatski izrađena ponuda je neobvezujuća i vrijedi 14 dana. Osobno ćemo vam se javiti unutar 24 sata kako bismo dogovorili detalje.",
     emailSent: "Kopija je poslana na vašu e-mail adresu.",
     newRequest: "Pošaljite novi upit",
-    vatNote: "Sve cijene bez zakonskog PDV-a.",
+    vatNote: "Sve cijene s uključenim PDV-om.",
   },
   footer: {
     tagline:

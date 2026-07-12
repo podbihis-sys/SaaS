@@ -4,7 +4,7 @@ const bs: Dictionary = {
   meta: {
     title: "Izrada web stranica i web dizajn | adriawebcode",
     description:
-      "Profesionalna izrada web stranica: moderne stranice, web shopovi i SEO za Bosnu i Hercegovinu i DACH regiju. Besplatna ponuda za 60 sekundi ✓ fiksne cijene već od 950 KM.",
+      "Profesionalna izrada web stranica: moderne stranice, web shopovi i SEO za Bosnu i Hercegovinu i DACH regiju. Besplatna ponuda za 60 sekundi ✓ fiksne cijene već od 1.110 KM s PDV-om.",
     keywords:
       "agencija za web dizajn, izrada web stranica, web dizajn Bosna, web dizajn Hrvatska, web dizajn Srbija, web dizajn Crna Gora, web dizajn Njemačka, SEO agencija, održavanje web stranice",
   },
@@ -112,8 +112,6 @@ const bs: Dictionary = {
     plans: [
       {
         name: "Starter",
-        price: "950 KM",
-        eurHint: "≈ 490 €",
         desc: "Savršeno za profesionalan početak – onepager ili kompaktna stranica.",
         features: [
           "Do 3 stranice / sekcije",
@@ -126,8 +124,6 @@ const bs: Dictionary = {
       },
       {
         name: "Business",
-        price: "1.950 KM",
-        eurHint: "≈ 990 €",
         desc: "Za rastuće firme koje žele pridobiti klijente online.",
         features: [
           "Do 10 stranica",
@@ -141,8 +137,6 @@ const bs: Dictionary = {
       },
       {
         name: "Premium",
-        price: "3.900 KM",
-        eurHint: "≈ 1.990 €",
         desc: "Individualno rješenje sa shopom, rezervacijama ili posebnim funkcijama.",
         features: [
           "Neograničen broj stranica",
@@ -155,7 +149,7 @@ const bs: Dictionary = {
         ],
       },
     ],
-    note: "Sve cijene bez PDV-a. Hosting svjesno ne nudimo – vaša stranica radi na vašem vlastitom hosting nalogu. Mi sve postavljamo, a vi ostajete nezavisni.",
+    note: "Sve cijene s uključenim PDV-om od 17 % (neto iznosi su iskazani). Hosting svjesno ne nudimo – vaša stranica radi na vašem vlastitom hosting nalogu. Mi sve postavljamo, a vi ostajete nezavisni.",
   },
   maintenance: {
     kicker: "Ugovori o održavanju",
@@ -168,8 +162,6 @@ const bs: Dictionary = {
     plans: [
       {
         name: "Basic",
-        price: "39 KM",
-        eurHint: "≈ 19 €",
         desc: "Osnovna tehnička zaštita.",
         features: [
           "Softverska i sigurnosna ažuriranja",
@@ -181,8 +173,6 @@ const bs: Dictionary = {
       },
       {
         name: "Business",
-        price: "95 KM",
-        eurHint: "≈ 49 €",
         desc: "Za stranice koje aktivno donose klijente.",
         features: [
           "Sve iz paketa Basic",
@@ -194,8 +184,6 @@ const bs: Dictionary = {
       },
       {
         name: "Premium",
-        price: "195 KM",
-        eurHint: "≈ 99 €",
         desc: "Kompletna briga s prioritetom.",
         features: [
           "Sve iz paketa Business",
@@ -231,7 +219,7 @@ const bs: Dictionary = {
       },
       {
         q: "Koliko web stranica stvarno košta?",
-        a: "Profesionalni onepager počinje od oko 950 KM, poslovna web stranica od oko 1.950 KM, shopovi i individualna rješenja od oko 3.900 KM. Automatska ponuda izračunava tačnu cijenu za vaš projekat – transparentno i neobavezujuće.",
+        a: "Profesionalni onepager počinje od oko 1.110 KM, poslovna web stranica od oko 2.280 KM, shopovi i individualna rješenja od oko 4.560 KM – sve s PDV-om. Automatska ponuda izračunava tačnu cijenu za vaš projekat – transparentno i neobavezujuće.",
       },
       {
         q: "Nudite li i hosting?",
@@ -307,9 +295,9 @@ const bs: Dictionary = {
     maintenanceQ: "Želite li ugovor o održavanju?",
     maintenanceOptions: {
       none: "Ne / odlučiću kasnije",
-      basic: "Basic – 39 KM/mjesečno",
-      business: "Business – 95 KM/mjesečno",
-      premium: "Premium – 195 KM/mjesečno",
+      basic: "Basic – 45,63 KM/mjesečno (s PDV-om)",
+      business: "Business – 111,15 KM/mjesečno (s PDV-om)",
+      premium: "Premium – 228,15 KM/mjesečno (s PDV-om)",
       unsure: "Da, molim savjet",
     },
     message: "Opišite svoj projekat",
@@ -341,7 +329,7 @@ const bs: Dictionary = {
       "Ova automatski napravljena ponuda je neobavezujuća i vrijedi 14 dana. Lično ćemo vam se javiti u roku od 24 sata da dogovorimo detalje.",
     emailSent: "Kopija je poslana na vašu e-mail adresu.",
     newRequest: "Pošaljite novi upit",
-    vatNote: "Sve cijene bez zakonskog PDV-a.",
+    vatNote: "Sve cijene s uključenim PDV-om.",
   },
   footer: {
     tagline:

@@ -5,6 +5,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import { ITEM_LABELS, ISSUE_LABELS, type Quote } from "@/lib/quote";
+import { COUNTRY_FLAG } from "@/lib/region";
+import { VAT_L10N, fmtAmount } from "@/lib/pricing-display";
 import type { SiteAnalysis } from "@/lib/scraper";
 
 interface RegionInfo {
@@ -56,7 +58,7 @@ const REGION_NOTICE: Record<Locale, { title: string; body: string }> = {
 };
 
 function euro(amount: number): string {
-  return `${amount.toLocaleString("de-DE")} €`;
+  return `${fmtAmount(amount)} €`;
 }
 
 // Pre-select the market that matches the visitor's language so the quote is
@@ -197,7 +199,9 @@ export function ContactForm({
                   <label htmlFor="country" className="label-field">{dict.country}</label>
                   <select id="country" name="country" className="input-field" defaultValue={defaultCountry}>
                     {Object.entries(dict.countries).map(([code, label]) => (
-                      <option key={code} value={code}>{label}</option>
+                      <option key={code} value={code}>
+                        {COUNTRY_FLAG[code as keyof typeof COUNTRY_FLAG] ?? ""} {label}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -359,7 +363,17 @@ function OfferResult({
 }) {
   const { quote, analysis, emailSent, region } = result;
   const notice = region?.mismatch ? REGION_NOTICE[locale] : null;
-  const countryName = (code: string) => countries[code] ?? code;
+  const countryName = (code: string) =>
+    `${COUNTRY_FLAG[code as keyof typeof COUNTRY_FLAG] ?? ""} ${countries[code] ?? code}`.trim();
+
+  // Gross fixed price up front; exact net + VAT of the effective market below.
+  const v = VAT_L10N[locale] ?? VAT_L10N.de;
+  const pct = `${(quote.vat.rate * 100).toLocaleString("de-DE")} %`;
+  const local = quote.localCurrency;
+  const inLocal = (amount: number) => `${fmtAmount(amount)} ${local?.code}`;
+  const totalGross = local ? inLocal(local.totalGross) : euro(quote.vat.gross);
+  const totalNet = local ? inLocal(local.totalMax) : euro(quote.vat.net);
+  const totalVat = local ? inLocal(local.vatAmount) : euro(quote.vat.amount);
 
   return (
     <motion.div
@@ -447,7 +461,7 @@ function OfferResult({
               <thead>
                 <tr className="border-b border-ink/60 text-left text-xs uppercase tracking-[0.06em] text-muted">
                   <th className="pb-3 pr-4 font-medium">{dict.item}</th>
-                  <th className="pb-3 text-right font-medium">{dict.price}</th>
+                  <th className="pb-3 text-right font-medium">{dict.price} ({v.net})</th>
                 </tr>
               </thead>
               <tbody>
@@ -471,16 +485,16 @@ function OfferResult({
 
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
             <div className="border border-rule bg-kalk p-5 sm:col-span-1">
-              <p className="text-[0.7rem] font-medium uppercase tracking-[0.08em] text-tiefsee">{dict.totalLabel}</p>
-              <p className="tabular mt-1 text-[1.6rem] font-semibold leading-none text-ink">
-                {quote.localCurrency
-                  ? `${quote.localCurrency.totalMax.toLocaleString("de-DE")} ${quote.localCurrency.code}`
-                  : euro(quote.totalMax)}
+              <p className="text-[0.7rem] font-medium uppercase tracking-[0.08em] text-tiefsee">
+                {dict.totalLabel} · {v.incl} {pct} {v.vat}
               </p>
-              {quote.localCurrency && (
-                <p className="mt-1 text-xs text-muted">≈ {euro(quote.totalMax)}</p>
-              )}
-              <p className="mt-1 text-[11px] text-muted">{dict.vatNote}</p>
+              <p className="tabular mt-1 text-[1.6rem] font-semibold leading-none text-ink">
+                {totalGross}
+              </p>
+              {local && <p className="mt-1 text-xs text-muted">≈ {euro(quote.vat.gross)}</p>}
+              <p className="mt-1 text-[11px] text-muted">
+                {v.net} {totalNet} · {v.vat} ({pct}) {totalVat}
+              </p>
             </div>
             <div className="border border-rule p-5">
               <p className="text-xs text-muted">{dict.timelineLabel}</p>
@@ -494,10 +508,10 @@ function OfferResult({
                 {maintenanceNames[quote.recommendedMaintenance]}
               </p>
               <p className="mt-1 text-xs text-muted">
-                {quote.localCurrency
-                  ? `${quote.localCurrency.maintenanceMonthly.toLocaleString("de-DE")} ${quote.localCurrency.code} (≈ ${euro(quote.maintenancePriceMonthly)})`
-                  : euro(quote.maintenancePriceMonthly)}{" "}
-                {maintenancePerMonth}
+                {local
+                  ? `${inLocal(local.maintenanceMonthlyGross)} (≈ ${euro(quote.maintenancePriceMonthlyGross)})`
+                  : euro(quote.maintenancePriceMonthlyGross)}{" "}
+                {maintenancePerMonth} · {v.incl} {v.vat}
               </p>
             </div>
           </div>

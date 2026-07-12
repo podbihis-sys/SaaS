@@ -4,7 +4,7 @@ const sr: Dictionary = {
   meta: {
     title: "Izrada sajtova i veb dizajn | adriawebcode",
     description:
-      "Profesionalna izrada sajtova: moderni sajtovi, veb prodavnice i SEO za Srbiju i DACH region. Besplatna ponuda za 60 sekundi ✓ fiksne cene već od 57.000 RSD.",
+      "Profesionalna izrada sajtova: moderni sajtovi, veb prodavnice i SEO za Srbiju i DACH region. Besplatna ponuda za 60 sekundi ✓ fiksne cene već od 68.400 RSD sa PDV-om.",
     keywords:
       "agencija za veb dizajn, izrada sajtova, veb dizajn Srbija, veb dizajn Bosna, veb dizajn Hrvatska, veb dizajn Crna Gora, veb dizajn Nemačka, SEO agencija, održavanje sajta",
   },
@@ -112,8 +112,6 @@ const sr: Dictionary = {
     plans: [
       {
         name: "Starter",
-        price: "57.000 RSD",
-        eurHint: "≈ 490 €",
         desc: "Savršeno za profesionalan početak – onepager ili kompaktan sajt.",
         features: [
           "Do 3 stranice / sekcije",
@@ -126,8 +124,6 @@ const sr: Dictionary = {
       },
       {
         name: "Business",
-        price: "116.000 RSD",
-        eurHint: "≈ 990 €",
         desc: "Za rastuće firme koje žele da pridobiju klijente online.",
         features: [
           "Do 10 stranica",
@@ -141,8 +137,6 @@ const sr: Dictionary = {
       },
       {
         name: "Premium",
-        price: "233.000 RSD",
-        eurHint: "≈ 1.990 €",
         desc: "Individualno rešenje s prodavnicom, rezervacijama ili posebnim funkcijama.",
         features: [
           "Neograničen broj stranica",
@@ -155,7 +149,7 @@ const sr: Dictionary = {
         ],
       },
     ],
-    note: "Sve cene bez PDV-a. Hosting svesno ne nudimo – vaš sajt radi na vašem sopstvenom hosting nalogu. Mi sve podešavamo, a vi ostajete nezavisni.",
+    note: "Sve cene sa uključenim PDV-om od 20 % (neto iznosi su iskazani). Hosting svesno ne nudimo – vaš sajt radi na vašem sopstvenom hosting nalogu. Mi sve podešavamo, a vi ostajete nezavisni.",
   },
   maintenance: {
     kicker: "Ugovori o održavanju",
@@ -168,8 +162,6 @@ const sr: Dictionary = {
     plans: [
       {
         name: "Basic",
-        price: "2.200 RSD",
-        eurHint: "≈ 19 €",
         desc: "Osnovna tehnička zaštita.",
         features: [
           "Softverska i bezbednosna ažuriranja",
@@ -181,8 +173,6 @@ const sr: Dictionary = {
       },
       {
         name: "Business",
-        price: "5.700 RSD",
-        eurHint: "≈ 49 €",
         desc: "Za sajtove koji aktivno donose klijente.",
         features: [
           "Sve iz paketa Basic",
@@ -194,8 +184,6 @@ const sr: Dictionary = {
       },
       {
         name: "Premium",
-        price: "11.600 RSD",
-        eurHint: "≈ 99 €",
         desc: "Kompletna briga s prioritetom.",
         features: [
           "Sve iz paketa Business",
@@ -231,7 +219,7 @@ const sr: Dictionary = {
       },
       {
         q: "Koliko sajt stvarno košta?",
-        a: "Profesionalni onepager počinje od oko 57.000 RSD (≈ 490 €), poslovni sajt od oko 116.000 RSD (≈ 990 €), prodavnice i individualna rešenja od oko 233.000 RSD (≈ 1.990 €). Automatska ponuda izračunava tačnu cenu za vaš projekat – transparentno i neobavezujuće.",
+        a: "Profesionalni onepager počinje od oko 68.400 RSD (≈ 590 €), poslovni sajt od oko 139.200 RSD (≈ 1.190 €), prodavnice i individualna rešenja od oko 279.600 RSD (≈ 2.390 €) – sve sa PDV-om. Automatska ponuda izračunava tačnu cenu za vaš projekat – transparentno i neobavezujuće.",
       },
       {
         q: "Da li nudite i hosting?",
@@ -307,9 +295,9 @@ const sr: Dictionary = {
     maintenanceQ: "Da li želite ugovor o održavanju?",
     maintenanceOptions: {
       none: "Ne / odlučiću kasnije",
-      basic: "Basic – 2.200 RSD/mesečno",
-      business: "Business – 5.700 RSD/mesečno",
-      premium: "Premium – 11.600 RSD/mesečno",
+      basic: "Basic – 2.640 RSD/mesečno (sa PDV-om)",
+      business: "Business – 6.840 RSD/mesečno (sa PDV-om)",
+      premium: "Premium – 13.920 RSD/mesečno (sa PDV-om)",
       unsure: "Da, molim savet",
     },
     message: "Opišite svoj projekat",
@@ -341,7 +329,7 @@ const sr: Dictionary = {
       "Ova automatski napravljena ponuda je neobavezujuća i važi 14 dana. Lično ćemo vam se javiti u roku od 24 sata da dogovorimo detalje.",
     emailSent: "Kopija je poslata na vašu e-mail adresu.",
     newRequest: "Pošaljite novi upit",
-    vatNote: "Sve cene bez zakonskog PDV-a.",
+    vatNote: "Sve cene sa uključenim PDV-om.",
   },
   footer: {
     tagline:

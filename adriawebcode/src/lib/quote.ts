@@ -32,7 +32,25 @@ export interface LocalCurrencyQuote {
   code: string;
   totalMin: number;
   totalMax: number;
+  /** Fixed price incl. VAT in the local currency. */
+  totalGross: number;
+  /** VAT portion of the gross fixed price in the local currency. */
+  vatAmount: number;
   maintenanceMonthly: number;
+  /** Maintenance tier incl. VAT in the local currency. */
+  maintenanceMonthlyGross: number;
+}
+
+/** Gross/net breakdown of the fixed price in EUR for the effective market. */
+export interface VatBreakdown {
+  /** Statutory rate of the effective market, e.g. 0.19. */
+  rate: number;
+  /** Net fixed price (EUR) — identical to totalMax. */
+  net: number;
+  /** VAT amount (EUR). */
+  amount: number;
+  /** Gross fixed price (EUR) shown to the customer. */
+  gross: number;
 }
 
 export interface Quote {
@@ -43,8 +61,11 @@ export interface Quote {
   timelineWeeksMax: number;
   recommendedMaintenance: "basic" | "business" | "premium";
   maintenancePriceMonthly: number;
+  /** Recommended maintenance tier incl. VAT (EUR / month). */
+  maintenancePriceMonthlyGross: number;
   currency: "EUR";
   regionFactor: number;
+  vat: VatBreakdown;
   /** Amounts converted to the market's local currency (BA → KM, RS → RSD). */
   localCurrency: LocalCurrencyQuote | null;
 }
@@ -88,6 +109,22 @@ export const REGION_FACTOR: Record<Country, number> = {
   other: 1,
 };
 
+/**
+ * Statutory VAT rates of the target markets. Advertised net prices stay the
+ * anchor of the pricing model; visitors see gross = net × (1 + rate) with the
+ * exact net amount and VAT broken out.
+ */
+export const VAT_RATE: Record<Country, number> = {
+  de: 0.19,
+  at: 0.2,
+  ch: 0.081,
+  hr: 0.25,
+  ba: 0.17,
+  rs: 0.2,
+  me: 0.21,
+  other: 0.19,
+};
+
 type MaintenanceTierPrices = { basic: number; business: number; premium: number };
 
 const MAINTENANCE_PRICES_BY_COUNTRY: Record<Country, MaintenanceTierPrices> = {
@@ -128,6 +165,10 @@ export const MARKET_BY_LOCALE: Record<string, Country> = {
 
 export function round10(value: number): number {
   return Math.round(value / 10) * 10;
+}
+
+export function round2(value: number): number {
+  return Math.round(value * 100) / 100;
 }
 
 function roundTo(value: number, step: number): number {
@@ -209,15 +250,29 @@ export function buildQuote(input: LeadInput, analysis: SiteAnalysis | null): Quo
   const maintenancePriceMonthly =
     MAINTENANCE_PRICES_BY_COUNTRY[input.country][recommendedMaintenance];
 
+  const vatRate = VAT_RATE[input.country] ?? VAT_RATE.other;
+  const vat: VatBreakdown = {
+    rate: vatRate,
+    net: fixedTotal,
+    amount: round2(fixedTotal * vatRate),
+    gross: round2(fixedTotal * (1 + vatRate)),
+  };
+
   const local = LOCAL_CURRENCY[input.country];
+  const localNetTotal = local ? roundTo(totalMax * local.rate, local.roundTo) : 0;
   const localCurrency: LocalCurrencyQuote | null = local
     ? {
         code: local.code,
         totalMin: roundTo(totalMin * local.rate, local.roundTo),
-        totalMax: roundTo(totalMax * local.rate, local.roundTo),
+        totalMax: localNetTotal,
+        totalGross: round2(localNetTotal * (1 + vatRate)),
+        vatAmount: round2(localNetTotal * vatRate),
         // Use the exact advertised local-currency tier price so the offer
         // never contradicts the pricing page (avoids conversion rounding drift).
         maintenanceMonthly: local.maintenance[recommendedMaintenance],
+        maintenanceMonthlyGross: round2(
+          local.maintenance[recommendedMaintenance] * (1 + vatRate),
+        ),
       }
     : null;
 
@@ -229,8 +284,10 @@ export function buildQuote(input: LeadInput, analysis: SiteAnalysis | null): Quo
     timelineWeeksMax: weeksMax,
     recommendedMaintenance,
     maintenancePriceMonthly,
+    maintenancePriceMonthlyGross: round2(maintenancePriceMonthly * (1 + vatRate)),
     currency: "EUR",
     regionFactor,
+    vat,
     localCurrency,
   };
 }

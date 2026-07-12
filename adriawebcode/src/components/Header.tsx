@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { locales, localeNames, type Locale } from "@/i18n/config";
+import { locales, localeNames, localeFlags, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { Logo } from "./Logo";
 
@@ -66,6 +66,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary["nav
               aria-haspopup="listbox"
               aria-expanded={langOpen}
             >
+              <span aria-hidden>{localeFlags[locale]}</span>
               {locale}
               <svg className="h-3 w-3" viewBox="0 0 12 12" fill="none" aria-hidden>
                 <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -91,7 +92,10 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary["nav
                         role="option"
                         aria-selected={l === locale}
                       >
-                        {localeNames[l]}
+                        <span className="flex items-center gap-2">
+                          <span aria-hidden>{localeFlags[l]}</span>
+                          {localeNames[l]}
+                        </span>
                         <span className="text-xs uppercase text-muted">{l}</span>
                       </button>
                     </li>

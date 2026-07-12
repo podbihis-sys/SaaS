@@ -2,7 +2,7 @@ const de = {
   meta: {
     title: "Webdesign Agentur für DACH & Adria-Region | adriawebcode",
     description:
-      "Website erstellen lassen vom Profi: moderne Websites, Webshops & SEO für Deutschland, Österreich, die Schweiz und den Balkan. Kostenloses Sofort-Angebot in 60 Sekunden ✓ Festpreise ab 890 €.",
+      "Website erstellen lassen vom Profi: moderne Websites, Webshops & SEO für Deutschland, Österreich, die Schweiz und den Balkan. Kostenloses Sofort-Angebot in 60 Sekunden ✓ Festpreise ab 1.060 € inkl. MwSt.",
     keywords:
       "Webdesign Agentur, Website erstellen lassen, Webdesign Kroatien, Webdesign Bosnien, Webdesign Serbien, Webdesign Montenegro, Webdesign DACH, SEO Agentur, Wartungsvertrag Website",
   },
@@ -110,8 +110,6 @@ const de = {
     plans: [
       {
         name: "Starter",
-        price: "890 €",
-        eurHint: "",
         desc: "Perfekt für den professionellen Einstieg – Onepager oder kompakte Website.",
         features: [
           "Bis zu 3 Seiten / Sektionen",
@@ -124,8 +122,6 @@ const de = {
       },
       {
         name: "Business",
-        price: "1.890 €",
-        eurHint: "",
         desc: "Für wachsende Unternehmen, die Kunden online gewinnen wollen.",
         features: [
           "Bis zu 10 Seiten",
@@ -139,8 +135,6 @@ const de = {
       },
       {
         name: "Premium",
-        price: "3.490 €",
-        eurHint: "",
         desc: "Individuelle Lösung mit Shop, Buchung oder Sonderfunktionen.",
         features: [
           "Unbegrenzte Seiten",
@@ -153,7 +147,7 @@ const de = {
         ],
       },
     ],
-    note: "Alle Preise zzgl. USt. – Richtwerte für die DACH-Region. Für Kroatien, Bosnien, Serbien und Montenegro gelten reduzierte, lokal marktübliche Preise (siehe jeweilige Sprachversion); das Sofort-Angebot berechnet Ihren Markt automatisch. Hosting bieten wir bewusst nicht an – Ihre Website läuft auf Ihrem eigenen Hosting-Account. Wir richten alles ein und Sie bleiben unabhängig.",
+    note: "Alle Preise inkl. gesetzlicher MwSt. (Netto-Beträge werden ausgewiesen) – Richtwerte für die DACH-Region. Für Kroatien, Bosnien, Serbien und Montenegro gelten reduzierte, lokal marktübliche Preise (siehe jeweilige Sprachversion); das Sofort-Angebot berechnet Ihren Markt automatisch. Hosting bieten wir bewusst nicht an – Ihre Website läuft auf Ihrem eigenen Hosting-Account. Wir richten alles ein und Sie bleiben unabhängig.",
   },
   maintenance: {
     kicker: "Wartungsverträge",
@@ -166,8 +160,6 @@ const de = {
     plans: [
       {
         name: "Basic",
-        price: "39 €",
-        eurHint: "",
         desc: "Die technische Grundabsicherung.",
         features: [
           "Software- & Sicherheitsupdates",
@@ -179,8 +171,6 @@ const de = {
       },
       {
         name: "Business",
-        price: "89 €",
-        eurHint: "",
         desc: "Für Websites, die aktiv Kunden bringen.",
         features: [
           "Alles aus Basic",
@@ -192,8 +182,6 @@ const de = {
       },
       {
         name: "Premium",
-        price: "179 €",
-        eurHint: "",
         desc: "Rundum-Betreuung mit Priorität.",
         features: [
           "Alles aus Business",
@@ -229,7 +217,7 @@ const de = {
       },
       {
         q: "Was kostet eine Website wirklich?",
-        a: "Ein professioneller Onepager beginnt bei ca. 890 €, eine Unternehmenswebsite bei ca. 1.890 €, Shops und individuelle Lösungen ab ca. 3.490 €. Das automatische Angebot berechnet den Preis exakt für Ihr Projekt – transparent und unverbindlich.",
+        a: "Ein professioneller Onepager beginnt bei ca. 1.060 €, eine Unternehmenswebsite bei ca. 2.250 €, Shops und individuelle Lösungen ab ca. 4.150 € – jeweils inkl. MwSt. Das automatische Angebot berechnet den Preis exakt für Ihr Projekt – transparent und unverbindlich.",
       },
       {
         q: "Bietet ihr auch Hosting an?",
@@ -305,9 +293,9 @@ const de = {
     maintenanceQ: "Wünschen Sie einen Wartungsvertrag?",
     maintenanceOptions: {
       none: "Nein / später entscheiden",
-      basic: "Basic – 39 €/Monat",
-      business: "Business – 89 €/Monat",
-      premium: "Premium – 179 €/Monat",
+      basic: "Basic – 46,41 €/Monat (inkl. MwSt.)",
+      business: "Business – 105,91 €/Monat (inkl. MwSt.)",
+      premium: "Premium – 213,01 €/Monat (inkl. MwSt.)",
       unsure: "Ja, bitte beraten",
     },
     message: "Beschreiben Sie Ihr Projekt",
@@ -339,7 +327,7 @@ const de = {
       "Dieses automatisch erstellte Angebot ist unverbindlich und 14 Tage gültig. Wir melden uns innerhalb von 24 Stunden persönlich bei Ihnen, um die Details zu besprechen.",
     emailSent: "Eine Kopie wurde an Ihre E-Mail-Adresse gesendet.",
     newRequest: "Neue Anfrage stellen",
-    vatNote: "Alle Preise zzgl. gesetzlicher USt.",
+    vatNote: "Alle Preise inkl. gesetzlicher MwSt.",
   },
   footer: {
     tagline:
