@@ -372,7 +372,7 @@ function OfferResult({
   const local = quote.localCurrency;
   const inLocal = (amount: number) => `${fmtAmount(amount)} ${local?.code}`;
   const totalGross = local ? inLocal(local.totalGross) : euro(quote.vat.gross);
-  const totalNet = local ? inLocal(local.totalMax) : euro(quote.vat.net);
+  const totalNet = local ? inLocal(local.totalNet) : euro(quote.vat.net);
   const totalVat = local ? inLocal(local.vatAmount) : euro(quote.vat.amount);
 
   return (

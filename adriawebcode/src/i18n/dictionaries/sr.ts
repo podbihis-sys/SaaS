@@ -295,9 +295,9 @@ const sr: Dictionary = {
     maintenanceQ: "Da li želite ugovor o održavanju?",
     maintenanceOptions: {
       none: "Ne / odlučiću kasnije",
-      basic: "Basic – 2.640 RSD/mesečno (sa PDV-om)",
-      business: "Business – 6.840 RSD/mesečno (sa PDV-om)",
-      premium: "Premium – 13.920 RSD/mesečno (sa PDV-om)",
+      basic: "Basic – 2.700 RSD/mesečno (sa PDV-om)",
+      business: "Business – 6.900 RSD/mesečno (sa PDV-om)",
+      premium: "Premium – 14.000 RSD/mesečno (sa PDV-om)",
       unsure: "Da, molim savet",
     },
     message: "Opišite svoj projekat",

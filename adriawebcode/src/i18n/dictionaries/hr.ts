@@ -4,7 +4,7 @@ const hr: Dictionary = {
   meta: {
     title: "Izrada web stranica i web dizajn | adriawebcode",
     description:
-      "Profesionalna izrada web stranica: moderne stranice, web trgovine i SEO za Hrvatsku i DACH regiju. Besplatna ponuda u 60 sekundi ✓ fiksne cijene već od 740 € s PDV-om.",
+      "Profesionalna izrada web stranica: moderne stranice, web trgovine i SEO za Hrvatsku i DACH regiju. Besplatna ponuda u 60 sekundi ✓ fiksne cijene već od 739,90 € s PDV-om.",
     keywords:
       "agencija za web dizajn, izrada web stranica, web dizajn Hrvatska, web dizajn Bosna, web dizajn Srbija, web dizajn Crna Gora, web dizajn Njemačka, SEO agencija, održavanje web stranice",
   },
@@ -219,7 +219,7 @@ const hr: Dictionary = {
       },
       {
         q: "Koliko web stranica stvarno košta?",
-        a: "Profesionalni onepager počinje od oko 740 €, poslovna web stranica od oko 1.610 €, trgovine i individualna rješenja od oko 3.110 € – sve s PDV-om. Automatska ponuda izračunava točnu cijenu za vaš projekt – transparentno i neobvezujuće.",
+        a: "Profesionalni onepager počinje od 739,90 €, poslovna web stranica od 1.619,90 €, trgovine i individualna rješenja od 3.119,90 € – sve s PDV-om. Automatska ponuda izračunava točnu cijenu za vaš projekt – transparentno i neobvezujuće.",
       },
       {
         q: "Nudite li i hosting?",
@@ -295,9 +295,9 @@ const hr: Dictionary = {
     maintenanceQ: "Želite li ugovor o održavanju?",
     maintenanceOptions: {
       none: "Ne / odlučit ću kasnije",
-      basic: "Basic – 36,25 €/mjesečno (s PDV-om)",
-      business: "Business – 73,75 €/mjesečno (s PDV-om)",
-      premium: "Premium – 148,75 €/mjesečno (s PDV-om)",
+      basic: "Basic – 39,90 €/mjesečno (s PDV-om)",
+      business: "Business – 79,90 €/mjesečno (s PDV-om)",
+      premium: "Premium – 149,90 €/mjesečno (s PDV-om)",
       unsure: "Da, molim savjet",
     },
     message: "Opišite svoj projekt",

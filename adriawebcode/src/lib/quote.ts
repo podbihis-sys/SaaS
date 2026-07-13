@@ -32,8 +32,10 @@ export interface LocalCurrencyQuote {
   code: string;
   totalMin: number;
   totalMax: number;
-  /** Fixed price incl. VAT in the local currency. */
+  /** Charm-rounded fixed price incl. VAT in the local currency. */
   totalGross: number;
+  /** Net portion of the charm gross (gross ÷ (1 + rate)). */
+  totalNet: number;
   /** VAT portion of the gross fixed price in the local currency. */
   vatAmount: number;
   maintenanceMonthly: number;
@@ -41,15 +43,19 @@ export interface LocalCurrencyQuote {
   maintenanceMonthlyGross: number;
 }
 
-/** Gross/net breakdown of the fixed price in EUR for the effective market. */
+/**
+ * Gross/net breakdown of the fixed price in EUR for the effective market.
+ * The charm-rounded gross is the anchor the customer sees; net and VAT are
+ * derived from it so the arithmetic on the offer is exact.
+ */
 export interface VatBreakdown {
   /** Statutory rate of the effective market, e.g. 0.19. */
   rate: number;
-  /** Net fixed price (EUR) — identical to totalMax. */
+  /** Net portion (EUR) of the charm gross. */
   net: number;
-  /** VAT amount (EUR). */
+  /** VAT amount (EUR); net + amount = gross exactly. */
   amount: number;
-  /** Gross fixed price (EUR) shown to the customer. */
+  /** Charm-rounded gross fixed price (EUR) shown to the customer. */
   gross: number;
 }
 
@@ -171,6 +177,19 @@ export function round2(value: number): number {
   return Math.round(value * 100) / 100;
 }
 
+/**
+ * Charm pricing for customer-facing gross amounts: round up to the next ten,
+ * minus ten cents — every price ends in …9,90 (49,90 €, 3.269,90 €).
+ */
+export function charm90(value: number): number {
+  return round2(Math.ceil(value / 10) * 10 - 0.1);
+}
+
+/** Whole-hundred rounding for currencies shown without decimals (RSD). */
+export function ceil100(value: number): number {
+  return Math.ceil(value / 100) * 100;
+}
+
 function roundTo(value: number, step: number): number {
   return Math.round(value / step) * step;
 }
@@ -251,26 +270,32 @@ export function buildQuote(input: LeadInput, analysis: SiteAnalysis | null): Quo
     MAINTENANCE_PRICES_BY_COUNTRY[input.country][recommendedMaintenance];
 
   const vatRate = VAT_RATE[input.country] ?? VAT_RATE.other;
+  const grossTotal = charm90(fixedTotal * (1 + vatRate));
+  const netOfGross = round2(grossTotal / (1 + vatRate));
   const vat: VatBreakdown = {
     rate: vatRate,
-    net: fixedTotal,
-    amount: round2(fixedTotal * vatRate),
-    gross: round2(fixedTotal * (1 + vatRate)),
+    net: netOfGross,
+    amount: round2(grossTotal - netOfGross),
+    gross: grossTotal,
   };
 
   const local = LOCAL_CURRENCY[input.country];
   const localNetTotal = local ? roundTo(totalMax * local.rate, local.roundTo) : 0;
+  // RSD is shown without decimals, so charm cents make no sense there.
+  const localCharm = (value: number) =>
+    local?.code === "RSD" ? ceil100(value) : charm90(value);
+  const localGross = local ? localCharm(localNetTotal * (1 + vatRate)) : 0;
+  const localNet = local ? round2(localGross / (1 + vatRate)) : 0;
   const localCurrency: LocalCurrencyQuote | null = local
     ? {
         code: local.code,
         totalMin: roundTo(totalMin * local.rate, local.roundTo),
         totalMax: localNetTotal,
-        totalGross: round2(localNetTotal * (1 + vatRate)),
-        vatAmount: round2(localNetTotal * vatRate),
-        // Use the exact advertised local-currency tier price so the offer
-        // never contradicts the pricing page (avoids conversion rounding drift).
+        totalGross: localGross,
+        totalNet: localNet,
+        vatAmount: round2(localGross - localNet),
         maintenanceMonthly: local.maintenance[recommendedMaintenance],
-        maintenanceMonthlyGross: round2(
+        maintenanceMonthlyGross: localCharm(
           local.maintenance[recommendedMaintenance] * (1 + vatRate),
         ),
       }
@@ -284,7 +309,7 @@ export function buildQuote(input: LeadInput, analysis: SiteAnalysis | null): Quo
     timelineWeeksMax: weeksMax,
     recommendedMaintenance,
     maintenancePriceMonthly,
-    maintenancePriceMonthlyGross: round2(maintenancePriceMonthly * (1 + vatRate)),
+    maintenancePriceMonthlyGross: charm90(maintenancePriceMonthly * (1 + vatRate)),
     currency: "EUR",
     regionFactor,
     vat,

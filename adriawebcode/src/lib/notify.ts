@@ -122,7 +122,7 @@ function vatBreakdownLine(quote: Quote, locale: Locale): string {
   const v = VAT_L10N[locale] ?? VAT_L10N.de;
   const pct = `${(quote.vat.rate * 100).toLocaleString("de-DE")} %`;
   const local = quote.localCurrency;
-  const net = local ? `${fmtAmount(local.totalMax)} ${local.code}` : euro(quote.vat.net);
+  const net = local ? `${fmtAmount(local.totalNet)} ${local.code}` : euro(quote.vat.net);
   const vatAmt = local ? `${fmtAmount(local.vatAmount)} ${local.code}` : euro(quote.vat.amount);
   return `${v.net} ${net} · ${v.vat} (${pct}) ${vatAmt}`;
 }

@@ -2,7 +2,7 @@ const de = {
   meta: {
     title: "Webdesign Agentur für DACH & Adria-Region | adriawebcode",
     description:
-      "Website erstellen lassen vom Profi: moderne Websites, Webshops & SEO für Deutschland, Österreich, die Schweiz und den Balkan. Kostenloses Sofort-Angebot in 60 Sekunden ✓ Festpreise ab 1.060 € inkl. MwSt.",
+      "Website erstellen lassen vom Profi: moderne Websites, Webshops & SEO für Deutschland, Österreich, die Schweiz und den Balkan. Kostenloses Sofort-Angebot in 60 Sekunden ✓ Festpreise ab 1.059,90 € inkl. MwSt.",
     keywords:
       "Webdesign Agentur, Website erstellen lassen, Webdesign Kroatien, Webdesign Bosnien, Webdesign Serbien, Webdesign Montenegro, Webdesign DACH, SEO Agentur, Wartungsvertrag Website",
   },
@@ -217,7 +217,7 @@ const de = {
       },
       {
         q: "Was kostet eine Website wirklich?",
-        a: "Ein professioneller Onepager beginnt bei ca. 1.060 €, eine Unternehmenswebsite bei ca. 2.250 €, Shops und individuelle Lösungen ab ca. 4.150 € – jeweils inkl. MwSt. Das automatische Angebot berechnet den Preis exakt für Ihr Projekt – transparent und unverbindlich.",
+        a: "Ein professioneller Onepager beginnt bei 1.059,90 €, eine Unternehmenswebsite bei 2.249,90 €, Shops und individuelle Lösungen ab 4.159,90 € – jeweils inkl. MwSt. Das automatische Angebot berechnet den Preis exakt für Ihr Projekt – transparent und unverbindlich.",
       },
       {
         q: "Bietet ihr auch Hosting an?",
@@ -293,9 +293,9 @@ const de = {
     maintenanceQ: "Wünschen Sie einen Wartungsvertrag?",
     maintenanceOptions: {
       none: "Nein / später entscheiden",
-      basic: "Basic – 46,41 €/Monat (inkl. MwSt.)",
-      business: "Business – 105,91 €/Monat (inkl. MwSt.)",
-      premium: "Premium – 213,01 €/Monat (inkl. MwSt.)",
+      basic: "Basic – 49,90 €/Monat (inkl. MwSt.)",
+      business: "Business – 109,90 €/Monat (inkl. MwSt.)",
+      premium: "Premium – 219,90 €/Monat (inkl. MwSt.)",
       unsure: "Ja, bitte beraten",
     },
     message: "Beschreiben Sie Ihr Projekt",

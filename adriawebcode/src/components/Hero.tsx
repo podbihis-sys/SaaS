@@ -5,6 +5,7 @@ import { buildQuote, ITEM_LABELS, MARKET_BY_LOCALE, type LeadInput } from "@/lib
 import { VAT_L10N, fmtAmount } from "@/lib/pricing-display";
 import { Logo } from "./Logo";
 import { HeroWaves } from "./HeroWaves";
+import { CountUpPrice } from "./CountUpPrice";
 
 /** The few words the specimen document needs beyond the shared dictionaries. */
 const DOC_L10N: Record<
@@ -58,13 +59,12 @@ export function Hero({ dict, locale }: { dict: Dictionary["hero"]; locale: Local
   // Gross fixed price up front, exact net + VAT of this market broken out.
   const v = VAT_L10N[locale] ?? VAT_L10N.de;
   const pct = `${(quote.vat.rate * 100).toLocaleString("de-DE")} %`;
-  const total = quote.localCurrency
-    ? money(quote.localCurrency.totalGross, quote.localCurrency.code)
-    : money(quote.vat.gross);
+  const grossValue = quote.localCurrency ? quote.localCurrency.totalGross : quote.vat.gross;
+  const grossCurrency = quote.localCurrency?.code ?? "€";
   const totalSub = [
     quote.localCurrency ? `≈ ${money(quote.vat.gross)}` : null,
     quote.localCurrency
-      ? `${v.net} ${money(quote.localCurrency.totalMax, quote.localCurrency.code)}`
+      ? `${v.net} ${money(quote.localCurrency.totalNet, quote.localCurrency.code)}`
       : `${v.net} ${money(quote.vat.net)}`,
     quote.localCurrency
       ? `${v.vat} (${pct}) ${money(quote.localCurrency.vatAmount, quote.localCurrency.code)}`
@@ -72,6 +72,7 @@ export function Hero({ dict, locale }: { dict: Dictionary["hero"]; locale: Local
   ]
     .filter(Boolean)
     .join(" · ");
+  const totalDelay = 0.62 + rows.length * 0.12;
 
   return (
     <section>
@@ -138,7 +139,7 @@ export function Hero({ dict, locale }: { dict: Dictionary["hero"]; locale: Local
 
               <div
                 className="print-row mt-5 flex items-end justify-between gap-6"
-                style={delay(0.62 + rows.length * 0.12)}
+                style={delay(totalDelay)}
               >
                 <div>
                   <p className="text-[0.8rem] font-medium uppercase tracking-[0.08em] text-tiefsee">
@@ -146,7 +147,14 @@ export function Hero({ dict, locale }: { dict: Dictionary["hero"]; locale: Local
                   </p>
                   <p className="mt-0.5 text-xs text-muted">{totalSub}</p>
                 </div>
-                <p className="tabular text-[2rem] font-semibold leading-none sm:text-[2.4rem]">{total}</p>
+                <p className="tabular text-[2rem] font-semibold leading-none sm:text-[2.4rem]">
+                  <CountUpPrice
+                    value={grossValue}
+                    currency={grossCurrency}
+                    decimals={grossCurrency === "RSD" ? 0 : 2}
+                    delay={totalDelay + 0.15}
+                  />
+                </p>
               </div>
             </div>
           </div>

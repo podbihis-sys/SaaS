@@ -1,4 +1,11 @@
-import { MARKET_BY_LOCALE, VAT_RATE, round2, type Country } from "./quote";
+import {
+  MARKET_BY_LOCALE,
+  VAT_RATE,
+  ceil100,
+  charm90,
+  round2,
+  type Country,
+} from "./quote";
 
 /** Localised wording for the gross/net price breakdown. */
 export const VAT_L10N: Record<
@@ -17,8 +24,9 @@ export function vatPercent(country: Country): string {
   return `${((VAT_RATE[country] ?? VAT_RATE.other) * 100).toLocaleString("de-DE")} %`;
 }
 
+/** Charm gross (…9,90) of an advertised net price for a market. */
 export function grossOf(net: number, country: Country): number {
-  return round2(net * (1 + (VAT_RATE[country] ?? VAT_RATE.other)));
+  return charm90(net * (1 + (VAT_RATE[country] ?? VAT_RATE.other)));
 }
 
 /** de-DE grouped amount; cents only when the value actually has them. */
@@ -81,12 +89,23 @@ function displayFor(
   currency: string,
   eurNets?: [number, number, number],
 ): PriceDisplay[] {
-  return nets.map((net, i) => ({
-    gross: `${fmtAmount(grossOf(net, market))} ${currency}`,
-    net: `${fmtAmount(net)} ${currency}`,
-    vatPct: vatPercent(market),
-    eurHint: eurNets ? `≈ ${fmtAmount(grossOf(eurNets[i], market))} €` : null,
-  }));
+  const rate = VAT_RATE[market] ?? VAT_RATE.other;
+  return nets.map((net, i) => {
+    // The charm gross is the anchor; the shown net is derived from it so
+    // net + VAT equals the advertised price exactly.
+    const gross =
+      currency === "RSD" ? ceil100(net * (1 + rate)) : charm90(net * (1 + rate));
+    const netShown = round2(gross / (1 + rate));
+    return {
+      gross: `${fmtAmount(gross)} ${currency}`,
+      net: `${fmtAmount(netShown)} ${currency}`,
+      vatPct: vatPercent(market),
+      // Rough EUR orientation for non-EUR markets — kept deliberately round.
+      eurHint: eurNets
+        ? `≈ ${fmtAmount(Math.ceil((eurNets[i] * (1 + rate)) / 10) * 10)} €`
+        : null,
+    };
+  });
 }
 
 /** Gross plan prices (Starter/Business/Premium) for a language version. */
@@ -109,8 +128,10 @@ const CURRENCY_CODE: Record<string, string> = { "€": "EUR", KM: "BAM", RSD: "R
 export function planOffers(locale: string): Array<{ price: number; currency: string }> {
   const market = MARKET_BY_LOCALE[locale] ?? "de";
   const m = MARKET_PRICES[market] ?? MARKET_PRICES.de!;
+  const rate = VAT_RATE[market] ?? VAT_RATE.other;
   return m.plans.map((net) => ({
-    price: grossOf(net, market),
+    price:
+      m.currency === "RSD" ? ceil100(net * (1 + rate)) : charm90(net * (1 + rate)),
     currency: CURRENCY_CODE[m.currency] ?? "EUR",
   }));
 }
