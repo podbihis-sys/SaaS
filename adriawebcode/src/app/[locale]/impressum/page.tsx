@@ -1,0 +1,63 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { isLocale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/get-dictionary";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return {};
+  const dict = getDictionary(locale);
+  const url = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://adriawebcode.com"}/${locale}/impressum`;
+  return {
+    title: dict.legal.imprintTitle,
+    robots: { index: false, follow: true },
+    // Override the layout's home-page canonical/hreflang so this noindex page
+    // doesn't send contradictory signals for the localized home page.
+    alternates: { canonical: url, languages: {} },
+  };
+}
+
+export default async function ImprintPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+  const dict = getDictionary(locale);
+
+  return (
+    <main className="container-site max-w-3xl py-28">
+      <Link href={`/${locale}`} className="text-sm font-medium text-tiefsee hover:text-tiefsee-press">
+        ← adriawebcode
+      </Link>
+      <h1 className="mt-6 text-4xl font-semibold text-ink">{dict.legal.imprintTitle}</h1>
+      <div className="mt-8 flex flex-col gap-4 text-sm leading-relaxed text-muted">
+        <p>
+          <strong className="text-ink">adriawebcode</strong>
+          <br />
+          {/* TODO: Vollständige Anschrift des Unternehmens eintragen */}
+          Inhaber: [Name eintragen]
+          <br />
+          [Straße und Hausnummer]
+          <br />
+          [PLZ und Ort]
+        </p>
+        <p>
+          E-Mail: hello@adriawebcode.com
+          <br />
+          {/* TODO: USt-IdNr. / Steuernummer eintragen */}
+          USt-IdNr.: [eintragen]
+        </p>
+        <p>
+          Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV: [Name eintragen]
+        </p>
+      </div>
+    </main>
+  );
+}
