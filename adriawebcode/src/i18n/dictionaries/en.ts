@@ -4,7 +4,7 @@ const en: Dictionary = {
   meta: {
     title: "Web Design Agency for DACH & the Adriatic Region | adriawebcode",
     description:
-      "Professional website development: modern websites, online shops & SEO for Germany, Austria, Switzerland and the Balkans. Free instant quote in 60 seconds ✓ fixed prices from €1,059.90 incl. VAT.",
+      "Professional website development: modern websites, online shops & SEO for Germany, Austria, Switzerland and the Balkans. Free instant quote in 60 seconds ✓ fixed prices from €1,059 incl. VAT.",
     keywords:
       "web design agency, website development, web design Croatia, web design Bosnia, web design Serbia, web design Montenegro, web design Germany, SEO agency, website maintenance plan",
   },
@@ -149,7 +149,7 @@ const en: Dictionary = {
         ],
       },
     ],
-    note: "All prices incl. statutory VAT (net amounts are shown) – benchmarks for the DACH region. Reduced, locally competitive prices apply in Croatia, Bosnia, Serbia and Montenegro (see the respective language version); the instant quote prices your market automatically. We deliberately do not offer hosting – your website runs on your own hosting account. We set everything up and you stay independent.",
+    note: "All prices incl. statutory VAT – benchmarks for the DACH region. Reduced, locally competitive prices apply in Croatia, Bosnia, Serbia and Montenegro (see the respective language version); the instant quote prices your market automatically. We deliberately do not offer hosting – your website runs on your own hosting account. We set everything up and you stay independent.",
   },
   maintenance: {
     kicker: "Maintenance Plans",
@@ -219,7 +219,7 @@ const en: Dictionary = {
       },
       {
         q: "What does a website really cost?",
-        a: "A professional one-pager starts at €1,059.90, a business website at €2,249.90, shops and custom solutions from €4,159.90 – all incl. VAT. The automatic quote calculates the exact price for your project – transparent and non-binding.",
+        a: "A professional one-pager starts at €1,059, a business website at €2,249, shops and custom solutions from €4,159 – all incl. VAT. The automatic quote calculates the exact price for your project – transparent and non-binding.",
       },
       {
         q: "Do you offer hosting?",
@@ -295,9 +295,9 @@ const en: Dictionary = {
     maintenanceQ: "Would you like a maintenance plan?",
     maintenanceOptions: {
       none: "No / decide later",
-      basic: "Basic – €49.90/month (incl. VAT)",
-      business: "Business – €109.90/month (incl. VAT)",
-      premium: "Premium – €219.90/month (incl. VAT)",
+      basic: "Basic – €49/month (incl. VAT)",
+      business: "Business – €109/month (incl. VAT)",
+      premium: "Premium – €219/month (incl. VAT)",
       unsure: "Yes, please advise me",
     },
     message: "Describe your project",

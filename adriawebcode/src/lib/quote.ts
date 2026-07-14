@@ -25,7 +25,10 @@ export interface LeadInput {
 
 export interface QuoteItem {
   key: string;
+  /** Net component price (EUR) — internal calculation basis. */
   amount: number;
+  /** Gross component price (EUR, whole euros) — what the customer sees. */
+  amountGross: number;
 }
 
 export interface LocalCurrencyQuote {
@@ -178,11 +181,11 @@ export function round2(value: number): number {
 }
 
 /**
- * Charm pricing for customer-facing gross amounts: round up to the next ten,
- * minus ten cents — every price ends in …9,90 (49,90 €, 3.269,90 €).
+ * Charm pricing for customer-facing gross amounts: whole euros only, rounded
+ * up to the next ten minus one — every price ends in …9 (49 €, 1.799 €).
  */
 export function charm90(value: number): number {
-  return round2(Math.ceil(value / 10) * 10 - 0.1);
+  return Math.ceil(value / 10) * 10 - 1;
 }
 
 /** Whole-hundred rounding for currencies shown without decimals (RSD). */
@@ -196,7 +199,7 @@ function roundTo(value: number, step: number): number {
 
 export function buildQuote(input: LeadInput, analysis: SiteAnalysis | null): Quote {
   const regionFactor = REGION_FACTOR[input.country] ?? 1;
-  const items: QuoteItem[] = [];
+  const items: Array<Omit<QuoteItem, "amountGross">> = [];
 
   const base = BASE_PRICES[input.projectType] * PAGE_FACTOR[input.pages];
   items.push({ key: `base_${input.projectType}`, amount: round10(base * regionFactor) });
@@ -270,6 +273,11 @@ export function buildQuote(input: LeadInput, analysis: SiteAnalysis | null): Quo
     MAINTENANCE_PRICES_BY_COUNTRY[input.country][recommendedMaintenance];
 
   const vatRate = VAT_RATE[input.country] ?? VAT_RATE.other;
+  // Customer-facing component prices are gross, in whole euros.
+  const grossItems: QuoteItem[] = items.map((item) => ({
+    ...item,
+    amountGross: Math.round(item.amount * (1 + vatRate)),
+  }));
   const grossTotal = charm90(fixedTotal * (1 + vatRate));
   const netOfGross = round2(grossTotal / (1 + vatRate));
   const vat: VatBreakdown = {
@@ -302,7 +310,7 @@ export function buildQuote(input: LeadInput, analysis: SiteAnalysis | null): Quo
     : null;
 
   return {
-    items,
+    items: grossItems,
     totalMin,
     totalMax,
     timelineWeeksMin: weeksMin,

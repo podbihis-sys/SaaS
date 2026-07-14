@@ -3,7 +3,6 @@ import {
   VAT_RATE,
   ceil100,
   charm90,
-  round2,
   type Country,
 } from "./quote";
 
@@ -39,13 +38,11 @@ export function fmtAmount(value: number): string {
 }
 
 export interface PriceDisplay {
-  /** Gross price with currency, e.g. "1.059,10 €". */
+  /** Gross price with currency, whole amounts only, e.g. "1.059 €". */
   gross: string;
-  /** Net price with currency, e.g. "890 €". */
-  net: string;
   /** Statutory rate, e.g. "19 %". */
   vatPct: string;
-  /** Approximate gross EUR value for non-EUR markets, e.g. "≈ 573,30 €". */
+  /** Approximate gross EUR value for non-EUR markets, e.g. "≈ 580 €". */
   eurHint: string | null;
 }
 
@@ -91,14 +88,10 @@ function displayFor(
 ): PriceDisplay[] {
   const rate = VAT_RATE[market] ?? VAT_RATE.other;
   return nets.map((net, i) => {
-    // The charm gross is the anchor; the shown net is derived from it so
-    // net + VAT equals the advertised price exactly.
     const gross =
       currency === "RSD" ? ceil100(net * (1 + rate)) : charm90(net * (1 + rate));
-    const netShown = round2(gross / (1 + rate));
     return {
       gross: `${fmtAmount(gross)} ${currency}`,
-      net: `${fmtAmount(netShown)} ${currency}`,
       vatPct: vatPercent(market),
       // Rough EUR orientation for non-EUR markets — kept deliberately round.
       eurHint: eurNets

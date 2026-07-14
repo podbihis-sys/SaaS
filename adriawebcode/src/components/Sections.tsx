@@ -189,7 +189,7 @@ export function Pricing({
                         {prices[i].gross}
                       </p>
                       <p className="mt-2 text-xs font-normal text-muted">
-                        {l10n.incl} {prices[i].vatPct} {l10n.vat} · {l10n.net} {prices[i].net}
+                        {l10n.incl} {prices[i].vatPct} {l10n.vat}
                         {prices[i].eurHint ? ` · ${prices[i].eurHint}` : ""} · {dict.once}
                       </p>
                       <p className="mt-3 text-sm font-normal leading-relaxed text-muted">{plan.desc}</p>
@@ -260,7 +260,7 @@ export function Maintenance({
                   <span className="ml-1.5 text-sm font-normal text-white/70">{dict.perMonth}</span>
                 </p>
                 <p className="mt-1.5 text-xs text-white/60">
-                  {l10n.incl} {tiers[i].vatPct} {l10n.vat} · {l10n.net} {tiers[i].net}
+                  {l10n.incl} {tiers[i].vatPct} {l10n.vat}
                   {tiers[i].eurHint ? ` · ${tiers[i].eurHint}` : ""}
                 </p>
                 <p className="mt-4 text-sm leading-relaxed text-white/80">{plan.desc}</p>

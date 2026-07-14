@@ -4,7 +4,7 @@ const bs: Dictionary = {
   meta: {
     title: "Izrada web stranica i web dizajn | adriawebcode",
     description:
-      "Profesionalna izrada web stranica: moderne stranice, web shopovi i SEO za Bosnu i Hercegovinu i DACH regiju. Besplatna ponuda za 60 sekundi ✓ fiksne cijene već od 1.119,90 KM s PDV-om.",
+      "Profesionalna izrada web stranica: moderne stranice, web shopovi i SEO za Bosnu i Hercegovinu i DACH regiju. Besplatna ponuda za 60 sekundi ✓ fiksne cijene već od 1.119 KM s PDV-om.",
     keywords:
       "agencija za web dizajn, izrada web stranica, web dizajn Bosna, web dizajn Hrvatska, web dizajn Srbija, web dizajn Crna Gora, web dizajn Njemačka, SEO agencija, održavanje web stranice",
   },
@@ -149,7 +149,7 @@ const bs: Dictionary = {
         ],
       },
     ],
-    note: "Sve cijene s uključenim PDV-om od 17 % (neto iznosi su iskazani). Hosting svjesno ne nudimo – vaša stranica radi na vašem vlastitom hosting nalogu. Mi sve postavljamo, a vi ostajete nezavisni.",
+    note: "Sve cijene s uključenim PDV-om od 17 %. Hosting svjesno ne nudimo – vaša stranica radi na vašem vlastitom hosting nalogu. Mi sve postavljamo, a vi ostajete nezavisni.",
   },
   maintenance: {
     kicker: "Ugovori o održavanju",
@@ -219,7 +219,7 @@ const bs: Dictionary = {
       },
       {
         q: "Koliko web stranica stvarno košta?",
-        a: "Profesionalni onepager počinje od 1.119,90 KM, poslovna web stranica od 2.289,90 KM, shopovi i individualna rješenja od 4.569,90 KM – sve s PDV-om. Automatska ponuda izračunava tačnu cijenu za vaš projekat – transparentno i neobavezujuće.",
+        a: "Profesionalni onepager počinje od 1.119 KM, poslovna web stranica od 2.289 KM, shopovi i individualna rješenja od 4.569 KM – sve s PDV-om. Automatska ponuda izračunava tačnu cijenu za vaš projekat – transparentno i neobavezujuće.",
       },
       {
         q: "Nudite li i hosting?",
@@ -295,9 +295,9 @@ const bs: Dictionary = {
     maintenanceQ: "Želite li ugovor o održavanju?",
     maintenanceOptions: {
       none: "Ne / odlučiću kasnije",
-      basic: "Basic – 49,90 KM/mjesečno (s PDV-om)",
-      business: "Business – 119,90 KM/mjesečno (s PDV-om)",
-      premium: "Premium – 229,90 KM/mjesečno (s PDV-om)",
+      basic: "Basic – 49 KM/mjesečno (s PDV-om)",
+      business: "Business – 119 KM/mjesečno (s PDV-om)",
+      premium: "Premium – 229 KM/mjesečno (s PDV-om)",
       unsure: "Da, molim savjet",
     },
     message: "Opišite svoj projekat",

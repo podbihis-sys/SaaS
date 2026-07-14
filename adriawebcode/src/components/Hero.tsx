@@ -101,24 +101,14 @@ export function Hero({ dict, locale }: { dict: Dictionary["hero"]; locale: Local
   const quote = buildQuote(specimenInput, null);
   const rows = quote.items.map((item) => ({
     label: ITEM_LABELS[item.key]?.[locale] ?? ITEM_LABELS[item.key]?.de ?? item.key,
-    amount: money(item.amount),
+    amount: money(item.amountGross),
   }));
   // Gross fixed price up front, exact net + VAT of this market broken out.
   const v = VAT_L10N[locale] ?? VAT_L10N.de;
   const pct = `${(quote.vat.rate * 100).toLocaleString("de-DE")} %`;
   const grossValue = quote.localCurrency ? quote.localCurrency.totalGross : quote.vat.gross;
   const grossCurrency = quote.localCurrency?.code ?? "€";
-  const totalSub = [
-    quote.localCurrency ? `≈ ${money(quote.vat.gross)}` : null,
-    quote.localCurrency
-      ? `${v.net} ${money(quote.localCurrency.totalNet, quote.localCurrency.code)}`
-      : `${v.net} ${money(quote.vat.net)}`,
-    quote.localCurrency
-      ? `${v.vat} (${pct}) ${money(quote.localCurrency.vatAmount, quote.localCurrency.code)}`
-      : `${v.vat} (${pct}) ${money(quote.vat.amount)}`,
-  ]
-    .filter(Boolean)
-    .join(" · ");
+  const totalSub = quote.localCurrency ? `≈ ${money(quote.vat.gross)}` : null;
   const totalDelay = 0.62 + rows.length * 0.12;
 
   return (
@@ -237,13 +227,13 @@ export function Hero({ dict, locale }: { dict: Dictionary["hero"]; locale: Local
                   <p className="text-[0.8rem] font-medium uppercase tracking-[0.08em] text-tiefsee">
                     {l.total} · {v.incl} {pct} {v.vat}
                   </p>
-                  <p className="mt-0.5 text-xs text-muted">{totalSub}</p>
+                  {totalSub && <p className="mt-0.5 text-xs text-muted">{totalSub}</p>}
                 </div>
                 <p className="tabular text-[2rem] font-semibold leading-none sm:text-[2.4rem]">
                   <CountUpPrice
                     value={grossValue}
                     currency={grossCurrency}
-                    decimals={grossCurrency === "RSD" ? 0 : 2}
+                    decimals={0}
                     delay={totalDelay + 0.15}
                   />
                 </p>

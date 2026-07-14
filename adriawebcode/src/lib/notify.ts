@@ -117,16 +117,6 @@ function euro(amount: number): string {
   return `${fmtAmount(amount)} €`;
 }
 
-/** "Netto 2.740 € · MwSt. (19 %) 520,60 €" for the offer's gross total. */
-function vatBreakdownLine(quote: Quote, locale: Locale): string {
-  const v = VAT_L10N[locale] ?? VAT_L10N.de;
-  const pct = `${(quote.vat.rate * 100).toLocaleString("de-DE")} %`;
-  const local = quote.localCurrency;
-  const net = local ? `${fmtAmount(local.totalNet)} ${local.code}` : euro(quote.vat.net);
-  const vatAmt = local ? `${fmtAmount(local.vatAmount)} ${local.code}` : euro(quote.vat.amount);
-  return `${v.net} ${net} · ${v.vat} (${pct}) ${vatAmt}`;
-}
-
 /** Collapse control characters so a company name can't inject email headers. */
 function headerSafe(value: string | undefined): string {
   return (value ?? "").replace(/[\r\n]+/g, " ").trim();
@@ -150,7 +140,7 @@ function offerHtml(
     .map((item) =>
       emailRow(
         esc(ITEM_LABELS[item.key]?.[locale] ?? ITEM_LABELS[item.key]?.de ?? item.key),
-        euro(item.amount),
+        euro(item.amountGross),
       ),
     )
     .join("");
@@ -169,7 +159,6 @@ function offerHtml(
   const totalSub = [
     quote.localCurrency ? `≈ ${euro(quote.vat.gross)}` : null,
     `${v.incl} ${pct} ${v.vat}`,
-    vatBreakdownLine(quote, locale),
   ]
     .filter(Boolean)
     .join(" · ");
@@ -330,7 +319,7 @@ export async function sendEmails(
     ${emailHighlight(
       "Angebotssumme (brutto)",
       localTotalStr ?? euro(quote.vat.gross),
-      `${localTotalStr ? `≈ ${euro(quote.vat.gross)} · ` : ""}${vatBreakdownLine(quote, "de")}`,
+      localTotalStr ? `≈ ${euro(quote.vat.gross)}` : undefined,
     )}
     ${emailSmall("Antworten auf diese E-Mail gehen direkt an den Interessenten.")}
   `;

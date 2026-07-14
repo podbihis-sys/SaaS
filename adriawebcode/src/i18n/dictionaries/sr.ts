@@ -149,7 +149,7 @@ const sr: Dictionary = {
         ],
       },
     ],
-    note: "Sve cene sa uključenim PDV-om od 20 % (neto iznosi su iskazani). Hosting svesno ne nudimo – vaš sajt radi na vašem sopstvenom hosting nalogu. Mi sve podešavamo, a vi ostajete nezavisni.",
+    note: "Sve cene sa uključenim PDV-om od 20 %. Hosting svesno ne nudimo – vaš sajt radi na vašem sopstvenom hosting nalogu. Mi sve podešavamo, a vi ostajete nezavisni.",
   },
   maintenance: {
     kicker: "Ugovori o održavanju",

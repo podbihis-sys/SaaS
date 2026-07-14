@@ -366,14 +366,12 @@ function OfferResult({
   const countryName = (code: string) =>
     `${COUNTRY_FLAG[code as keyof typeof COUNTRY_FLAG] ?? ""} ${countries[code] ?? code}`.trim();
 
-  // Gross fixed price up front; exact net + VAT of the effective market below.
+  // Gross fixed price only — the statutory rate is named, no net breakdown.
   const v = VAT_L10N[locale] ?? VAT_L10N.de;
   const pct = `${(quote.vat.rate * 100).toLocaleString("de-DE")} %`;
   const local = quote.localCurrency;
   const inLocal = (amount: number) => `${fmtAmount(amount)} ${local?.code}`;
   const totalGross = local ? inLocal(local.totalGross) : euro(quote.vat.gross);
-  const totalNet = local ? inLocal(local.totalNet) : euro(quote.vat.net);
-  const totalVat = local ? inLocal(local.vatAmount) : euro(quote.vat.amount);
 
   return (
     <motion.div
@@ -461,7 +459,7 @@ function OfferResult({
               <thead>
                 <tr className="border-b border-ink/60 text-left text-xs uppercase tracking-[0.06em] text-muted">
                   <th className="pb-3 pr-4 font-medium">{dict.item}</th>
-                  <th className="pb-3 text-right font-medium">{dict.price} ({v.net})</th>
+                  <th className="pb-3 text-right font-medium">{dict.price}</th>
                 </tr>
               </thead>
               <tbody>
@@ -476,7 +474,7 @@ function OfferResult({
                     <td className="py-3.5 pr-4 text-muted">
                       {ITEM_LABELS[item.key]?.[locale] ?? ITEM_LABELS[item.key]?.de ?? item.key}
                     </td>
-                    <td className="tabular py-3.5 text-right font-semibold text-ink">{euro(item.amount)}</td>
+                    <td className="tabular py-3.5 text-right font-semibold text-ink">{euro(item.amountGross)}</td>
                   </motion.tr>
                 ))}
               </tbody>
@@ -492,9 +490,6 @@ function OfferResult({
                 {totalGross}
               </p>
               {local && <p className="mt-1 text-xs text-muted">≈ {euro(quote.vat.gross)}</p>}
-              <p className="mt-1 text-[11px] text-muted">
-                {v.net} {totalNet} · {v.vat} ({pct}) {totalVat}
-              </p>
             </div>
             <div className="border border-rule p-5">
               <p className="text-xs text-muted">{dict.timelineLabel}</p>

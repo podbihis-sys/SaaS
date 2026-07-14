@@ -2,7 +2,7 @@ const de = {
   meta: {
     title: "Webdesign Agentur für DACH & Adria-Region | adriawebcode",
     description:
-      "Website erstellen lassen vom Profi: moderne Websites, Webshops & SEO für Deutschland, Österreich, die Schweiz und den Balkan. Kostenloses Sofort-Angebot in 60 Sekunden ✓ Festpreise ab 1.059,90 € inkl. MwSt.",
+      "Website erstellen lassen vom Profi: moderne Websites, Webshops & SEO für Deutschland, Österreich, die Schweiz und den Balkan. Kostenloses Sofort-Angebot in 60 Sekunden ✓ Festpreise ab 1.059 € inkl. MwSt.",
     keywords:
       "Webdesign Agentur, Website erstellen lassen, Webdesign Kroatien, Webdesign Bosnien, Webdesign Serbien, Webdesign Montenegro, Webdesign DACH, SEO Agentur, Wartungsvertrag Website",
   },
@@ -147,7 +147,7 @@ const de = {
         ],
       },
     ],
-    note: "Alle Preise inkl. gesetzlicher MwSt. (Netto-Beträge werden ausgewiesen) – Richtwerte für die DACH-Region. Für Kroatien, Bosnien, Serbien und Montenegro gelten reduzierte, lokal marktübliche Preise (siehe jeweilige Sprachversion); das Sofort-Angebot berechnet Ihren Markt automatisch. Hosting bieten wir bewusst nicht an – Ihre Website läuft auf Ihrem eigenen Hosting-Account. Wir richten alles ein und Sie bleiben unabhängig.",
+    note: "Alle Preise inkl. gesetzlicher MwSt. – Richtwerte für die DACH-Region. Für Kroatien, Bosnien, Serbien und Montenegro gelten reduzierte, lokal marktübliche Preise (siehe jeweilige Sprachversion); das Sofort-Angebot berechnet Ihren Markt automatisch. Hosting bieten wir bewusst nicht an – Ihre Website läuft auf Ihrem eigenen Hosting-Account. Wir richten alles ein und Sie bleiben unabhängig.",
   },
   maintenance: {
     kicker: "Wartungsverträge",
@@ -217,7 +217,7 @@ const de = {
       },
       {
         q: "Was kostet eine Website wirklich?",
-        a: "Ein professioneller Onepager beginnt bei 1.059,90 €, eine Unternehmenswebsite bei 2.249,90 €, Shops und individuelle Lösungen ab 4.159,90 € – jeweils inkl. MwSt. Das automatische Angebot berechnet den Preis exakt für Ihr Projekt – transparent und unverbindlich.",
+        a: "Ein professioneller Onepager beginnt bei 1.059 €, eine Unternehmenswebsite bei 2.249 €, Shops und individuelle Lösungen ab 4.159 € – jeweils inkl. MwSt. Das automatische Angebot berechnet den Preis exakt für Ihr Projekt – transparent und unverbindlich.",
       },
       {
         q: "Bietet ihr auch Hosting an?",
@@ -293,9 +293,9 @@ const de = {
     maintenanceQ: "Wünschen Sie einen Wartungsvertrag?",
     maintenanceOptions: {
       none: "Nein / später entscheiden",
-      basic: "Basic – 49,90 €/Monat (inkl. MwSt.)",
-      business: "Business – 109,90 €/Monat (inkl. MwSt.)",
-      premium: "Premium – 219,90 €/Monat (inkl. MwSt.)",
+      basic: "Basic – 49 €/Monat (inkl. MwSt.)",
+      business: "Business – 109 €/Monat (inkl. MwSt.)",
+      premium: "Premium – 219 €/Monat (inkl. MwSt.)",
       unsure: "Ja, bitte beraten",
     },
     message: "Beschreiben Sie Ihr Projekt",
