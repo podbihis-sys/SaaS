@@ -117,6 +117,7 @@
   nav.main{margin-left:auto}
   nav.main > ul{display:flex;list-style:none;gap:2px;flex-wrap:wrap}
   nav.main > ul > li{position:relative}
+  nav.main > ul > li:hover, nav.main > ul > li.open{z-index:95}
   nav.main a.top{
     display:block;padding:10px 12px;color:var(--ink);font-size:.9rem;font-weight:700;
     border-radius:999px;transition:background .25s,color .25s;white-space:nowrap;
@@ -126,12 +127,14 @@
   .caret{display:inline-block;margin-left:5px;font-size:.6em;transform:translateY(-2px);transition:transform .25s;opacity:.7}
   li.open .caret{transform:rotate(180deg)}
   ul.drop{
-    position:absolute;top:calc(100% + 10px);left:0;min-width:260px;list-style:none;
+    position:absolute;top:100%;left:0;min-width:260px;list-style:none;z-index:96;
     background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
-    box-shadow:var(--shadow-lg);padding:8px;
+    box-shadow:var(--shadow-lg);padding:8px;margin-top:8px;
     opacity:0;visibility:hidden;transform:translateY(10px);
     transition:opacity .25s ease, transform .25s ease, visibility .25s;
   }
+  /* keep hover alive across the gap between item and dropdown */
+  ul.drop:before{content:"";position:absolute;left:0;right:0;top:-10px;height:10px}
   li.open > ul.drop{opacity:1;visibility:visible;transform:translateY(0)}
   ul.drop a{
     display:block;padding:10px 14px;border-radius:12px;color:var(--ink);font-size:.92rem;font-weight:600;
