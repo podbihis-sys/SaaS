@@ -74,23 +74,32 @@
   .eyebrow:before{content:"";width:26px;height:2px;background:var(--coral);border-radius:2px}
 
   .btn{
-    display:inline-flex;align-items:center;gap:10px;
-    padding:14px 28px;border-radius:999px;font-weight:800;font-size:.95rem;
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    padding:12px 26px;border-radius:999px;font-weight:800;font-size:.95rem;
+    line-height:1.4;min-height:50px;
     transition:transform .25s ease, box-shadow .25s ease, background .25s;
-    text-decoration:none!important;border:0;cursor:pointer;
+    text-decoration:none!important;border:2px solid transparent;cursor:pointer;
+    font-family:inherit;
   }
   .btn.coral{background:var(--coral);color:#fff;box-shadow:0 10px 24px rgba(241,112,95,.38)}
   .btn.coral:hover{background:var(--coral-deep);transform:translateY(-2px);box-shadow:0 14px 32px rgba(241,112,95,.45)}
-  .btn.line{border:2px solid var(--line);color:var(--ink);background:transparent}
+  .btn.line{border-color:var(--line);color:var(--ink);background:transparent}
   .btn.line:hover{border-color:var(--petrol-2);color:var(--petrol-2);transform:translateY(-2px)}
   .btn svg{width:17px;height:17px;stroke:currentColor;flex:0 0 auto}
 
   /* ---------- header ---------- */
   header.site{
     position:sticky;top:0;z-index:80;
-    background:color-mix(in srgb, var(--ground) 82%, transparent);
-    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    background:var(--ground);
     border-bottom:1px solid var(--line);
+  }
+  /* Glass effect only on desktop: backdrop-filter turns the header into the
+     containing block for fixed descendants, which would clip the mobile menu. */
+  @media (min-width: 881px){
+    header.site{
+      background:color-mix(in srgb, var(--ground) 82%, transparent);
+      backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    }
   }
   .site .wrap{display:flex;align-items:center;gap:16px;min-height:82px}
   .logo{display:flex;align-items:center;flex:0 0 auto;cursor:pointer}
