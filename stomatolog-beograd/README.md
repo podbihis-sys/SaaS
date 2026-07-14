@@ -1,22 +1,45 @@
-# Stomatolog Beograd — „Popravka zuba" Redesign
+# Stomatolog Beograd — komplette Website (Redesign)
 
-Eigenständiges Redesign der Seite <https://www.stomatologbeograd.co.rs/popravka-zuba>.
+Eigenständiges Redesign der Website <https://www.stomatologbeograd.co.rs> mit **allen Seiten aus dem Menü**, dreisprachig (SR/EN/DE).
 
-Vom Original übernommen wurden ausschließlich: **Logo, Bilder, Texte, Verlinkungen und die Menüstruktur**. Das Design selbst ist komplett neu und unabhängig vom alten Auftritt.
+Vom Original übernommen wurden ausschließlich: **Logo, Bilder (Titelbilder, Service-Teaser, Galerien), Texte, Verlinkungen und die Menüstruktur**. Das Design ist komplett neu und unabhängig vom alten Auftritt.
 
 ## Inhalt
 
-- `index.html` — komplette, in sich geschlossene Seite (alle Bilder als Data-URIs eingebettet). Einfach im Browser öffnen oder auf beliebigem Static-Host / normalem Webhosting deployen.
-- `images/` — die Original-Bilddateien (Logo, Fotos, Banner) als Referenz.
+- `index.html` — die komplette Website als eine einzige, in sich geschlossene Datei (alle Bilder eingebettet, Hash-Routing per Vanilla-JS, kein Framework, kein Build). Auf beliebigem Webhosting lauffähig; Seiten sind über `#/de/kontakt` usw. verlinkbar.
+- `images/` — alle Original-Bilddateien als Referenz (Titelbilder SR/EN, Service-Teaser, Galerie Ordination, Galerie Dentaltourismus).
 
-## Design
+## Seiten (pro Sprache)
 
-- **Eigene visuelle Identität** — Petrol-Grün (`#0E3A3C`) als Grundfarbe, Koralle (`#F1705F`) für Call-to-Actions, Mint-Flächen, kräftige Sans-Serif-Typografie. Bewusst losgelöst von der Optik der alten Website; das Original-Logo wird für den hellen Header in Petrol eingefärbt, im Footer in Weiß verwendet.
-- **Neue Seitenstruktur** — heller Sticky-Header mit Pill-Navigation und Termin-Button, Hero mit Foto-Karte und animiert gezeichneter Unterstreichung, Leistungs-Kachelgrid, Artikel-Karte mit Fakten-Spalte und Pull-Quote, Promo-Karten, Testimonial-Marquee, großes CTA-Panel, Petrol-Footer.
-- **Dreisprachig (SR/EN/DE)** — Umschalter im Header, Auswahl wird in `localStorage` gespeichert. Sämtliche Inhalte wechseln. Die deutschen Texte sind Übersetzungen der serbischen Originalinhalte; die DE-Navigation verlinkt auf die englischen Unterseiten der Live-Site (deutsche existieren dort nicht).
-- **Animationen** — Einblend-Sequenz im Hero, gezeichnete Unterstreichung, Scroll-Reveals, schwebende Badges, Testimonial-Laufband (pausiert bei Hover), Hover-Effekte, animierter Sprachwechsel. `prefers-reduced-motion` wird respektiert.
-- **Light-/Dark-Theme** — token-basiert, folgt der Systemeinstellung.
-- **Responsive** — Off-Canvas-Menü, umbrechende Grids.
-- **Kein Framework** — reines HTML, CSS und Vanilla-JavaScript, kein Build-Schritt; läuft auf jedem normalen Webhosting.
+| Seite | SR | EN | DE |
+|---|---|---|---|
+| Startseite (mit Hero, Leistungs-Grid, Text, Banner, Patientenstimmen) | ✓ | ✓ | ✓ |
+| O nama / About us / Über uns | ✓ | ✓ | ✓ |
+| Oralna hirurgija / Oral Surgery / Oralchirurgie | ✓ | ✓ | ✓ |
+| Stomatološka protetika / Dental Prosthesis / Zahnprothetik | ✓ | ✓ | ✓ |
+| Endodoncija / Endodontics / Endodontie | ✓ | ✓ | ✓ |
+| Konzervativa / Conservative Dentistry / Konservierende Zahnheilkunde | ✓ | ✓ | ✓ |
+| Popravka zuba / Tooth Decay Treatment / Zahnreparatur | ✓ | ✓ | ✓ |
+| Ortodoncija / Orthodontics / Kieferorthopädie | ✓ | ✓ | ✓ |
+| Mirko Trbović (Naš tim) | ✓ | ✓ | ✓ |
+| Blog (Liste, Beiträge verlinken auf die Live-Site) | ✓ | ✓ | ✓ |
+| Zakazivanje / Booking / Terminvereinbarung (Formular per mailto) | ✓ | ✓ | ✓ |
+| Dental turizam (Foto-Galerie, 21 Bilder) | ✓ | ✓ | ✓ |
+| Kontakt (Adresse, Telefone, Google-Maps-Link) | ✓ | ✓ | ✓ |
+| Foto (Galerie Ordination, 10 Bilder, Lightbox) | ✓ | ✓ | ✓ |
+| Korisni linkovi / Nützliche Links | ✓ | – | ✓ |
+| Hitne intervencije (Dežurni stomatolog) / Notdienst | ✓ | – | ✓ |
 
-Alle Links zeigen auf die bestehenden Seiten von stomatologbeograd.co.rs.
+Die Menüstruktur entspricht pro Sprache dem Original (das EN-Menü der Live-Site enthält z. B. keine Punkte für Zakazivanje/Notdienst/Linkovi). Die deutschen Inhalte sind Übersetzungen der serbischen Originaltexte.
+
+## Design & Technik
+
+- Eigene visuelle Identität: Petrol (`#0E3A3C`), Koralle (`#F1705F`) für CTAs, Mint-Flächen, kräftige Sans-Serif-Typografie; Original-Logo im Header petrol eingefärbt, im Footer weiß.
+- Seitentypen: Startseite, Artikelseiten (mit Original-Titelbild als Banner und Fakten-Spalte), Galerien mit Lightbox, Blog-Liste, Terminformular, Kontaktseite.
+- Animationen: Scroll-Reveals, Hero-Einblendsequenz, Testimonial-Laufband, Hover-Effekte; `prefers-reduced-motion` wird respektiert.
+- Light-/Dark-Theme (token-basiert), responsive mit Off-Canvas-Menü.
+- Das Terminformular öffnet beim Absenden das E-Mail-Programm mit vorausgefüllter Nachricht an ordinacija@stomatologbeograd.co.rs (statisches Hosting hat kein Backend für Formulare).
+
+## Build
+
+`index.html` wird aus Template + gescrapten Inhalten generiert (siehe Session-Verlauf). Direkt editierbar ist die Datei ebenfalls — Inhalte liegen als JSON-Datenblock am Anfang des `<script>`-Teils.
