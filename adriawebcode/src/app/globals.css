@@ -122,6 +122,24 @@ h3 {
   }
 }
 
+/* Floating feature cards beside the hero specimen — a slow bob; the entrance
+   itself runs on an inner .print-row so the two transforms don't clash. */
+.float-card {
+  animation: float-bob 7s ease-in-out infinite;
+}
+.float-card[data-delay="2"] {
+  animation-delay: -3.5s;
+}
+@keyframes float-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

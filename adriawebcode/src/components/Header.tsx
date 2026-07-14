@@ -62,7 +62,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary["nav
           <div className="relative">
             <button
               onClick={() => setLangOpen((v) => !v)}
-              className="flex items-center gap-1.5 rounded-md border border-rule bg-paper px-3.5 py-2 text-sm font-medium uppercase text-ink transition-colors hover:border-ink"
+              className="flex items-center gap-1 rounded-md border border-rule bg-paper px-2.5 py-2 text-sm font-medium uppercase text-ink transition-colors hover:border-ink sm:gap-1.5 sm:px-3.5"
               aria-haspopup="listbox"
               aria-expanded={langOpen}
             >
