@@ -38,7 +38,8 @@ Die Menüstruktur entspricht pro Sprache dem Original (das EN-Menü der Live-Sit
 - Seitentypen: Startseite, Artikelseiten (mit Original-Titelbild als Banner und Fakten-Spalte), Galerien mit Lightbox, Blog-Liste, Terminformular, Kontaktseite.
 - Animationen: Scroll-Reveals, Hero-Einblendsequenz, Testimonial-Laufband, Hover-Effekte; `prefers-reduced-motion` wird respektiert.
 - Light-/Dark-Theme (token-basiert), responsive mit Off-Canvas-Menü.
-- Das Terminformular öffnet beim Absenden das E-Mail-Programm mit vorausgefüllter Nachricht an ordinacija@stomatologbeograd.co.rs (statisches Hosting hat kein Backend für Formulare).
+- **Terminformular mit Direktversand:** Feldfragen erscheinen in der Mail immer auf Serbisch (Antworten in der vom Patienten gewählten Sprache, plus Zeile `Jezik stranice: DE/EN/SR`). Telefonfeld ist je Sprache mit Landesvorwahl vorbelegt (+381/+44/+49) und erzwingt eine internationale Nummer. Bot-Schutz: unsichtbares Honeypot-Feld + Zeitschranke (Absenden unter 4 s wird verworfen). Für den Direktversand ohne E-Mail-Programm einen kostenlosen Access-Key auf <https://web3forms.com> erstellen und in `index.html` bei `WEB3FORMS_KEY` eintragen; ohne Key (und im Fehlerfall) fällt das Formular automatisch auf den mailto-Versand zurück.
+- **E-Mail-Adresse nicht scrapebar:** Die Praxis-Adresse steht nirgends im Klartext im Quellcode — sie ist Base64-kodiert und wird erst zur Laufzeit im Browser dekodiert (Footer-, Kontakt- und mailto-Links werden per JS erzeugt).
 
 ## Build
 
