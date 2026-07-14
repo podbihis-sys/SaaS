@@ -3,7 +3,7 @@ import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
-import { TrustMarquee, Services, Process, Pricing, Maintenance, Regions } from "@/components/Sections";
+import { TrustMarquee, Services, References, Process, Pricing, Maintenance, Regions } from "@/components/Sections";
 import { Faq } from "@/components/Faq";
 import { ContactForm } from "@/components/ContactForm";
 import { Footer } from "@/components/Footer";
@@ -24,6 +24,7 @@ export default async function HomePage({
         <Hero dict={dict.hero} locale={locale} />
         <TrustMarquee dict={dict.trust} />
         <Services dict={dict.services} />
+        <References locale={locale} />
         <Process dict={dict.process} />
         <Pricing dict={dict.pricing} contact={dict.contact} locale={locale} />
         <Maintenance dict={dict.maintenance} locale={locale} />

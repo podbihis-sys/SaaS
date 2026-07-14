@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import { DrawRule } from "./Reveal";
@@ -62,6 +63,122 @@ export function Services({ dict }: { dict: Dictionary["services"] }) {
                 {item.desc}
               </p>
             </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Live client projects — the screenshot links straight to the real site. */
+const REFERENCES: Array<{
+  name: string;
+  url: string;
+  image: string;
+  industry: Record<Locale, string>;
+}> = [
+  {
+    name: "Restaurant Adria",
+    url: "https://adria-koeln.de",
+    image: "/references/adria-koeln.jpg",
+    industry: {
+      de: "Restaurant · Köln",
+      en: "Restaurant · Cologne",
+      hr: "Restoran · Köln",
+      bs: "Restoran · Köln",
+      sr: "Restoran · Keln",
+    },
+  },
+  {
+    name: "Hotel Klosterstuben",
+    url: "https://hotel-klosterstuben.com",
+    image: "/references/hotel-klosterstuben.jpg",
+    industry: {
+      de: "Hotel & Restaurant",
+      en: "Hotel & restaurant",
+      hr: "Hotel i restoran",
+      bs: "Hotel i restoran",
+      sr: "Hotel i restoran",
+    },
+  },
+  {
+    name: "BIT Bierther GmbH",
+    url: "https://web-five-lime-bbyohdw5k8.vercel.app/bit",
+    image: "/references/bit.jpg",
+    industry: {
+      de: "Industrietechnik",
+      en: "Industrial technology",
+      hr: "Industrijska tehnika",
+      bs: "Industrijska tehnika",
+      sr: "Industrijska tehnika",
+    },
+  },
+  {
+    name: "Natürlich Grün",
+    url: "https://natuerlich-gruen.vercel.app/",
+    image: "/references/natuerlich-gruen.jpg",
+    industry: {
+      de: "Garten- & Landschaftsbau",
+      en: "Garden & landscaping",
+      hr: "Uređenje vrtova i okoliša",
+      bs: "Uređenje vrtova i okoliša",
+      sr: "Uređenje vrtova i okoline",
+    },
+  },
+];
+
+const REF_L10N: Record<Locale, { title: string; lead: string }> = {
+  de: {
+    title: "Referenzen",
+    lead: "Ein Auszug aus unseren Projekten – klicken Sie auf ein Bild und besuchen Sie die Website direkt.",
+  },
+  en: {
+    title: "Selected work",
+    lead: "A selection of our projects – click any picture to visit the live website.",
+  },
+  hr: {
+    title: "Reference",
+    lead: "Izbor naših projekata – kliknite na sliku i posjetite stranicu uživo.",
+  },
+  bs: {
+    title: "Reference",
+    lead: "Izbor naših projekata – kliknite na sliku i posjetite stranicu uživo.",
+  },
+  sr: {
+    title: "Reference",
+    lead: "Izbor naših projekata – kliknite na sliku i posetite sajt uživo.",
+  },
+};
+
+export function References({ locale }: { locale: Locale }) {
+  const t = REF_L10N[locale];
+  return (
+    <section id="references" className="scroll-mt-24 border-t border-rule py-24 sm:py-32">
+      <div className="container-site">
+        <SectionTitle title={t.title} lead={t.lead} />
+        <div className="mt-14 grid gap-6 sm:grid-cols-2">
+          {REFERENCES.map((ref) => (
+            <a
+              key={ref.name}
+              href={ref.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block border border-rule bg-paper transition-colors hover:border-ink"
+            >
+              <span className="relative block aspect-[16/10] overflow-hidden border-b border-rule">
+                <Image
+                  src={ref.image}
+                  alt={`${ref.name} – ${ref.industry[locale]}`}
+                  fill
+                  sizes="(min-width: 640px) 50vw, 100vw"
+                  className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+              </span>
+              <span className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-5 py-4">
+                <span className="font-semibold text-ink">{ref.name}</span>
+                <span className="text-xs text-muted">{ref.industry[locale]}</span>
+              </span>
+            </a>
           ))}
         </div>
       </div>
