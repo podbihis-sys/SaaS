@@ -7,22 +7,19 @@ export interface HeroSlide {
   alt: string;
 }
 
-/** Sanft überblendender Bild-Slider für den Hero-Bereich (rechte Seite). */
+/** Automatisch wechselnde Diashow für den Hero-Bereich (rechte Seite) – große Bilder ohne Rahmen. */
 export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
     if (slides.length <= 1) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-    const id = setInterval(() => setIndex((i) => (i + 1) % slides.length), 4500);
+    const id = setInterval(() => setIndex((i) => (i + 1) % slides.length), 4000);
     return () => clearInterval(id);
   }, [slides.length]);
 
   return (
-    <div className="relative mx-auto w-full max-w-md">
-      <div className="bit-spin-slow absolute -right-6 -top-6 h-24 w-24 rounded-full border border-dashed border-[#38bdf8]/50" />
-      <div className="relative aspect-square overflow-hidden rounded-[1.75rem] bg-white shadow-2xl ring-1 ring-slate-200">
+    <div className="relative mx-auto w-full max-w-lg xl:max-w-xl">
+      <div className="relative aspect-square">
         {slides.map((slide, i) => (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
@@ -30,19 +27,19 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
             src={slide.src}
             alt={slide.alt}
             loading={i === 0 ? "eager" : "lazy"}
-            className={`absolute inset-0 h-full w-full object-contain p-6 transition-opacity duration-1000 ${
+            className={`absolute inset-0 h-full w-full object-contain mix-blend-multiply transition-opacity duration-1000 ${
               i === index ? "opacity-100" : "opacity-0"
             }`}
           />
         ))}
       </div>
-      <div className="absolute -bottom-5 -left-5 rounded-2xl bg-white px-4 py-3 text-slate-900 shadow-xl ring-1 ring-slate-200">
+      <div className="absolute -bottom-4 left-0 rounded-2xl bg-white px-4 py-3 text-slate-900 shadow-xl ring-1 ring-slate-200">
         <div className="text-xl font-bold text-[#1e4a7a]">1.000+</div>
         <div className="text-[11px] uppercase tracking-wide text-slate-500">Artikel ab Lager</div>
       </div>
 
       {slides.length > 1 && (
-        <div className="mt-5 flex justify-center gap-2">
+        <div className="mt-8 flex justify-center gap-2">
           {slides.map((slide, i) => (
             <button
               key={slide.src}

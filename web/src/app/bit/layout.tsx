@@ -11,9 +11,9 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   metadataBase: new URL(BASE),
   icons: {
-    icon: "/bit/logo.png",
-    shortcut: "/bit/logo.png",
-    apple: "/bit/logo.png",
+    icon: "/bit/favicon.png",
+    shortcut: "/bit/favicon.png",
+    apple: "/bit/favicon.png",
   },
   title: {
     default: "BIT Bierther GmbH – Schrumpf- & Isolierschlauchtechnik",

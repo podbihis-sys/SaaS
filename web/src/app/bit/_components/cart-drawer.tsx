@@ -69,8 +69,13 @@ export function CartDrawer() {
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-slate-900">
+                      <p className="text-sm font-semibold text-slate-900">
                         {item.name}
+                        {item.code && item.code !== item.name && (
+                          <span className="ml-1.5 rounded bg-[#0f2742] px-1.5 py-0.5 align-middle font-mono text-[11px] font-medium text-white/90">
+                            {item.code}
+                          </span>
+                        )}
                       </p>
                       <p className="mt-0.5 text-xs text-slate-500">
                         Größe: <span className="font-medium text-slate-700">{item.size}</span>

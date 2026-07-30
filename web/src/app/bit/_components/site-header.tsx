@@ -14,6 +14,8 @@ const NAV = [
   { href: "/bit/kompetenzen", label: "Kompetenzen" },
   { href: "/bit/branchen", label: "Branchen" },
   { href: "/bit/unternehmen", label: "Die BIT" },
+  { href: "/bit/karriere", label: "Karriere" },
+  { href: "/bit/nachhaltigkeit", label: "Nachhaltigkeit" },
   { href: "/bit/kontakt", label: "Kontakt" },
 ];
 

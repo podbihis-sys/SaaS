@@ -39,8 +39,8 @@ export default function CartPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
-          items: items.map(({ name, size, color, unit, quantity, metersPerRoll, unitsPerPack }) => ({
-            name,
+          items: items.map(({ name, code, size, color, unit, quantity, metersPerRoll, unitsPerPack }) => ({
+            name: code && code !== name ? `${name} (${code})` : name,
             size,
             color,
             unit: metersPerRoll
@@ -134,6 +134,11 @@ export default function CartPage() {
                         >
                           {item.name}
                         </Link>
+                        {item.code && item.code !== item.name && (
+                          <span className="ml-1.5 rounded bg-[#0f2742] px-1.5 py-0.5 font-mono text-[11px] font-medium text-white/90">
+                            {item.code}
+                          </span>
+                        )}
                         {item.color && (
                           <div className="mt-0.5 text-xs text-slate-500">{item.color}</div>
                         )}

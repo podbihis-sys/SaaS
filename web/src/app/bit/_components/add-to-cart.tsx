@@ -39,6 +39,7 @@ export function AddToCart({ product }: { product: Product }) {
     addItem({
       slug: product.slug,
       name: product.name,
+      code: product.code,
       category: product.category,
       size,
       color: product.colors ? color : undefined,
