@@ -1,11 +1,49 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { Minus, Plus, ShoppingCart, Trash2, X } from "lucide-react";
 import { useCart } from "../_lib/cart";
 
 export function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity, removeItem, count } = useCart();
+  const panelRef = useRef<HTMLElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const restoreRef = useRef<HTMLElement | null>(null);
+
+  // Fokus-Management (WCAG 2.4.3): Fokus in den Dialog, Escape schließt,
+  // Tab bleibt im Dialog, Fokus kehrt zum Auslöser zurück.
+  useEffect(() => {
+    if (!isOpen) return;
+    restoreRef.current = document.activeElement as HTMLElement | null;
+    closeRef.current?.focus();
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeCart();
+        return;
+      }
+      if (e.key !== "Tab" || !panelRef.current) return;
+      const focusables = panelRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (!first || !last) return;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      restoreRef.current?.focus();
+    };
+  }, [isOpen, closeCart]);
 
   return (
     <div
@@ -21,7 +59,9 @@ export function CartDrawer() {
       />
       {/* Panel */}
       <aside
+        ref={panelRef}
         role="dialog"
+        aria-modal="true"
         aria-label="Warenkorb"
         className={`absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-white shadow-2xl transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "translate-x-full"
@@ -36,11 +76,12 @@ export function CartDrawer() {
             </span>
           </div>
           <button
+            ref={closeRef}
             onClick={closeCart}
-            aria-label="Schließen"
+            aria-label="Warenkorb schließen"
             className="rounded-md p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-900"
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5" aria-hidden="true" />
           </button>
         </header>
 
@@ -85,7 +126,7 @@ export function CartDrawer() {
                     <button
                       onClick={() => removeItem(item.id)}
                       aria-label="Entfernen"
-                      className="rounded-md p-1 text-slate-400 hover:bg-red-50 hover:text-red-600"
+                      className="rounded-md p-1 text-slate-500 hover:bg-red-50 hover:text-red-700"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -103,6 +144,7 @@ export function CartDrawer() {
                         type="number"
                         min={1}
                         value={item.quantity}
+                        aria-label={`Menge für ${item.name}`}
                         onChange={(e) =>
                           updateQuantity(item.id, parseInt(e.target.value || "1", 10))
                         }

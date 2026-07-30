@@ -176,8 +176,8 @@ export default async function BitHome() {
           </div>
         </div>
 
-        {/* Category marquee */}
-        <div className="relative border-t border-slate-200 py-4">
+        {/* Category marquee – rein dekorativ, Inhalte stehen in der Navigation */}
+        <div className="relative border-t border-slate-200 py-4" aria-hidden="true">
           <div className="bit-marquee">
             <div className="bit-marquee__track text-sm font-medium uppercase tracking-[0.18em] text-slate-400">
               {[...CATEGORIES, ...CATEGORIES].map((c, i) => (

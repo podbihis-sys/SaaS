@@ -77,7 +77,7 @@ export function SiteHeader() {
           />
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-1 md:flex" aria-label="Hauptnavigation">
           {NAV.map((item) => (
             <Link
               key={item.href}
@@ -96,12 +96,15 @@ export function SiteHeader() {
           <button
             onClick={openCart}
             className="group relative flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition-all hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
-            aria-label="Warenkorb öffnen"
+            aria-label={`Warenkorb öffnen${count > 0 ? `, ${count} Artikel` : ""}`}
           >
-            <ShoppingCart className="h-5 w-5 transition-transform group-hover:-rotate-6" />
+            <ShoppingCart className="h-5 w-5 transition-transform group-hover:-rotate-6" aria-hidden="true" />
             <span className="hidden sm:inline">Warenkorb</span>
             {count > 0 && (
-              <span className="bit-pulse absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#38bdf8] px-1 text-xs font-bold text-slate-900">
+              <span
+                aria-hidden="true"
+                className="bit-pulse absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#38bdf8] px-1 text-xs font-bold text-slate-900"
+              >
                 {count}
               </span>
             )}
@@ -109,9 +112,11 @@ export function SiteHeader() {
           <button
             onClick={() => setMobileOpen((v) => !v)}
             className="rounded-full border border-slate-200 p-2 text-slate-700 md:hidden"
-            aria-label="Menü"
+            aria-label={mobileOpen ? "Menü schließen" : "Menü öffnen"}
+            aria-expanded={mobileOpen}
+            aria-controls="bit-mobile-nav"
           >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
           </button>
         </div>
       </div>
@@ -126,7 +131,7 @@ export function SiteHeader() {
 
       {/* Mobile nav */}
       {mobileOpen && (
-        <nav className="border-t border-slate-200 bg-white md:hidden">
+        <nav id="bit-mobile-nav" className="border-t border-slate-200 bg-white md:hidden" aria-label="Hauptnavigation mobil">
           <div className="container flex flex-col py-2">
             {NAV.map((item) => (
               <Link

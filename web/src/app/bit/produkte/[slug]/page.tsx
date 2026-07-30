@@ -118,7 +118,7 @@ export default async function ProductDetail({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
       {/* Breadcrumb */}
-      <nav className="border-b border-slate-200 bg-slate-50">
+      <nav className="border-b border-slate-200 bg-slate-50" aria-label="Brotkrümelnavigation">
         <div className="container flex flex-wrap items-center gap-1.5 py-4 text-sm text-slate-500">
           <Link href="/bit" className="hover:text-[#1e4a7a]">Start</Link>
           <ChevronRight className="h-4 w-4" />
@@ -234,7 +234,7 @@ export default async function ProductDetail({
           <div className="rounded-2xl border border-slate-200 p-6">
             <div className="flex items-center justify-between gap-3">
               <h2 className="text-lg font-semibold text-slate-900">Eigenschaften</h2>
-              <span className="text-xs text-slate-400">Eigenschaft anklicken für passende Produkte</span>
+              <span className="text-xs text-slate-500">Eigenschaft anklicken für passende Produkte</span>
             </div>
             <ul className="mt-4 space-y-1">
               {product.features.map((f) => {

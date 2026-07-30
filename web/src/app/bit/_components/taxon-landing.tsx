@@ -137,7 +137,7 @@ export function TaxonLanding({
                 >
                   {r.label}
                   {typeof r.count === "number" && (
-                    <span className={r.active ? "text-white/70" : "text-slate-400"}>{r.count}</span>
+                    <span className={r.active ? "text-white/70" : "text-slate-500"}>{r.count}</span>
                   )}
                 </Link>
               ))}

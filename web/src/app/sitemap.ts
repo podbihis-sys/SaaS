@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/bit/qualitaet",
     "/bit/kontakt",
     "/bit/impressum",
+    "/bit/barrierefreiheit",
   ];
   const categoryPaths = CATEGORIES.map((c) => `/bit/${c.id}`);
   const productPaths = PRODUCTS.map((p) => `/bit/produkte/${p.slug}`);

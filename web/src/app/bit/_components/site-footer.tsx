@@ -79,6 +79,7 @@ export function SiteFooter() {
             <li><Link href="/bit/qualitaet" className="text-slate-500 hover:text-[#1e4a7a]">Qualität & Zertifikate</Link></li>
             <li><Link href="/bit/kontakt" className="text-slate-500 hover:text-[#1e4a7a]">Kontakt</Link></li>
             <li><Link href="/bit/impressum" className="text-slate-500 hover:text-[#1e4a7a]">Impressum</Link></li>
+            <li><Link href="/bit/barrierefreiheit" className="text-slate-500 hover:text-[#1e4a7a]">Barrierefreiheit</Link></li>
             <li><Link href="/bit/warenkorb" rel="nofollow" className="text-slate-500 hover:text-[#1e4a7a]">Anfrage / Warenkorb</Link></li>
           </ul>
         </div>
@@ -123,7 +124,8 @@ export function SiteFooter() {
         <div className="container flex flex-col items-center justify-between gap-2 py-5 text-xs text-slate-500 sm:flex-row">
           <span>
             © {new Date().getFullYear()} {COMPANY.legalName}. Alle Rechte vorbehalten. ·{" "}
-            <Link href="/bit/impressum" className="hover:text-[#1e4a7a]">Impressum</Link>
+            <Link href="/bit/impressum" className="hover:text-[#1e4a7a]">Impressum</Link> ·{" "}
+            <Link href="/bit/barrierefreiheit" className="hover:text-[#1e4a7a]">Barrierefreiheit</Link>
           </span>
           <span>{COMPANY.register} · Geschäftsführer: {COMPANY.managingDirector}</span>
         </div>

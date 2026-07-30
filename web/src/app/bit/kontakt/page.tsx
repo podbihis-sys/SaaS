@@ -150,13 +150,13 @@ export default async function KontaktPage() {
                 <div className="mt-0.5 text-sm text-[#1e4a7a]">{m.role}</div>
                 <ul className="mt-3 space-y-1.5 text-sm text-slate-600">
                   <li className="flex items-center gap-2">
-                    <Phone className="h-4 w-4 shrink-0 text-slate-400" />
+                    <Phone className="h-4 w-4 shrink-0 text-slate-500" />
                     <a href={`tel:${m.phone.replace(/[^+\d]/g, "")}`} className="hover:text-[#1e4a7a]">
                       {m.phone}
                     </a>
                   </li>
                   <li className="flex items-center gap-2">
-                    <Mail className="h-4 w-4 shrink-0 text-slate-400" />
+                    <Mail className="h-4 w-4 shrink-0 text-slate-500" />
                     <a href={`mailto:${m.email}`} className="break-all hover:text-[#1e4a7a]">
                       {m.email}
                     </a>

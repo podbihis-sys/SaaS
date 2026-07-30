@@ -19,8 +19,11 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   return (
     <CartProvider>
       <div className="min-h-screen bg-white font-sans text-slate-900 antialiased">
+        <a href="#bit-main" className="bit-skip-link">
+          Zum Inhalt springen
+        </a>
         <SiteHeader />
-        <main>{children}</main>
+        <main id="bit-main">{children}</main>
         <SiteFooter />
         <CartDrawer />
       </div>

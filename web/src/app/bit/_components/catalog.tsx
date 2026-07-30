@@ -384,7 +384,7 @@ function CategoryChip({
       }`}
     >
       {label}
-      <span className={`text-xs ${active ? "text-white/70" : "text-slate-400"}`}>{count}</span>
+      <span className={`text-xs ${active ? "text-white/90" : "text-slate-500"}`}>{count}</span>
     </Link>
   );
 }

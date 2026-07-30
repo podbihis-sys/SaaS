@@ -33,7 +33,7 @@ export default function ProductsPage() {
               Material, Wandstärke, Schrumpfrate und Temperatur. Lieferung von Standardware in
               der Regel innerhalb von 24 Stunden, Konfektion ab Losgröße 1.
             </p>
-            <p className="mt-6 text-sm text-slate-400">Produkte werden geladen …</p>
+            <p className="mt-6 text-sm text-slate-500">Produkte werden geladen …</p>
             <nav className="mt-10" aria-label="Alle Produkte">
               {CATEGORIES.map((cat) => {
                 const items = PRODUCTS.filter((p) => p.category === cat.id);
