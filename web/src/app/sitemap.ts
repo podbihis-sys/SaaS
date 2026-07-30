@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { CATEGORIES, PRODUCTS } from "./bit/_data/catalog";
 import { NEWS } from "./bit/_data/news";
+import { CONTENT_PAGES } from "./bit/_data/pages";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
 
@@ -20,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/bit/impressum",
     "/bit/barrierefreiheit",
   ];
+  const contentPaths = CONTENT_PAGES.map((p) => `/bit/${p.slug}`);
   const categoryPaths = CATEGORIES.map((c) => `/bit/${c.id}`);
   const productPaths = PRODUCTS.map((p) => `/bit/produkte/${p.slug}`);
   const newsPaths = NEWS.map((n) => `/bit/news/${n.slug}`);
@@ -27,7 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // ihre Kategorie-Varianten) sind bewusst noindex (Duplicate-Content/
   // Kannibalisierung) und daher nicht in der Sitemap.
 
-  return [...staticPaths, ...categoryPaths, ...productPaths, ...newsPaths].map((path) => ({
+  return [...staticPaths, ...categoryPaths, ...contentPaths, ...productPaths, ...newsPaths].map((path) => ({
     url: `${BASE}${path}`,
     lastModified: now,
     changeFrequency:

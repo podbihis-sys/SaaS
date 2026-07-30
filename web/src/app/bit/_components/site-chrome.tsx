@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { CartProvider } from "../_lib/cart";
 import { CartDrawer } from "./cart-drawer";
+import { ContactRail } from "./contact-rail";
 import { SiteHeader } from "./site-header";
 import { SiteFooter } from "./site-footer";
 
@@ -25,6 +26,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
         <SiteHeader />
         <main id="bit-main">{children}</main>
         <SiteFooter />
+        <ContactRail />
         <CartDrawer />
       </div>
     </CartProvider>
