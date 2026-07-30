@@ -221,8 +221,11 @@ export function Catalog({ active }: { active: CategoryId | "alle" }) {
           {/* Sidebar – nur rendern, wenn es für diese Kategorie Filter gibt */}
           {facets.any && (
             <aside className={`${mobileOpen ? "block" : "hidden"} lg:block`}>
-              <div className="lg:sticky lg:top-24 rounded-2xl border border-slate-200 bg-white p-5">
-                <div className="flex items-center justify-between">
+              {/* Eigener Scrollbereich: Der Filter bleibt beim Scrollen stehen und
+                  scrollt bei vielen Kriterien für sich, statt unten abgeschnitten
+                  zu werden. Der Kopf mit „Zurücksetzen“ bleibt dabei sichtbar. */}
+              <div className="rounded-2xl border border-slate-200 bg-white lg:sticky lg:top-36 lg:flex lg:max-h-[calc(100vh-10rem)] lg:flex-col">
+                <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
                   <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-900">
                     Filter
                   </h2>
@@ -236,6 +239,7 @@ export function Catalog({ active }: { active: CategoryId | "alle" }) {
                     </button>
                   )}
                 </div>
+                <div className="bit-filter-scroll px-5 pb-5 lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
 
                 {/* Wandstärke – nur wenn in dieser Kategorie vorhanden */}
                 {facets.walls.length > 0 && (
@@ -333,6 +337,7 @@ export function Catalog({ active }: { active: CategoryId | "alle" }) {
                     ))}
                   </FilterGroup>
                 )}
+                </div>
               </div>
             </aside>
           )}
