@@ -65,25 +65,27 @@ export function SiteHeader() {
         </div>
       </div>
 
-      <div className="container flex h-20 items-center justify-between gap-4">
+      <div className="container flex h-24 items-center justify-between gap-4">
         <Link href="/bit" className="flex items-center gap-2.5" aria-label="BIT Bierther GmbH – Startseite">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/bit/logo.png"
             alt="BIT Bierther GmbH"
-            className="h-12 w-auto transition-transform duration-300 hover:scale-105"
-            width={245}
-            height={48}
+            className="h-14 w-auto transition-transform duration-300 hover:scale-105 sm:h-16"
+            width={328}
+            height={64}
           />
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Hauptnavigation">
+        {/* Ab 9 Menüpunkten passt die Leiste erst ab lg – darunter Burger-Menü,
+            sonst überlappen die hinteren Links den Warenkorb-Button. */}
+        <nav className="hidden shrink items-center gap-0.5 lg:flex xl:gap-1" aria-label="Hauptnavigation">
           {NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               data-active={isActive(item.href)}
-              className={`bit-nav-link rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+              className={`bit-nav-link whitespace-nowrap rounded-lg px-2.5 py-2 text-sm font-medium transition-colors xl:px-3 ${
                 isActive(item.href) ? "text-[#1e4a7a]" : "text-slate-600 hover:text-slate-900"
               }`}
             >
@@ -111,7 +113,7 @@ export function SiteHeader() {
           </button>
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="rounded-full border border-slate-200 p-2 text-slate-700 md:hidden"
+            className="rounded-full border border-slate-200 p-2 text-slate-700 lg:hidden"
             aria-label={mobileOpen ? "Menü schließen" : "Menü öffnen"}
             aria-expanded={mobileOpen}
             aria-controls="bit-mobile-nav"
@@ -131,7 +133,7 @@ export function SiteHeader() {
 
       {/* Mobile nav */}
       {mobileOpen && (
-        <nav id="bit-mobile-nav" className="border-t border-slate-200 bg-white md:hidden" aria-label="Hauptnavigation mobil">
+        <nav id="bit-mobile-nav" className="border-t border-slate-200 bg-white lg:hidden" aria-label="Hauptnavigation mobil">
           <div className="container flex flex-col py-2">
             {NAV.map((item) => (
               <Link

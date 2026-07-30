@@ -29,9 +29,9 @@ export function SiteFooter() {
             <img
               src="/bit/logo.png"
               alt="BIT Bierther GmbH"
-              className="h-14 w-auto"
-              width={287}
-              height={56}
+              className="h-20 w-auto"
+              width={410}
+              height={80}
             />
           </div>
           <p className="mt-4 text-sm leading-relaxed text-slate-500">

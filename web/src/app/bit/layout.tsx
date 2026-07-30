@@ -11,8 +11,11 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   metadataBase: new URL(BASE),
   icons: {
-    icon: "/bit/favicon.png",
-    shortcut: "/bit/favicon.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "16x16 32x32 48x48" },
+      { url: "/bit/favicon.png", type: "image/png", sizes: "512x512" },
+    ],
+    shortcut: "/favicon.ico",
     apple: "/bit/favicon.png",
   },
   title: {

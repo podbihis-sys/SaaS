@@ -109,7 +109,7 @@ export default async function BitHome() {
       <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-white to-slate-50">
         <div className="bit-hero-glow" />
         <div className="absolute inset-0 bit-grid-light" />
-        <div className="container relative grid items-center gap-12 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-24">
+        <div className="container relative grid items-center gap-12 py-16 lg:grid-cols-[0.95fr_1.05fr] lg:py-24">
           <div>
             <Reveal
               as="span"
@@ -121,7 +121,7 @@ export default async function BitHome() {
             <Reveal
               as="h1"
               delay={90}
-              className="mt-5 text-[2.15rem] font-bold leading-[1.12] tracking-tight text-slate-900 sm:text-[2.75rem] xl:text-5xl"
+              className="mt-5 text-[1.9rem] font-bold leading-[1.15] tracking-tight text-slate-900 sm:text-[2.35rem] xl:text-[2.75rem]"
             >
               {c(content, "home.hero.title", "Schrumpfschläuche, Isolierschläuche & Kabelschutz aus einer Hand")}
             </Reveal>

@@ -34,10 +34,10 @@ export default async function QualitaetPage() {
       <section className="container py-20">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {[
-            { icon: Award, title: "DIN EN ISO 9001", text: "Zertifiziertes Qualitätsmanagement seit 1997 – regelmäßig durch den TÜV auditiert." },
+            { icon: Award, title: "DIN ISO 9001:2015", text: "Zertifiziertes Qualitätsmanagement seit 1997 – zuletzt im Juli 2025 durch den TÜV Rheinland ohne Beanstandungen rezertifiziert." },
             { icon: ClipboardCheck, title: "Wareneingangsprüfung", text: "Jede Charge wird auf Maßhaltigkeit und Materialgüte geprüft, bevor sie ins Lager geht." },
-            { icon: ShieldCheck, title: "Normkonforme Werkstoffe", text: "Materialien nach UL, VDE und einschlägigen Industrienormen – auf Wunsch mit Nachweis." },
-            { icon: Leaf, title: "RoHS & REACH", text: "Unsere Standardartikel erfüllen die geltenden Umwelt- und Stoffverbotsrichtlinien." },
+            { icon: ShieldCheck, title: "UL-Listings", text: "Gelistete Typen unter den UL-Files E196690 und E362210 – Materialien nach UL, VDE und einschlägigen Industrienormen, auf Wunsch mit Nachweis." },
+            { icon: Leaf, title: "RoHS & REACH", text: "Alle unsere Produkte entsprechen den Anforderungen der REACH-Verordnung und der RoHS-Richtlinie." },
             { icon: FlaskConical, title: "Rückverfolgbarkeit", text: "Konfektion und Kennzeichnung erlauben eine lückenlose Zuordnung bis zur Charge." },
             { icon: Recycle, title: "Langlebige Produkte", text: "Beständigkeit gegen Temperatur, Chemikalien und UV verlängert die Lebensdauer im Einsatz." },
           ].map(({ icon: Icon, title, text }) => (
