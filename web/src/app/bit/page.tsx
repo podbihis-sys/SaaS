@@ -213,7 +213,7 @@ export default async function BitHome() {
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="text-sm font-semibold uppercase tracking-wide text-[#1d4ed8]">Sortiment</span>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            Sechs Produktwelten
+            Unsere Produktwelten
           </h2>
           <p className="mt-3 text-slate-600">
             Für Isolation, Schutz und Bündelung – jeder Artikel mit allen verfügbaren Größen direkt
