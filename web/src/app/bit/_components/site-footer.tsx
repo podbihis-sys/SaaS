@@ -29,9 +29,9 @@ export function SiteFooter() {
             <img
               src="/bit/logo.png"
               alt="BIT Bierther GmbH"
-              className="h-14 w-auto"
-              width={287}
-              height={56}
+              className="h-20 w-auto"
+              width={410}
+              height={80}
             />
           </div>
           <p className="mt-4 text-sm leading-relaxed text-slate-500">
@@ -59,7 +59,7 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-2 text-sm">
             {CATEGORIES.map((c) => (
               <li key={c.id}>
-                <Link href={`/bit/produkte?kategorie=${c.id}`} rel="nofollow" className="text-slate-500 hover:text-[#1e4a7a]">
+                <Link href={`/bit/${c.id}`} className="text-slate-500 hover:text-[#1e4a7a]">
                   {c.name} kaufen
                 </Link>
               </li>
@@ -74,8 +74,12 @@ export function SiteFooter() {
             <li><Link href="/bit/kompetenzen" className="text-slate-500 hover:text-[#1e4a7a]">Kompetenzen</Link></li>
             <li><Link href="/bit/branchen" className="text-slate-500 hover:text-[#1e4a7a]">Branchen</Link></li>
             <li><Link href="/bit/unternehmen" className="text-slate-500 hover:text-[#1e4a7a]">Die BIT</Link></li>
+            <li><Link href="/bit/karriere" className="text-slate-500 hover:text-[#1e4a7a]">Karriere</Link></li>
+            <li><Link href="/bit/nachhaltigkeit" className="text-slate-500 hover:text-[#1e4a7a]">Nachhaltigkeit</Link></li>
             <li><Link href="/bit/qualitaet" className="text-slate-500 hover:text-[#1e4a7a]">Qualität & Zertifikate</Link></li>
             <li><Link href="/bit/kontakt" className="text-slate-500 hover:text-[#1e4a7a]">Kontakt</Link></li>
+            <li><Link href="/bit/impressum" className="text-slate-500 hover:text-[#1e4a7a]">Impressum</Link></li>
+            <li><Link href="/bit/barrierefreiheit" className="text-slate-500 hover:text-[#1e4a7a]">Barrierefreiheit</Link></li>
             <li><Link href="/bit/warenkorb" rel="nofollow" className="text-slate-500 hover:text-[#1e4a7a]">Anfrage / Warenkorb</Link></li>
           </ul>
         </div>
@@ -118,7 +122,11 @@ export function SiteFooter() {
 
       <div className="border-t border-slate-200">
         <div className="container flex flex-col items-center justify-between gap-2 py-5 text-xs text-slate-500 sm:flex-row">
-          <span>© {new Date().getFullYear()} {COMPANY.legalName}. Alle Rechte vorbehalten.</span>
+          <span>
+            © {new Date().getFullYear()} {COMPANY.legalName}. Alle Rechte vorbehalten. ·{" "}
+            <Link href="/bit/impressum" className="hover:text-[#1e4a7a]">Impressum</Link> ·{" "}
+            <Link href="/bit/barrierefreiheit" className="hover:text-[#1e4a7a]">Barrierefreiheit</Link>
+          </span>
           <span>{COMPANY.register} · Geschäftsführer: {COMPANY.managingDirector}</span>
         </div>
       </div>

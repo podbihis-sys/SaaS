@@ -39,6 +39,7 @@ export function AddToCart({ product }: { product: Product }) {
     addItem({
       slug: product.slug,
       name: product.name,
+      code: product.code,
       category: product.category,
       size,
       color: product.colors ? color : undefined,
@@ -102,7 +103,7 @@ export function AddToCart({ product }: { product: Product }) {
               ))}
         </div>
         {error && (
-          <p className="mt-2 animate-[bit-pulse_0.4s] text-sm font-medium text-red-600">
+          <p role="alert" className="mt-2 animate-[bit-pulse_0.4s] text-sm font-medium text-red-700">
             Bitte wählen Sie zuerst eine Größe aus.
           </p>
         )}
@@ -153,6 +154,7 @@ export function AddToCart({ product }: { product: Product }) {
               type="number"
               min={1}
               step={1}
+              aria-label="Menge"
               value={quantity}
               onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value || "1", 10)))}
               className="w-16 border-x border-slate-200 py-2 text-center text-sm font-medium text-slate-900 outline-none"
@@ -186,21 +188,25 @@ export function AddToCart({ product }: { product: Product }) {
         type="button"
         onClick={handleAdd}
         className={`bit-btn relative mt-6 w-full justify-center py-4 text-base ${
-          added ? "bg-green-600 text-white" : "bit-btn-primary"
+          added ? "bg-green-700 text-white" : "bit-btn-primary"
         }`}
       >
         {added ? (
           <>
-            <Check className="h-5 w-5" />
+            <Check className="h-5 w-5" aria-hidden="true" />
             <span>Zum Warenkorb hinzugefügt</span>
           </>
         ) : (
           <>
-            <ShoppingCart className="h-5 w-5" />
+            <ShoppingCart className="h-5 w-5" aria-hidden="true" />
             <span>In den Warenkorb</span>
           </>
         )}
       </button>
+      {/* Statusmeldung für Screenreader (WCAG 4.1.3 Status Messages) */}
+      <p role="status" aria-live="polite" className="bit-sr-only">
+        {added ? `${product.name} wurde zum Warenkorb hinzugefügt.` : ""}
+      </p>
       <p className="relative mt-3 text-center text-xs text-slate-500">
         Unverbindliche Anfrage · individuelles Angebot innerhalb von 24 Stunden
       </p>

@@ -14,6 +14,8 @@ export interface CartItem {
   id: string;
   slug: string;
   name: string;
+  /** Artikelcode/-bezeichnung (z. B. "BP 300") – für die korrekte Artikelbezeichnung. */
+  code?: string;
   category: string;
   size: string;
   color?: string;

@@ -109,7 +109,7 @@ export default async function BitHome() {
       <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-white to-slate-50">
         <div className="bit-hero-glow" />
         <div className="absolute inset-0 bit-grid-light" />
-        <div className="container relative grid items-center gap-12 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-24">
+        <div className="container relative grid items-center gap-12 py-16 lg:grid-cols-[0.95fr_1.05fr] lg:py-24">
           <div>
             <Reveal
               as="span"
@@ -121,7 +121,7 @@ export default async function BitHome() {
             <Reveal
               as="h1"
               delay={90}
-              className="mt-5 text-4xl font-bold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl xl:text-6xl"
+              className="mt-5 text-[1.9rem] font-bold leading-[1.15] tracking-tight text-slate-900 sm:text-[2.35rem] xl:text-[2.75rem]"
             >
               {c(content, "home.hero.title", "Schrumpfschläuche, Isolierschläuche & Kabelschutz aus einer Hand")}
             </Reveal>
@@ -176,8 +176,8 @@ export default async function BitHome() {
           </div>
         </div>
 
-        {/* Category marquee */}
-        <div className="relative border-t border-slate-200 py-4">
+        {/* Category marquee – rein dekorativ, Inhalte stehen in der Navigation */}
+        <div className="relative border-t border-slate-200 py-4" aria-hidden="true">
           <div className="bit-marquee">
             <div className="bit-marquee__track text-sm font-medium uppercase tracking-[0.18em] text-slate-400">
               {[...CATEGORIES, ...CATEGORIES].map((c, i) => (
@@ -213,7 +213,7 @@ export default async function BitHome() {
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="text-sm font-semibold uppercase tracking-wide text-[#1d4ed8]">Sortiment</span>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            Sechs Produktwelten
+            Unsere Produktwelten
           </h2>
           <p className="mt-3 text-slate-600">
             Für Isolation, Schutz und Bündelung – jeder Artikel mit allen verfügbaren Größen direkt
@@ -224,8 +224,7 @@ export default async function BitHome() {
           {CATEGORIES.map((cat, i) => (
             <Reveal key={cat.id} delay={i * 70} className="h-full">
               <Link
-                href={`/bit/produkte?kategorie=${cat.id}`}
-                rel="nofollow"
+                href={`/bit/${cat.id}`}
                 className="bit-card group flex h-full flex-col overflow-hidden"
               >
                 <div className="aspect-[16/9] overflow-hidden rounded-t-[1.3rem] bg-gradient-to-br from-slate-50 to-slate-100">

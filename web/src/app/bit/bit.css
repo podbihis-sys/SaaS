@@ -347,6 +347,69 @@
   transform: translateY(-1px);
 }
 
+/* ---------------------------------------------------------- filter-scroll -- */
+/* Dezente Scrollleiste für die eigenständig scrollbare Filterspalte. */
+.bit-filter-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+  overscroll-behavior: contain;
+}
+.bit-filter-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.bit-filter-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.bit-filter-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+.bit-filter-scroll::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ----------------------------------------------- accessibility (WCAG AA) -- */
+/* Deutlich sichtbarer Tastatur-Fokus (2.4.7 Focus Visible). */
+:focus-visible {
+  outline: 3px solid #1d4ed8 !important;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.bit-btn:focus-visible,
+.bit-pill:focus-visible {
+  outline-offset: 3px;
+}
+
+/* Skip-Link: unsichtbar bis zum Tastatur-Fokus (2.4.1 Bypass Blocks). */
+.bit-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 0.75rem 0;
+  background: #0f2742;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.bit-skip-link:focus-visible {
+  left: 0;
+}
+
+/* Nur für Screenreader sichtbar. */
+.bit-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ----------------------------------------------------- reduced motion ----- */
 @media (prefers-reduced-motion: reduce) {
   .bit-reveal {

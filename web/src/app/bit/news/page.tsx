@@ -63,7 +63,7 @@ export default async function NewsPage() {
                   </div>
                   <div className="flex flex-1 flex-col p-6">
                     {post.date && (
-                      <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
                         <CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.date)}
                       </span>
                     )}

@@ -5,6 +5,29 @@ import { COMPANY } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
 
+// Exakte Koordinaten des BIT-Gebäudes, Dützhofer Str. 7 (OpenStreetMap, Gewerbegebiet Heimerzheim).
+const MAP = { lat: 50.72287, lon: 6.91813 };
+const MAP_BBOX = `${MAP.lon - 0.014}%2C${MAP.lat - 0.009}%2C${MAP.lon + 0.014}%2C${MAP.lat + 0.009}`;
+
+/** Team-Kontakte – übernommen von der bisherigen Website bit-gmbh.de. */
+const TEAM: { name: string; role: string; phone: string; email: string }[] = [
+  { name: "Frank Bierther", role: "Geschäftsführer", phone: "+49 (0)2254 9610-0", email: "info@bit-gmbh.de" },
+  { name: "Kimberley Bierther", role: "Prokuristin / Assistentin Geschäftsleitung", phone: "+49 (0)2254 9610-36", email: "k.bierther@bit-gmbh.de" },
+  { name: "Simon Widera", role: "Vertriebsleitung", phone: "+49 (0)2254 9610-31", email: "s.widera@bit-gmbh.de" },
+  { name: "Waldemar Rempel", role: "Vertriebsleitung", phone: "+49 (0)2254 9610-41", email: "w.rempel@bit-gmbh.de" },
+  { name: "Thomas Peters", role: "Verkauf", phone: "+49 (0)2254 9610-34", email: "t.peters@bit-gmbh.de" },
+  { name: "Stefan Emig", role: "Verkauf", phone: "+49 (0)2254 9610-32", email: "s.emig@bit-gmbh.de" },
+  { name: "Torsten Brustkern", role: "Verkauf / QMB", phone: "+49 (0)2254 9610-66", email: "t.brustkern@bit-gmbh.de" },
+  { name: "Miguel Etzbauer", role: "Verkauf", phone: "+49 (0)2254 9610-29", email: "m.etzbauer@bit-gmbh.de" },
+  { name: "Dimitri Krieger", role: "Betriebsleitung", phone: "+49 (0)2254 9610-61", email: "betriebsleitung@bit-gmbh.de" },
+  { name: "Sabine Gröhling", role: "Auftragssachbearbeitung / Dispo", phone: "+49 (0)2254 9610-26", email: "s.groehling@bit-gmbh.de" },
+  { name: "Nina Weber", role: "Auftragssachbearbeitung / Dispo", phone: "+49 (0)2254 9610-35", email: "n.weber@bit-gmbh.de" },
+  { name: "Marc Weber", role: "Einkauf", phone: "+49 (0)2254 9610-12", email: "m.weber@bit-gmbh.de" },
+  { name: "Gisela Di Bernardo", role: "Prokuristin / Rechnungswesen", phone: "+49 (0)2254 9610-30", email: "g.dibernardo@bit-gmbh.de" },
+  { name: "Silke Richter", role: "Administration", phone: "+49 (0)2254 9610-11", email: "s.richter@bit-gmbh.de" },
+  { name: "Nicole Faßbender", role: "Administration", phone: "+49 (0)2254 9610-27", email: "n.fassbender@bit-gmbh.de" },
+];
+
 export const metadata: Metadata = {
   alternates: { canonical: "/bit/kontakt" },
   title: "Kontakt",
@@ -95,7 +118,7 @@ export default async function KontaktPage() {
               className="h-full min-h-[420px] w-full"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              src={`https://www.openstreetmap.org/export/embed.html?bbox=6.88%2C50.74%2C6.96%2C50.80&layer=mapnik&marker=50.77%2C6.92`}
+              src={`https://www.openstreetmap.org/export/embed.html?bbox=${MAP_BBOX}&layer=mapnik&marker=${MAP.lat}%2C${MAP.lon}`}
             />
             <a
               href={`https://www.openstreetmap.org/search?query=${mapsQuery}`}
@@ -105,6 +128,42 @@ export default async function KontaktPage() {
             >
               Auf der Karte öffnen
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Unser Team */}
+      <section className="border-t border-slate-200">
+        <div className="container py-16">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">Unser Team</p>
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">
+            Ihre Ansprechpartner bei der BIT
+          </h2>
+          <p className="mt-3 max-w-2xl text-slate-600">
+            Persönlich, kompetent und lösungsorientiert – so erreichen Sie uns direkt. Zentrale
+            Fax-Nummer: {COMPANY.fax}.
+          </p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {TEAM.map((m) => (
+              <div key={m.name} className="rounded-2xl border border-slate-200 bg-white p-5">
+                <div className="font-semibold text-slate-900">{m.name}</div>
+                <div className="mt-0.5 text-sm text-[#1e4a7a]">{m.role}</div>
+                <ul className="mt-3 space-y-1.5 text-sm text-slate-600">
+                  <li className="flex items-center gap-2">
+                    <Phone className="h-4 w-4 shrink-0 text-slate-500" />
+                    <a href={`tel:${m.phone.replace(/[^+\d]/g, "")}`} className="hover:text-[#1e4a7a]">
+                      {m.phone}
+                    </a>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Mail className="h-4 w-4 shrink-0 text-slate-500" />
+                    <a href={`mailto:${m.email}`} className="break-all hover:text-[#1e4a7a]">
+                      {m.email}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
       </section>

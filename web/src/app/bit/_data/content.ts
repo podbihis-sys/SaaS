@@ -41,6 +41,12 @@ export const CONTENT_FIELDS: ContentField[] = [
   { key: "unternehmen.soziales.text", label: "Soziales Engagement – Text", page: "Die BIT", multiline: true },
   { key: "unternehmen.karriere.title", label: "Karriere – Überschrift", page: "Die BIT" },
   { key: "unternehmen.karriere.text", label: "Karriere – Text", page: "Die BIT", multiline: true },
+  // Karriere
+  { key: "karriere.title", label: "Überschrift", page: "Karriere" },
+  { key: "karriere.intro", label: "Einleitung", page: "Karriere", multiline: true },
+  // Nachhaltigkeit
+  { key: "nachhaltigkeit.title", label: "Überschrift", page: "Nachhaltigkeit" },
+  { key: "nachhaltigkeit.intro", label: "Einleitung", page: "Nachhaltigkeit", multiline: true },
   // Qualität
   { key: "qualitaet.title", label: "Überschrift", page: "Qualität" },
   { key: "qualitaet.intro", label: "Einleitung", page: "Qualität", multiline: true },
