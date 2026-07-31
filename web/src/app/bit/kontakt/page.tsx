@@ -4,6 +4,7 @@ import { Clock, Mail, MapPin, Phone, Printer, ShoppingCart } from "lucide-react"
 import { COMPANY } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
+import { MapEmbed } from "../_components/map-embed";
 
 // Exakte Koordinaten des BIT-Gebäudes, Dützhofer Str. 7 (OpenStreetMap, Gewerbegebiet Heimerzheim).
 const MAP = { lat: 50.72287, lon: 6.91813 };
@@ -113,11 +114,9 @@ export default async function KontaktPage() {
           </div>
 
           <div className="overflow-hidden rounded-2xl border border-slate-200">
-            <iframe
+            <MapEmbed
               title="Standort BIT Bierther GmbH"
               className="h-full min-h-[420px] w-full"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
               src={`https://www.openstreetmap.org/export/embed.html?bbox=${MAP_BBOX}&layer=mapnik&marker=${MAP.lat}%2C${MAP.lon}`}
             />
             <a

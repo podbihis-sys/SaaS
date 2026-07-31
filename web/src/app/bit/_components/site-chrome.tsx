@@ -2,8 +2,10 @@
 
 import { usePathname } from "next/navigation";
 import { CartProvider } from "../_lib/cart";
+import { ConsentProvider } from "../_lib/consent";
 import { CartDrawer } from "./cart-drawer";
 import { ContactRail } from "./contact-rail";
+import { CookieBanner } from "./cookie-banner";
 import { SiteHeader } from "./site-header";
 import { SiteFooter } from "./site-footer";
 
@@ -18,6 +20,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
   return (
+    <ConsentProvider>
     <CartProvider>
       <div className="min-h-screen bg-white font-sans text-slate-900 antialiased">
         <a href="#bit-main" className="bit-skip-link">
@@ -28,7 +31,9 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
         <SiteFooter />
         <ContactRail />
         <CartDrawer />
+        <CookieBanner />
       </div>
     </CartProvider>
+    </ConsentProvider>
   );
 }

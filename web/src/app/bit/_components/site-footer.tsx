@@ -3,6 +3,7 @@ import { Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import { CATEGORIES, COMPANY } from "../_data/catalog";
 import { materialTaxa, propertyTaxa, shrinkTaxa } from "../_data/attributes";
 import { ShareButtons } from "./share-buttons";
+import { ConsentSettingsLink } from "./cookie-banner";
 
 export function SiteFooter() {
   const popular = [
@@ -80,6 +81,7 @@ export function SiteFooter() {
             <li><Link href="/bit/kontakt" className="text-slate-500 hover:text-[#1e4a7a]">Kontakt</Link></li>
             <li><Link href="/bit/impressum" className="text-slate-500 hover:text-[#1e4a7a]">Impressum</Link></li>
             <li><Link href="/bit/barrierefreiheit" className="text-slate-500 hover:text-[#1e4a7a]">Barrierefreiheit</Link></li>
+            <li><Link href="/bit/datenschutz" className="text-slate-500 hover:text-[#1e4a7a]">Datenschutz</Link></li>
             <li><Link href="/bit/warenkorb" rel="nofollow" className="text-slate-500 hover:text-[#1e4a7a]">Anfrage / Warenkorb</Link></li>
           </ul>
         </div>
@@ -125,7 +127,9 @@ export function SiteFooter() {
           <span>
             © {new Date().getFullYear()} {COMPANY.legalName}. Alle Rechte vorbehalten. ·{" "}
             <Link href="/bit/impressum" className="hover:text-[#1e4a7a]">Impressum</Link> ·{" "}
-            <Link href="/bit/barrierefreiheit" className="hover:text-[#1e4a7a]">Barrierefreiheit</Link>
+            <Link href="/bit/datenschutz" className="hover:text-[#1e4a7a]">Datenschutz</Link> ·{" "}
+            <Link href="/bit/barrierefreiheit" className="hover:text-[#1e4a7a]">Barrierefreiheit</Link> ·{" "}
+            <ConsentSettingsLink className="hover:text-[#1e4a7a] hover:underline" />
           </span>
           <span>{COMPANY.register} · Geschäftsführer: {COMPANY.managingDirector}</span>
         </div>

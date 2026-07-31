@@ -20,6 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/bit/kontakt",
     "/bit/impressum",
     "/bit/barrierefreiheit",
+    "/bit/datenschutz",
   ];
   const contentPaths = CONTENT_PAGES.map((p) => `/bit/${p.slug}`);
   const categoryPaths = CATEGORIES.map((c) => `/bit/${c.id}`);
