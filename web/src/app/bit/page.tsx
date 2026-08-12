@@ -176,19 +176,29 @@ export default async function BitHome() {
           </div>
         </div>
 
-        {/* Category marquee – rein dekorativ, Inhalte stehen in der Navigation */}
-        <div className="relative border-t border-slate-200 py-4" aria-hidden="true">
+        {/* Kategorie-Laufschrift – anklickbar; die zweite Hälfte ist nur die
+            optische Wiederholung für den nahtlosen Lauf und daher aria-hidden. */}
+        <nav className="relative border-t border-slate-200 py-4" aria-label="Kategorien im Überblick">
           <div className="bit-marquee">
-            <div className="bit-marquee__track text-sm font-medium uppercase tracking-[0.18em] text-slate-400">
-              {[...CATEGORIES, ...CATEGORIES].map((c, i) => (
-                <span key={i} className="flex items-center gap-3">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#38bdf8]" />
-                  {c.name}
-                </span>
-              ))}
+            <div className="bit-marquee__track text-sm font-medium uppercase tracking-[0.18em] text-slate-500">
+              {[...CATEGORIES, ...CATEGORIES].map((c, i) => {
+                const duplicate = i >= CATEGORIES.length;
+                return (
+                  <Link
+                    key={i}
+                    href={`/bit/${c.id}`}
+                    tabIndex={duplicate ? -1 : undefined}
+                    aria-hidden={duplicate || undefined}
+                    className="flex items-center gap-3 whitespace-nowrap rounded-lg px-2 py-1.5 transition-colors hover:bg-[#1e4a7a]/5 hover:text-[#1e4a7a]"
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#38bdf8]" aria-hidden="true" />
+                    {c.name}
+                  </Link>
+                );
+              })}
             </div>
           </div>
-        </div>
+        </nav>
 
         {/* Stat strip */}
         <div className="relative border-t border-slate-200 bg-slate-50">

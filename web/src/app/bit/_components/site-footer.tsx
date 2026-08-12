@@ -30,9 +30,9 @@ export function SiteFooter() {
             <img
               src="/bit/logo.png"
               alt="BIT"
-              className="h-20 w-auto"
-              width={410}
-              height={80}
+              className="h-32 w-auto max-w-full"
+              width={656}
+              height={128}
             />
           </div>
           <p className="mt-4 text-sm leading-relaxed text-slate-500">
