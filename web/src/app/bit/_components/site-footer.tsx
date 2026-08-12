@@ -29,7 +29,7 @@ export function SiteFooter() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/bit/logo.png"
-              alt="BIT Bierther GmbH"
+              alt="BIT"
               className="h-20 w-auto"
               width={410}
               height={80}
@@ -44,7 +44,7 @@ export function SiteFooter() {
               href="https://www.linkedin.com/company/bit-bierther-gmbh1"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="BIT Bierther GmbH auf LinkedIn"
+              aria-label="BIT auf LinkedIn"
               className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 text-slate-600 transition-colors hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
             >
               <Linkedin className="h-4 w-4" />

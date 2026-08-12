@@ -7,7 +7,7 @@ import { Facebook, Linkedin, Link2, Mail, Share2, Twitter } from "lucide-react";
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
 
 /** Social-Sharing-Leiste – teilt die aktuelle Seite in sozialen Netzwerken. */
-export function ShareButtons({ title = "BIT Bierther GmbH" }: { title?: string }) {
+export function ShareButtons({ title = "BIT" }: { title?: string }) {
   const pathname = usePathname();
   const url = `${BASE}${pathname}`;
   const u = encodeURIComponent(url);

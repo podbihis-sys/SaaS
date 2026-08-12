@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/bit/nachhaltigkeit" },
   title: "Nachhaltigkeit",
   description:
-    "Nachhaltigkeit bei der BIT Bierther GmbH: langlebige Produkte, RoHS- & REACH-Konformität, regionale Verantwortung und Ausbildung am Standort Swisttal-Heimerzheim.",
+    "Nachhaltigkeit bei der BIT: langlebige Produkte, RoHS- & REACH-Konformität, regionale Verantwortung und Ausbildung am Standort Swisttal-Heimerzheim.",
 };
 
 const PILLARS = [
@@ -34,7 +34,7 @@ const PILLARS = [
   {
     icon: Package,
     title: "Bedarfsgerechte Konfektion",
-    text: "Zuschnitt ab Losgröße 1 heißt: Sie beziehen genau die Menge, die Sie benötigen. Das reduziert Verschnitt und Lagerabfälle – bei Ihnen und bei uns.",
+    text: "Zuschnitt und Bedruckung nach Bedarf heißt: Sie beziehen genau die Menge, die Sie benötigen. Das reduziert Verschnitt und Lagerabfälle – bei Ihnen und bei uns.",
   },
   {
     icon: Recycle,

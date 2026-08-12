@@ -25,9 +25,9 @@ import { Reveal } from "./_components/reveal";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: { absolute: "BIT Bierther GmbH – Schrumpf- & Isolierschlauchtechnik" },
+  title: { absolute: "BIT – Schrumpf- & Isolierschlauchtechnik" },
   description:
-    "Halogenfreie Schrumpf-, Isolier- & Geflechtschläuche, Wellrohre & Kabelbinder. 1.000+ Artikel, Lieferung in 24 h, Konfektion ab Losgröße 1.",
+    "Halogenfreie Schrumpf-, Isolier- & Geflechtschläuche, Wellrohre & Kabelbinder. 1.000+ Artikel, Lieferung in 24 h, Zuschnitt und Bedruckung.",
   alternates: { canonical: "/bit" },
 };
 
@@ -45,7 +45,7 @@ const HERO_SLIDES: HeroSlide[] = [
 const HERO_TRUST = [
   { icon: Headset, title: "Technische Beratung", text: "Persönlich, kompetent und lösungsorientiert." },
   { icon: Truck, title: "Schnelle Lieferung", text: "Standardware in der Regel in 24 h." },
-  { icon: PencilRuler, title: "Individuelle Konfektion", text: "Zuschnitt & Sätze ab Losgröße 1." },
+  { icon: PencilRuler, title: "Individuelle Konfektion", text: "Zuschnitt und Bedruckung nach Ihren Vorgaben." },
   { icon: ShieldCheck, title: "Zertifizierte Qualität", text: "DIN EN ISO 9001 seit 1997." },
 ];
 
@@ -61,15 +61,15 @@ const FAQ = [
     a: "Ein Schrumpfschlauch ist ein Kunststoffschlauch, der sich bei Wärme auf einen definierten Durchmesser zusammenzieht. Er wird zur elektrischen Isolation, zur Bündelung und Kennzeichnung von Kabeln sowie zum mechanischen Schutz und zur Abdichtung von Verbindungen eingesetzt.",
   },
   {
-    q: "Welche Schrumpfraten bietet die BIT Bierther GmbH an?",
+    q: "Welche Schrumpfraten bietet die BIT an?",
     a: "Wir führen Schrumpfschläuche mit Schrumpfraten von 1,3:1 bis 6:1 – aus Polyolefin, PVC, PTFE, FEP, PVDF (Kynar®), Silikon und Elastomer, dünn- bis dickwandig und optional mit Innenkleber.",
   },
   {
-    q: "Wie schnell liefert BIT Bierther?",
+    q: "Wie schnell liefert BIT?",
     a: "Standardartikel sind in der Regel ab Lager verfügbar und werden meist innerhalb von 24 Stunden versendet. Für Konfektion, Bedruckung und Sonderwerkstoffe nennen wir Ihnen mit dem Angebot einen verbindlichen Liefertermin.",
   },
   {
-    q: "Bietet BIT Bierther Konfektion und Bedruckung an?",
+    q: "Bietet BIT Konfektion und Bedruckung an?",
     a: "Ja. Über sechs Produktionsstrecken schneiden, bedrucken und konfektionieren wir Schrumpf-, Isolier- und Glasseidenschläuche nach Ihren Vorgaben – vom einzelnen Zuschnitt bis zur Serie.",
   },
   {
@@ -87,7 +87,7 @@ const STATS = [
 
 const ADVANTAGES = [
   { icon: Truck, title: "Lieferfähig in 24 h", text: "Umfassende Lagerhaltung und kundenorientierte Logistik für Standardartikel." },
-  { icon: PencilRuler, title: "Konfektion ab Losgröße 1", text: "Zuschnitt, Kennzeichnung und Sätze exakt nach Ihrer Zeichnung." },
+  { icon: PencilRuler, title: "Zuschnitt und Bedruckung", text: "Zuschnitt, Kennzeichnung und Sätze exakt nach Ihrer Zeichnung." },
   { icon: Layers, title: "Werkstoffvielfalt", text: "Polyolefin, PVC, PTFE, Silikon, Glasseide, PVDF und mehr – für jede Anforderung." },
   { icon: ShieldCheck, title: "Geprüfte Qualität", text: "Seit 1997 nach DIN EN ISO 9001 zertifiziert – dokumentiert und rückverfolgbar." },
 ];
@@ -255,7 +255,7 @@ export default async function BitHome() {
       <section className="border-y border-slate-200 bg-slate-50 py-20 sm:py-24">
         <div className="container">
           <Reveal as="h2" className="text-center text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            Warum BIT Bierther
+            Warum BIT
           </Reveal>
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {ADVANTAGES.map(({ icon: Icon, title, text }, i) => (

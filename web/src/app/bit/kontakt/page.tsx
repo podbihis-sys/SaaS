@@ -32,7 +32,7 @@ const TEAM: { name: string; role: string; phone: string; email: string }[] = [
 export const metadata: Metadata = {
   alternates: { canonical: "/bit/kontakt" },
   title: "Kontakt",
-  description: `Kontakt zur ${COMPANY.legalName} in ${COMPANY.city}: Telefon ${COMPANY.phone}, E-Mail ${COMPANY.email}.`,
+  description: `Kontakt zur ${COMPANY.shortName} in ${COMPANY.city}: Telefon ${COMPANY.phone}, E-Mail ${COMPANY.email}.`,
 };
 
 export default async function KontaktPage() {
@@ -62,7 +62,7 @@ export default async function KontaktPage() {
       <section className="container py-16">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900">{COMPANY.legalName}</h2>
+            <h2 className="text-2xl font-bold text-slate-900">{COMPANY.shortName}</h2>
             <ul className="mt-6 space-y-5">
               <ContactRow icon={MapPin}>
                 {COMPANY.street}
@@ -115,7 +115,7 @@ export default async function KontaktPage() {
 
           <div className="overflow-hidden rounded-2xl border border-slate-200">
             <MapEmbed
-              title="Standort BIT Bierther GmbH"
+              title="Standort BIT"
               className="h-full min-h-[420px] w-full"
               src={`https://www.openstreetmap.org/export/embed.html?bbox=${MAP_BBOX}&layer=mapnik&marker=${MAP.lat}%2C${MAP.lon}`}
             />

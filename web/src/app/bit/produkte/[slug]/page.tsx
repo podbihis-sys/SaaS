@@ -46,7 +46,7 @@ export async function generateMetadata({
   let metaTitle = base + codeStr;
   if (metaTitle.length > 58) metaTitle = clampText(base, Math.max(16, 58 - codeStr.length)) + codeStr;
   // Sehr kurze Titel mit Marke verlängern (gegen „Titel zu kurz").
-  if (metaTitle.length < 34) metaTitle = `${metaTitle} · BIT Bierther GmbH`;
+  if (metaTitle.length < 34) metaTitle = `${metaTitle} · BIT`;
   const metaDesc = clampDesc(product.description || product.tagline || product.name);
   return {
     title: { absolute: metaTitle },
@@ -90,7 +90,7 @@ export default async function ProductDetail({
     image: imageUrl,
     sku: product.code,
     category: category?.name,
-    brand: { "@type": "Brand", name: "BIT Bierther GmbH" },
+    brand: { "@type": "Brand", name: "BIT" },
   };
   const breadcrumbLd = {
     "@context": "https://schema.org",

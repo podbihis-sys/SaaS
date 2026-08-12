@@ -25,7 +25,7 @@ export async function generateMetadata({
   return {
     title: seoTitle(`${category.name} kaufen`),
     description: clampDesc(
-      `${category.name} ${category.tagline} – ${count} Artikel bei BIT Bierther: ${category.description}`,
+      `${category.name} ${category.tagline} – ${count} Artikel bei BIT: ${category.description}`,
     ),
     alternates: { canonical: `/bit/${category.id}` },
   };

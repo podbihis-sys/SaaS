@@ -36,7 +36,7 @@ const INDUSTRIES: Industry[] = [
     image: "/bit/branchen/energietechnik.jpg",
     imageAlt: "Energietechnik / Erneuerbare Energien",
     text: [
-      "In der schnell wachsenden Branche der erneuerbaren Energien sind zuverlässige und langlebige Materialien unerlässlich. Die BIT Bierther GmbH hebt sich mit ihren hochqualitativen Schrumpf- und Isolierschläuchen hervor.",
+      "In der schnell wachsenden Branche der erneuerbaren Energien sind zuverlässige und langlebige Materialien unerlässlich. Die BIT hebt sich mit ihren hochqualitativen Schrumpf- und Isolierschläuchen hervor.",
       "Besonders gefragt sind hochtemperaturbeständige Schrumpfschläuche aus Polyolefin, Silikon, PTFE und FEP sowie UV-beständige Werkstoffe wie Kynar® (PVDF), PVC und Polyolefin – ideal für Solarenergie, Windkraft und weitere Anwendungen der Energiewirtschaft.",
     ],
   },
@@ -48,7 +48,7 @@ const INDUSTRIES: Industry[] = [
     image: "/bit/branchen/automotive.jpg",
     imageAlt: "Automotive",
     text: [
-      "Seit 1996 ist die BIT Bierther GmbH in der Automobilindustrie für Produkte bekannt, die höchste Qualitätsansprüche erfüllen – sei es bei Schrumpfschläuchen, Kabelschutzschläuchen oder Geflechtschläuchen.",
+      "Seit 1996 ist die BIT in der Automobilindustrie für Produkte bekannt, die höchste Qualitätsansprüche erfüllen – sei es bei Schrumpfschläuchen, Kabelschutzschläuchen oder Geflechtschläuchen.",
       "Unsere Kunden können auf maßgeschneiderte Lösungen zählen, die perfekt auf ihre Bedürfnisse abgestimmt sind. Wir bieten komplette Systemlösungen ebenso wie individuelle Sonderanfertigungen – die langjährige Treue internationaler Automobilzulieferer bestätigt unseren Ansatz.",
     ],
   },
@@ -134,7 +134,7 @@ export default async function BranchenPage() {
             {c(
               content,
               "branchen.hero.intro",
-              `Die ${COMPANY.legalName} ist seit ${COMPANY.foundedYear} ein zuverlässiger Ansprechpartner in unterschiedlichsten Branchen. Mit Schrumpf-, Isolier-, Glasseiden- und Geflechtschläuchen, Wellrohren und Kabelbindern sowie der technischen Kompetenz unserer Mitarbeiter entwickeln wir individuelle Lösungen für Ihr Anliegen.`,
+              `Die ${COMPANY.shortName} ist seit ${COMPANY.foundedYear} ein zuverlässiger Ansprechpartner in unterschiedlichsten Branchen. Mit Schrumpf-, Isolier-, Glasseiden- und Geflechtschläuchen, Wellrohren und Kabelbindern sowie der technischen Kompetenz unserer Mitarbeiter entwickeln wir individuelle Lösungen für Ihr Anliegen.`,
             )}
           </p>
         </div>

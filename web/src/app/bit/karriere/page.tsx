@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/bit/karriere" },
   title: "Karriere",
   description:
-    "Verstärkung im Bereich Vertrieb gesucht: Karriere bei der BIT Bierther GmbH, dem familiären Spezialisten für Schrumpf- und Isolierschläuche in Swisttal-Heimerzheim.",
+    "Verstärkung im Bereich Vertrieb gesucht: Karriere bei der BIT, dem familiären Spezialisten für Schrumpf- und Isolierschläuche in Swisttal-Heimerzheim.",
 };
 
 const AUFGABEN = [
@@ -153,7 +153,7 @@ export default async function KarrierePage() {
             </li>
           </ul>
           <a
-            href={`mailto:s.widera@bit-gmbh.de?subject=${encodeURIComponent("Bewerbung – Vertrieb bei der BIT Bierther GmbH")}`}
+            href={`mailto:s.widera@bit-gmbh.de?subject=${encodeURIComponent("Bewerbung – Vertrieb bei der BIT")}`}
             className="mt-6 inline-flex rounded-xl bg-[#38bdf8] px-6 py-3.5 text-sm font-semibold text-slate-900 hover:bg-[#0ea5e9]"
           >
             Jetzt bewerben
@@ -169,13 +169,13 @@ export default async function KarrierePage() {
               Wer sind wir?
             </h2>
             <p className="mt-4 leading-relaxed text-slate-700">
-              Die {COMPANY.legalName} ist ein familiäres, erfolgreiches Unternehmen, welches auf den
+              Die {COMPANY.shortName} ist ein familiäres, erfolgreiches Unternehmen, welches auf den
               Vertrieb von Schrumpf- u. Isolierschläuchen spezialisiert ist. Unsere aktuell 25
               Mitarbeiter bilden abteilungsübergreifend ein dynamisches Team, in den Bereichen
               Einkauf, Vertrieb, Verwaltung, Lager und Produktion.
             </p>
             <p className="mt-4 leading-relaxed text-slate-700">
-              Sie möchten mehr über die {COMPANY.legalName} erfahren?{" "}
+              Sie möchten mehr über die {COMPANY.shortName} erfahren?{" "}
               <Link href="/bit/unternehmen" className="text-[#1e4a7a] underline hover:no-underline">
                 Lernen Sie die BIT kennen
               </Link>

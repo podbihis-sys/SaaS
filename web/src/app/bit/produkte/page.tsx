@@ -31,7 +31,7 @@ export default function ProductsPage() {
               Über 1.000 Standardartikel aus Schrumpf-, Isolier-, Glasseiden- und
               Geflechtschlauchtechnik, Wellrohre und Kabelbinder – filterbar nach Kategorie,
               Material, Wandstärke, Schrumpfrate und Temperatur. Lieferung von Standardware in
-              der Regel innerhalb von 24 Stunden, Konfektion ab Losgröße 1.
+              der Regel innerhalb von 24 Stunden, Zuschnitt und Bedruckung.
             </p>
             <p className="mt-6 text-sm text-slate-500">Produkte werden geladen …</p>
             <nav className="mt-10" aria-label="Alle Produkte">

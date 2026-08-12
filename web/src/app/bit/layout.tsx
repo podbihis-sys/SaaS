@@ -6,7 +6,7 @@ import { SiteChrome } from "./_components/site-chrome";
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
 
 const DESCRIPTION =
-  "Halogenfreie Schrumpfschläuche, Isolier- und Geflechtschläuche, Wellrohre und Kabelbinder vom spezialisierten Hersteller. Über 1.000 Standardartikel, Lieferung in 24 h, Konfektion ab Losgröße 1.";
+  "Halogenfreie Schrumpfschläuche, Isolier- und Geflechtschläuche, Wellrohre und Kabelbinder vom spezialisierten Hersteller. Über 1.000 Standardartikel, Lieferung in 24 h, Zuschnitt und Bedruckung.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE),
@@ -19,11 +19,11 @@ export const metadata: Metadata = {
     apple: "/bit/favicon.png",
   },
   title: {
-    default: "BIT Bierther GmbH – Schrumpf- & Isolierschlauchtechnik",
-    template: "%s · BIT Bierther GmbH",
+    default: "BIT – Schrumpf- & Isolierschlauchtechnik",
+    template: "%s · BIT",
   },
   description: DESCRIPTION,
-  applicationName: "BIT Bierther GmbH",
+  applicationName: "BIT",
   keywords: [
     "Schrumpfschlauch",
     "Schrumpfschlauch halogenfrei",
@@ -49,20 +49,20 @@ export const metadata: Metadata = {
     "Kabelbündelung",
     "halogenfrei",
     "Isolierschlauchtechnik",
-    "BIT Bierther",
+    "BIT",
   ],
-  authors: [{ name: COMPANY.legalName }],
+  authors: [{ name: COMPANY.shortName }],
   openGraph: {
     type: "website",
-    siteName: "BIT Bierther GmbH",
+    siteName: "BIT",
     locale: "de_DE",
-    title: "BIT Bierther GmbH – Schrumpf- & Isolierschlauchtechnik",
+    title: "BIT – Schrumpf- & Isolierschlauchtechnik",
     description: DESCRIPTION,
-    images: [{ url: "/bit/logo.png", alt: "BIT Bierther GmbH" }],
+    images: [{ url: "/bit/logo.png", alt: "BIT" }],
   },
   twitter: {
     card: "summary",
-    title: "BIT Bierther GmbH – Schrumpf- & Isolierschlauchtechnik",
+    title: "BIT – Schrumpf- & Isolierschlauchtechnik",
     description: DESCRIPTION,
   },
   robots: { index: true, follow: true },
@@ -72,7 +72,8 @@ export default function BitLayout({ children }: { children: React.ReactNode }) {
   const organizationLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: COMPANY.legalName,
+    name: COMPANY.shortName,
+    legalName: COMPANY.legalName,
     url: `${BASE}/bit`,
     logo: `${BASE}/bit/logo.png`,
     email: COMPANY.email,
@@ -92,7 +93,8 @@ export default function BitLayout({ children }: { children: React.ReactNode }) {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "@id": `${BASE}/bit#business`,
-    name: COMPANY.legalName,
+    name: COMPANY.shortName,
+    legalName: COMPANY.legalName,
     url: `${BASE}/bit`,
     logo: `${BASE}/bit/logo.png`,
     image: `${BASE}/bit/logo.png`,

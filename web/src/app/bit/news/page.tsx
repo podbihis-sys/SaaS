@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/bit/news" },
   title: "News",
   description:
-    "Aktuelles von der BIT Bierther GmbH: Neuheiten, Produkttipps und Anwendungen rund um Schrumpf-, Isolier- und Geflechtschläuche, Wellrohre und Kabelbinder.",
+    "Aktuelles von der BIT: Neuheiten, Produkttipps und Anwendungen rund um Schrumpf-, Isolier- und Geflechtschläuche, Wellrohre und Kabelbinder.",
 };
 
 export default async function NewsPage() {

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/bit/qualitaet" },
   title: "Qualität",
   description:
-    "Qualität bei BIT Bierther: DIN EN ISO 9001 seit 1997, dokumentierte Prozesse, RoHS- und REACH-Konformität sowie rückverfolgbare Konfektion.",
+    "Qualität bei BIT: DIN EN ISO 9001 seit 1997, dokumentierte Prozesse, RoHS- und REACH-Konformität sowie rückverfolgbare Konfektion.",
 };
 
 export default async function QualitaetPage() {
@@ -25,7 +25,7 @@ export default async function QualitaetPage() {
             {c(
               content,
               "qualitaet.intro",
-              "Bereits 1997 wurde die BIT Bierther GmbH erstmals nach DIN EN ISO 9001 zertifiziert. Seitdem sichern dokumentierte Prozesse und konsequente Eingangs- und Endkontrollen die gleichbleibend hohe Güte unserer Produkte.",
+              "Bereits 1997 wurde die BIT erstmals nach DIN EN ISO 9001 zertifiziert. Seitdem sichern dokumentierte Prozesse und konsequente Eingangs- und Endkontrollen die gleichbleibend hohe Güte unserer Produkte.",
             )}
           </p>
         </div>

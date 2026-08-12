@@ -3,7 +3,7 @@
  * Semrush/Google: Title ≲ 580 px (~60 Zeichen), Description ≲ 160 Zeichen.
  */
 
-export const BRAND = "BIT Bierther GmbH";
+export const BRAND = "BIT";
 
 const TITLE_MAX = 55;
 const DESC_MAX = 148;

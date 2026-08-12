@@ -10,11 +10,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "/bit/unternehmen" },
   title: "Unternehmen",
   description:
-    "BIT Bierther GmbH – seit 1996 spezialisierter Hersteller und Lieferant für Schrumpf-, Isolier- und Geflechtschläuche aus Swisttal-Heimerzheim.",
+    "BIT – seit 1996 spezialisierter Hersteller und Lieferant für Schrumpf-, Isolier- und Geflechtschläuche aus Swisttal-Heimerzheim.",
 };
 
 const milestones = [
-  { year: "1996", text: "Gründung der BIT Bierther GmbH – der Start erfolgte aus zwei Containerbüros heraus." },
+  { year: "1996", text: "Gründung der BIT – der Start erfolgte aus zwei Containerbüros heraus." },
   { year: "1997", text: "Zertifizierung des Qualitätsmanagements nach DIN EN ISO 9001 durch den TÜV." },
   { year: "2001", text: "Umzug in neue Büro- und Produktionsräume mit deutlich mehr Lager- und Produktionsfläche." },
   { year: "Heute", text: "Über 1.000 Standardartikel und kundenspezifische Lösungen – weltweit im Einsatz von der Automobilindustrie bis zur Medizintechnik." },
@@ -38,7 +38,7 @@ export default async function UnternehmenPage() {
             {c(
               content,
               "unternehmen.intro",
-              `Seit ${COMPANY.foundedYear} ist die ${COMPANY.legalName} aus ${COMPANY.city} ein verlässlicher Partner renommierter Unternehmen für Schrumpfschläuche, Isolier- und Schutzschläuche, Kunststoffbefestigung und Kabelbinderlösungen.`,
+              `Seit ${COMPANY.foundedYear} ist die ${COMPANY.shortName} aus ${COMPANY.city} ein verlässlicher Partner renommierter Unternehmen für Schrumpfschläuche, Isolier- und Schutzschläuche, Kunststoffbefestigung und Kabelbinderlösungen.`,
             )}
           </p>
         </div>
@@ -70,7 +70,7 @@ export default async function UnternehmenPage() {
             {c(
               content,
               "unternehmen.entwicklung",
-              "Seit der Gründung 1996 hat sich die BIT Bierther GmbH zu einem der führenden Anbieter für Schrumpfprodukte, Isolier- und Schutzschläuche entwickelt. Angefangen von einem eigenwilligen Start aus zwei Containerbüros heraus, über den Umzug in ein neuerrichtetes Bürohaus mit angegliederter Lagerhalle bis hin zum Aufbau eigener Produktionsstraßen.",
+              "Seit der Gründung 1996 hat sich die BIT zu einem der führenden Anbieter für Schrumpfprodukte, Isolier- und Schutzschläuche entwickelt. Angefangen von einem eigenwilligen Start aus zwei Containerbüros heraus, über den Umzug in ein neuerrichtetes Bürohaus mit angegliederter Lagerhalle bis hin zum Aufbau eigener Produktionsstraßen.",
             )}
           </p>
           <div className="mt-10 space-y-6 border-l-2 border-[#1e4a7a]/20 pl-6">

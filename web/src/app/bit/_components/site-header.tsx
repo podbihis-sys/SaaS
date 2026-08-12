@@ -80,7 +80,7 @@ export function SiteHeader() {
       <div className="hidden border-b border-slate-100 bg-slate-50/80 md:block">
         <div className="container flex h-9 items-center justify-between text-xs text-slate-500">
           <span>
-            {COMPANY.legalName} · {COMPANY.city}
+            {COMPANY.shortName} · {COMPANY.city}
           </span>
           <div className="flex items-center gap-4">
             <a
@@ -98,12 +98,12 @@ export function SiteHeader() {
         <Link
           href="/bit"
           className="shrink-0"
-          aria-label="BIT Bierther GmbH – Startseite"
+          aria-label="BIT – Startseite"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/bit/logo.png"
-            alt="BIT Bierther GmbH"
+            alt="BIT"
             className="h-14 w-auto transition-transform duration-300 hover:scale-105 sm:h-16"
             width={328}
             height={64}

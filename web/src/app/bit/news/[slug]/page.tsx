@@ -112,7 +112,7 @@ export default async function NewsPostPage({
     dateModified: post.date || undefined,
     inLanguage: "de-DE",
     mainEntityOfPage: `${BASE}/bit/news/${post.slug}`,
-    author: { "@type": "Organization", name: COMPANY.legalName },
+    author: { "@type": "Organization", name: COMPANY.shortName },
     publisher: {
       "@type": "Organization",
       name: COMPANY.legalName,

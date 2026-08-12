@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/bit/barrierefreiheit" },
   title: "Erklärung zur Barrierefreiheit",
   description:
-    "Erklärung zur Barrierefreiheit der Website der BIT Bierther GmbH nach Barrierefreiheitsstärkungsgesetz (BFSG) und EN 301 549 / WCAG 2.1 AA.",
+    "Erklärung zur Barrierefreiheit der Website der BIT nach Barrierefreiheitsstärkungsgesetz (BFSG) und EN 301 549 / WCAG 2.1 AA.",
 };
 
 const MEASURES = [
