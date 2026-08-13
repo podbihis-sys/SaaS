@@ -7,23 +7,23 @@ import {
   getCategory,
   getProduct,
   productsByCategory,
-} from "../../_data/catalog";
-import { applicationTaxa, formatMm, materialTaxa, propertyTaxonForText, slugify } from "../../_data/attributes";
-import { clampText, clampDesc } from "../../_lib/seo";
-import { getRolls } from "../../_data/rolls";
-import { getPacks } from "../../_data/packs";
-import { ProductIllustration } from "../../_components/product-illustration";
-import { ProductCard } from "../../_components/product-card";
-import { AddToCart } from "../../_components/add-to-cart";
+} from "../../../_data/catalog";
+import { applicationTaxa, formatMm, materialTaxa, propertyTaxonForText, slugify } from "../../../_data/attributes";
+import { clampText, clampDesc } from "../../../_lib/seo";
+import { getRolls } from "../../../_data/rolls";
+import { getPacks } from "../../../_data/packs";
+import { ProductIllustration } from "../../../_components/product-illustration";
+import { ProductCard } from "../../../_components/product-card";
+import { AddToCart } from "../../../_components/add-to-cart";
 
 export function generateStaticParams() {
-  return PRODUCTS.map((p) => ({ slug: p.slug }));
+  return PRODUCTS.map((p) => ({ kategorie: p.category, slug: p.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ kategorie: string; slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
   const product = getProduct(slug);
@@ -51,12 +51,12 @@ export async function generateMetadata({
   return {
     title: { absolute: metaTitle },
     description: metaDesc,
-    alternates: { canonical: `/bit/produkte/${product.slug}` },
+    alternates: { canonical: `/bit/produkte/${product.category}/${product.slug}` },
     openGraph: {
       type: "website",
       title: metaTitle,
       description: metaDesc,
-      url: `/bit/produkte/${product.slug}`,
+      url: `/bit/produkte/${product.category}/${product.slug}`,
       images: product.image ? [{ url: product.image, alt: product.imageAlt }] : undefined,
     },
   };
@@ -65,7 +65,7 @@ export async function generateMetadata({
 export default async function ProductDetail({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ kategorie: string; slug: string }>;
 }) {
   const { slug } = await params;
   const product = getProduct(slug);
@@ -102,7 +102,7 @@ export default async function ProductDetail({
         "@type": "ListItem",
         position: 3,
         name: product.name,
-        item: `${base}/bit/produkte/${product.slug}`,
+        item: `${base}/bit/produkte/${product.category}/${product.slug}`,
       },
     ],
   };

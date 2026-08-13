@@ -4,6 +4,11 @@ import { Award, ClipboardCheck, FlaskConical, Leaf, Recycle, ShieldCheck } from 
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
 
+
+// Seite alle 5 Minuten im Hintergrund erneuern (ISR) – Besucher bekommen
+// immer die zwischengespeicherte Fassung statt auf die Datenbank zu warten.
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   alternates: { canonical: "/bit/qualitaet" },
   title: "Qualität",

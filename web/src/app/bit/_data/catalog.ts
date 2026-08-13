@@ -3692,3 +3692,11 @@ export function getCategory(id: CategoryId): Category | undefined {
 export function productsByCategory(id: CategoryId): Product[] {
   return PRODUCTS.filter((p) => p.category === id);
 }
+
+/**
+ * Kanonische URL einer Produktseite – enthält die Kategorie als eigenes
+ * Segment: /bit/produkte/<kategorie>/<slug>
+ */
+export function productHref(product: Pick<Product, "slug" | "category">): string {
+  return `/bit/produkte/${product.category}/${product.slug}`;
+}

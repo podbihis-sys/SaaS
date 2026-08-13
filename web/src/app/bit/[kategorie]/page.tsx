@@ -55,7 +55,7 @@ export default async function KategoriePage({
         "@type": "ListItem",
         position: i + 1,
         name: p.name,
-        url: `${BASE}/bit/produkte/${p.slug}`,
+        url: `${BASE}/bit/produkte/${p.category}/${p.slug}`,
       })),
     },
   };

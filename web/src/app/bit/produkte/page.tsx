@@ -49,7 +49,7 @@ export default function ProductsPage() {
                       {items.map((p) => (
                         <li key={p.slug}>
                           <Link
-                            href={`/bit/produkte/${p.slug}`}
+                            href={`/bit/produkte/${p.category}/${p.slug}`}
                             className="text-sm text-slate-600 hover:text-[#1e4a7a]"
                           >
                             {p.name}

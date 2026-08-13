@@ -94,7 +94,7 @@ export function SiteHeader() {
         </div>
       </div>
 
-      <div className="container flex h-32 items-center justify-between gap-4 sm:h-36">
+      <div className="container flex h-24 items-center justify-between gap-4 sm:h-28">
         <Link
           href="/bit"
           className="shrink-0"
@@ -104,7 +104,7 @@ export function SiteHeader() {
           <img
             src="/bit/logo.png"
             alt="BIT"
-            className="h-24 w-auto transition-transform duration-300 hover:scale-105 lg:h-28 xl:h-32"
+            className="h-[67px] w-auto transition-transform duration-300 hover:scale-105 lg:h-[78px] xl:h-[90px]"
             width={656}
             height={128}
           />

@@ -24,6 +24,11 @@ import { HeroSlider, type HeroSlide } from "./_components/hero-slider";
 import { Reveal } from "./_components/reveal";
 import type { Metadata } from "next";
 
+
+// Seite alle 5 Minuten im Hintergrund erneuern (ISR) – Besucher bekommen
+// immer die zwischengespeicherte Fassung statt auf die Datenbank zu warten.
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   title: { absolute: "BIT – Schrumpf- & Isolierschlauchtechnik" },
   description:

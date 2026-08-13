@@ -67,7 +67,7 @@ export function TaxonLanding({
       itemListElement: products.map((p, i) => ({
         "@type": "ListItem",
         position: i + 1,
-        url: `${base}/bit/produkte/${p.slug}`,
+        url: `${base}/bit/produkte/${p.category}/${p.slug}`,
         name: p.name,
       })),
     },

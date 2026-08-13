@@ -30,7 +30,7 @@ export function SiteFooter() {
             <img
               src="/bit/logo.png"
               alt="BIT"
-              className="h-32 w-auto max-w-full"
+              className="h-[90px] w-auto max-w-full"
               width={656}
               height={128}
             />

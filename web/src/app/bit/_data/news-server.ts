@@ -1,4 +1,5 @@
 import { createClient } from "@/app/bit/_lib/supabase-server";
+import { withTimeout } from "@/app/bit/_lib/with-timeout";
 import { bitImageUrl } from "./cms";
 import { NEWS, type NewsPost } from "./news";
 
@@ -39,7 +40,7 @@ function mapNews(row: NewsRow): NewsPost {
 export async function getCmsNews(
   opts: { includeDrafts?: boolean } = {},
 ): Promise<NewsPost[]> {
-  try {
+  return withTimeout<NewsPost[]>(async () => {
     const supabase = await createClient();
     let query = supabase
       .from("bit_news")
@@ -49,22 +50,19 @@ export async function getCmsNews(
     const { data, error } = await query.returns<NewsRow[]>();
     if (error || !data || data.length === 0) return NEWS;
     return data.map(mapNews);
-  } catch {
-    return NEWS;
-  }
+  }, NEWS);
 }
 
 export async function getCmsNewsPost(slug: string): Promise<NewsPost | undefined> {
-  try {
+  const fallback = NEWS.find((n) => n.slug === slug);
+  return withTimeout<NewsPost | undefined>(async () => {
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("bit_news")
       .select("*")
       .eq("slug", slug)
       .maybeSingle();
-    if (error || !data) return NEWS.find((n) => n.slug === slug);
+    if (error || !data) return fallback;
     return mapNews(data as unknown as NewsRow);
-  } catch {
-    return NEWS.find((n) => n.slug === slug);
-  }
+  }, fallback);
 }

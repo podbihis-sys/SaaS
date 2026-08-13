@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, Ruler, Shrink, Thermometer } from "lucide-react";
 import type { Product } from "../_data/catalog";
-import { getCategory } from "../_data/catalog";
+import { getCategory, productHref } from "../_data/catalog";
 import { diameterLabel, shrinkRatio } from "../_data/attributes";
 import { ProductIllustration } from "./product-illustration";
 
@@ -47,7 +47,7 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="flex flex-1 flex-col p-5">
         <h3 className="text-lg font-semibold leading-snug text-slate-900 transition-colors group-hover:text-[#1e4a7a]">
           <Link
-            href={`/bit/produkte/${product.slug}`}
+            href={productHref(product)}
             className="before:absolute before:inset-0 before:z-10"
             aria-label={`${product.name} – Details & Anfrage`}
           >
