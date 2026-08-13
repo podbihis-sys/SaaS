@@ -11,8 +11,7 @@ export type CategoryId =
   | "wellrohr"
   | "kabelbinder"
   | "verarbeitungsgeraete"
-  | "weitere-produkte"
-  | "kantenclips";
+  | "weitere-produkte";
 
 export interface Category {
   id: CategoryId;
@@ -111,14 +110,8 @@ export const CATEGORIES: Category[] = [
   {
     id: "weitere-produkte",
     name: "Weitere Produkte",
-    tagline: "Spiralbänder, Verbinder, Endkappen u.v.m.",
-    description: "Lösungen zur Kabelbündelung, Kabelbefestigung und Kabelverbindung: Spiralbänder, Löt- und Quetschverbinder mit Schrumpfschlauchisolation, Endkappen und mehr.",
-  },
-  {
-    id: "kantenclips",
-    name: "Kantenclips",
-    tagline: "Solar- und Kantenclips",
-    description: "Solar- und Kantenclips zur schnellen, werkzeuglosen Befestigung von Leitungen an Blechkanten und Modulrahmen.",
+    tagline: "Spiralbänder, Verbinder, Endkappen, Kantenclips u.v.m.",
+    description: "Lösungen zur Kabelbündelung, Kabelbefestigung und Kabelverbindung: Spiralbänder, Löt- und Quetschverbinder mit Schrumpfschlauchisolation, Endkappen, Solar- und Kantenclips und mehr.",
   },
 ];
 
@@ -3637,7 +3630,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "solar-und-kantenclips",
     code: "Solar- und Kantenclips",
-    category: "kantenclips",
+    category: "weitere-produkte",
     name: "Solar- und Kantenclips",
     tagline: "Polyamid 6.6 HS",
     description: "Unsere Kantenclips sind eine robuste und langlebige Lösung zur Befestigung von Kabeln, Drähten und Rohren an Kunststoff- und Metallprofilen. Sie bestehen aus hochwertigem Polyamid 6.6 HS, einem Material, das besonders beständig gegen hohe Temperaturen, Chemikalien, UV-Strahlung und Feuchtigkeit ist. Die Kantenclips sind einfach zu montieren und stellen eine feste Verbindung her. Sie sind in unterschiedlichen Größen und Ausführungen erhältlich. Kantenclips sind die perfekte Wahl für den Einsatz in der Fotovoltaik-Montage, in der Automobil- und Elektronikindustrie, im Maschinen- und Schiffsbau und in vielen anderen Branchen. Mit ihnen lassen sich Kabel und Drähte schnell und einfach ordnen und fixieren. So sorgen Sie für eine übersichtliche und sichere Verlegung von Kabeln und Drähten, z. B. an PV-Modulen.",
