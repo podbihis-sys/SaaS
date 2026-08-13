@@ -27,6 +27,24 @@ const nextConfig: NextConfig = {
         destination: "/bit/produkte/weitere-produkte/:slug",
         permanent: true,
       },
+      // Sechs Artikel sind in die neue Kategorie "Weitere Schrumpfprodukte"
+      // umgezogen – alte Produkt-URLs bleiben per 308 gültig.
+      ...[
+        "bpbk-schrumpfendkappen",
+        "schrumpf-endkappen",
+        "loetverbinder",
+        "schrumpf-aufteilkappen-bbos",
+        "schrumpfmuffen-blvk",
+      ].map((slug) => ({
+        source: `/bit/produkte/weitere-produkte/${slug}`,
+        destination: `/bit/produkte/weitere-schrumpfprodukte/${slug}`,
+        permanent: true,
+      })),
+      {
+        source: "/bit/produkte/schrumpfschlauch/reparaturmanschette-bwas",
+        destination: "/bit/produkte/weitere-schrumpfprodukte/reparaturmanschette-bwas",
+        permanent: true,
+      },
     ];
   },
 };

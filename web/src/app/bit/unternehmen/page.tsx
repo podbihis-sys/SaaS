@@ -4,7 +4,6 @@ import { ArrowRight, Factory, Heart, History, Target, Users } from "lucide-react
 import { COMPANY, INDUSTRIES, industryHref } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
-import { ProductIllustration } from "../_components/product-illustration";
 
 
 // Seite alle 5 Minuten im Hintergrund erneuern (ISR) – Besucher bekommen
@@ -18,28 +17,31 @@ export const metadata: Metadata = {
     "BIT – seit 1996 spezialisierter Hersteller und Lieferant für Schrumpf-, Isolier- und Geflechtschläuche aus Swisttal-Heimerzheim.",
 };
 
+// Meilensteine – übernommen von bit-gmbh.de/die-bit/.
 const milestones = [
   { year: "1996", text: "Gründung der BIT – der Start erfolgte aus zwei Containerbüros heraus." },
-  { year: "1997", text: "Zertifizierung des Qualitätsmanagements nach DIN EN ISO 9001 durch den TÜV." },
+  { year: "1997 & 2000", text: "Der TÜV bestätigt unser Qualitätsmanagement mit der Verleihung der Zertifikate nach DIN EN ISO 9001." },
   { year: "2001", text: "Umzug in neue Büro- und Produktionsräume mit deutlich mehr Lager- und Produktionsfläche." },
-  { year: "Heute", text: "Über 1.000 Standardartikel und kundenspezifische Lösungen – weltweit im Einsatz von der Automobilindustrie bis zur Medizintechnik." },
+  { year: "2007", text: "Eröffnung eines zweiten Zentrallagers – ein weiterer wichtiger Schritt für Lieferfähigkeit und Lagerkapazität." },
+  { year: "2013", text: "Über 17 Jahre Branchenerfahrung, ein durchdachtes Lieferprogramm und kundenorientierter Service." },
+  { year: "2016", text: "Die BIT blickt auf 20 Jahre erfolgreiche Firmengeschichte zurück." },
+  { year: "2019", text: "Re-Zertifizierung durch den TÜV Rheinland nach DIN EN ISO 9001:2015 – ohne Beanstandung." },
+  { year: "2021", text: "25 Jahre BIT – ein Vierteljahrhundert Unternehmensgeschichte." },
+  { year: "Heute", text: "30-jähriges Jubiläum: Über 1.000 Standardartikel und kundenspezifische Lösungen – weltweit im Einsatz von der Automobilindustrie bis zur Medizintechnik." },
 ];
 
 export default async function UnternehmenPage() {
   const content = await getContent();
   return (
     <>
-      <section className="relative overflow-hidden bg-[#0f2742]">
-        <div className="absolute inset-0 opacity-20">
-          <ProductIllustration category="schrumpfschlauch" fit="cover" className="h-full w-full" />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0f2742] via-[#0f2742]/90 to-[#0f2742]/60" />
-        <div className="container relative py-20">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Unternehmen</p>
-          <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl">
-            {c(content, "unternehmen.title", "Spezialist für Schrumpf- & Isolierschlauchtechnik")}
+      {/* Heller Hero – einheitlich mit den übrigen Seiten (Kundenvorgabe). */}
+      <section className="border-b border-slate-200 bg-slate-50">
+        <div className="container py-14">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">Unternehmen</p>
+          <h1 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+            {c(content, "unternehmen.title", "Die BIT")}
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-300">
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
             {c(
               content,
               "unternehmen.intro",
@@ -53,7 +55,7 @@ export default async function UnternehmenPage() {
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {[
             { icon: History, title: "Erfahrung seit 1996", text: "Fast drei Jahrzehnte Know-how in Werkstoffen und Verarbeitung." },
-            { icon: Factory, title: "Eigene Konfektion", text: "Sechs Produktionslinien für Zuschnitt, Kennzeichnung und Sätze." },
+            { icon: Factory, title: "Eigene Konfektion", text: "Sechs Produktionslinien für Zuschnitt, Bedruckung und Konfektionierung." },
             { icon: Target, title: "Kundenorientiert", text: "Umfassende Lagerhaltung, Standardartikel meist in 24 Stunden." },
             { icon: Users, title: "Branchenübergreifend", text: "Von Automotive bis Medizintechnik – partnerschaftlich beraten." },
           ].map(({ icon: Icon, title, text }) => (

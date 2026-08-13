@@ -267,12 +267,20 @@
   gap: 2.75rem;
   padding-right: 2.75rem;
   white-space: nowrap;
+  /* width: max-content ist der Chrome-Fix: Ohne feste Inhaltsbreite bezieht
+     Chrome translateX(-50%) auf die (geclippte) Containerbreite statt auf die
+     volle Track-Breite – der Lauf wirkt dann eingefroren bzw. springt. */
+  width: max-content;
+  will-change: transform;
   animation: bit-marquee 30s linear infinite;
 }
 .bit-marquee:hover .bit-marquee__track {
   animation-play-state: paused;
 }
 @keyframes bit-marquee {
+  from {
+    transform: translateX(0);
+  }
   to {
     transform: translateX(-50%);
   }
@@ -428,4 +436,18 @@
   .bit-btn::after {
     display: none;
   }
+}
+
+/* ------------------------------------------- nicht indexierbarer Kontakt -- */
+/* Ansprechpartnerin N. F. wird per CSS-content ausgegeben (Kundenvorgabe):
+   Name, Durchwahl und E-Mail stehen nicht im HTML-Quelltext und werden von
+   Suchmaschinen nicht indexiert. Screenreader lesen CSS-content vor. */
+.bit-nf-name::after {
+  content: "Nicole Faßbender";
+}
+.bit-nf-phone::after {
+  content: "+49 (0)2254 9610-27";
+}
+.bit-nf-email::after {
+  content: "n.fassbender" "\0040" "bit-gmbh.de";
 }

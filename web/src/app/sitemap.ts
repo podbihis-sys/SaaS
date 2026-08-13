@@ -18,6 +18,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/bit/nachhaltigkeit",
     "/bit/qualitaet",
     "/bit/kontakt",
+    "/bit/faq",
+    "/bit/en",
     "/bit/impressum",
     "/bit/barrierefreiheit",
     "/bit/datenschutz",

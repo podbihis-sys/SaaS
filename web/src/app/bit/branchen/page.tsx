@@ -4,7 +4,6 @@ import { ArrowRight, Phone } from "lucide-react";
 import { COMPANY } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
-import { ProductIllustration } from "../_components/product-illustration";
 import { Reveal } from "../_components/reveal";
 import { BreadcrumbLd } from "../_components/breadcrumb-ld";
 
@@ -125,17 +124,14 @@ export default async function BranchenPage() {
     <>
       <BreadcrumbLd items={[{ name: "Home", path: "/bit" }, { name: "Branchen", path: "/bit/branchen" }]} />
       {/* ----------------------------------------------------------------- Hero */}
-      <section className="relative overflow-hidden bg-[#0f2742]">
-        <div className="absolute inset-0 opacity-20">
-          <ProductIllustration category="geflechtschlauch" fit="cover" className="h-full w-full" />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0f2742] via-[#0f2742]/90 to-[#0f2742]/60" />
-        <div className="container relative py-20">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Branchen</p>
-          <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl">
+      {/* Heller Hero – einheitlich mit den übrigen Seiten (Kundenvorgabe). */}
+      <section className="border-b border-slate-200 bg-slate-50">
+        <div className="container py-14">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">Branchen</p>
+          <h1 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             {c(content, "branchen.hero.title", "Branchen, die auf BIT vertrauen")}
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-300">
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
             {c(
               content,
               "branchen.hero.intro",

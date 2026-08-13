@@ -78,6 +78,8 @@ export function SiteFooter() {
             <li><Link href="/bit/karriere" className="text-slate-500 hover:text-[#1e4a7a]">Karriere</Link></li>
             <li><Link href="/bit/nachhaltigkeit" className="text-slate-500 hover:text-[#1e4a7a]">Nachhaltigkeit</Link></li>
             <li><Link href="/bit/qualitaet" className="text-slate-500 hover:text-[#1e4a7a]">Qualität & Zertifikate</Link></li>
+            <li><Link href="/bit/service/downloads" className="text-slate-500 hover:text-[#1e4a7a]">Downloads</Link></li>
+            <li><Link href="/bit/faq" className="text-slate-500 hover:text-[#1e4a7a]">FAQ</Link></li>
             <li><Link href="/bit/kontakt" className="text-slate-500 hover:text-[#1e4a7a]">Kontakt</Link></li>
             <li><Link href="/bit/impressum" className="text-slate-500 hover:text-[#1e4a7a]">Impressum</Link></li>
             <li><Link href="/bit/barrierefreiheit" className="text-slate-500 hover:text-[#1e4a7a]">Barrierefreiheit</Link></li>

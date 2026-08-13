@@ -11,6 +11,7 @@ export type CategoryId =
   | "wellrohr"
   | "kabelbinder"
   | "verarbeitungsgeraete"
+  | "weitere-schrumpfprodukte"
   | "weitere-produkte";
 
 export interface Category {
@@ -108,10 +109,16 @@ export const CATEGORIES: Category[] = [
     description: "Zur sicheren Be- und Verarbeitung unserer Produkte: Heißluftgebläse, Heißschneidegeräte für das thermische Ablängen, Kabelbinder-Spannwerkzeuge und serientaugliche Schrumpfanlagen.",
   },
   {
+    id: "weitere-schrumpfprodukte",
+    name: "Weitere Schrumpfprodukte",
+    tagline: "Endkappen, Schrumpfmanschetten, Lötverbinder, Aufteilkappen & Schrumpfmuffen",
+    description: "Wärmeschrumpfende Speziallösungen rund um Kabelende und Kabelverbindung: Schrumpf-Endkappen, Reparatur- und Schrumpfmanschetten, Lötverbinder mit Schrumpfschlauchisolation, Aufteilkappen und Schrumpfmuffen.",
+  },
+  {
     id: "weitere-produkte",
     name: "Weitere Produkte",
-    tagline: "Spiralbänder, Verbinder, Endkappen, Kantenclips u.v.m.",
-    description: "Lösungen zur Kabelbündelung, Kabelbefestigung und Kabelverbindung: Spiralbänder, Löt- und Quetschverbinder mit Schrumpfschlauchisolation, Endkappen, Solar- und Kantenclips und mehr.",
+    tagline: "Spiralbänder, Verbinder, Kantenclips u.v.m.",
+    description: "Lösungen zur Kabelbündelung, Kabelbefestigung und Kabelverbindung: Spiralbänder, Quetschverbinder mit Schrumpfschlauchisolation, PVC-Endkappen, Solar- und Kantenclips und mehr.",
   },
 ];
 
@@ -480,7 +487,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "reparaturmanschette-bwas",
     code: "BWAS",
-    category: "schrumpfschlauch",
+    category: "weitere-schrumpfprodukte",
     name: "Wärmeschrumpfende Reparaturmanschette mit Innenkleber",
     tagline: "BWAS · Polyolefin",
     description: "Die wärmeschrumpfende Reparaturmanschette BWAS ist hervorragend für schnelle und einfache Reparaturen beschädigter Kabel und Rohre geeignet. Durch die kleberbeschichtete Innenseite bietet sie eine sichere Abdichtung gegen Feuchtigkeit und Korrosion.",
@@ -3287,7 +3294,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "bpbk-schrumpfendkappen",
     code: "BPBK Schrumpfendkappen",
-    category: "weitere-produkte",
+    category: "weitere-schrumpfprodukte",
     name: "BPBK Schrumpfendkappen",
     tagline: "Polyolefin",
     description: "Schrumpfendkappen mit thermoplastischem Innenkleber zur Abdichtung und zum Schutz von Endverbindern Thermoplastischer Innenkleber – idealer Schutz gegen äußere Einflüsse Schnelle Verarbeitung Hohe Schrumpfrate – deckt einen großen Anwendungsbereich ab",
@@ -3360,7 +3367,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "loetverbinder",
     code: "Lötverbinder",
-    category: "weitere-produkte",
+    category: "weitere-schrumpfprodukte",
     name: "Lötverbinder mit Schrumpfschlauchisolation",
     tagline: "Lötverbinder · Polyolefin",
     description: "BIT Lötverbinder mit Schrumpfschlauchisolation und Innenkleber bieten eine einfache und schnelle Lösung für eine feuchtigkeitsdichte Kabelverbindung für Kabelquerschnitte von 0,1mm² bis 4,5mm² Material: Schrumpfschlauch: Polyolefin Einsatztemp.: -55°C bis +125°C erhältliche Abmessungen ID in mm: 1,7 bis 6,8 Standardfarbe: Schrumpfschlauch: transparent Durch Hitze, wir empfehlen hierfür das Heißluftgebläse HG 2320 E , zieht sich das Schrumpfschlauch-Material zusammen und es wird eine schnelle und sichere Kabelverbindung hergestellt – ohne die Verwendung von zusätzlichem Werkzeug. BIT Lötverbinder sind in 4 verschiedenen Abmessungen erhältlich.",
@@ -3435,7 +3442,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "schrumpf-aufteilkappen-bbos",
     code: "BBOS",
-    category: "weitere-produkte",
+    category: "weitere-schrumpfprodukte",
     name: "Schrumpf-Aufteilkappen aus Polyolefin",
     tagline: "BBOS · Polyolefin",
     description: "BBOS Schrumpf-Aufteilkappen eignen sich zur Isolierung und Abdichtung von Mehrleiterkabeln und Leitungsabzweigungen. Die Schrumpf-Aufteilkappen sind für den Einsatz bei 2-, 3-, 4-, und 5-adrigen Kabel und Leitungen geeignet. Der innenseitige thermoplastische Kleber schmilzt beim Erhitzen und dichtet zuverlässig ab.",
@@ -3459,7 +3466,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "schrumpf-endkappen",
     code: "Schrumpf Endkappen",
-    category: "weitere-produkte",
+    category: "weitere-schrumpfprodukte",
     name: "Schrumpf Endkappen",
     tagline: "Polyolefin",
     description: "Schrumpf-Endkappen sind ideal zur Abdichtung von Kabel- und Rohrenden gegen Feuchtigkeit und andere Medien geeignet. Die Endkappen sind innen mit einem thermoplastischen Schmelzkleber beschichtet. Das verwendete Material ist UV- und witterungsbeständig und kann daher sehr gut im Außenbereich eingesetzt werden. Schrumpf Endkappen: Effizienter Schutz für vielfältige Anwendungen Schrumpfkappen bieten eine zuverlässige und effektive Lösung für den Schutz und die Isolation von Kabelenden. Sie sind sehr schnell mittels Heißluftfön oder offener Flamme zu verarbeiten. Innenkleber für zusätzlichen Schutz Der eingebrachte thermoplastische Innenkleber sorgt für einen feuchtigkeitsdichten Schutz, so dass die Endkappen auch hervorragend für den Außeneinsatz, z.B. für das Umschrumpfen von Seilenden geeignet ist. Hohe Schrumpfrate für flexible Anwendungen Die Schrumpf Endkappen zeichnen sich durch ihre hohe Schrumpfrate aus und bieten dadurch eine passgenaue und sichere Abdeckung der zu umschrumpfenden Komponenten. BIT bietet Schrumpf Endkappen bis zu einem Durchmesser von 500mm an. Für druckluftüberwachte Fernmeldekabelanlagen können Sie bei uns auch Schrumpfkappen mit Luftventilen anfragen.",
@@ -3485,7 +3492,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "schrumpfmuffen-blvk",
     code: "BLVK",
-    category: "weitere-produkte",
+    category: "weitere-schrumpfprodukte",
     name: "Schrumpfmuffen",
     tagline: "BLVK · Polyolefin",
     description: "Die Schrumpfmuffen-Sets BLVK sind perfekt für das Verbinden von mehradrigen Kabeln geeignet.",

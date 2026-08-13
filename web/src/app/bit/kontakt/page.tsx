@@ -31,7 +31,6 @@ const TEAM: { name: string; role: string; phone: string; email: string }[] = [
   { name: "Marc Weber", role: "Einkauf", phone: "+49 (0)2254 9610-12", email: "m.weber@bit-gmbh.de" },
   { name: "Gisela Di Bernardo", role: "Prokuristin / Rechnungswesen", phone: "+49 (0)2254 9610-30", email: "g.dibernardo@bit-gmbh.de" },
   { name: "Silke Richter", role: "Administration", phone: "+49 (0)2254 9610-11", email: "s.richter@bit-gmbh.de" },
-  { name: "Nicole Faßbender", role: "Administration", phone: "+49 (0)2254 9610-27", email: "n.fassbender@bit-gmbh.de" },
 ];
 
 export const metadata: Metadata = {
@@ -67,7 +66,7 @@ export default async function KontaktPage() {
       <section className="container py-16">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900">{COMPANY.shortName}</h2>
+            <h2 className="text-2xl font-bold text-slate-900">{COMPANY.legalName}</h2>
             <ul className="mt-6 space-y-5">
               <ContactRow icon={MapPin}>
                 {COMPANY.street}
@@ -168,6 +167,22 @@ export default async function KontaktPage() {
                 </ul>
               </div>
             ))}
+            {/* Auf Kundenwunsch steht dieser Kontakt nur als CSS-content im
+                Stylesheet (bit.css) – nicht im indexierbaren HTML-Text. */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-5">
+              <div className="bit-nf-name font-semibold text-slate-900" />
+              <div className="mt-0.5 text-sm text-[#1e4a7a]">Administration</div>
+              <ul className="mt-3 space-y-1.5 text-sm text-slate-600">
+                <li className="flex items-center gap-2">
+                  <Phone className="h-4 w-4 shrink-0 text-slate-500" />
+                  <span className="bit-nf-phone" />
+                </li>
+                <li className="flex items-center gap-2">
+                  <Mail className="h-4 w-4 shrink-0 text-slate-500" />
+                  <span className="bit-nf-email break-all" />
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>

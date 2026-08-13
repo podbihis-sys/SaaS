@@ -13,7 +13,7 @@ import {
   ShieldCheck,
   Truck,
 } from "lucide-react";
-import { CATEGORIES, COMPANY, INDUSTRIES, PRODUCTS, getProduct, industryHref } from "./_data/catalog";
+import { CATEGORIES, CATEGORY_IMAGE, COMPANY, INDUSTRIES, PRODUCTS, industryHref } from "./_data/catalog";
 import { c } from "./_data/content";
 import { getContent } from "./_data/content-server";
 import { getCmsNews } from "./_data/news-server";
@@ -36,16 +36,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/bit" },
 };
 
-// Wechselnde Hero-Bilder (rechte Seite) aus dem realen Sortiment.
-const HERO_SLIDES: HeroSlide[] = [
-  "3-1-schrumpfschlauch-bp-300",
-  "schrumpfschlauch-bp-135",
-  "hart-pvc-schrumpfschlauch",
-  "dickwandiger-schrumpfschlauch-bptw",
-]
-  .map(getProduct)
-  .filter((p): p is NonNullable<typeof p> => Boolean(p))
-  .map((p) => ({ src: p.image, alt: p.imageAlt }));
+// Hero-Diashow: ein Bild je Produktkategorie, jeweils klickbar zur Kategorie.
+const HERO_SLIDES: HeroSlide[] = CATEGORIES.map((cat) => ({
+  src: CATEGORY_IMAGE[cat.id],
+  alt: cat.name,
+  href: `/bit/${cat.id}`,
+  label: cat.name,
+})).filter((s) => Boolean(s.src));
 
 const HERO_TRUST = [
   { icon: Headset, title: "Technische Beratung", text: "Persönlich, kompetent und lösungsorientiert." },
@@ -58,29 +55,6 @@ const KOMPETENZEN = [
   { title: "Schlauch-Abschnitte & Konfektion", image: "/bit/kompetenzen/abschnitte.jpg" },
   { title: "Schrumpfschlauch bedruckt", image: "/bit/kompetenzen/bedruckt.jpg" },
   { title: "Farbige Schrumpfschläuche", image: "/bit/kompetenzen/farbig.jpg" },
-];
-
-const FAQ = [
-  {
-    q: "Was ist ein Schrumpfschlauch und wofür wird er verwendet?",
-    a: "Ein Schrumpfschlauch ist ein Kunststoffschlauch, der sich bei Wärme auf einen definierten Durchmesser zusammenzieht. Er wird zur elektrischen Isolation, zur Bündelung und Kennzeichnung von Kabeln sowie zum mechanischen Schutz und zur Abdichtung von Verbindungen eingesetzt.",
-  },
-  {
-    q: "Welche Schrumpfraten bietet die BIT an?",
-    a: "Wir führen Schrumpfschläuche mit Schrumpfraten von 1,3:1 bis 6:1 – aus Polyolefin, PVC, PTFE, FEP, PVDF (Kynar®), Silikon und Elastomer, dünn- bis dickwandig und optional mit Innenkleber.",
-  },
-  {
-    q: "Wie schnell liefert BIT?",
-    a: "Standardartikel sind in der Regel ab Lager verfügbar und werden meist innerhalb von 24 Stunden versendet. Für Konfektion, Bedruckung und Sonderwerkstoffe nennen wir Ihnen mit dem Angebot einen verbindlichen Liefertermin.",
-  },
-  {
-    q: "Bietet BIT Konfektion und Bedruckung an?",
-    a: "Ja. Über sechs Produktionsstrecken schneiden, bedrucken und konfektionieren wir Schrumpf-, Isolier- und Glasseidenschläuche nach Ihren Vorgaben – vom einzelnen Zuschnitt bis zur Serie.",
-  },
-  {
-    q: "In welchen Branchen werden die Produkte eingesetzt?",
-    a: "Unsere Schläuche, Wellrohre und Kabelbinder kommen u. a. in Automotive, Energietechnik, Hausgeräten, Medizintechnik, Maschinen- und Anlagenbau, Licht- und Sicherheitstechnik zum Einsatz.",
-  },
 ];
 
 const STATS = [
@@ -114,7 +88,7 @@ export default async function BitHome() {
       <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-white to-slate-50">
         <div className="bit-hero-glow" />
         <div className="absolute inset-0 bit-grid-light" />
-        <div className="container relative grid items-center gap-12 py-16 lg:grid-cols-[0.95fr_1.05fr] lg:py-24">
+        <div className="container relative grid items-center gap-12 py-10 lg:grid-cols-[0.95fr_1.05fr] lg:py-14">
           <div>
             <Reveal
               as="span"
@@ -230,10 +204,6 @@ export default async function BitHome() {
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             Unsere Produktwelten
           </h2>
-          <p className="mt-3 text-slate-600">
-            Für Isolation, Schutz und Bündelung – jeder Artikel mit allen verfügbaren Größen direkt
-            anfragbar.
-          </p>
         </Reveal>
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {CATEGORIES.map((cat, i) => (
@@ -335,11 +305,9 @@ export default async function BitHome() {
         <div className="container">
         <Reveal className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <span className="text-sm font-semibold uppercase tracking-wide text-[#1d4ed8]">Beliebt</span>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
               Beliebte Artikel
             </h2>
-            <p className="mt-2 text-slate-600">Direkt mit allen Größen in den Warenkorb legen.</p>
           </div>
           <Link
             href="/bit/produkte"
@@ -486,40 +454,6 @@ export default async function BitHome() {
               <span>Konfektion &amp; Kompetenzen</span>
             </Link>
           </Reveal>
-        </div>
-      </section>
-
-      {/* --------------------------------------------------------------- FAQ */}
-      <section className="border-t border-slate-200 bg-white py-20 sm:py-24">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: FAQ.map((f) => ({
-                "@type": "Question",
-                name: f.q,
-                acceptedAnswer: { "@type": "Answer", text: f.a },
-              })),
-            }),
-          }}
-        />
-        <div className="container">
-          <Reveal className="mx-auto max-w-2xl text-center">
-            <span className="text-sm font-semibold uppercase tracking-wide text-[#c27803]">FAQ</span>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-              Häufige Fragen
-            </h2>
-          </Reveal>
-          <div className="mx-auto mt-10 max-w-3xl divide-y divide-slate-200 border-y border-slate-200">
-            {FAQ.map((f) => (
-              <Reveal key={f.q} as="div" className="py-5">
-                <p className="text-lg font-semibold text-slate-900">{f.q}</p>
-                <p className="mt-2 leading-relaxed text-slate-600">{f.a}</p>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 

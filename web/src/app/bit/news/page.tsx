@@ -32,7 +32,7 @@ export default async function NewsPage() {
       <section className="border-b border-slate-200 bg-slate-50">
         <div className="container py-16">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">News</p>
-          <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-slate-900">
+          <h1 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:whitespace-nowrap lg:text-4xl">
             {c(content, "news.hero.title", "Erfahren Sie mehr über uns und unsere Produkte")}
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
