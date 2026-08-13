@@ -1,4 +1,4 @@
-import { createClient } from "@/app/bit/_lib/supabase-server";
+import { createPublicClient } from "@/app/bit/_lib/supabase-public";
 import { withTimeout } from "@/app/bit/_lib/with-timeout";
 import type { ContentMap } from "./content";
 
@@ -9,7 +9,7 @@ import type { ContentMap } from "./content";
  */
 export async function getContent(): Promise<ContentMap> {
   return withTimeout<ContentMap>(async () => {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     const { data, error } = await supabase.from("bit_content").select("key,value");
     if (error || !data) return {};
     const map: ContentMap = {};

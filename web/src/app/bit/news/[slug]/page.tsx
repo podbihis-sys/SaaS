@@ -14,7 +14,6 @@ import { clampText, clampDesc } from "../../_lib/seo";
 // immer die zwischengespeicherte Fassung statt auf die Datenbank zu warten.
 export const revalidate = 300;
 
-export const dynamic = "force-dynamic";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
 

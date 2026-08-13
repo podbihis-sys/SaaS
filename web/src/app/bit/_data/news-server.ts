@@ -1,4 +1,4 @@
-import { createClient } from "@/app/bit/_lib/supabase-server";
+import { createPublicClient } from "@/app/bit/_lib/supabase-public";
 import { withTimeout } from "@/app/bit/_lib/with-timeout";
 import { bitImageUrl } from "./cms";
 import { NEWS, type NewsPost } from "./news";
@@ -41,7 +41,7 @@ export async function getCmsNews(
   opts: { includeDrafts?: boolean } = {},
 ): Promise<NewsPost[]> {
   return withTimeout<NewsPost[]>(async () => {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     let query = supabase
       .from("bit_news")
       .select("*")
@@ -56,7 +56,7 @@ export async function getCmsNews(
 export async function getCmsNewsPost(slug: string): Promise<NewsPost | undefined> {
   const fallback = NEWS.find((n) => n.slug === slug);
   return withTimeout<NewsPost | undefined>(async () => {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     const { data, error } = await supabase
       .from("bit_news")
       .select("*")
