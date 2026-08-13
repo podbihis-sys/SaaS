@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Factory, Heart, History, Target, Users } from "lucide-react";
-import { COMPANY, INDUSTRIES } from "../_data/catalog";
+import { COMPANY, INDUSTRIES, industryHref } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
 import { ProductIllustration } from "../_components/product-illustration";
@@ -156,9 +156,13 @@ export default async function UnternehmenPage() {
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           {INDUSTRIES.map((i) => (
-            <span key={i} className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700">
+            <Link
+              key={i}
+              href={industryHref(i)}
+              className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
+            >
               {i}
-            </span>
+            </Link>
           ))}
         </div>
         <div className="mt-10 flex flex-wrap gap-3">

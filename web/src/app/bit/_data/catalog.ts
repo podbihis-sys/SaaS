@@ -3700,3 +3700,18 @@ export function productsByCategory(id: CategoryId): Product[] {
 export function productHref(product: Pick<Product, "slug" | "category">): string {
   return `/bit/produkte/${product.category}/${product.slug}`;
 }
+
+/** Detailseite je Branche (aus INDUSTRIES); ohne eigene Seite -> Übersicht. */
+export const INDUSTRY_HREF: Record<string, string> = {
+  "Automotive": "/bit/branchen/automotive",
+  "Energietechnik / Erneuerbare Energien": "/bit/branchen/energietechnik-erneuerbare-energien",
+  "Hausgeräte": "/bit/branchen/hausgeraete",
+  "Medizintechnik": "/bit/branchen/medizintechnik",
+  "Maschinen- und Anlagenbau": "/bit/branchen/maschinen-und-anlagenbau",
+  "Licht- und Beleuchtungstechnik": "/bit/branchen/licht-und-beleuchtungstechnik",
+  "Sicherheitstechnik": "/bit/branchen/sicherheitstechnik",
+};
+
+export function industryHref(name: string): string {
+  return INDUSTRY_HREF[name] ?? "/bit/branchen";
+}

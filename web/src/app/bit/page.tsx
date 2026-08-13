@@ -13,7 +13,7 @@ import {
   ShieldCheck,
   Truck,
 } from "lucide-react";
-import { CATEGORIES, COMPANY, INDUSTRIES, PRODUCTS, getProduct } from "./_data/catalog";
+import { CATEGORIES, COMPANY, INDUSTRIES, PRODUCTS, getProduct, industryHref } from "./_data/catalog";
 import { c } from "./_data/content";
 import { getContent } from "./_data/content-server";
 import { getCmsNews } from "./_data/news-server";
@@ -370,14 +370,20 @@ export default async function BitHome() {
         </div>
         <div className="bit-marquee mt-10">
           <div className="bit-marquee__track">
-            {[...INDUSTRIES, ...INDUSTRIES].map((industry, i) => (
-              <span
-                key={i}
-                className="rounded-full border border-slate-200 bg-white px-6 py-3 text-base font-medium text-slate-700 shadow-sm"
-              >
-                {industry}
-              </span>
-            ))}
+            {[...INDUSTRIES, ...INDUSTRIES].map((industry, i) => {
+              const duplicate = i >= INDUSTRIES.length;
+              return (
+                <Link
+                  key={i}
+                  href={industryHref(industry)}
+                  tabIndex={duplicate ? -1 : undefined}
+                  aria-hidden={duplicate || undefined}
+                  className="whitespace-nowrap rounded-full border border-slate-200 bg-white px-6 py-3 text-base font-medium text-slate-700 shadow-sm transition-colors hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
+                >
+                  {industry}
+                </Link>
+              );
+            })}
           </div>
         </div>
         <div className="container mt-10 text-center">
