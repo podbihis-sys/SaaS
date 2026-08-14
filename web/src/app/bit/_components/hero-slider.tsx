@@ -54,7 +54,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
         className="group block"
         aria-label={`Zur Kategorie ${current.label}`}
       >
-        <div className="relative aspect-square">
+        <div className="relative aspect-[3/2]">
           {slides.map((slide, i) => (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
@@ -68,12 +68,13 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
               }`}
             />
           ))}
-        </div>
-        <span className="mt-2 flex items-center justify-center">
-          <span className="rounded-full bg-white/90 px-5 py-2 text-sm font-semibold text-[#1e4a7a] shadow ring-1 ring-slate-200 transition-colors group-hover:bg-[#1e4a7a] group-hover:text-white">
-            {current.label}
+          {/* Kategorie-Label als Pill auf dem Bild – kostet keine Bauhöhe. */}
+          <span className="absolute inset-x-0 bottom-3 flex items-center justify-center">
+            <span className="rounded-full bg-white/90 px-5 py-2 text-sm font-semibold text-[#1e4a7a] shadow ring-1 ring-slate-200 transition-colors group-hover:bg-[#1e4a7a] group-hover:text-white">
+              {current.label}
+            </span>
           </span>
-        </span>
+        </div>
       </Link>
     </div>
   );
