@@ -63,7 +63,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
               alt={slide.alt}
               loading={i === 0 ? "eager" : "lazy"}
               aria-hidden={i !== index}
-              className={`absolute inset-0 h-full w-full object-contain mix-blend-multiply transition-opacity duration-1000 ${
+              className={`absolute inset-0 h-full w-full object-contain object-top mix-blend-multiply transition-opacity duration-1000 ${
                 i === index ? "opacity-100" : "opacity-0"
               }`}
             />
