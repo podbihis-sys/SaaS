@@ -88,7 +88,7 @@ export default async function BitHome() {
       <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-white to-slate-50">
         <div className="bit-hero-glow" />
         <div className="absolute inset-0 bit-grid-light" />
-        <div className="container relative grid items-center gap-12 py-10 lg:grid-cols-[0.95fr_1.05fr] lg:py-14">
+        <div className="container relative grid items-center gap-12 pb-10 pt-4 lg:grid-cols-[0.95fr_1.05fr] lg:pb-14 lg:pt-5">
           <div>
             <Reveal
               as="span"
