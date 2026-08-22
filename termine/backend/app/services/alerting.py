@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import uuid
-from datetime import timedelta
+from datetime import UTC, datetime, timedelta
+from zoneinfo import ZoneInfo
 
 from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
@@ -44,6 +45,31 @@ async def _rate_limited(session: AsyncSession, watch_id: uuid.UUID) -> bool:
         )
     )
     return (count or 0) >= settings.NOTIFY_MAX_PER_HOUR
+
+
+async def _daily_limit_reached(session: AsyncSession, watch: Watch, now: datetime, timezone: str) -> bool:
+    """Whether this watch has used up the alerts the user allowed for today.
+
+    "Today" is the calendar day where the office is, matching how quiet hours
+    are evaluated — a limit of three should reset at local midnight, not at
+    whatever time UTC happens to roll over.
+    """
+    if watch.daily_alert_limit is None:
+        return False
+
+    local_midnight = now.astimezone(ZoneInfo(timezone)).replace(
+        hour=0, minute=0, second=0, microsecond=0
+    )
+    count = await session.scalar(
+        select(func.count())
+        .select_from(Notification)
+        .where(
+            Notification.watch_id == watch.id,
+            Notification.status.in_((NotificationStatus.PENDING, NotificationStatus.SENT)),
+            Notification.created_at >= local_midnight.astimezone(UTC),
+        )
+    )
+    return (count or 0) >= watch.daily_alert_limit
 
 
 async def alert_for_slots(session: AsyncSession, slot_ids: list[uuid.UUID]) -> list[uuid.UUID]:
@@ -112,14 +138,16 @@ async def alert_for_slots(session: AsyncSession, slot_ids: list[uuid.UUID]) -> l
                 timezone=office.timezone,
             )
 
-            if in_quiet_hours(watch, now, office.timezone):
-                # Delaying a slot alert is pointless — it will be gone by
-                # morning — so it is recorded, not queued.
-                status = NotificationStatus.THROTTLED
-            elif await _rate_limited(session, watch.id):
-                status = NotificationStatus.THROTTLED
-            else:
-                status = NotificationStatus.PENDING
+            # Three independent reasons to stay silent, checked cheapest first.
+            # Delaying a slot alert is pointless — it will be gone by morning —
+            # so a suppressed alert is recorded rather than queued, and shows up
+            # in the app's history as something the user missed.
+            suppressed = (
+                in_quiet_hours(watch, now, office.timezone)
+                or await _daily_limit_reached(session, watch, now, office.timezone)
+                or await _rate_limited(session, watch.id)
+            )
+            status = NotificationStatus.THROTTLED if suppressed else NotificationStatus.PENDING
 
             notification = Notification(
                 watch_id=watch.id,
@@ -144,6 +172,17 @@ async def alert_for_slots(session: AsyncSession, slot_ids: list[uuid.UUID]) -> l
                 ready.append(notification.id)
                 watch.last_notified_at = now
                 watch.notification_count += 1
+
+                if watch.auto_stop_after is not None and watch.notification_count >= watch.auto_stop_after:
+                    # The user asked for a fixed number of alerts and has had
+                    # them. Retiring the watch here also stops the scanner from
+                    # polling on its behalf, since `due_pairs` only considers
+                    # active watches. No break: the remaining watches in this
+                    # loop belong to other people and still want this slot.
+                    # `slot_matches_watch` rejects an inactive watch, so the
+                    # flag alone is enough to skip it for every later slot.
+                    watch.active = False
+                    log.info("alerting.watch_auto_stopped", watch_id=str(watch.id))
 
     await session.flush()
     log.info("alerting.matched", slots=len(slots), watches=len(watches), notifications=len(ready))

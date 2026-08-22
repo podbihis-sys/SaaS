@@ -23,6 +23,11 @@ class WatchCreate(BaseModel):
     latest_time: time | None = None
     min_lead_hours: int = Field(default=2, ge=0, le=720)
 
+    #: Alerts per calendar day in the office's timezone. None = no daily cap.
+    daily_alert_limit: int | None = Field(default=None, ge=1, le=50)
+    #: Retire the watch after this many alerts. None = run until stopped.
+    auto_stop_after: int | None = Field(default=None, ge=1, le=100)
+
     quiet_hours_start: time | None = None
     quiet_hours_end: time | None = None
     expires_at: datetime | None = None
@@ -52,6 +57,8 @@ class WatchUpdate(BaseModel):
     earliest_time: time | None = None
     latest_time: time | None = None
     min_lead_hours: int | None = Field(default=None, ge=0, le=720)
+    daily_alert_limit: int | None = Field(default=None, ge=1, le=50)
+    auto_stop_after: int | None = Field(default=None, ge=1, le=100)
     active: bool | None = None
     paused_until: datetime | None = None
     quiet_hours_start: time | None = None
@@ -76,6 +83,8 @@ class WatchOut(ORMModel):
     earliest_time: time | None
     latest_time: time | None
     min_lead_hours: int
+    daily_alert_limit: int | None
+    auto_stop_after: int | None
     active: bool
     paused_until: datetime | None
     quiet_hours_start: time | None

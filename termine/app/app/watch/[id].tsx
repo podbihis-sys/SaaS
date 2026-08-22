@@ -2,6 +2,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Alert, ScrollView, Text, View } from 'react-native';
 
 import { useDeleteWatch, useUpdateWatch, useWatch } from '@/api/hooks';
+import type { WatchDetail } from '@/api/types';
 import { SlotCard } from '@/components/SlotCard';
 import { Badge, Button, Card, ErrorState, LoadingState, SectionTitle } from '@/components/ui';
 import {
@@ -79,6 +80,7 @@ export default function WatchDetailScreen() {
             label="Vorlauf"
             value={`mindestens ${watch.min_lead_hours} ${watch.min_lead_hours === 1 ? 'Stunde' : 'Stunden'}`}
           />
+          <Criterion label="Meldungen" value={alertPolicyLabel(watch)} />
           <Criterion
             label="Nachtruhe"
             value={
@@ -148,6 +150,14 @@ export default function WatchDetailScreen() {
       </View>
     </ScrollView>
   );
+}
+
+/** Reads the two API caps back as the single choice the wizard offered. */
+function alertPolicyLabel(watch: WatchDetail): string {
+  if (watch.auto_stop_after === 1) return 'nur der erste Termin';
+  if (watch.auto_stop_after !== null) return `höchstens ${watch.auto_stop_after} insgesamt`;
+  if (watch.daily_alert_limit !== null) return `höchstens ${watch.daily_alert_limit} pro Tag`;
+  return 'jeder freie Termin';
 }
 
 function Criterion({ label, value }: { label: string; value: string }) {

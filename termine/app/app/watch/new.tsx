@@ -31,6 +31,43 @@ const RANGE_PRESETS: { value: RangePreset; label: string }[] = [
   { value: 'custom', label: 'Eigener Zeitraum' },
 ];
 
+/**
+ * How persistent the watch should be.
+ *
+ * Deliberately one choice rather than two number fields: the underlying API
+ * has a daily cap and a total cap, but nobody thinks in those terms. They
+ * think "I need one appointment" or "keep me posted".
+ */
+type Persistence = 'once' | 'few_per_day' | 'every';
+
+const PERSISTENCE_OPTIONS: { value: Persistence; label: string; hint: string }[] = [
+  {
+    value: 'once',
+    label: 'Nur den ersten Termin',
+    hint: 'Danach beenden wir die Suche von selbst. Passend, wenn Sie genau einen Termin brauchen.',
+  },
+  {
+    value: 'few_per_day',
+    label: 'Höchstens 3 pro Tag',
+    hint: 'Sie bleiben im Bilde, ohne dass das Handy den ganzen Tag klingelt.',
+  },
+  {
+    value: 'every',
+    label: 'Jeden freien Termin',
+    hint: 'Alles, was passt — sinnvoll, wenn Sie flexibel sind und schnell zugreifen wollen.',
+  },
+];
+
+/** Maps the choice onto the API's two caps. */
+function persistenceToLimits(value: Persistence): {
+  auto_stop_after: number | null;
+  daily_alert_limit: number | null;
+} {
+  if (value === 'once') return { auto_stop_after: 1, daily_alert_limit: null };
+  if (value === 'few_per_day') return { auto_stop_after: null, daily_alert_limit: 3 };
+  return { auto_stop_after: null, daily_alert_limit: null };
+}
+
 function addDays(days: number): string {
   const date = new Date();
   date.setDate(date.getDate() + days);
@@ -81,6 +118,7 @@ export default function NewWatchScreen() {
   const [latestTime, setLatestTime] = useState('');
   const [minLeadHours, setMinLeadHours] = useState(24);
   const [quietHours, setQuietHours] = useState(true);
+  const [persistence, setPersistence] = useState<Persistence>('few_per_day');
 
   const categoriesQuery = useCategories();
   const officesQuery = useOffices(
@@ -143,6 +181,7 @@ export default function NewWatchScreen() {
         earliest_time: from,
         latest_time: to,
         min_lead_hours: minLeadHours,
+        ...persistenceToLimits(persistence),
         quiet_hours_start: quietHours ? '22:00:00' : null,
         quiet_hours_end: quietHours ? '07:00:00' : null,
       });
@@ -349,6 +388,31 @@ export default function NewWatchScreen() {
               <Text className="mt-2 text-xs text-muted-foreground">
                 Termine, die früher stattfinden, melden wir nicht — Sie kämen ohnehin nicht hin.
               </Text>
+            </View>
+
+            <View>
+              <SectionTitle>Wie oft sollen wir uns melden?</SectionTitle>
+              <View className="gap-2">
+                {PERSISTENCE_OPTIONS.map((option) => {
+                  const selected = persistence === option.value;
+                  return (
+                    <Pressable
+                      key={option.value}
+                      accessibilityRole="radio"
+                      accessibilityState={{ selected }}
+                      onPress={() => setPersistence(option.value)}
+                      className={`rounded-card border p-4 ${
+                        selected ? 'border-primary bg-primary-50' : 'border-border bg-background'
+                      }`}
+                    >
+                      <Text className="text-base font-medium text-foreground">{option.label}</Text>
+                      <Text className="mt-0.5 text-xs leading-4 text-muted-foreground">
+                        {option.hint}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
             </View>
 
             <View>

@@ -141,6 +141,79 @@ async def test_quiet_hours_records_without_pushing(
     assert notification.status == NotificationStatus.THROTTLED
 
 
+async def test_daily_limit_caps_alerts(
+    session: AsyncSession, user: User, office: Office, service: Service
+) -> None:
+    """"Höchstens 2 pro Tag" must mean two, not two per burst."""
+    await make_watch(session, user, office, daily_alert_limit=2)
+    slots = [await make_slot(session, office, service, 24 + i) for i in range(5)]
+
+    ready = await alert_for_slots(session, [s.id for s in slots])
+
+    assert len(ready) == 2
+    statuses = [n.status for n in (await session.execute(select(Notification))).scalars().all()]
+    assert statuses.count(NotificationStatus.THROTTLED) == 3
+
+
+async def test_daily_limit_counts_across_separate_batches(
+    session: AsyncSession, user: User, office: Office, service: Service
+) -> None:
+    """The cap is per day, so a second scan an hour later must not reset it."""
+    await make_watch(session, user, office, daily_alert_limit=2)
+    first = [await make_slot(session, office, service, 24 + i) for i in range(2)]
+    later = [await make_slot(session, office, service, 30 + i) for i in range(2)]
+
+    assert len(await alert_for_slots(session, [s.id for s in first])) == 2
+    assert await alert_for_slots(session, [s.id for s in later]) == []
+
+
+async def test_no_daily_limit_means_no_daily_cap(
+    session: AsyncSession, user: User, office: Office, service: Service
+) -> None:
+    await make_watch(session, user, office, daily_alert_limit=None)
+    slots = [await make_slot(session, office, service, 24 + i) for i in range(5)]
+
+    assert len(await alert_for_slots(session, [s.id for s in slots])) == 5
+
+
+async def test_auto_stop_retires_the_watch(
+    session: AsyncSession, user: User, office: Office, service: Service
+) -> None:
+    """Someone who needs one appointment should not have to delete the watch."""
+    watch = await make_watch(session, user, office, auto_stop_after=1)
+    slots = [await make_slot(session, office, service, 24 + i) for i in range(3)]
+
+    ready = await alert_for_slots(session, [s.id for s in slots])
+
+    assert len(ready) == 1
+    assert watch.active is False
+    # And it stays quiet afterwards.
+    more = await make_slot(session, office, service, 72)
+    assert await alert_for_slots(session, [more.id]) == []
+
+
+async def test_auto_stop_does_not_silence_other_watches(
+    session: AsyncSession, user: User, office: Office, service: Service
+) -> None:
+    """One user hitting their limit must not cut off everybody else's alerts."""
+    other = User(install_id="second-person-0004")
+    session.add(other)
+    await session.flush()
+
+    stopping = await make_watch(session, user, office, auto_stop_after=1)
+    running = await make_watch(session, other, office)
+    slots = [await make_slot(session, office, service, 24 + i) for i in range(3)]
+
+    ready = await alert_for_slots(session, [s.id for s in slots])
+
+    notifications = (await session.execute(select(Notification))).scalars().all()
+    by_watch = {w: [n for n in notifications if n.watch_id == w] for w in (stopping.id, running.id)}
+    assert len(by_watch[stopping.id]) == 1
+    assert len(by_watch[running.id]) == 3
+    assert len(ready) == 4
+    assert running.active is True
+
+
 async def test_inactive_watch_gets_nothing(
     session: AsyncSession, user: User, office: Office, service: Service
 ) -> None:

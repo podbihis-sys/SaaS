@@ -61,6 +61,15 @@ class Watch(Base, TimestampMixin):
     #: Ignore slots that start sooner than this; you cannot teleport.
     min_lead_hours: Mapped[int] = mapped_column(Integer, nullable=False, default=2)
 
+    # --- how often should we bother you? ----------------------------------
+    #: Cap on alerts per calendar day, in the office's local time. None means
+    #: only the deployment-wide burst guard applies.
+    daily_alert_limit: Mapped[int | None] = mapped_column(Integer)
+    #: Retire the watch once this many alerts have gone out. Someone who needs
+    #: one Personalausweis appointment wants the app to stop on its own; having
+    #: to delete the watch by hand is how push permission gets revoked.
+    auto_stop_after: Mapped[int | None] = mapped_column(Integer)
+
     # --- how should we bother you? ---------------------------------------
     active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True, index=True)
     paused_until: Mapped[datetime | None] = mapped_column(UTCDateTime())

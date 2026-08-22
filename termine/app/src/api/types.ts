@@ -112,6 +112,8 @@ export interface Watch {
   earliest_time: string | null;
   latest_time: string | null;
   min_lead_hours: number;
+  daily_alert_limit: number | null;
+  auto_stop_after: number | null;
   active: boolean;
   paused_until: string | null;
   quiet_hours_start: string | null;
@@ -136,6 +138,10 @@ export interface WatchCreate {
   earliest_time?: string | null;
   latest_time?: string | null;
   min_lead_hours?: number;
+  /** Alerts per calendar day in the office's timezone. null = no daily cap. */
+  daily_alert_limit?: number | null;
+  /** Retire the watch after this many alerts. null = run until stopped. */
+  auto_stop_after?: number | null;
   quiet_hours_start?: string | null;
   quiet_hours_end?: string | null;
 }

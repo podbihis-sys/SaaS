@@ -90,6 +90,8 @@ async def create_watch(payload: WatchCreate, user: CurrentUser, session: Session
         earliest_time=payload.earliest_time,
         latest_time=payload.latest_time,
         min_lead_hours=payload.min_lead_hours,
+        daily_alert_limit=payload.daily_alert_limit,
+        auto_stop_after=payload.auto_stop_after,
         quiet_hours_start=payload.quiet_hours_start,
         quiet_hours_end=payload.quiet_hours_end,
         expires_at=payload.expires_at,
