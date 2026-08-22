@@ -153,6 +153,12 @@ async def _reconcile(
             )
             session.add(slot)
             await session.flush()
+            # Registered here, not just in the pre-loaded map: a provider may
+            # report the same start time twice in one response — two counters
+            # free at 09:00, or simply a time rendered twice on the page. Without
+            # this the second copy inserts again and the unique constraint on
+            # (office, service, starts_at) aborts the whole scan cycle.
+            known_by_start[raw.starts_at] = slot
             result.new_slot_ids.append(slot.id)
             continue
 

@@ -75,23 +75,27 @@ class DemoProvider(AppointmentProvider):
             return []
 
         count = 1 + digest[1] % 3
-        slots: list[RawSlot] = []
+        slots: dict[tuple[int, int], RawSlot] = {}
         for i in range(count):
             hour = 8 + digest[2 + i] % 9  # 08:00 .. 16:00
             minute = (digest[5 + i] % 4) * 15
+            # Two draws can land on the same time. Keyed by wall clock so the
+            # demo never emits a duplicate start — a real portal occasionally
+            # does, and the reconciler handles that, but the demo should model
+            # the well-behaved case.
+            if (hour, minute) in slots:
+                continue
             # Office-local wall clock. Germany is UTC+1/+2; the demo pins UTC+2
             # rather than pulling in a tz database it does not otherwise need.
             starts_local = datetime.combine(day, time(hour, minute))
             starts_at = starts_local.replace(tzinfo=UTC) - timedelta(hours=2)
-            slots.append(
-                RawSlot(
-                    starts_at=starts_at,
-                    ends_at=starts_at + timedelta(minutes=15),
-                    capacity=1,
-                    provider_ref=f"demo:{day.isoformat()}:{hour:02d}{minute:02d}",
-                )
+            slots[(hour, minute)] = RawSlot(
+                starts_at=starts_at,
+                ends_at=starts_at + timedelta(minutes=15),
+                capacity=1,
+                provider_ref=f"demo:{day.isoformat()}:{hour:02d}{minute:02d}",
             )
-        return sorted(slots, key=lambda s: s.starts_at)
+        return sorted(slots.values(), key=lambda s: s.starts_at)
 
     def booking_url(self, office: OfficeRef, service: ServiceRef, slot: RawSlot) -> str:
         return office.booking_url or f"https://example.invalid/demo/{office.external_id}"

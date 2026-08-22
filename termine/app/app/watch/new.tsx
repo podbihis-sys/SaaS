@@ -4,15 +4,61 @@ import { Alert, Pressable, ScrollView, Text, View } from 'react-native';
 
 import { useCategories, useCreateWatch, useOffices } from '@/api/hooks';
 import type { ServiceCategory } from '@/api/types';
-import { TextField, TimeField, WeekdayPicker, toApiTime } from '@/components/pickers';
+import {
+  DateField,
+  TextField,
+  TimeField,
+  WeekdayPicker,
+  toApiDate,
+  toApiTime,
+} from '@/components/pickers';
 import { Badge, Button, LoadingState, SectionTitle } from '@/components/ui';
-import { categoryLabel } from '@/lib/format';
+import { categoryLabel, toIsoDate } from '@/lib/format';
 import { registerForPushNotifications } from '@/lib/push';
 
 const ALL_WEEKDAYS = 0b1111111;
 const WEEKDAYS_ONLY = 0b0011111;
 
 type Step = 'category' | 'offices' | 'when';
+
+/** How far out the user is willing to look. */
+type RangePreset = 'any' | 'two_weeks' | 'month' | 'custom';
+
+const RANGE_PRESETS: { value: RangePreset; label: string }[] = [
+  { value: 'any', label: 'Egal wann' },
+  { value: 'two_weeks', label: 'Nächste 2 Wochen' },
+  { value: 'month', label: 'Nächster Monat' },
+  { value: 'custom', label: 'Eigener Zeitraum' },
+];
+
+function addDays(days: number): string {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+  return toIsoDate(date);
+}
+
+/**
+ * Resolves the chosen range to the API's date pair.
+ *
+ * Returns `invalid` for a custom range the user has not finished typing, so
+ * the caller can complain rather than silently widening the search.
+ */
+function resolveRange(
+  preset: RangePreset,
+  fromText: string,
+  toText: string,
+): { earliest: string | null; latest: string | null } | 'invalid' {
+  if (preset === 'any') return { earliest: null, latest: null };
+  if (preset === 'two_weeks') return { earliest: toIsoDate(new Date()), latest: addDays(14) };
+  if (preset === 'month') return { earliest: toIsoDate(new Date()), latest: addDays(30) };
+
+  const earliest = fromText.trim() ? toApiDate(fromText) : null;
+  const latest = toText.trim() ? toApiDate(toText) : null;
+  if (fromText.trim() && !earliest) return 'invalid';
+  if (toText.trim() && !latest) return 'invalid';
+  if (earliest && latest && earliest > latest) return 'invalid';
+  return { earliest, latest };
+}
 
 /**
  * Three steps, in the order the questions actually occur to someone: what do I
@@ -27,6 +73,9 @@ export default function NewWatchScreen() {
   const [category, setCategory] = useState<ServiceCategory | null>(null);
   const [city, setCity] = useState('');
   const [officeIds, setOfficeIds] = useState<string[]>([]);
+  const [rangePreset, setRangePreset] = useState<RangePreset>('any');
+  const [rangeFrom, setRangeFrom] = useState('');
+  const [rangeTo, setRangeTo] = useState('');
   const [weekdayMask, setWeekdayMask] = useState(WEEKDAYS_ONLY);
   const [earliestTime, setEarliestTime] = useState('');
   const [latestTime, setLatestTime] = useState('');
@@ -54,6 +103,15 @@ export default function NewWatchScreen() {
   const submit = async () => {
     if (!category || officeIds.length === 0) return;
 
+    const range = resolveRange(rangePreset, rangeFrom, rangeTo);
+    if (range === 'invalid') {
+      Alert.alert(
+        'Zeitraum prüfen',
+        'Bitte geben Sie den Zeitraum als TT.MM.JJJJ an, und achten Sie darauf, dass das Startdatum vor dem Enddatum liegt.',
+      );
+      return;
+    }
+
     const from = toApiTime(earliestTime);
     const to = toApiTime(latestTime);
     if (earliestTime && !from) {
@@ -79,6 +137,8 @@ export default function NewWatchScreen() {
         label,
         category,
         office_ids: officeIds,
+        earliest_date: range.earliest,
+        latest_date: range.latest,
         weekday_mask: weekdayMask,
         earliest_time: from,
         latest_time: to,
@@ -180,6 +240,58 @@ export default function NewWatchScreen() {
 
         {step === 'when' ? (
           <View className="gap-6">
+            <View>
+              <SectionTitle>In welchem Zeitraum?</SectionTitle>
+              <View className="flex-row flex-wrap gap-2">
+                {RANGE_PRESETS.map((preset) => (
+                  <Pressable
+                    key={preset.value}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: rangePreset === preset.value }}
+                    onPress={() => setRangePreset(preset.value)}
+                    className={`rounded-full border px-3.5 py-2 ${
+                      rangePreset === preset.value
+                        ? 'border-primary bg-primary'
+                        : 'border-border bg-background'
+                    }`}
+                  >
+                    <Text
+                      className={`text-sm font-medium ${
+                        rangePreset === preset.value
+                          ? 'text-primary-foreground'
+                          : 'text-foreground'
+                      }`}
+                    >
+                      {preset.label}
+                    </Text>
+                  </Pressable>
+                ))}
+              </View>
+
+              {rangePreset === 'custom' ? (
+                <View className="mt-3 flex-row gap-3">
+                  <DateField
+                    label="von"
+                    value={rangeFrom}
+                    onChange={setRangeFrom}
+                    placeholder="01.09.2026"
+                  />
+                  <DateField
+                    label="bis"
+                    value={rangeTo}
+                    onChange={setRangeTo}
+                    placeholder="30.09.2026"
+                  />
+                </View>
+              ) : null}
+
+              <Text className="mt-2 text-xs text-muted-foreground">
+                {rangePreset === 'any'
+                  ? 'Wir melden jeden freien Termin, egal wie weit er in der Zukunft liegt.'
+                  : 'Termine außerhalb des Zeitraums melden wir nicht.'}
+              </Text>
+            </View>
+
             <View>
               <SectionTitle>An welchen Tagen?</SectionTitle>
               <WeekdayPicker mask={weekdayMask} onChange={setWeekdayMask} />

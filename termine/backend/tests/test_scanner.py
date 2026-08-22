@@ -180,6 +180,41 @@ async def test_success_clears_failure_state(
     assert service.last_scanned_at is not None
 
 
+async def test_duplicate_start_times_in_one_response(
+    session: AsyncSession, office: Office, service: Service, stub
+) -> None:
+    """A provider repeating a start time must not abort the scan.
+
+    Portals do this: two counters free at the same minute, or a time simply
+    rendered twice. The unique constraint on (office, service, starts_at) would
+    otherwise turn that into a crash that takes the whole cycle down.
+    """
+    duplicated = raw(24)
+    stub([[duplicated, duplicated, raw(48)]])
+
+    result = await run(session, office, service)
+
+    assert result.ok
+    assert len(result.new_slot_ids) == 2, "the repeated time should be stored once"
+    stored = (await session.execute(select(Slot))).scalars().all()
+    assert len({s.starts_at for s in stored}) == len(stored) == 2
+
+
+async def test_duplicate_start_times_across_scans(
+    session: AsyncSession, office: Office, service: Service, stub
+) -> None:
+    """The same dedupe has to hold when the duplicate arrives on a later scan."""
+    slot = raw(24)
+    stub([[slot], [slot, slot]])
+
+    await run(session, office, service)
+    second = await run(session, office, service)
+
+    assert second.ok
+    assert second.new_slot_ids == []
+    assert len((await session.execute(select(Slot))).scalars().all()) == 1
+
+
 async def test_provider_ref_is_refreshed(
     session: AsyncSession, office: Office, service: Service, stub
 ) -> None:
