@@ -47,6 +47,17 @@ class TevisProvider(AppointmentProvider):
         mandant = office.meta.get("mandant") or office.external_id
         return str(mandant)
 
+    def _endpoint(self, office: OfficeRef, path: str) -> str:
+        """Join a TEVIS path onto the instance URL, honouring any path prefix.
+
+        Instances are not always mounted at the root: Bremen serves its at
+        ``https://termin.bremen.de/termine/``. ``urljoin`` with a leading slash
+        would silently drop that prefix and request ``/select2``, so the base
+        is normalised to end in a slash and the path joined relatively.
+        """
+        base = office.base_url if office.base_url.endswith("/") else office.base_url + "/"
+        return urljoin(base, path.lstrip("/"))
+
     def _selection_params(self, office: OfficeRef, service: ServiceRef) -> dict[str, str]:
         params = {
             "mdt": self._mandant(office),
@@ -58,7 +69,7 @@ class TevisProvider(AppointmentProvider):
         return params
 
     async def discover_services(self, client: httpx.AsyncClient, office: OfficeRef) -> list[RawService]:
-        url = urljoin(office.base_url, "/select2") + "?" + urlencode({"md": self._mandant(office)})
+        url = self._endpoint(office, "select2") + "?" + urlencode({"md": self._mandant(office)})
         await self.throttle(url)
         try:
             response = await client.get(url)
@@ -114,7 +125,7 @@ class TevisProvider(AppointmentProvider):
         date_to: date,
     ) -> list[RawSlot]:
         base_params = self._selection_params(office, service)
-        calendar_url = urljoin(office.base_url, "/suggest") + "?" + urlencode(base_params)
+        calendar_url = self._endpoint(office, "suggest") + "?" + urlencode(base_params)
         await self.throttle(calendar_url)
         try:
             response = await client.get(calendar_url)
@@ -137,7 +148,7 @@ class TevisProvider(AppointmentProvider):
         slots: list[RawSlot] = []
         for day in days:
             day_params = {**base_params, "date": day.isoformat()}
-            day_url = urljoin(office.base_url, "/suggest") + "?" + urlencode(day_params)
+            day_url = self._endpoint(office, "suggest") + "?" + urlencode(day_params)
             await self.throttle(day_url)
             try:
                 day_response = await client.get(day_url)
@@ -161,4 +172,4 @@ class TevisProvider(AppointmentProvider):
             return slot.provider_ref
         local_day = (slot.starts_at + timedelta(hours=1)).date()
         params = {**self._selection_params(office, service), "date": local_day.isoformat()}
-        return urljoin(office.base_url, "/suggest") + "?" + urlencode(params)
+        return self._endpoint(office, "suggest") + "?" + urlencode(params)

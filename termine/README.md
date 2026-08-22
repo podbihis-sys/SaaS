@@ -111,13 +111,18 @@ Transport.
 **Fertig und geprüft:** Datenmodell, Scanner mit Abgleich und Rückzugslogik,
 Matcher, Benachrichtigungen inklusive Entprellung, Ratenlimit und Nachtruhe,
 REST-API, Buchungsübergabe, die vollständige App (Suchaufträge, Suche mit
-Standort, Meldungen, Einstellungen, Buchungs-Flow), 101 Backend-Tests, sauberer
+Standort, Meldungen, Einstellungen, Buchungs-Flow), 135 Backend-Tests, sauberer
 Typecheck der App.
+
+**Katalog:** Bremen ist als erstes Bundesland vollständig erfasst — 17 Behörden,
+72 Dienstleistungen, automatisch aus dem Landesportal erzeugt. Auffindbar und
+direkt buchbar, aber **nicht überwachbar**: Bremens Buchungssystem verbietet
+automatisiertes Abrufen per robots.txt und seine API ist zugangsgeschützt.
+Details und der Weg zur Freigabe in [`docs/bundeslaender.md`](./docs/bundeslaender.md).
 
 **Noch nicht geprüft:** Die vier Adapter für echte Buchungssysteme sind
 vollständig implementiert und über Fixtures getestet, aber nicht gegen die
-Live-Systeme verifiziert. Alle echten Katalogeinträge sind deshalb mit
-`active: false` hinterlegt. Was vor einer Freischaltung zu tun ist, steht in
+Live-Systeme verifiziert. Was vor einer Freischaltung zu tun ist, steht in
 [`docs/providers.md`](./docs/providers.md) und [`docs/legal.md`](./docs/legal.md).
 
 **Bewusst nicht gebaut:** automatische Buchung, CAPTCHA-Umgehung, Umgehung von
@@ -127,5 +132,6 @@ Sperren.
 
 - [`backend/README.md`](./backend/README.md) — Umgebungsvariablen, Aufbau
 - [`app/README.md`](./app/README.md) — Bildschirme, Build für iOS/Android
+- [`docs/bundeslaender.md`](./docs/bundeslaender.md) — Katalogstand je Bundesland
 - [`docs/providers.md`](./docs/providers.md) — Adapter, Prüfstand, eigene ergänzen
 - [`docs/legal.md`](./docs/legal.md) — rechtliche Leitplanken

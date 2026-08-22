@@ -70,7 +70,7 @@ Größe des Katalogs.
 | Thema | Was noch fehlt |
 | --- | --- |
 | **Nutzungsbedingungen je Portal** | Für jedes Amt im Katalog müssen die AGB/Nutzungsbedingungen einzeln geprüft werden. Deshalb sind alle nicht-Demo-Einträge mit `active: false` und `verified: false` hinterlegt. |
-| **robots.txt** | Der Scanner wertet sie derzeit nicht aus. Vor Freischaltung eines echten Adapters muss die `robots.txt` der Instanz geprüft und respektiert werden. |
+| ~~**robots.txt**~~ | **Erledigt.** `app/providers/robots.py` liest und cacht sie pro Host, `scan_pair` fragt vor jedem Scan. Ein `Disallow` schaltet das Amt auf `scan_enabled=False` und speichert den Grund. Erster echter Fall: Bremen (siehe `bundeslaender.md`). |
 | **Kontaktaufnahme** | Der ehrlichste Weg ist, die Behörde vorab zu fragen. Manche stellen bei Nachfrage eine offizielle Schnittstelle bereit — der eTermin-Adapter ist genau darauf ausgelegt (API-Key statt Scraping). |
 | **DSGVO-Dokumente** | Verzeichnis von Verarbeitungstätigkeiten, Datenschutzerklärung, Auftragsverarbeitung mit dem Push-Dienstleister (Expo). |
 | **Serverstandort** | Push-Token sind personenbezogene Daten. Hosting und Push-Weiterleitung sollten innerhalb der EU liegen bzw. vertraglich abgesichert sein. |

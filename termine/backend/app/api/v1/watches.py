@@ -38,6 +38,16 @@ async def _load_offices(session: SessionDep, office_ids: list[uuid.UUID]) -> lis
     missing = set(office_ids) - {o.id for o in offices}
     if missing:
         raise ValidationError(f"Unknown or inactive office ids: {sorted(str(m) for m in missing)}")
+
+    # A watch on an office nobody polls would never fire. Refusing it is
+    # kinder than accepting one that stays silent forever.
+    unscannable = [o for o in offices if not o.scan_enabled]
+    if unscannable:
+        names = ", ".join(sorted(o.name for o in unscannable))
+        raise ValidationError(
+            f"Diese Ämter können derzeit nicht überwacht werden: {names}. "
+            "Sie lassen sich in der App finden und direkt beim Amt buchen."
+        )
     return list(offices)
 
 

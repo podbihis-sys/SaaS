@@ -19,10 +19,17 @@ _CATEGORY_PATTERNS: list[tuple[ServiceCategory, str]] = [
     (ServiceCategory.KFZ_ABMELDUNG, rf"(?=.*({_VEHICLE}))(?=.*(abmeld|ausserbetrieb|stilllegung))"),
     (ServiceCategory.KFZ_ZULASSUNG, rf"(?=.*({_VEHICLE}))(?=.*(zulass|anmeld|ummeld))"),
     (ServiceCategory.KFZ_ZULASSUNG, r"\bkfz[- ]?zulassung\b|zulassungsstelle"),
-    (ServiceCategory.FUEHRERSCHEIN, r"f(ue|ü)hrerschein|fahrerlaubnis"),
+    # Everything to do with plates is a vehicle-registration errand, whichever
+    # kind: Ausfuhr-, E-, Saison-, rote Kennzeichen, and the Feinstaubplakette
+    # that is issued alongside them.
+    (ServiceCategory.KFZ_ZULASSUNG, r"kennzeichen|feinstaubplakette|umweltplakette"),
+    (ServiceCategory.FUEHRERSCHEIN, r"f(ue|ü)hrerschein|fahrerlaubnis|fahrerkarte|fahrerqualifizierung"),
     (ServiceCategory.FUEHRUNGSZEUGNIS, r"f(ue|ü)hrungszeugnis"),
-    (ServiceCategory.AUFENTHALTSTITEL, r"aufenthalt|niederlassungserlaubnis|blaue karte|blue card|visum"),
+    # Ahead of AUFENTHALTSTITEL: a Verpflichtungserklärung is titled by its
+    # purpose ("... Zweck: Erteilung eines Aufenthaltstitels"), so the broader
+    # pattern would otherwise swallow it.
     (ServiceCategory.VERPFLICHTUNGSERKLAERUNG, r"verpflichtungserkl"),
+    (ServiceCategory.AUFENTHALTSTITEL, r"aufenthalt|niederlassungserlaubnis|blaue karte|blue card|visum"),
     (ServiceCategory.EHESCHLIESSUNG, r"ehe|heirat|lebenspartnerschaft|trauung"),
     (ServiceCategory.GEBURTSURKUNDE, r"geburtsurkunde|geburtsbeurkundung|sterbeurkunde|urkunde"),
     (ServiceCategory.GEWERBEANMELDUNG, r"gewerbe"),

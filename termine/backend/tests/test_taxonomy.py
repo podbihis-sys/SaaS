@@ -46,6 +46,43 @@ def test_kfz_zulassung_variants() -> None:
     assert classify_service("Wiederzulassung eines Fahrzeugs") == ServiceCategory.KFZ_ZULASSUNG
 
 
+@pytest.mark.parametrize(
+    ("label", "expected"),
+    [
+        # Verbatim service names from service.bremen.de, the first state
+        # catalogued. Real labels are the only honest test of a taxonomy.
+        ("Wohnsitz als alleinige Wohnung oder Hauptwohnung anmelden", ServiceCategory.ANMELDUNG),
+        ("Wohnsitz abmelden", ServiceCategory.ABMELDUNG),
+        ("Personalausweis beantragen", ServiceCategory.PERSONALAUSWEIS),
+        ("Reisepass beantragen", ServiceCategory.REISEPASS),
+        ("Alten Führerschein in neuen Führerschein umtauschen", ServiceCategory.FUEHRERSCHEIN),
+        ("Fahrerkarte beantragen", ServiceCategory.FUEHRERSCHEIN),
+        ("Fahrerqualifizierungsnachweis", ServiceCategory.FUEHRERSCHEIN),
+        ("100 km/h-Zulassung für Fahrzeuggespanne und Kraftomnibusse", ServiceCategory.KFZ_ZULASSUNG),
+        ("Ausfuhrkennzeichen beantragen", ServiceCategory.KFZ_ZULASSUNG),
+        ("E-Kennzeichen", ServiceCategory.KFZ_ZULASSUNG),
+        ("Ab- bzw. Nachstempelung von Kfz-Kennzeichen", ServiceCategory.KFZ_ZULASSUNG),
+        ("Feinstaubplakette beantragen", ServiceCategory.KFZ_ZULASSUNG),
+        ("Auskunft aus dem Gewerbezentralregister beantragen", ServiceCategory.GEWERBEANMELDUNG),
+        # Niche errands genuinely outside the taxonomy; "sonstiges" is the
+        # honest answer rather than a forced fit.
+        ("Einkommensteuererklärung einreichen", ServiceCategory.SONSTIGES),
+        ("Beratung zu sexuell übertragbaren Infektionen (STI)", ServiceCategory.SONSTIGES),
+    ],
+)
+def test_classify_real_bremen_labels(label: str, expected: ServiceCategory) -> None:
+    assert classify_service(label) == expected
+
+
+def test_verpflichtungserklaerung_beats_aufenthaltstitel() -> None:
+    """Bremen titles it by its purpose, which names the broader category."""
+    assert (
+        classify_service("Verpflichtungserklärung beantragen (Zweck: Erteilung eines Aufenthaltstitels)")
+        == ServiceCategory.VERPFLICHTUNGSERKLAERUNG
+    )
+    assert classify_service("Aufenthaltstitel verlängern") == ServiceCategory.AUFENTHALTSTITEL
+
+
 def test_umlaut_folding_is_symmetric() -> None:
     """Authorities write the same word with and without umlauts, interchangeably."""
     assert classify_service("Führungszeugnis") == classify_service("Fuehrungszeugnis")

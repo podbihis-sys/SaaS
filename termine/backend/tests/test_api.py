@@ -324,3 +324,34 @@ async def test_health_endpoints(client: AsyncClient) -> None:
     assert (await client.get("/api/v1/health")).json()["status"] == "ok"
     scanner = await client.get("/api/v1/health/scanner")
     assert scanner.json()["providers"] == ["demo"]
+
+
+async def test_watch_rejects_an_office_that_may_not_be_scanned(
+    client: AsyncClient, auth_headers: dict[str, str], session: AsyncSession, office: Office
+) -> None:
+    """Bremen's offices are listed but not pollable; a watch on one would
+    never fire, so it is refused with an explanation rather than accepted."""
+    office.scan_enabled = False
+    office.scan_blocked_reason = "robots.txt"
+    await session.flush()
+
+    response = await client.post(
+        "/api/v1/watches",
+        headers=auth_headers,
+        json={"label": "Geht nicht", "category": "personalausweis", "office_ids": [str(office.id)]},
+    )
+
+    assert response.status_code == 422
+    assert "nicht überwacht werden" in response.json()["message"]
+
+
+async def test_unscannable_offices_are_still_listed(
+    client: AsyncClient, session: AsyncSession, office: Office, service: Service
+) -> None:
+    """Listing is what lets a user find the office and book with the authority."""
+    office.scan_enabled = False
+    await session.flush()
+
+    response = await client.get("/api/v1/offices", params={"city": "Testhausen"})
+    assert response.json()["total"] == 1
+    assert response.json()["items"][0]["scan_enabled"] is False

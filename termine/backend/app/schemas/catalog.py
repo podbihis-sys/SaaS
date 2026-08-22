@@ -32,6 +32,10 @@ class OfficeOut(ORMModel):
     timezone: str
     booking_url: str | None = None
     phone: str | None = None
+    #: False when the booking system may not be polled; the office is still
+    #: listed so the user can book directly with the authority.
+    scan_enabled: bool = True
+    scan_blocked_reason: str | None = None
     services: list[ServiceOut] = Field(default_factory=list)
     #: Straight-line kilometres from the query point, when one was given.
     distance_km: float | None = None

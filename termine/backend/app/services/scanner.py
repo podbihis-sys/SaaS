@@ -21,6 +21,7 @@ from app.models.office import Office, Service
 from app.models.slot import ScanRun, Slot
 from app.models.watch import Watch, watch_offices
 from app.providers import build_client, get_provider, is_enabled, office_ref, service_ref
+from app.providers.robots import robots
 from app.services.alerting import alert_for_slots
 from app.services.notifier import deliver_pending
 
@@ -61,6 +62,22 @@ async def scan_pair(
     run = ScanRun(office_id=office.id, service_id=service.id, provider=str(office.provider))
     session.add(run)
     started = time.monotonic()
+
+    # Checked per scan, not just at catalogue time: an authority can publish a
+    # Disallow at any moment, and the catalogue flag is only as fresh as the
+    # last person who looked. This is the backstop that makes the rule in
+    # docs/legal.md structural instead of a matter of remembering it.
+    verdict = await robots.allowed(client, office.base_url)
+    if not verdict.allowed:
+        office.scan_enabled = False
+        office.scan_blocked_reason = f"robots.txt: {office.base_url} verbietet automatisiertes Abrufen"
+        run.status = ScanStatus.ERROR
+        run.error = verdict.reason
+        run.finished_at = utcnow()
+        run.duration_ms = int((time.monotonic() - started) * 1000)
+        await session.flush()
+        log.warning("scanner.robots_disallowed", office=office.name, base_url=office.base_url)
+        return ScanResult(error=verdict.reason)
 
     try:
         raw_slots = await provider.fetch_slots(
@@ -212,6 +229,9 @@ async def due_pairs(session: AsyncSession, *, limit: int = 50) -> list[tuple[Off
         .where(
             Service.active.is_(True),
             Office.active.is_(True),
+            # Listed-but-not-scannable offices are filtered here rather than in
+            # the adapter, so no adapter can accidentally poll one.
+            Office.scan_enabled.is_(True),
             Service.office_id.in_(watched_offices),
             Service.category.in_(watched_categories),
             or_(Office.cooldown_until.is_(None), Office.cooldown_until <= now),

@@ -49,7 +49,16 @@ class Office(Base, TimestampMixin):
     booking_url: Mapped[str | None] = mapped_column(String(512))
     phone: Mapped[str | None] = mapped_column(String(64))
 
+    #: Whether the office appears in the app at all.
     active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True, index=True)
+    #: Whether the scanner may poll it. Separate from `active` because the two
+    #: are genuinely different permissions: Bremen's offices are worth listing
+    #: so a user can find the right one and tap through to the official portal,
+    #: but its booking system publishes `Disallow: /`, so polling it is not
+    #: ours to do. Listed, not scanned.
+    scan_enabled: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True, index=True)
+    #: Why scanning is off, shown in the app and in the catalogue docs.
+    scan_blocked_reason: Mapped[str | None] = mapped_column(String(300))
 
     #: Rolling scanner health, used to back off from offices that keep failing.
     last_scanned_at: Mapped[datetime | None] = mapped_column(UTCDateTime())

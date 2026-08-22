@@ -68,6 +68,10 @@ export interface Office {
   timezone: string;
   booking_url: string | null;
   phone: string | null;
+  /** False when the booking system may not be polled; the office can still be
+   *  found and booked directly with the authority. */
+  scan_enabled: boolean;
+  scan_blocked_reason: string | null;
   services: Service[];
   distance_km: number | null;
 }

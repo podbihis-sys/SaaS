@@ -253,15 +253,19 @@ export default function NewWatchScreen() {
               ) : (
                 offices.map((office) => {
                   const selected = officeIds.includes(office.id);
+                  // Some authorities forbid automated polling. Showing them
+                  // greyed out with the reason is honest; hiding them would
+                  // make the user think we simply do not know the office.
+                  const watchable = office.scan_enabled;
                   return (
                     <Pressable
                       key={office.id}
                       accessibilityRole="checkbox"
-                      accessibilityState={{ checked: selected }}
-                      onPress={() => toggleOffice(office.id)}
+                      accessibilityState={{ checked: selected, disabled: !watchable }}
+                      onPress={watchable ? () => toggleOffice(office.id) : undefined}
                       className={`rounded-card border p-4 ${
                         selected ? 'border-primary bg-primary-50' : 'border-border bg-background'
-                      }`}
+                      } ${watchable ? '' : 'opacity-60'}`}
                     >
                       <Text className="text-base font-medium text-foreground">{office.name}</Text>
                       <Text className="mt-0.5 text-sm text-muted-foreground">
@@ -269,6 +273,12 @@ export default function NewWatchScreen() {
                           .filter(Boolean)
                           .join(', ')}
                       </Text>
+                      {watchable ? null : (
+                        <Text className="mt-2 text-xs leading-4 text-warning">
+                          Dieses Amt lässt keine automatische Überwachung zu. Sie können den Termin
+                          direkt beim Amt buchen.
+                        </Text>
+                      )}
                     </Pressable>
                   );
                 })
