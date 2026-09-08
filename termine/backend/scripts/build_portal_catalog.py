@@ -28,6 +28,7 @@ from urllib.parse import urlparse
 from app.models.enums import AuthorityType
 from app.providers.taxonomy import classify_authority
 from app.services.places import load_register, register_rows
+from scripts.register_cities import build_place_index
 
 TARGET = Path(__file__).resolve().parent.parent / "app" / "data" / "portals.json"
 
@@ -86,7 +87,15 @@ def main() -> None:
     parser.add_argument(
         "--exclude-tevis",
         action="store_true",
-        help="leave out instances that discover_tevis enumerates as real offices",
+        help="leave out every TEVIS instance, enumerated or not",
+    )
+    parser.add_argument(
+        "--exclude-ags-from",
+        metavar="PATH",
+        help=(
+            "app/data/tevis_offices.json: municipalities whose offices are already "
+            "catalogued individually get no generic portal row"
+        ),
     )
     parser.add_argument("--out", default=str(TARGET))
     args = parser.parse_args()
@@ -98,16 +107,21 @@ def main() -> None:
 
     # A Kreis is surveyed under its five-digit key, but an office row has to
     # carry the eight-digit AGS of a Gemeinde — the one its seat sits in — or
-    # the responsibility lookup will never find it.
+    # the responsibility lookup will never find it. The shared index knows the
+    # awkward cases (a seat outside its own district, a truncated name).
+    names = build_place_index(register)
     seat_ags: dict[str, str] = {}
     for key, kreis in register["kreise"].items():
-        seat = (kreis.get("seat") or "").strip()
-        if not seat:
-            continue
-        for row in municipalities.values():
-            if row["district_ags"] == key and row["short_name"] == seat:
-                seat_ags[key] = row["ags"]
-                break
+        if ags := names.get(kreis["name"].lower()):
+            seat_ags[key] = ags
+
+    # A municipality whose offices are enumerated one by one does not need a
+    # generic "Terminvergabe <Ort>" row as well: that would list the same
+    # system twice, once watchable and once not.
+    already: set[str] = set()
+    if args.exclude_ags_from:
+        with open(args.exclude_ags_from, encoding="utf-8") as handle:
+            already = {row["ags"] for row in json.load(handle)["offices"] if row.get("ags")}
 
     rows = load_rows(args.sniff)
     portals = []
@@ -123,6 +137,8 @@ def main() -> None:
             # A Kreis whose seat we could not place: the portal is real, but
             # nothing would ever surface it, so it is not worth a row.
             print(f"  Sitz nicht auflösbar, übersprungen: {row['city']} ({ags})", file=sys.stderr)
+            continue
+        if office_ags in already:
             continue
         register_row = municipalities.get(office_ags)
         postal_code = register_row["plz"] if register_row else None

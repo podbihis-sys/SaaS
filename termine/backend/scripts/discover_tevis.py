@@ -154,7 +154,9 @@ async def discover_landing(client: httpx.AsyncClient, url: str, city: str, state
         return HostOutcome(host, city, f"HTTP {response.status_code} ohne Mandant — nicht aufzählbar", [])
 
     offices = parse_landing(response.text, str(response.url), city, state)
-    status = f"{len(offices)} Mandanten" if offices else "erreichbar, keine Mandanten-Links auf der Startseite"
+    status = (
+        f"{len(offices)} Mandanten" if offices else "erreichbar, keine Mandanten-Links auf der Startseite"
+    )
     return HostOutcome(host, city, status, offices)
 
 
@@ -196,10 +198,9 @@ def targets_from_sniff(paths: list[str]) -> dict[str, tuple[str, str]]:
 async def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--survey", help="survey_cities.py JSON output")
-    parser.add_argument(
-        "--sniff", action="append", help="sniff_portals.py JSONL output (repeatable)"
-    )
+    parser.add_argument("--sniff", action="append", help="sniff_portals.py JSONL output (repeatable)")
     parser.add_argument("--json", metavar="PATH")
+    parser.add_argument("--concurrency", type=int, default=8)
     args = parser.parse_args()
     if not args.survey and not args.sniff:
         parser.error("give --survey, --sniff, or both")
@@ -221,20 +222,32 @@ async def main() -> None:
     for prefix, (city, state) in EKOM21_LANDINGS.items():
         targets[f"https://tevis.ekom21.de/{prefix}/"] = (city, state)
 
-    outcomes: list[HostOutcome] = []
-    async with build_client() as client:
-        for url, (city, state) in targets.items():
-            outcomes.append(await discover_landing(client, url, city, state))
-            await asyncio.sleep(2.0)
+    # Concurrent across instances, never within one: the shared client already
+    # spaces requests per host, so a hundred different cities can be read at
+    # once without any single authority seeing more than one request at a time.
+    semaphore = asyncio.Semaphore(args.concurrency)
+
+    async def guarded(client: httpx.AsyncClient, url: str, city: str, state: str) -> HostOutcome:
+        async with semaphore:
+            try:
+                outcome = await discover_landing(client, url, city, state)
+            except Exception as exc:  # noqa: BLE001 - one bad instance must not stop the run
+                outcome = HostOutcome(url, city, f"Fehler: {type(exc).__name__}", [])
             print(".", end="", file=sys.stderr, flush=True)
+            return outcome
+
+    async with build_client() as client:
+        outcomes = list(
+            await asyncio.gather(
+                *(guarded(client, url, city, state) for url, (city, state) in targets.items())
+            )
+        )
     print(file=sys.stderr)
 
     total = 0
-    for outcome in outcomes:
-        print(f"{outcome.city:20} {outcome.host:36} {outcome.status}")
-        for office in outcome.offices:
-            total += 1
-            print(f"{'':20}   md={office.mandant:>4}  {office.city:18} {office.name[:60]}")
+    for outcome in sorted(outcomes, key=lambda o: o.city):
+        print(f"{outcome.city:24} {outcome.host[:40]:42} {outcome.status}")
+        total += len(outcome.offices)
     print(f"\n{total} Ämter auf {len(outcomes)} Hosts")
 
     if args.json:

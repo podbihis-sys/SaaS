@@ -1,58 +1,147 @@
-# Katalog nach Bundesland
+# Abdeckung: alle Gemeinden Deutschlands
 
-Stand der Erfassung, Bundesland für Bundesland. Erfasst heißt: die Ämter sind
-in der App auffindbar. Ob sie auch **überwacht** werden dürfen, ist eine zweite,
-davon unabhängige Frage — siehe `scan_enabled`.
+Grundlage ist das amtliche Gemeindeverzeichnis (GV100AD, Destatis, Gebietsstand
+30.06.2026): **10 943 Gemeinden**, davon 10 747 mit Verwaltung, plus **294
+Landkreise**. Jede einzelne wurde geprüft — nicht eine Auswahl großer Städte.
 
-| Bundesland | Ämter | System | auffindbar | überwachbar | Stand |
-| --- | ---: | --- | :---: | :---: | --- |
-| **Nordrhein-Westfalen** | 32 | TEVIS (Düsseldorf, Münster, Mönchengladbach, Duisburg) | ✅ | ⏳ | robots.txt erlaubt; Adapter noch nicht live verifiziert |
-| **Bremen** | 17 | TEVIS (`termin.bremen.de`) | ✅ | ❌ | robots.txt `Disallow: /`, API zugangsgeschützt |
-| **Bayern** | 10 | TEVIS (Nürnberg) | ✅ | ⏳ | wie NRW |
-| **Baden-Württemberg** | 9 | TEVIS (Heidelberg) | ✅ | ⏳ | wie NRW |
-| **Hessen** | 7 | TEVIS/ekom21 (Frankfurt, `/fra/`) | ✅ | ⏳ | wie NRW |
-| **Niedersachsen** | 2 | TEVIS (Oldenburg) | ✅ | ⏳ | wie NRW |
-| **Berlin** | 2 | ZMS (`service.berlin.de`) | ❌ | ❌ | robots.txt sperrt `/terminvereinbarung/termin` und `/api`; API auf Anfrage |
-| Schleswig-Holstein | 1 | netAppoint (Kiel) | ❌ | ❌ | Alteintrag, unverifiziert |
-| übrige 8 | 0 | – | – | – | noch nicht erfasst |
+Jede Gemeinde landet in genau einem von drei Zuständen:
 
-⏳ = Erlaubnis liegt vor (robots.txt), Freischaltung wartet auf die erste
-Live-Verifikation des Adapters; bis dahin bleibt `SCANNER_PROVIDERS` ohne `tevis`.
+- **überwachbar** — die Ämter sind einzeln erfasst, robots.txt erlaubt das
+  Abfragen, ein Adapter kann den Kalender lesen. Ein Suchauftrag kann auslösen.
+- **verlinkt** — ein Terminsystem ist gefunden, aber nicht lesbar: kein Adapter
+  für den Anbieter, oder robots.txt untersagt es. Die App führt zur richtigen
+  Behörde und übergibt an deren Portal.
+- **offen** — nichts gefunden. Website nicht auffindbar, kein Terminlink auf
+  der Seite, oder die Gemeinde bietet keine Online-Terminvergabe an.
 
-## Bremen — vollständig erfasst
+## Stand je Bundesland
 
-Das kleinste Bundesland, und damit das erste. Zwei Kommunen: Bremen und
-Bremerhaven.
+| Bundesland | Gemeinden | überwachbar | verlinkt | Einwohner erreicht |
+| --- | ---: | ---: | ---: | ---: |
+| Baden-Württemberg | 1103 | 16 | 164 | 36 % |
+| Bayern | 2217 | 29 | 588 | 44 % |
+| Berlin | 1 | 0 | 1 | 100 % |
+| Brandenburg | 413 | 16 | 32 | 30 % |
+| Bremen | 2 | 0 | 1 | 17 % |
+| Hamburg | 1 | 0 | 0 | 0 % |
+| Hessen | 425 | 69 | 70 | 57 % |
+| Mecklenburg-Vorpommern | 726 | 17 | 26 | 24 % |
+| Niedersachsen | 964 | 38 | 121 | 42 % |
+| Nordrhein-Westfalen | 396 | 97 | 111 | 60 % |
+| Rheinland-Pfalz | 2301 | 28 | 105 | 33 % |
+| Saarland | 53 | 4 | 12 | 57 % |
+| Sachsen | 418 | 9 | 32 | 28 % |
+| Sachsen-Anhalt | 218 | 6 | 30 | 32 % |
+| Schleswig-Holstein | 1104 | 14 | 63 | 42 % |
+| Thüringen | 601 | 11 | 14 | 30 % |
+| **gesamt** | **10943** | **354** | **1370** | **46 %** |
 
-**Woher die Daten kommen.** `service.bremen.de` führt zwei kuratierte Listen —
-alle Behörden mit Terminbuchung und alle buchbaren Dienstleistungen. Die
-robots.txt dieses Portals ist leer, das Auslesen also erlaubt.
-`scripts/discover_bremen.py` holt beide Listen mit je einer Anfrage und erzeugt
-`app/catalog/bremen.py`. Erneut ausführen genügt, um den Katalog zu
-aktualisieren.
+Die Tabelle wird erzeugt, nicht gepflegt:
+`python -m scripts.coverage_report --sniff sniff.jsonl --markdown`.
 
-**Ergebnis:** 17 Behörden, 72 Dienstleistungen. Alle 17 hängen an *einer*
-TEVIS-Instanz unter `termin.bremen.de/termine`, unterschieden durch den
-Mandanten-Parameter `md` (Werte 2, 4, 5, 6, 13, 16, 23, 25, 41, 55, 59, 60, 63,
-75, 80). Darunter die drei BürgerServiceCenter, die Fahrerlaubnisstelle, das
-Finanzamt, das Gesundheitsamt und die Gewerbemeldestelle.
+„Einwohner erreicht" zählt, wie viele Menschen in einer Gemeinde wohnen, für die
+die App eine Terminbuchung nennen kann — überwacht oder verlinkt. Das ist der
+ehrlichere Maßstab als die Zahl der Gemeinden: Bayerns 2 217 Gemeinden sind zu
+großen Teilen Dörfer mit wenigen hundert Einwohnern.
 
-**Warum trotzdem nicht überwacht wird.** Zwei unabhängige Gründe:
+**Im Katalog:** 1 199 einzeln erfasste, überwachbare Ämter in 360 Orten und
+1 392 verlinkte Portale — zusammen 2 615 Einträge.
 
-1. `termin.bremen.de/robots.txt` enthält `User-agent: *` / `Disallow: /` — ein
-   Verbot für die gesamte Domain, für jeden automatisierten Client.
-2. Die Instanz hat zwar eine API (`/termine/api`, mit Swagger-UI), diese
-   antwortet ohne Zugangsdaten aber mit `{"status": 0, "message": "Zutritt
-   verweigert!"}`.
+## Warum die Landkreise so viel zählen
+
+Eine kreisangehörige Gemeinde meldet Einwohner an und traut, aber sie lässt
+keine Autos zu, stellt keine Führerscheine aus und bearbeitet keine
+Aufenthaltstitel — das macht ihr Landkreis. Für rund 8 000 Gemeinden hängen
+diese drei Anliegen also an einer von 294 Kreisverwaltungen.
+
+Deshalb wurden die Kreise separat vermessen. 75 von ihnen betreiben eine
+TEVIS-Instanz, die aufgezählt werden konnte; ihre Ämter sind beim Kreissitz
+eingetragen, und die Zuständigkeitsabfrage findet sie von jeder Gemeinde des
+Kreises aus. Wer in Bad Langensalza eine Kfz-Zulassung sucht, bekommt die des
+Unstrut-Hainich-Kreises — überwachbar.
+
+21 Kreise haben eine Website unter einem Namen, den kein Muster trifft
+(`rbk-direkt.de` für den Rheinisch-Bergischen Kreis, `mkk.de` für den
+Main-Kinzig-Kreis). Sie sind die verbliebene Lücke auf Kreisebene.
+
+## Wie die Vermessung läuft
+
+Vier Skripte, in dieser Reihenfolge:
+
+1. **`scripts/register_cities.py`** — erzeugt die Arbeitsliste aus dem amtlichen
+   Verzeichnis. Nicht aus einer handgepflegten Städteliste, die die Hälfte des
+   Landes stillschweigend auslässt.
+2. **`scripts/fetch_official_sites.py`** — holt die amtliche Website jeder
+   Gemeinde, über den Gemeindeschlüssel, in einer Abfrage. Ohne diesen Schritt
+   blieben 4 156 Gemeinden „Website nicht gefunden": ihre Domain heißt eben
+   nicht `www.<name>.de`.
+3. **`scripts/sniff_portals.py`** — liest die Startseite der Gemeinde, folgt bei
+   Bedarf bis zu drei Links Richtung „Bürgerservice"/„Termin", nimmt die Links,
+   die auf ein Terminsystem zeigen, erkennt bei unbekannten Hosts den Anbieter
+   an dessen eigener Seite und prüft die robots.txt des Ziels. Etwa zwei bis
+   vier Anfragen je Gemeinde — das ist der Grund, warum eine Vermessung des
+   ganzen Landes vertretbar ist.
+4. **`scripts/discover_tevis.py`** + **`build_tevis_catalog.py`** /
+   **`build_portal_catalog.py`** — zählen die Mandanten jeder TEVIS-Instanz auf
+   und schreiben die beiden Katalogdateien.
+
+Das ältere `scripts/survey_cities.py` rät Hostnamen (`termine.<stadt>.de`). Das
+funktioniert für Großstädte und für sonst niemanden; es bleibt als Ergänzung
+erhalten, die Hauptquelle ist der Weg über die Gemeinde-Website.
+
+## Gefundene Anbieter
+
+| Anbieter | Kommunen | Adapter |
+| --- | ---: | --- |
+| TEVIS | 1053 | **ja**, live verifiziert |
+| Terminland | 198 | nein |
+| termin-online-buchen | 111 | nein |
+| eTermin | 94 | ja (API-Schlüssel nötig) |
+| nolis | 94 | nein |
+| Tempus | 63 | nein |
+| smartCJM | 50 | nein |
+| cleverQ | 43 | nein |
+| meinenTermin | 21 | nein |
+| timify | 21 | nein |
+| ZMS (Berlin) | 15 | ja (gesperrt, siehe unten) |
+| qmatic | 13 | nein |
+| DTMS | 1 | nein |
+
+TEVIS ist mit Abstand der Marktführer, und der Adapter dafür ist gegen zehn
+Instanzen live geprüft (siehe [`providers.md`](./providers.md)). Der nächste
+Adapter, der sich lohnt, ist Terminland, danach termin-online-buchen — zusammen
+rund 300 weitere Kommunen.
+
+## Was noch offen ist
+
+| Ergebnis | Gemeinden | Was das heißt |
+| --- | ---: | --- |
+| kein Terminsystem verlinkt | 4130 | Website erreichbar, aber kein Link auf ein Buchungssystem gefunden. Viele kleine Gemeinden haben keins; manche verstecken es tiefer als zwei Klicks oder bauen die Navigation per JavaScript. |
+| Website nicht gefunden | 4812 | Weder die amtliche Adresse noch die geratenen Namen antworteten. Betrifft fast nur sehr kleine Gemeinden, die oft von ihrer Verbandsgemeinde mitverwaltet werden. |
+| Website blockiert (403) | 21 | Die Seite existiert und weist unseren Client ab. Wir tarnen ihn nicht. |
+
+Der Weg für die erste Gruppe: die Verbandsgemeinden, Samtgemeinden und Ämter
+(4 583 im Register verzeichnet) als eigene Ebene vermessen. Für die zweite: die
+Verwaltungsadresse aus dem Verband statt aus der Gemeinde ableiten.
+
+## Bremen — vollständig erfasst, gesperrt
+
+Zwei Kommunen: Bremen und Bremerhaven. `service.bremen.de` führt zwei kuratierte
+Listen — alle Behörden mit Terminbuchung und alle buchbaren Dienstleistungen —
+und erlaubt deren Auslesen. `scripts/discover_bremen.py` erzeugt daraus
+`app/catalog/bremen.py`: **17 Behörden, 72 Dienstleistungen**, alle auf einer
+TEVIS-Instanz unter `termin.bremen.de/termine`.
+
+Überwacht wird trotzdem nichts, aus zwei unabhängigen Gründen:
+
+1. `termin.bremen.de/robots.txt` enthält `User-agent: *` / `Disallow: /`.
+2. Die Instanz hat eine API (`/termine/api`, mit Swagger-UI), die ohne
+   Zugangsdaten mit `{"status": 0, "message": "Zutritt verweigert!"}` antwortet.
 
 Der Adapter wäre fertig, die Mandanten-Ids sind erfasst. Was fehlt, ist die
 Erlaubnis. Sobald Bremen sie erteilt, ist es ein Flag pro Zeile.
 
-**Bremerhaven** ist als zweite Kommune separat geprüft: `www.bremerhaven.de`
-setzt ebenfalls `Disallow: /`, ein eigener Terminhost war unter den üblichen
-Namen nicht erreichbar. Ebenfalls nicht überwachbar.
-
-## Berlin — geprüft, ebenfalls gesperrt, aber mit klarer Ansage
+## Berlin — gesperrt, aber mit klarer Ansage
 
 `service.berlin.de/robots.txt` ist ungewöhnlich ausführlich: ein Kommentarblock
 mit Nutzungsbedingungen, dann die Regeln. Entscheidend sind zwei Zeilen:
@@ -62,168 +151,41 @@ Disallow: /terminvereinbarung/api
 Disallow: /terminvereinbarung/termin
 ```
 
-Der Buchungsablauf, den der ZMS-Adapter nutzt, ist also ausdrücklich
-untersagt. Zugleich steht im Kommentar wörtlich: *„Please contact us, if you
-need access to the API under /terminvereinbarung/api"* — Kontakt
-`webmaster@berlinonline.net`. Berlin sagt damit dasselbe wie Bremen, nur
-deutlicher: **es gibt eine API, fragt uns.**
+Der Buchungsablauf, den der ZMS-Adapter nutzt, ist ausdrücklich untersagt.
+Zugleich steht im Kommentar wörtlich: *„Please contact us, if you need access to
+the API under /terminvereinbarung/api"* — Kontakt `webmaster@berlinonline.net`.
+Berlin sagt damit dasselbe wie Bremen, nur deutlicher: **es gibt eine API, fragt
+uns.**
 
 Die Katalogseiten (`/standort/…`, `/dienstleistung/…`) sind erlaubt. Ein
-Berliner Katalog ließe sich also wie in Bremen aus den öffentlichen Listen
-bauen — auffindbar und direkt buchbar, nicht überwacht.
+Berliner Katalog ließe sich wie in Bremen aus den öffentlichen Listen bauen —
+auffindbar und direkt buchbar, nicht überwacht.
 
-**Ein Parser-Bug, den Berlin aufgedeckt hat.** Die Datei nutzt Platzhalter
-(`Disallow: /standort/*/pdf/`). Pythons `RobotFileParser` kennt keine
-Platzhalter und vergleicht wörtlich — die Regel traf nie, und die Datei las
-sich *freizügiger*, als sie ist. Das ist die gefährliche Richtung.
-`app/providers/robots.py` bringt deshalb einen eigenen Matcher mit
-(`*`, `$`, längste Regel gewinnt, Allow schlägt Disallow bei Gleichstand),
-getestet gegen die wörtliche Berliner Datei.
-
-## Kurz geprüft: Hamburg, Saarland
-
-- **Hamburg:** `www.hamburg.de` und `serviceportal.hamburg.de` sperren nur
-  einzelne Pfade (Branchenbuch, Gateway-Login). Der eigentliche Terminhost ist
-  noch nicht identifiziert; erst dessen robots.txt entscheidet.
-- **Saarland:** `www.saarland.de` antwortet mit 403, ein Terminhost war unter
-  den naheliegenden Namen nicht erreichbar. Offen.
-
-## Die 50 größten Städte — Vermessung
-
-Reproduzierbar mit drei Skripten, in dieser Reihenfolge:
-
-1. `scripts/survey_cities.py` — probiert je Stadt Kandidaten-Hosts, erkennt den
-   Anbieter, liest die **gesamte** robots.txt des Buchungshosts.
-2. `scripts/discover_tevis.py` — für bestätigte TEVIS-Hosts mit erlaubter
-   robots.txt: liest die Startseite und zieht jeden `select2?md=`-Mandanten
-   samt Amtsname heraus (auch aus `<button onclick>`-Markup, wie Düsseldorf es
-   rendert).
-3. `scripts/build_tevis_catalog.py` — prüft je Instanz zusätzlich robots.txt für
-   `/suggest`, den Kalenderpfad, den der Adapter tatsächlich abfragt, und
-   erzeugt `app/catalog/tevis_cities.py`.
-
-### Geht — 60 Ämter in 8 Städten im Katalog
-
-| Stadt | Host | Ämter |
-| --- | --- | ---: |
-| Mönchengladbach | `termine.moenchengladbach.de` | 14 |
-| Nürnberg | `terminvereinbarung.nuernberg.de` | 10 |
-| Düsseldorf | `termine.duesseldorf.de` | 9 |
-| Heidelberg | `termin.heidelberg.de` | 9 |
-| Münster | `termine.stadt-muenster.de` | 8 |
-| Frankfurt am Main | `tevis.ekom21.de/fra/` | 7 |
-| Oldenburg | `terminvereinbarung.oldenburg.de` | 2 |
-| Duisburg | `termine.duisburg.de` | 1 (Ausländerbehörde) |
-
-Alle: TEVIS, robots.txt erlaubt `/select2` **und** `/suggest`, Mandanten-Ids
-und Amtsnamen erfasst, `scan_enabled=True`. Adressen fehlen — die
-TEVIS-Startseite nennt Ämter, aber keine Straßen; die App findet sie über
-Stadt und Name. **Noch nicht live verifiziert:** kein Adapter ist bisher gegen
-eine dieser Instanzen gelaufen. Das ist der nächste Schritt und die
-Voraussetzung, `tevis` in `SCANNER_PROVIDERS` aufzunehmen.
-
-### Geht nach Freigabe — 2
-
-| Stadt | System | Lage |
-| --- | --- | --- |
-| Bremen | TEVIS | `Disallow: /`; API vorhanden, zugangsgeschützt |
-| Berlin | ZMS | `/terminvereinbarung/termin` gesperrt; API auf Anfrage (`webmaster@berlinonline.net`) |
-
-### Geht nicht — 3
-
-| Stadt | Grund |
-| --- | --- |
-| Stuttgart | `service.stuttgart.de`: `Disallow: /` |
-| Bochum | smartCJM — kein Adapter |
-| Halle (Saale) | smartCJM — kein Adapter |
-
-### Unklar — Terminhost gefunden, mehr nicht — 8
-
-| Stadt | Host | Was fehlt |
-| --- | --- | --- |
-| Köln | `termine.stadt-koeln.de` | antwortet 400 ohne gültigen Mandanten; Anbieter nicht bestätigbar (Alteintrag sagt TEVIS) |
-| Dortmund | `termine.dortmund.de` | Anbieter unbekannt |
-| Essen | `termine.essen.de` | Anbieter unbekannt |
-| Bonn | `termine.bonn.de` | Anbieter unbekannt |
-| Erfurt | `termin.erfurt.de` | Anbieter unbekannt; robots.txt 403 |
-| Braunschweig | `termine.braunschweig.de` | TEVIS bestätigt, aber keine Mandanten-Links auf der Startseite |
-| Kassel | `tevis.ekom21.de` | TEVIS vermutet (Hostname); Root antwortet 403 |
-| Darmstadt | `www.darmstadt.de` | Hauptseite verweist auf TEVIS/ekom21; Instanz nicht direkt erreichbar |
-
-**ekom21 (Hessen).** Die geteilte Instanz `tevis.ekom21.de` verweigert ihren
-Root (403) und antwortet auf geratene Präfixe mit 404 — `/wi/`, `/ks/`, `/da/`
-existieren nicht. Der Einstieg muss aus dem Stadtportal kommen: Frankfurts
-`/fra/` kam so und lieferte sofort 7 Mandanten. Wiesbaden, Kassel und
-Darmstadt brauchen dasselbe — je eine URL aus ihrem Portal, dann ist es eine
-Zeile in `EKOM21_LANDINGS`.
-
-### Kein Terminhost gefunden — 29
-
-Hamburg, München, Leipzig, Dresden, Hannover, Wuppertal, Bielefeld, Mannheim,
-Karlsruhe, Augsburg, Gelsenkirchen, Aachen, Chemnitz, Kiel, Magdeburg,
-Freiburg, Krefeld, Mainz, Lübeck, Wiesbaden, Oberhausen, Rostock, Hagen,
-Potsdam, Saarbrücken, Hamm, Ludwigshafen, Osnabrück, Leverkusen.
-
-Das heißt: keiner der Kandidaten-Hosts (`termine.`, `termin.`, `tevis.`,
-`terminvereinbarung.`, `buergerservice.`, `<stadt>.tevis-online.de`) hat
-geantwortet; nur die Stadt-Hauptseite war erreichbar. Diese Städte **haben**
-Terminsysteme — sie liegen nur unter Namen, die kein Muster trifft, oder
-hinter dem Stadtportal. Der Weg dorthin ist derselbe wie bei Bremen: die
-Terminseite des Stadtportals lesen und den Link folgen. Das ist Handarbeit,
-je Stadt wenige Minuten.
-
-### Zwei Fehler, die diese Vermessung selbst aufgedeckt hat
-
-- Der erste Survey-Lauf prüfte den **HTTP-Status der Startseite nicht** und
-  schloss „TEVIS" allein aus dem Hostnamen. Fünf Städte standen dadurch in der
-  Spalte „geht" (ekom21 ×4, Lübeck), obwohl ihre Startseite 403 lieferte.
-  Behoben: ein abgewiesener Root gilt als „unbestätigt", nie als erkannt.
-- Ein 503 bei robots.txt wurde als „keine Datei → erlaubt" gelesen. RFC 9309
-  sagt das Gegenteil: Serverfehler → vorerst gesperrt. Behoben.
-
-## Was „auffindbar, nicht überwachbar" praktisch heißt
+## Was „verlinkt, nicht überwacht" praktisch heißt
 
 `Office.scan_enabled` trennt die beiden Berechtigungen:
 
-- **auffindbar** (`active`) — das Amt erscheint in Suche und Katalog, mit
-  Adresse, Dienstleistungen und Buchungslink. Ein Nutzer findet das richtige
-  Amt und kommt mit einem Tipp ins offizielle Portal.
-- **überwachbar** (`scan_enabled`) — der Scanner darf abfragen. Ist das aus,
-  wird das Amt nie gepollt, und ein Suchauftrag darauf wird beim Anlegen mit
-  Begründung abgelehnt, statt still nie auszulösen.
+- **auffindbar** (`active`) — das Amt erscheint in Suche und Zuständigkeitsliste,
+  mit Adresse und Buchungslink. Ein Nutzer findet das richtige Amt und kommt mit
+  einem Tipp ins offizielle Portal.
+- **überwachbar** (`scan_enabled`) — der Scanner darf abfragen. Ist das aus, wird
+  nie gepollt, und ein Suchauftrag darauf wird beim Anlegen mit Begründung
+  abgelehnt, statt still nie auszulösen.
 
 Bremen ist damit kein toter Eintrag: die App hilft beim Finden und Buchen, nur
 das automatische Beobachten fehlt.
 
-## Die Regel ist im Code verankert, nicht im Gedächtnis
+## Fehler, die diese Vermessung selbst aufgedeckt hat
 
-`app/providers/robots.py` liest und cacht robots.txt pro Host; `scan_pair`
-fragt **vor jedem** Scan. Sagt eine Behörde nein, wird der Scan abgebrochen,
-das Amt auf `scan_enabled=False` gesetzt und der Grund gespeichert. Das gilt
-auch für Ämter, die im Katalog als erlaubt geführt sind — eine Behörde kann ihr
-robots.txt jederzeit ändern, und der Katalog ist immer nur so frisch wie der
-letzte Mensch, der hingesehen hat.
-
-## Der Weg zur Freigabe
-
-Für Bremen — und für jede Behörde mit derselben Lage:
-
-1. Behörde anschreiben, Zweck erklären, Abfragefrequenz nennen (der Scanner
-   fragt nur, was jemand tatsächlich sucht, und hält Mindestabstände ein).
-2. Um Zugang zur bestehenden TEVIS-API bitten. Sie existiert bereits — das ist
-   der saubere Weg und deutlich schonender als Scraping.
-3. Bei Zusage: `scan_enabled=True` setzen, den Adapter einmal live verifizieren
-   (siehe `providers.md`), `SCANNER_PROVIDERS` um `tevis` erweitern.
-
-## Was Bremen und Berlin gemeinsam lehren
-
-Beide großen geprüften Systeme sperren den Buchungspfad und verweisen auf eine
-API, um die man bitten soll. Der Weg zu echter Überwachung führt also nicht
-über bessere Scraper, sondern über **eine Anfrage an die Behörde** — und die
-ist der eine Schritt, den kein Code ersetzen kann. Adapter und Katalog stehen
-bereit; sobald ein Zugang erteilt ist, ist die Freischaltung ein Flag.
-
-Für jedes weitere Bundesland gilt die Reihenfolge, die Bremen erzwungen und
-Berlin bestätigt hat: **zuerst die vollständige robots.txt des Buchungshosts**
-lesen — nicht die ersten Zeilen, die ganze Datei —, dann erst den Katalog
-bauen. Bei Berlin stand die entscheidende Sperre in Zeile sieben.
+- Der erste Survey-Lauf prüfte den **HTTP-Status der Startseite nicht** und
+  schloss „TEVIS" allein aus dem Hostnamen. Fünf Städte standen dadurch in der
+  Spalte „geht", obwohl ihre Startseite 403 lieferte.
+- Ein **503 bei robots.txt** wurde als „keine Datei → erlaubt" gelesen. RFC 9309
+  sagt das Gegenteil. Der Survey wurde korrigiert — und Wochen später fiel auf,
+  dass der *Produktions-Matcher* denselben Fehler machte, also die Stelle, an der
+  es zählt. Auch behoben, mit Tests.
+- Das **Ratsinformationssystem** jeder Kommune (`ris.`, `sitzungsdienst.`)
+  heißt „Termine" und ist keins. Es galt eine Weile als Fund.
+- Ein einzelner Fehler in einem von 10 747 Durchläufen riss den ganzen Lauf ab,
+  weil eine Ausnahme aus `asyncio.as_completed` den gemeinsamen HTTP-Client
+  schloss. Seitdem ist jeder Durchlauf für sich gekapselt.

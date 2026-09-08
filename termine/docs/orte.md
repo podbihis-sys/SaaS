@@ -71,6 +71,20 @@ Bei den Kreisen gilt: Ein Landratsamt sitzt in der Kreisstadt und hängt an
 deren AGS. Die Kreis-Zuständigkeit sucht deshalb Ämter der passenden Art in
 allen Gemeinden des Kreises.
 
+## Vom Ort zum Terminportal
+
+Die Zuständigkeit allein hilft nicht, wenn zur zuständigen Behörde kein Eintrag
+existiert. Deshalb ist jede Kommune, deren Website auf ein Terminsystem
+verweist, als Amt im Katalog — mit dem offiziellen Buchungslink, aber ohne
+Überwachung (`provider = portal`, `scan_enabled = False`). Woher diese Einträge
+kommen und wie viele es sind, steht in
+[`bundeslaender.md`](./bundeslaender.md).
+
+Findet die Zuständigkeitsabfrage für ein Anliegen kein passendes Amt, bietet sie
+das allgemeine Portal an — das der Gemeinde für gemeindliche Anliegen, das des
+Kreises für Kfz, Führerschein und Ausländerangelegenheiten. Nie das der
+Nachbarstadt: deren Bürgerbüro erledigt für Auswärtige nichts.
+
 ## In der App
 
 Suche → Eingabe „Stadt oder PLZ" → Vorschläge aus dem Register (ab zwei

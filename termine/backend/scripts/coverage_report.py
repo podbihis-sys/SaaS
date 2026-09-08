@@ -34,6 +34,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sniff", action="append", default=[], help="sniff_portals JSONL (repeatable)")
     parser.add_argument("--json", metavar="PATH", help="also write the numbers as JSON")
+    parser.add_argument("--markdown", action="store_true", help="print the table for the docs")
     args = parser.parse_args()
 
     register = load_register()
@@ -77,6 +78,23 @@ def main() -> None:
             state["einwohner_verlinkt"] += row["population"]
         if ags in surveyed:
             state["geprueft"] += 1
+
+    if args.markdown:
+        print("| Bundesland | Gemeinden | überwachbar | verlinkt | Einwohner erreicht |")
+        print("| --- | ---: | ---: | ---: | ---: |")
+        for state in sorted(by_state):
+            s = by_state[state]
+            reached = s["einwohner_ueberwachbar"] + s["einwohner_verlinkt"]
+            share = 100 * reached / s["einwohner"] if s["einwohner"] else 0
+            print(f"| {state} | {s['gemeinden']} | {s['ueberwachbar']} | {s['verlinkt']} | {share:.0f} % |")
+        grand = sum(v["einwohner"] for v in by_state.values())
+        got = sum(v["einwohner_ueberwachbar"] + v["einwohner_verlinkt"] for v in by_state.values())
+        print(
+            f"| **gesamt** | **{sum(v['gemeinden'] for v in by_state.values())}** | "
+            f"**{sum(v['ueberwachbar'] for v in by_state.values())}** | "
+            f"**{sum(v['verlinkt'] for v in by_state.values())}** | **{100 * got / grand:.0f} %** |"
+        )
+        print()
 
     header = f"{'Bundesland':26} {'Gem.':>6} {'gepr.':>6} {'überw.':>7} {'verl.':>6} {'% Einw. erreicht':>17}"
     print(header)

@@ -24,7 +24,11 @@ def test_portal_entries_are_listed_but_never_scanned() -> None:
         # The whole point of a portal row: findable, linkable, never polled.
         assert entry["scan_enabled"] is False
         assert entry["scan_blocked_reason"]
-        assert entry["booking_url"].startswith("https://")
+        # The URL is kept exactly as the authority published it. A handful
+        # still link over plain http; rewriting that to https would be a guess
+        # about a host we have not checked, and a wrong guess sends the user
+        # to a dead page instead of their appointment.
+        assert entry["booking_url"].startswith(("https://", "http://"))
         assert len(entry["municipality_ags"]) == 8
         assert isinstance(entry["authority_type"], AuthorityType)
 

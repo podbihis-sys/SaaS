@@ -25,7 +25,9 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import re
 from pathlib import Path
+from urllib.parse import urlparse
 
 from app.providers.base import build_client
 from app.providers.robots import robots
@@ -40,9 +42,21 @@ def slug(text: str) -> str:
     text = text.lower()
     for src, dst in (("ä", "ae"), ("ö", "oe"), ("ü", "ue"), ("ß", "ss")):
         text = text.replace(src, dst)
-    import re
-
     return re.sub(r"[^a-z0-9]+", "-", text).strip("-")
+
+
+def external_id(office: dict) -> str:
+    """A stable, unique key for one mandant on one instance.
+
+    Not ``tevis-<city>-md<n>``: the vendor hosts many instances under one
+    domain, and two of them can carry the same city name and the same mandant
+    number — Schwerin's own instance and the Ludwigslust-Parchim district's
+    both have an ``md=1``. The instance URL is what distinguishes them, so it
+    is what the key is built from.
+    """
+    parsed = urlparse(office["base_url"])
+    host = parsed.netloc.removeprefix("www.")
+    return f"tevis-{slug(host + parsed.path)}-md{office['mandant']}"
 
 
 async def main() -> None:
@@ -84,7 +98,7 @@ async def main() -> None:
             unplaced.append(office["city"])
         rows.append(
             {
-                "external_id": f"tevis-{slug(office['city'])}-md{office['mandant']}",
+                "external_id": external_id(office),
                 "base_url": office["base_url"],
                 "name": office["name"],
                 "authority_type": classify_authority(office["name"]).value,

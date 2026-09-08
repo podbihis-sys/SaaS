@@ -118,8 +118,18 @@ class Outcome:
 
 
 def homepage_candidates(entry: dict) -> list[str]:
-    """Hostnames a municipality's own website plausibly lives at, best first."""
-    hosts: list[str] = list(entry.get("hosts") or [])
+    """Where a municipality's own website is, best first.
+
+    An entry that carries a ``site`` — the official website from the register
+    of municipal websites, keyed by Gemeindeschlüssel — needs no guessing at
+    all, and the guesses stay behind it as a fallback. Guessing alone left
+    4 156 municipalities "not found" in the country-wide run; almost all of
+    them have a website, just not under a name any pattern predicts.
+    """
+    hosts: list[str] = []
+    if site := entry.get("site"):
+        hosts.append(site)
+    hosts.extend(entry.get("hosts") or [])
     kind = entry.get("kind", "")
 
     def add(host: str) -> None:
@@ -254,14 +264,13 @@ def extract_links(html: str, page_url: str) -> list[Link]:
 async def fetch_homepage(client: httpx.AsyncClient, entry: dict, outcome: Outcome) -> str | None:
     for host in homepage_candidates(entry):
         outcome.tried.append(host)
+        url = host if host.startswith("http") else f"https://{host}/"
         try:
             # Most candidates do not exist, and a hostname that does not
             # resolve is the common case rather than the exception: five
             # candidates × a long connect timeout is what decides how long a
             # survey of ten thousand municipalities takes.
-            response = await client.get(
-                f"https://{host}/", timeout=httpx.Timeout(12.0, connect=4.0), follow_redirects=True
-            )
+            response = await client.get(url, timeout=httpx.Timeout(12.0, connect=4.0), follow_redirects=True)
         except httpx.HTTPError:
             continue
         if response.status_code < 400 and response.text:
@@ -294,9 +303,7 @@ async def sniff(client: httpx.AsyncClient, entry: dict, sem: asyncio.Semaphore) 
         return outcome
 
 
-async def _sniff(
-    client: httpx.AsyncClient, entry: dict, outcome: Outcome, sem: asyncio.Semaphore
-) -> Outcome:
+async def _sniff(client: httpx.AsyncClient, entry: dict, outcome: Outcome, sem: asyncio.Semaphore) -> Outcome:
     async with sem:
         html = await fetch_homepage(client, entry, outcome)
         if html is None:
@@ -362,12 +369,22 @@ async def main() -> None:
     parser.add_argument(
         "--skip-jsonl", action="append", help="earlier results whose municipalities are skipped"
     )
+    parser.add_argument(
+        "--sites", help="official websites by Gemeindeschlüssel (scripts/fetch_official_sites.py)"
+    )
     parser.add_argument("--concurrency", type=int, default=10)
     parser.add_argument("--limit", type=int, default=None)
     args = parser.parse_args()
 
     with open(args.cities_file, encoding="utf-8") as handle:
         entries = json.load(handle)
+
+    if args.sites:
+        with open(args.sites, encoding="utf-8") as handle:
+            sites = json.load(handle)
+        for entry in entries:
+            if site := sites.get(entry.get("ags")):
+                entry["site"] = site
 
     done: set[str] = set()
     for path in (args.skip_jsonl or []) + [args.jsonl]:

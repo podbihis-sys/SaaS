@@ -274,12 +274,17 @@ function OfficeResults({
                       .join(', ')}
                   </Text>
                 </View>
-                {distance ? <Badge label={distance} tone="primary" /> : null}
+                <View className="items-end gap-1">
+                  {distance ? <Badge label={distance} tone="primary" /> : null}
+                  {item.scan_enabled ? null : <Badge label="direkt buchen" tone="neutral" />}
+                </View>
               </View>
               <Text className="mt-3 text-xs text-muted-foreground">
-                {item.services.length === 1
-                  ? '1 Anliegen buchbar'
-                  : `${item.services.length} Anliegen buchbar`}
+                {item.scan_enabled
+                  ? item.services.length === 1
+                    ? '1 Anliegen buchbar'
+                    : `${item.services.length} Anliegen buchbar`
+                  : 'Terminportal des Amtes — Überwachung nicht möglich'}
               </Text>
             </View>
           </Pressable>

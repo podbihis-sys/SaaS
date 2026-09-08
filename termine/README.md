@@ -111,27 +111,33 @@ Transport.
 **Fertig und geprüft:** Datenmodell, Scanner mit Abgleich und Rückzugslogik,
 Matcher, Benachrichtigungen inklusive Entprellung, Ratenlimit und Nachtruhe,
 REST-API, Buchungsübergabe, die vollständige App (Suchaufträge, Suche mit
-Standort, Meldungen, Einstellungen, Buchungs-Flow), 135 Backend-Tests, sauberer
+Standort, Meldungen, Einstellungen, Buchungs-Flow), 175 Backend-Tests, sauberer
 Typecheck der App.
-
-**Katalog:** 84 Ämter. Die 50 größten Städte sind vermessen
-(`scripts/survey_cities.py`): 60 Ämter in acht TEVIS-Städten (Düsseldorf,
-Nürnberg, Münster, Mönchengladbach, Heidelberg, Frankfurt, Oldenburg, Duisburg) sind
-erfasst und per robots.txt **überwachbar** — der Adapter ist gegen sie aber
-noch nicht live verifiziert. Bremen (17) ist erfasst, aber gesperrt; Berlin
-ebenso. Die vollständige Tabelle mit „geht / geht nach Freigabe / geht nicht /
-unklar" steht in [`docs/bundeslaender.md`](./docs/bundeslaender.md).
 
 **Orte:** Das amtliche Gemeindeverzeichnis (GV100AD, Destatis, Stand
 30.06.2026) ist importiert — alle 10 943 Gemeinden mit Gemeindeschlüssel,
 Kreis, Land und Sitz-PLZ. Eingabe von PLZ oder Ort führt zur Gemeinde und von
-dort zur zuständigen Behörde je Anliegen (Gemeinde oder Kreis), auch wenn dafür
-noch kein Amt im Katalog ist. Details in [`docs/orte.md`](./docs/orte.md).
+dort zur zuständigen Behörde je Anliegen (Gemeinde oder Kreis). Details in
+[`docs/orte.md`](./docs/orte.md).
 
-**Noch nicht geprüft:** Die vier Adapter für echte Buchungssysteme sind
-vollständig implementiert und über Fixtures getestet, aber nicht gegen die
-Live-Systeme verifiziert. Was vor einer Freischaltung zu tun ist, steht in
-[`docs/providers.md`](./docs/providers.md) und [`docs/legal.md`](./docs/legal.md).
+**Katalog: 2 615 Ämter.** Jede Gemeinde und jeder Landkreis wurde geprüft, indem
+die eigene Website gelesen und dem Link zum Terminsystem gefolgt wurde.
+
+- **1 199 Ämter in 360 Orten sind überwachbar** — TEVIS-Instanzen, deren
+  robots.txt das Abfragen erlaubt und deren Mandanten einzeln erfasst sind.
+- **1 392 Portale sind verlinkt** — Terminsysteme ohne Adapter oder mit
+  robots.txt-Verbot. Die App führt zur richtigen Behörde und übergibt.
+- Zusammen erreichen sie **46 % der Bevölkerung**. Die Tabelle je Bundesland
+  steht in [`docs/bundeslaender.md`](./docs/bundeslaender.md).
+
+**TEVIS ist live verifiziert.** Der Adapter wurde gegen zehn Instanzen aller
+drei Bauformen geprüft; neun liefern echte Termine. Der erste Live-Lauf zeigte,
+dass die ursprüngliche Implementierung nie funktioniert haben konnte — was
+daran falsch war, steht in [`docs/providers.md`](./docs/providers.md).
+
+**Noch nicht geprüft:** die Adapter für ZMS (Berlin), netAppoint und eTermin.
+Berlin und Bremen untersagen das Abfragen ohnehin und verweisen auf eine API
+auf Anfrage.
 
 **Bewusst nicht gebaut:** automatische Buchung, CAPTCHA-Umgehung, Umgehung von
 Sperren.
