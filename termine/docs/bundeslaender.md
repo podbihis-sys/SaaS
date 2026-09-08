@@ -7,7 +7,7 @@ davon unabhängige Frage — siehe `scan_enabled`.
 | Bundesland | Ämter | System | auffindbar | überwachbar | Grund |
 | --- | ---: | --- | :---: | :---: | --- |
 | **Bremen** | 17 | TEVIS (`termin.bremen.de`) | ✅ | ❌ | robots.txt `Disallow: /`, API zugangsgeschützt |
-| Berlin | 2 | ZMS | ❌ | ❌ | Katalogeinträge noch nicht verifiziert |
+| **Berlin** | 2 | ZMS (`service.berlin.de`) | ❌ | ❌ | robots.txt sperrt `/terminvereinbarung/termin` und `/api`; API auf Anfrage |
 | Nordrhein-Westfalen | 1 | TEVIS | ❌ | ❌ | dito |
 | Schleswig-Holstein | 1 | netAppoint | ❌ | ❌ | dito |
 | übrige 12 | 0 | – | – | – | noch nicht erfasst |
@@ -45,6 +45,42 @@ Erlaubnis. Sobald Bremen sie erteilt, ist es ein Flag pro Zeile.
 setzt ebenfalls `Disallow: /`, ein eigener Terminhost war unter den üblichen
 Namen nicht erreichbar. Ebenfalls nicht überwachbar.
 
+## Berlin — geprüft, ebenfalls gesperrt, aber mit klarer Ansage
+
+`service.berlin.de/robots.txt` ist ungewöhnlich ausführlich: ein Kommentarblock
+mit Nutzungsbedingungen, dann die Regeln. Entscheidend sind zwei Zeilen:
+
+```
+Disallow: /terminvereinbarung/api
+Disallow: /terminvereinbarung/termin
+```
+
+Der Buchungsablauf, den der ZMS-Adapter nutzt, ist also ausdrücklich
+untersagt. Zugleich steht im Kommentar wörtlich: *„Please contact us, if you
+need access to the API under /terminvereinbarung/api"* — Kontakt
+`webmaster@berlinonline.net`. Berlin sagt damit dasselbe wie Bremen, nur
+deutlicher: **es gibt eine API, fragt uns.**
+
+Die Katalogseiten (`/standort/…`, `/dienstleistung/…`) sind erlaubt. Ein
+Berliner Katalog ließe sich also wie in Bremen aus den öffentlichen Listen
+bauen — auffindbar und direkt buchbar, nicht überwacht.
+
+**Ein Parser-Bug, den Berlin aufgedeckt hat.** Die Datei nutzt Platzhalter
+(`Disallow: /standort/*/pdf/`). Pythons `RobotFileParser` kennt keine
+Platzhalter und vergleicht wörtlich — die Regel traf nie, und die Datei las
+sich *freizügiger*, als sie ist. Das ist die gefährliche Richtung.
+`app/providers/robots.py` bringt deshalb einen eigenen Matcher mit
+(`*`, `$`, längste Regel gewinnt, Allow schlägt Disallow bei Gleichstand),
+getestet gegen die wörtliche Berliner Datei.
+
+## Kurz geprüft: Hamburg, Saarland
+
+- **Hamburg:** `www.hamburg.de` und `serviceportal.hamburg.de` sperren nur
+  einzelne Pfade (Branchenbuch, Gateway-Login). Der eigentliche Terminhost ist
+  noch nicht identifiziert; erst dessen robots.txt entscheidet.
+- **Saarland:** `www.saarland.de` antwortet mit 403, ein Terminhost war unter
+  den naheliegenden Namen nicht erreichbar. Offen.
+
 ## Was „auffindbar, nicht überwachbar" praktisch heißt
 
 `Office.scan_enabled` trennt die beiden Berechtigungen:
@@ -79,10 +115,15 @@ Für Bremen — und für jede Behörde mit derselben Lage:
 3. Bei Zusage: `scan_enabled=True` setzen, den Adapter einmal live verifizieren
    (siehe `providers.md`), `SCANNER_PROVIDERS` um `tevis` erweitern.
 
-## Nächste Bundesländer
+## Was Bremen und Berlin gemeinsam lehren
 
-Nach Größe wären Hamburg und das Saarland die nächsten. Vor dem Erfassen lohnt
-in beiden Fällen dieselbe Reihenfolge wie bei Bremen: **zuerst robots.txt des
-Buchungssystems**, dann erst der Katalog. Bremen hat gezeigt, dass ein
-vollständiger Katalog wertlos für die Überwachung sein kann — und dass man das
-in der ersten Minute erfährt, wenn man in der richtigen Reihenfolge nachsieht.
+Beide großen geprüften Systeme sperren den Buchungspfad und verweisen auf eine
+API, um die man bitten soll. Der Weg zu echter Überwachung führt also nicht
+über bessere Scraper, sondern über **eine Anfrage an die Behörde** — und die
+ist der eine Schritt, den kein Code ersetzen kann. Adapter und Katalog stehen
+bereit; sobald ein Zugang erteilt ist, ist die Freischaltung ein Flag.
+
+Für jedes weitere Bundesland gilt die Reihenfolge, die Bremen erzwungen und
+Berlin bestätigt hat: **zuerst die vollständige robots.txt des Buchungshosts**
+lesen — nicht die ersten Zeilen, die ganze Datei —, dann erst den Katalog
+bauen. Bei Berlin stand die entscheidende Sperre in Zeile sieben.

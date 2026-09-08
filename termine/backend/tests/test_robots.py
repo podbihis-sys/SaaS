@@ -8,6 +8,8 @@ lives in the scan path and is tested there.
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import httpx
 import pytest
 from sqlalchemy import select
@@ -17,9 +19,11 @@ from app.models import Office, Service
 from app.models.enums import ScanStatus
 from app.models.slot import ScanRun
 from app.providers.base import OfficeRef
-from app.providers.robots import robots
+from app.providers.robots import RobotsRules, robots
 from app.providers.tevis import TevisProvider
 from app.services.scanner import due_pairs, scan_pair
+
+FIXTURES = Path(__file__).parent / "fixtures"
 
 
 @pytest.fixture(autouse=True)
@@ -36,6 +40,72 @@ def client_serving(robots_txt: str | None, status: int = 200) -> httpx.AsyncClie
         return httpx.Response(200, text="<html><body>suggest cnc-1</body></html>")
 
     return httpx.AsyncClient(transport=httpx.MockTransport(handler))
+
+
+BERLIN = (FIXTURES / "berlin_robots.txt").read_text(encoding="utf-8")
+
+
+def test_berlin_file_is_read_correctly() -> None:
+    """The verbatim service.berlin.de robots.txt.
+
+    This is the file that exposed the bug: the standard-library parser treats
+    `Disallow: /standort/*/pdf/` as a literal prefix, so it matched nothing and
+    the file read as more permissive than it is.
+    """
+    rules = RobotsRules(BERLIN)
+    # The booking flow the adapter would use is explicitly forbidden.
+    assert rules.allowed("TerminRadar", "/terminvereinbarung/termin/day/") is False
+    assert rules.allowed("TerminRadar", "/terminvereinbarung/termin/time/1772492400/") is False
+    assert rules.allowed("TerminRadar", "/terminvereinbarung/api") is False
+    # Wildcard rules must actually match.
+    assert rules.allowed("TerminRadar", "/standort/122210/pdf/") is False
+    assert rules.allowed("TerminRadar", "/dienstleistung/120686/standort/122210/pdf/") is False
+    # The catalogue pages themselves are allowed, which is how a catalogue
+    # could still be built from Berlin's public listings.
+    assert rules.allowed("TerminRadar", "/standort/122210/") is True
+    assert rules.allowed("TerminRadar", "/dienstleistung/120686/") is True
+
+
+def test_wildcard_matches_any_run_of_characters() -> None:
+    rules = RobotsRules("User-agent: *\nDisallow: /a/*/c\n")
+    assert rules.allowed("x", "/a/b/c") is False
+    assert rules.allowed("x", "/a/anything/at/all/c") is False
+    assert rules.allowed("x", "/a/c") is True
+
+
+def test_dollar_anchors_the_end() -> None:
+    rules = RobotsRules("User-agent: *\nDisallow: /*.pdf$\n")
+    assert rules.allowed("x", "/file.pdf") is False
+    assert rules.allowed("x", "/file.pdf?download=1") is True
+
+
+def test_longest_matching_rule_wins() -> None:
+    """`Allow: /public/` inside `Disallow: /` must win for /public/x."""
+    rules = RobotsRules("User-agent: *\nDisallow: /\nAllow: /public/\n")
+    assert rules.allowed("x", "/private") is False
+    assert rules.allowed("x", "/public/page") is True
+
+
+def test_allow_beats_disallow_on_a_tie() -> None:
+    rules = RobotsRules("User-agent: *\nDisallow: /p\nAllow: /p\n")
+    assert rules.allowed("x", "/p/x") is True
+
+
+def test_empty_disallow_means_allow_everything() -> None:
+    rules = RobotsRules("User-agent: *\nDisallow:\n")
+    assert rules.allowed("x", "/anything") is True
+
+
+def test_group_naming_us_is_used_even_when_wildcard_is_looser() -> None:
+    rules = RobotsRules("User-agent: TerminRadar\nDisallow: /\n\nUser-agent: *\nAllow: /\n")
+    assert rules.allowed("TerminRadar", "/x") is False
+    assert rules.allowed("SomeoneElse", "/x") is True
+
+
+def test_comments_and_blank_lines_are_ignored() -> None:
+    rules = RobotsRules("# a comment\n\nUser-agent: *  # trailing\nDisallow: /x # here\n")
+    assert rules.allowed("x", "/x") is False
+    assert rules.allowed("x", "/y") is True
 
 
 async def test_blanket_disallow_is_refused() -> None:
