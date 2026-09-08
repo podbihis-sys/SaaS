@@ -128,16 +128,28 @@ def homepage_candidates(entry: dict) -> list[str]:
 
     stems = [s for s in slug_variants(entry["city"]) if s not in _GENERIC]
     if kind in ("43", "44", "45"):  # a Kreis: its name is not its domain
+        # Districts name their sites every way there is: kreis-ploen.de,
+        # landkreis-goslar.de, ammerland.de, lra-kronach.de (Bavaria calls the
+        # authority Landratsamt), lk-ni.de. The register gives only the plain
+        # name, so all of the common shapes get a turn.
         bare = re.sub(r"^(land)?kreis\s+|\s*\(?kreis\)?$", "", entry["city"], flags=re.I)
+        # The register abbreviates where the domain spells out or drops:
+        # "Pfaffenhofen a.d.Ilm" is landkreis-pfaffenhofen.de, "Neumarkt
+        # i.d.OPf." is landkreis-neumarkt.de. slug_variants' last variant is
+        # the bare first word, which is exactly that.
+        bare = re.sub(r"\s*[ai]\.\s*[dm]?\.?\s*\S*$", "", bare)
         bare_stems = [s for s in slug_variants(bare) if s not in _GENERIC]
-        for stem in bare_stems:
+        for stem in bare_stems[:3]:
             add(f"www.kreis-{stem}.de")
             add(f"www.landkreis-{stem}.de")
-        for stem in stems[:1]:
-            add(f"www.{stem}.de")
         for stem in bare_stems[:1]:
             add(f"www.{stem}.de")
-        return hosts[:5]
+            add(f"www.lra-{stem}.de")
+            add(f"www.landratsamt-{stem}.de")
+            add(f"www.kreis{stem}.de")
+        for stem in stems[:1]:
+            add(f"www.{stem}.de")
+        return hosts[:9]
 
     for stem in stems[:3]:
         # Three stems, because a city's domain drops what its official name

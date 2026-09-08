@@ -24,7 +24,7 @@ import argparse
 import json
 import sys
 
-from app.services.places import load_register
+from app.services.places import load_register, register_rows
 
 #: Textkennzeichen of areas without an administration.
 UNINHABITED = {"65", "66"}
@@ -84,6 +84,42 @@ def kreis_entries(register: dict) -> list[dict]:
             }
         )
     return entries
+
+
+def build_place_index(register: dict) -> dict[str, str]:
+    """Place name → Gemeindeschlüssel, for municipalities and districts alike.
+
+    A district is filed under the municipality its administration sits in, so
+    that an office found on a district's booking system lands somewhere the
+    responsibility lookup can see it. Three things make that lookup awkward and
+    all three occur: the seat can be a kreisfreie Stadt outside its own district
+    (Trier administers the Kreis Trier-Saarburg), the register truncates long
+    names at fifty characters ("Bautzen / Budyšin, Stadt, …"), and a seat is
+    written without the suffix its municipality carries ("Lübben" for "Lübben
+    (Spreewald)"). Exact match first, then prefix, and the district's largest
+    municipality as the last resort.
+    """
+    rows = register_rows(register)
+    index: dict[str, str] = {}
+    for row in sorted(rows, key=lambda r: r["population"]):
+        # Larger municipalities overwrite smaller namesakes.
+        index[row["short_name"].lower()] = row["ags"]
+
+    for key, kreis in register["kreise"].items():
+        name = kreis["name"].lower()
+        if name in index:
+            continue
+        seat = (kreis.get("seat") or "").strip().lower()
+        members = [row for row in rows if row["district_ags"] == key]
+        candidates = members + rows  # own district first, then anywhere
+        found = next((row for row in candidates if seat and row["short_name"].lower() == seat), None)
+        if found is None and seat:
+            found = next((row for row in candidates if row["short_name"].lower().startswith(seat)), None)
+        if found is None and members:
+            found = max(members, key=lambda row: row["population"])
+        if found is not None:
+            index[name] = found["ags"]
+    return index
 
 
 def main() -> None:

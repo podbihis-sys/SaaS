@@ -128,6 +128,58 @@ async def test_missing_robots_allows() -> None:
     assert verdict.allowed is True
 
 
+async def test_a_server_error_blocks_rather_than_permits() -> None:
+    """RFC 9309 §2.3.1.4: rules that cannot be read mean "assume disallowed"."""
+    async with client_serving("User-agent: *\nAllow: /\n", status=503) as client:
+        verdict = await robots.allowed(client, "https://example.invalid/select2")
+    assert verdict.allowed is False
+    assert "RFC 9309" in verdict.reason
+
+
+async def test_an_unreachable_host_blocks_rather_than_permits() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        raise httpx.ConnectError("no route to host")
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+        verdict = await robots.allowed(client, "https://example.invalid/select2")
+    assert verdict.allowed is False
+
+
+async def test_an_outage_is_re_checked_soon_rather_than_cached_all_day() -> None:
+    """A blocked verdict from an outage must not outlive the outage."""
+    calls: list[int] = []
+    fail = True
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        calls.append(1)
+        if fail:
+            return httpx.Response(500, text="")
+        return httpx.Response(200, text="User-agent: *\nAllow: /\n")
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+        first = await robots.allowed(client, "https://example.invalid/select2")
+        assert first.allowed is False
+
+        # Nothing re-fetches within the short window …
+        await robots.allowed(client, "https://example.invalid/select2")
+        assert len(calls) == 1
+
+        # … but the entry expires far sooner than a parsed file would.
+        from app.providers import robots as robots_module
+
+        rules, outcome, fetched = robots_module.robots._rules["https://example.invalid"]
+        robots_module.robots._rules["https://example.invalid"] = (
+            rules,
+            outcome,
+            fetched - robots_module._UNAVAILABLE_TTL_SECONDS - 1,
+        )
+        fail = False
+        second = await robots.allowed(client, "https://example.invalid/select2")
+
+    assert second.allowed is True
+    assert len(calls) == 2
+
+
 async def test_rule_naming_us_is_not_overruled_by_a_permissive_wildcard() -> None:
     """A group naming our agent wins over `*`, not the other way round."""
     async with client_serving("User-agent: TerminRadar\nDisallow: /\n\nUser-agent: *\nAllow: /\n") as client:

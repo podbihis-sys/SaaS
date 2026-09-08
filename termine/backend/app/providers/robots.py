@@ -18,11 +18,11 @@ log = get_logger(__name__)
 #: effect the same day.
 _TTL_SECONDS = 6 * 60 * 60
 
-#: A host that will not tell us its rules is not thereby giving permission —
-#: but neither is a transient 500 a prohibition. Network failures leave the
-#: previous verdict in place and default to allowed, matching how every other
-#: well-behaved crawler treats an unreachable robots.txt.
-_DEFAULT_ON_ERROR = True
+#: A robots.txt that could not be read at all — a server error or a failed
+#: connection — is cached only briefly: the host is presumed closed until it
+#: answers again, and a five-minute outage must not shut the scanner out for
+#: the rest of the day.
+_UNAVAILABLE_TTL_SECONDS = 15 * 60
 
 
 @dataclass(slots=True)
@@ -135,44 +135,66 @@ class RobotsCache:
     """
 
     def __init__(self) -> None:
-        self._rules: dict[str, tuple[RobotsRules | None, float]] = {}
+        #: origin -> (rules, outcome, fetched_at). ``rules`` is None unless the
+        #: outcome is "ok".
+        self._rules: dict[str, tuple[RobotsRules | None, str, float]] = {}
         self._locks: dict[str, asyncio.Lock] = {}
 
     def _origin(self, url: str) -> str:
         parts = urlparse(url)
         return f"{parts.scheme}://{parts.netloc}"
 
-    async def _load(self, client: httpx.AsyncClient, origin: str) -> RobotsRules | None:
+    async def _load(self, client: httpx.AsyncClient, origin: str) -> tuple[RobotsRules | None, str]:
+        """Fetch robots.txt and say which of the three cases this is.
+
+        RFC 9309 §2.3.1 draws the line that matters: "no file" (4xx) means no
+        restrictions, while "cannot be read" (5xx, or no connection at all)
+        means the crawler must assume it is disallowed until the file can be
+        read. Collapsing the two — as treating every failure as "no file" does
+        — turns an outage into permission, which is the one direction a
+        robots.txt implementation must never get wrong.
+        """
         try:
             response = await client.get(f"{origin}/robots.txt", timeout=10.0)
         except httpx.HTTPError as exc:
             log.warning("robots.fetch_failed", origin=origin, error=str(exc))
-            return None
+            return None, "unavailable"
 
+        if response.status_code >= 500:
+            log.warning("robots.server_error", origin=origin, status=response.status_code)
+            return None, "unavailable"
         if response.status_code >= 400:
             # 404 is the common case and means "no restrictions".
-            return None
-        return RobotsRules(response.text)
+            return None, "none"
+        return RobotsRules(response.text), "ok"
 
     async def allowed(self, client: httpx.AsyncClient, url: str) -> RobotsVerdict:
         origin = self._origin(url)
         now = time.monotonic()
 
+        def stale(entry: tuple[RobotsRules | None, str, float] | None, at: float) -> bool:
+            if entry is None:
+                return True
+            ttl = _UNAVAILABLE_TTL_SECONDS if entry[1] == "unavailable" else _TTL_SECONDS
+            return at - entry[2] > ttl
+
         cached = self._rules.get(origin)
-        if cached is None or now - cached[1] > _TTL_SECONDS:
+        if stale(cached, now):
             lock = self._locks.setdefault(origin, asyncio.Lock())
             async with lock:
                 # Re-check inside the lock: several offices on one host can
                 # arrive together and would otherwise each fetch robots.txt.
                 cached = self._rules.get(origin)
-                if cached is None or time.monotonic() - cached[1] > _TTL_SECONDS:
-                    rules = await self._load(client, origin)
-                    cached = (rules, time.monotonic())
+                if stale(cached, time.monotonic()):
+                    rules, outcome = await self._load(client, origin)
+                    cached = (rules, outcome, time.monotonic())
                     self._rules[origin] = cached
 
-        rules = cached[0]
+        rules, outcome, _ = cached
+        if outcome == "unavailable":
+            return RobotsVerdict(False, "robots.txt nicht lesbar — vorerst gesperrt (RFC 9309)")
         if rules is None:
-            return RobotsVerdict(_DEFAULT_ON_ERROR, "no robots.txt")
+            return RobotsVerdict(True, "no robots.txt")
 
         # The product token, e.g. "TerminRadar" out of "TerminRadar/0.1 (+...)".
         agent = settings.HTTP_USER_AGENT.split("/")[0].strip() or "*"

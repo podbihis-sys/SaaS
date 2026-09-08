@@ -15,6 +15,7 @@ from app.models.base import utcnow
 from app.models.enums import ScanStatus, SlotStatus
 from app.models.slot import ScanRun
 from app.providers.base import RawSlot
+from app.providers.robots import robots
 from app.services import scanner as scanner_module
 from app.services.scanner import scan_pair
 
@@ -56,8 +57,25 @@ def raw(hours_ahead: int, ref: str | None = None) -> RawSlot:
     return RawSlot(starts_at=starts, ends_at=starts + timedelta(minutes=15), provider_ref=ref)
 
 
+@pytest.fixture(autouse=True)
+def _clear_robots_cache() -> None:
+    robots.clear()
+
+
+def _no_robots_file(request: httpx.Request) -> httpx.Response:
+    """The office's host publishes no robots.txt, which restricts nothing.
+
+    Explicit, because it is a precondition of every test here: the scanner
+    refuses to poll a host whose rules it cannot read, so without this the
+    reconciliation tests would only ever prove that refusal.
+    """
+    if request.url.path == "/robots.txt":
+        return httpx.Response(404, text="not found")
+    return httpx.Response(200, text="")
+
+
 async def run(session: AsyncSession, office: Office, service: Service):  # noqa: ANN201
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(transport=httpx.MockTransport(_no_robots_file)) as client:
         return await scan_pair(session, office, service, client)
 
 

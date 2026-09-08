@@ -32,7 +32,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
 from app.logging_config import get_logger
-from app.models.enums import AuthorityType
+from app.models.enums import AuthorityType, Provider
 from app.models.office import Office
 from app.models.place import Municipality, PostalCode, PostalCodeLookup
 from app.providers.base import build_client
@@ -202,7 +202,12 @@ async def link_offices(session: AsyncSession, *, relink: bool = False) -> list[O
     for office in offices:
         match = pick(office, by_name.get(_norm(office.city), []))
         if match is None:
-            unmatched.append(office)
+            # A generated entry brings its own key — a district's office is
+            # filed on the district seat, and no Gemeinde is called
+            # "Unstrut-Hainich-Kreis". Only an office with no key at all is
+            # genuinely unplaced.
+            if office.municipality_ags is None:
+                unmatched.append(office)
             continue
         office.municipality_ags = match.ags
 
@@ -425,6 +430,22 @@ async def responsibilities(
     )
     own = [o for o in offices if o.municipality_ags == municipality.ags]
 
+    def general_portal(pool: list[Office], authority: AuthorityType) -> list[Office]:
+        """The authority's own booking portal, when no office of this type is known.
+
+        Most municipalities run one portal for everything they do, and most
+        Kreise likewise. Listing it under an errand we have no specific office
+        for is the difference between sending someone to the right booking page
+        and showing them an empty section.
+
+        The ``authority`` argument is what keeps that honest. A district's
+        portal is catalogued as "Weitere Ämter" precisely so it cannot be
+        confused with the citizens' office of the town it sits in — without
+        the filter, a village would be sent to the neighbouring town's
+        Bürgerbüro for a vehicle registration that town does not do.
+        """
+        return [o for o in pool if o.provider == Provider.PORTAL and o.authority_type == authority][:1]
+
     result: list[Responsibility] = []
     for kind in wanted:
         level = level_for(municipality, kind)
@@ -432,6 +453,9 @@ async def responsibilities(
         if level == "gemeinde":
             name = municipality.name
             found = [o for o in own if o.authority_type == kind]
+            if not found and kind is not AuthorityType.BUERGERAMT:
+                found = general_portal(own, AuthorityType.BUERGERAMT)
+                note = "Allgemeines Terminportal der Gemeinde" if found else None
         elif level == "kreis":
             name = municipality.district_name
             if municipality.district_seat:
@@ -445,6 +469,12 @@ async def responsibilities(
                     "Zuständig ist grundsätzlich der Kreis; größere kreisangehörige Städte "
                     "führen teils eigene Stellen."
                 )
+            if not found:
+                # The Kreis portal sits on its seat municipality and covers
+                # every errand the Kreis handles, so it is the right offer here.
+                found = general_portal(offices, AuthorityType.SONSTIGES)
+                if found:
+                    note = "Allgemeines Terminportal des Kreises"
         else:
             name = f"{AUTHORITY_LABELS_DE[kind]} für {municipality.short_name}"
             note = "Eigener Bezirk, nicht an die Gemeinde gebunden; Zuordnung noch nicht hinterlegt."

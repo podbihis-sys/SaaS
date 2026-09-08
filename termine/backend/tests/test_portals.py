@@ -40,12 +40,15 @@ def test_no_adapter_is_registered_for_portal() -> None:
 
 def test_authority_is_read_from_the_booking_url() -> None:
     assert (
-        authority_for("https://termine-reservieren.de/termine/remscheid/auslaenderbehoerde", "Remscheid")
+        authority_for("https://termine-reservieren.de/termine/remscheid/auslaenderbehoerde")
         is AuthorityType.AUSLAENDERBEHOERDE
     )
-    assert authority_for("https://termine.stadt-x.de/select2?md=3", "X") is AuthorityType.BUERGERAMT, (
-        "a portal that says nothing is the citizens' office, not 'Sonstiges'"
+    assert authority_for("https://termine.stadt-x.de/select2?md=3") is AuthorityType.BUERGERAMT, (
+        "a municipal portal that says nothing is the citizens' office"
     )
+    assert (
+        authority_for("https://termine.kreis-x.de/select2?md=3", is_kreis=True) is AuthorityType.SONSTIGES
+    ), "a district's general portal is not the citizens' office of its seat"
 
 
 def test_kreis_portals_are_named_as_such() -> None:

@@ -37,16 +37,23 @@ NOT_VERIFIED = "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buche
 ROBOTS_BLOCKED = "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
 
 
-def authority_for(url: str, city: str) -> AuthorityType:
+def authority_for(url: str, is_kreis: bool = False) -> AuthorityType:
     """Guess the authority from the booking URL's own words.
 
-    "…/termine/remscheid/auslaenderbehoerde" says what it is; most portals say
-    nothing, and the citizen service office is the right default because that
-    is what a municipal booking portal serves.
+    "…/termine/remscheid/auslaenderbehoerde" says what it is. Most portals say
+    nothing, and then the default depends on whose portal it is: a
+    municipality's serves its citizens' office, while a Kreis portal covers
+    vehicle registration, driving licences and residence permits at once —
+    calling that a Bürgeramt would file the district's portal under the
+    citizens' office of its seat, where it does not belong. It stays
+    "Weitere Ämter", and the responsibility view offers it as the district's
+    general portal.
     """
     words = urlparse(url).path.replace("-", " ").replace("/", " ")
     guess = classify_authority(f"{words} {urlparse(url).netloc.replace('.', ' ')}")
-    return guess if guess != AuthorityType.SONSTIGES else AuthorityType.BUERGERAMT
+    if guess != AuthorityType.SONSTIGES:
+        return guess
+    return AuthorityType.SONSTIGES if is_kreis else AuthorityType.BUERGERAMT
 
 
 def name_for(row: dict, kreis_names: set[str]) -> str:
@@ -137,7 +144,7 @@ def main() -> None:
                 "state": state,
                 "postal_code": postal_code,
                 "name": name_for(row, kreis_names),
-                "authority_type": authority_for(link["url"], row["city"]).value,
+                "authority_type": authority_for(link["url"], is_kreis=len(ags) == 5).value,
                 "base_url": f"{parsed.scheme}://{parsed.netloc}",
                 "booking_url": link["url"],
                 "vendor": vendor,
