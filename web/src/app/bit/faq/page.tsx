@@ -1,49 +1,105 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { COMPANY } from "../_data/catalog";
 import { BreadcrumbLd } from "../_components/breadcrumb-ld";
 import { Reveal } from "../_components/reveal";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/bit/faq" },
-  title: "FAQ – Häufige Fragen",
+  title: "FAQ – Häufig gestellte Fragen",
   description:
-    "Antworten auf häufige Fragen zu Schrumpfschläuchen, Lieferzeiten, Konfektion, Bedruckung und Anfragen bei der BIT.",
+    "Häufig gestellte Fragen an die BIT: Produkte & Sortiment, Konfektionierung, Lieferung & Logistik, Qualität & Zertifizierung sowie Beratung & Kontakt.",
 };
 
 /**
- * Eigene FAQ-Unterseite (Kundenvorgabe). Die Fragen werden inhaltlich noch
- * vom BIT-Team überarbeitet – Struktur und Seite stehen dafür bereit.
+ * FAQ – Fragen und Antworten im Wortlaut der Vorgabe „BIT Bierther FAQ"
+ * (überarbeitet vom BIT-Team, 09/2026), gegliedert in fünf Gruppen.
  */
-const FAQ = [
+const FAQ_GROUPS: { group: string; items: { q: string; a: string }[] }[] = [
   {
-    q: "Was ist ein Schrumpfschlauch und wofür wird er verwendet?",
-    a: "Ein Schrumpfschlauch ist ein Kunststoffschlauch, der sich bei Wärme auf einen definierten Durchmesser zusammenzieht. Er wird zur elektrischen Isolation, zur Bündelung und Kennzeichnung von Kabeln sowie zum mechanischen Schutz und zur Abdichtung von Verbindungen eingesetzt.",
+    group: "Produkte & Sortiment",
+    items: [
+      {
+        q: "Welche Produkte bietet die BIT Bierther GmbH an?",
+        a: "Schrumpfschlauch, Isolierschlauch, Silikonschlauch, Glasseidenschlauch, Geflechtschlauch, Wellrohr, Kabelbinder sowie Verarbeitungsgeräte und weitere Zubehörprodukte.",
+      },
+      {
+        q: "Für welche Branchen sind die Produkte geeignet?",
+        a: "Energietechnik / Erneuerbare Energien, Automotive, Hausgeräte, Medizintechnik, Maschinen- und Anlagenbau, Licht- und Beleuchtungstechnik sowie Sicherheitstechnik.",
+      },
+      {
+        q: "Bieten Sie auch Schrumpfschlauch mit UL-Zulassung an?",
+        a: "Ja, verschiedene Schrumpf- und Isolierschläuche sind mit UL-Zulassung erhältlich.",
+      },
+      {
+        q: "Gibt es Schrumpfschlauch in verschiedenen Farben oder transparent?",
+        a: "Ja, farbige und transparente Varianten sind Teil des Sortiments.",
+      },
+    ],
   },
   {
-    q: "Welche Schrumpfraten bietet die BIT an?",
-    a: "Wir führen Schrumpfschläuche mit Schrumpfraten von 1,3:1 bis 6:1 – aus Polyolefin, PVC, PTFE, FEP, PVDF (Kynar®), Silikon und Elastomer, dünn- bis dickwandig und optional mit Innenkleber.",
+    group: "Konfektionierung & individuelle Lösungen",
+    items: [
+      {
+        q: "Kann ich Schrumpfschlauch nach individuellem Maß zuschneiden lassen?",
+        a: "Ja, Schrumpf- und Isolierschläuche werden auf Kundenwunsch abgelängt bzw. geschnitten.",
+      },
+      {
+        q: "Ist eine Bedruckung der Schläuche möglich?",
+        a: "Ja, zur Kennzeichnung von Kabeln und Leitungen können Schläuche individuell bedruckt und perforiert werden.",
+      },
+      {
+        q: "Bieten Sie individuelle Verpackungseinheiten oder eigene Etiketten an?",
+        a: "Ja, individuelle Verpackungen, Etiketten sowie Direktversand an Endkunden sind möglich.",
+      },
+    ],
   },
   {
-    q: "Wie schnell liefert BIT?",
-    a: "Standardartikel sind in der Regel ab Lager verfügbar und werden meist innerhalb von 24 Stunden versendet. Für Konfektion, Bedruckung und Sonderwerkstoffe nennen wir Ihnen mit dem Angebot einen verbindlichen Liefertermin.",
+    group: "Lieferung & Logistik",
+    items: [
+      {
+        q: "Wie schnell erfolgt die Lieferung von Standardartikeln?",
+        a: "In der Regel innerhalb von 24 Stunden.",
+      },
+      {
+        q: "Ist auch eine Just-in-Time-Belieferung möglich?",
+        a: "Ja, neben Sofort-Bestellungen werden auch Termin- und Just-in-Time-Bestellungen angeboten.",
+      },
+    ],
   },
   {
-    q: "Bietet BIT Konfektion und Bedruckung an?",
-    a: "Ja. Über sechs Produktionsstrecken schneiden, bedrucken und konfektionieren wir Schrumpf-, Isolier- und Glasseidenschläuche nach Ihren Vorgaben – vom einzelnen Zuschnitt bis zur Serie.",
+    group: "Qualität & Zertifizierung",
+    items: [
+      {
+        q: "Welche Zertifizierungen hat die BIT Bierther GmbH?",
+        a: "DIN ISO 9001:2015 sowie UL-Zulassungen (UL File E196690 und E362210).",
+      },
+      {
+        q: "Sind die Produkte REACH- und RoHS-konform?",
+        a: "Ja, alle Produkte entsprechen den REACH- und RoHS-Vorgaben.",
+      },
+      {
+        q: "Wie wird die Produktqualität sichergestellt?",
+        a: "Durch laufende Kontrollen in Wareneingang, Produktion und Warenausgang sowie Dokumentation via Messprotokollen und Werksprüfzeugnissen.",
+      },
+    ],
   },
   {
-    q: "In welchen Branchen werden die Produkte eingesetzt?",
-    a: "Unsere Schläuche, Wellrohre und Kabelbinder kommen u. a. in Automotive, Energietechnik, Hausgeräten, Medizintechnik, Maschinen- und Anlagenbau, Licht- und Sicherheitstechnik zum Einsatz.",
-  },
-  {
-    q: "Verkauft BIT auch an Privatkunden?",
-    a: `Nein. Die ${COMPANY.legalName} beliefert ausschließlich Gewerbekunden.`,
-  },
-  {
-    q: "Wie stelle ich eine Anfrage?",
-    a: "Legen Sie die gewünschten Artikel in allen benötigten Größen in den Warenkorb und senden Sie alles in einer einzigen Anfrage. Wir antworten mit einem individuellen Angebot – in der Regel innerhalb von 24 Stunden.",
+    group: "Beratung & Kontakt",
+    items: [
+      {
+        q: "Gibt es einen festen Ansprechpartner für Anfragen?",
+        a: "Ja, Kunden erhalten feste Ansprechpartner für individuelle technische Beratung.",
+      },
+      {
+        q: "Wie kann ich Kontakt aufnehmen?",
+        a: "Per Telefon, E-Mail oder über das Kontaktformular auf der Website (mit Kategorieauswahl je nach Produktbereich).",
+      },
+      {
+        q: "Wie lange gibt es die BIT Bierther GmbH schon?",
+        a: "Seit fast 30 Jahren am Markt.",
+      },
+    ],
   },
 ];
 
@@ -57,11 +113,13 @@ export default function FaqPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "FAQPage",
-            mainEntity: FAQ.map((f) => ({
-              "@type": "Question",
-              name: f.q,
-              acceptedAnswer: { "@type": "Answer", text: f.a },
-            })),
+            mainEntity: FAQ_GROUPS.flatMap((g) =>
+              g.items.map((f) => ({
+                "@type": "Question",
+                name: f.q,
+                acceptedAnswer: { "@type": "Answer", text: f.a },
+              })),
+            ),
           }),
         }}
       />
@@ -70,22 +128,43 @@ export default function FaqPage() {
         <div className="container py-14">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">FAQ</p>
           <h1 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            Häufige Fragen
+            Häufig gestellte Fragen
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
-            Antworten rund um Produkte, Lieferung, Konfektion und Anfragen. Ihre Frage ist nicht
-            dabei? Sprechen Sie uns an – wir helfen gerne weiter.
+            Antworten rund um Produkte, Konfektionierung, Lieferung, Qualität und Kontakt. Ihre
+            Frage ist nicht dabei? Sprechen Sie uns an – wir helfen gerne weiter.
           </p>
+          {/* Sprungmarken zu den Themenblöcken */}
+          <div className="mt-6 flex flex-wrap gap-2">
+            {FAQ_GROUPS.map((g, i) => (
+              <a
+                key={g.group}
+                href={`#faq-${i}`}
+                className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
+              >
+                {g.group}
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className="container py-16">
-        <div className="mx-auto max-w-3xl divide-y divide-slate-200 border-y border-slate-200">
-          {FAQ.map((f) => (
-            <Reveal key={f.q} as="div" className="py-5">
-              <h2 className="text-lg font-semibold text-slate-900">{f.q}</h2>
-              <p className="mt-2 leading-relaxed text-slate-600">{f.a}</p>
-            </Reveal>
+        <div className="mx-auto max-w-3xl space-y-12">
+          {FAQ_GROUPS.map((g, i) => (
+            <div key={g.group} id={`faq-${i}`} className="scroll-mt-32">
+              <h2 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+                {g.group}
+              </h2>
+              <div className="mt-4 divide-y divide-slate-200 border-y border-slate-200">
+                {g.items.map((f) => (
+                  <Reveal key={f.q} as="div" className="py-5">
+                    <h3 className="text-lg font-semibold text-slate-900">{f.q}</h3>
+                    <p className="mt-2 leading-relaxed text-slate-600">{f.a}</p>
+                  </Reveal>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
         <div className="mx-auto mt-10 flex max-w-3xl flex-wrap gap-3">
