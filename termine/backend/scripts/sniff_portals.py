@@ -255,8 +255,12 @@ async def fetch_homepage(client: httpx.AsyncClient, entry: dict, outcome: Outcom
     for host in homepage_candidates(entry):
         outcome.tried.append(host)
         try:
+            # Most candidates do not exist, and a hostname that does not
+            # resolve is the common case rather than the exception: five
+            # candidates × a long connect timeout is what decides how long a
+            # survey of ten thousand municipalities takes.
             response = await client.get(
-                f"https://{host}/", timeout=httpx.Timeout(12.0, connect=6.0), follow_redirects=True
+                f"https://{host}/", timeout=httpx.Timeout(12.0, connect=4.0), follow_redirects=True
             )
         except httpx.HTTPError:
             continue
@@ -269,12 +273,30 @@ async def fetch_homepage(client: httpx.AsyncClient, entry: dict, outcome: Outcom
 
 
 async def sniff(client: httpx.AsyncClient, entry: dict, sem: asyncio.Semaphore) -> Outcome:
+    """One municipality, never raising.
+
+    A survey of ten thousand websites meets everything: a malformed header, a
+    redirect loop, a page that decompresses to nothing. Letting one of them
+    raise would abort the whole run — which is exactly what happened before
+    this guard existed — so a failure is a result like any other and the run
+    goes on.
+    """
     outcome = Outcome(
         city=entry["city"],
         state=entry.get("state", ""),
         ags=entry.get("ags", ""),
         population=entry.get("population", 0),
     )
+    try:
+        return await _sniff(client, entry, outcome, sem)
+    except Exception as exc:  # noqa: BLE001 - the point is to survive anything
+        outcome.status = f"Fehler: {type(exc).__name__}"
+        return outcome
+
+
+async def _sniff(
+    client: httpx.AsyncClient, entry: dict, outcome: Outcome, sem: asyncio.Semaphore
+) -> Outcome:
     async with sem:
         html = await fetch_homepage(client, entry, outcome)
         if html is None:
@@ -362,17 +384,31 @@ async def main() -> None:
     sem = asyncio.Semaphore(args.concurrency)
     counts: dict[str, int] = {}
     written = 0
+    # In batches rather than ten thousand tasks at once: results reach the
+    # file in bounded chunks, and a run that is interrupted resumes from what
+    # it wrote instead of losing everything in flight.
+    batch_size = max(args.concurrency * 10, 100)
     with open(args.jsonl, "a", encoding="utf-8") as out:
         async with build_client() as client:
-            tasks = [asyncio.create_task(sniff(client, entry, sem)) for entry in entries]
-            for task in asyncio.as_completed(tasks):
-                outcome = await task
-                out.write(json.dumps(asdict(outcome), ensure_ascii=False) + "\n")
+            for start in range(0, len(entries), batch_size):
+                batch = entries[start : start + batch_size]
+                outcomes = await asyncio.gather(
+                    *(sniff(client, entry, sem) for entry in batch), return_exceptions=True
+                )
+                for entry, outcome in zip(batch, outcomes, strict=True):
+                    if isinstance(outcome, BaseException):
+                        outcome = Outcome(
+                            city=entry["city"],
+                            state=entry.get("state", ""),
+                            ags=entry.get("ags", ""),
+                            population=entry.get("population", 0),
+                            status=f"Fehler: {type(outcome).__name__}",
+                        )
+                    out.write(json.dumps(asdict(outcome), ensure_ascii=False) + "\n")
+                    counts[outcome.status] = counts.get(outcome.status, 0) + 1
+                    written += 1
                 out.flush()
-                counts[outcome.status] = counts.get(outcome.status, 0) + 1
-                written += 1
-                if written % 25 == 0:
-                    print(f"  {written}/{len(entries)}", file=sys.stderr, flush=True)
+                print(f"  {written}/{len(entries)}", file=sys.stderr, flush=True)
 
     print("\nErgebnis:", file=sys.stderr)
     for status, count in sorted(counts.items(), key=lambda kv: -kv[1]):

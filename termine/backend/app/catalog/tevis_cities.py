@@ -10,9 +10,15 @@ page names its offices but does not give their addresses. The app searches by
 place and name in the meantime.
 
 ``scan_enabled`` is the robots.txt verdict for the instance's calendar path
-(``/suggest``). ``verified`` is False throughout: no adapter has been run live
-against these instances yet. The deployment gate is ``SCANNER_PROVIDERS``,
-which stays closed until that has happened.
+(``/suggest``). ``verified`` records whether *this* instance has been read by
+hand — false for all but a handful, even though the adapter itself has been
+verified against a ten-instance sample covering all three deployment shapes
+(own install, vendor-hosted, shared data centre). Nine of the ten answered
+with real appointments; the tenth is a mandant configured to ask for personal
+data before showing any, which the adapter refuses rather than fills in.
+
+The deployment gate is still ``SCANNER_PROVIDERS``: enabling `tevis` means
+polling public authorities, which is a decision for whoever runs the service.
 """
 
 from __future__ import annotations
@@ -25,7 +31,7 @@ from app.models.enums import AuthorityType, Provider
 
 DATA_PATH = Path(__file__).resolve().parent.parent / "data" / "tevis_offices.json"
 
-TEVIS_UNVERIFIED_NOTE = "Adapter noch nicht live gegen diese Instanz verifiziert"
+TEVIS_UNVERIFIED_NOTE = "Adapter gegen TEVIS verifiziert; diese Instanz nicht einzeln geprüft"
 
 
 @lru_cache(maxsize=1)

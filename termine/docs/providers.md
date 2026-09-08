@@ -13,13 +13,66 @@ parsing have been checked against the live system by a human.
 | --- | --- | --- | --- | --- |
 | `demo` | – | – | local only | **Verified.** Synthetic provider, contacts nothing. Default in dev and the only one enabled in CI. |
 | `berlin_zms` | ZMS (Berlin) | service.berlin.de | HTML scraping | **Unverified.** Implemented against ZMS's documented two-step flow and covered by fixture tests. Needs a live check before `active: true`. |
-| `tevis` | TEVIS | Köln, Bonn, Frankfurt, much of NRW/Hesse | HTML scraping | **Unverified.** Same caveat. |
+| `tevis` | TEVIS | most municipalities and districts that book online | HTML scraping | **Verified live.** Ten instances sampled across all three deployment shapes; nine returned real appointments. See below. |
 | `netappoint` | netAppoint (nubit) | Kiel, Lübeck, Schleswig-Holstein | HTML scraping | **Unverified.** Same caveat. |
 | `etermin` | eTermin | smaller municipalities | documented JSON API, key-gated | **Unverified.** Needs an API key issued by the authority; without one the office is skipped rather than scraped. |
+| `portal` | any | ~1 municipality in 4 | none — link only | **Not an adapter.** No implementation is registered, so a poll raises rather than silently doing something. See below. |
 
 Every catalogue entry outside `demo` is seeded with `active: false`. Turning one
 on is a deliberate act that should follow the checks in
 [`legal.md`](./legal.md).
+
+## `portal`: listed, linked, never polled
+
+Most German municipalities run an appointment system we cannot read — either
+the vendor has no adapter, or its robots.txt forbids polling, or nobody has
+verified the instance. Leaving them out of the catalogue would mean a user
+types their postcode and is told there is nothing, when in truth there is a
+booking page one tap away.
+
+So they are catalogued as provider `portal`: found, named, tied to their
+Gemeindeschlüssel, carrying the official booking URL, and marked
+`scan_enabled=False` with a reason the app shows. The user finds the right
+authority and books there. Three things keep that honest:
+
+- no adapter is registered for the key, so `get_provider` raises rather than
+  inventing behaviour;
+- `scan_enabled=False` keeps the pair out of `due_pairs`, so the scanner never
+  sees it;
+- a watch on such an office is refused by the API with an explanation.
+
+Vendors seen in the survey, none of which has an adapter yet: Terminland,
+cleverQ, Tempus, qmatic, timify, smartCJM, nolis, DTMS, meinenTermin,
+termin-online-buchen. Adding an adapter for one of them turns its portal rows
+into real, watchable offices — that is the intended upgrade path, and the
+survey data says which vendor buys the most coverage.
+
+## What verifying TEVIS live changed
+
+The adapter was written from the shape of the URLs and passed its fixture
+tests. The first run against a real instance returned "Kein gültiger Standort
+gefunden" — every time, for every instance. Three things were wrong, and none
+of them could have been found without the live check:
+
+1. **The flow is a session, not a set of URLs.** `/suggest` cannot be requested
+   directly, however correct the parameters. The entry page, the location page
+   and a `POST` of the chosen branch have to happen in order, carrying cookies.
+2. **The mandant in the public URL is not the internal one.** `select2?md=27`
+   is a selector; the form on that page submits `mdt=415`. The old code sent
+   the public id and got an empty flow.
+3. **There is no month calendar.** The instance answers with a bounded list of
+   suggestions, each a small form carrying the date as `YYYYMMDD` and the start
+   as minutes since midnight. A longer horizon is covered by re-filtering from
+   the last day returned, at most three requests.
+
+A tenth instance in the sample could not be read at all: its mandant is
+configured to collect name, address and telephone number *before* showing any
+appointment. The adapter detects that and raises, because filling the form in
+would mean starting a booking on someone's behalf. Those offices stay
+link-only.
+
+Cost per scan: three requests for the first page of suggestions, up to three
+more for a long horizon, at four seconds between requests to one host.
 
 ## The adapter contract
 
@@ -65,7 +118,9 @@ every day in the window" rather than "nothing is free".
    Strip anything identifying; keep the structure.
 3. Write tests that cover: normal parsing, the requested date window, a page
    whose shape has changed (must raise), and a transport failure (must raise).
-4. Add catalogue entries in `app/catalog/offices.py` with `active: false`.
+4. Add catalogue entries in `app/catalog/offices.py` with `active: false`, or
+   regenerate a data catalogue (`app/data/tevis_offices.json`,
+   `app/data/portals.json`) from the discovery scripts.
 5. Verify against the live system by hand, at a polite rate, then flip `active`
    and add the provider key to `SCANNER_PROVIDERS`.
 
