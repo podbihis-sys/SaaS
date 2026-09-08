@@ -129,8 +129,14 @@ GENERIC_PATTERNS = [
 #: first hit, which is rare in practice.
 VENDOR_SIGNATURES: list[tuple[str, str, bool]] = [
     # (vendor, regex, supported by an adapter)
-    ("tevis", r"select2\?md=|/select2|tevis|cnc-\d+", True),
-    ("berlin_zms", r"terminvereinbarung/termin", True),
+    #
+    # TEVIS is sold both as an on-premise install (termine.<city>.de) and as a
+    # hosted service under the vendor's own domains, and several data centres
+    # run one instance for many cities behind a path prefix (tevis.ekom21.de,
+    # tevis.krzn.de). All of it answers on /select2 and identifies itself as
+    # TEVISWEB, which is why the body is fingerprinted and not just the host.
+    ("tevis", r"select2\?md=|/select2|tevisweb|tevis|termine-reservieren\.(de|online)|cnc-\d+", True),
+    ("berlin_zms", r"service\.berlin\.de/terminvereinbarung|terminvereinbarung/termin", True),
     ("netappoint", r"netappoint", True),
     ("etermin", r"etermin\.net", True),
     ("cleverq", r"cleverq", False),
@@ -140,6 +146,11 @@ VENDOR_SIGNATURES: list[tuple[str, str, bool]] = [
     ("timify", r"timify", False),
     ("smartcjm", r"smartcjm|smart-cjm", False),
     ("nolis", r"nolis", False),
+    ("tempus", r"tempus-termine\.com", False),
+    ("dtms", r"dtmsterminweb", False),
+    ("meinentermin", r"meinenterminvereinbaren\.de", False),
+    ("termin-online-buchen", r"termin-online-buchen\.de", False),
+    ("terminapp", r"terminapp\.de", False),
 ]
 
 #: Booking paths an adapter would request, per vendor — what robots.txt is

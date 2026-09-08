@@ -77,6 +77,7 @@ def short_name(name: str) -> str:
 def parse(text: str) -> dict:
     laender: dict[str, str] = {}
     kreise: dict[str, dict] = {}
+    verbaende: dict[str, str] = {}
     gemeinden: list[list] = []
     stand: str | None = None
 
@@ -90,6 +91,12 @@ def parse(text: str) -> dict:
                 "seat": line[72:122].strip(),
                 "kind": line[122:124].strip(),
             }
+        elif kind == "50":
+            # Gemeindeverband: Verbandsgemeinde (RP), Samtgemeinde (NI), Amt
+            # (SH, MV, BB), Verwaltungsgemeinschaft (BY, TH). Its member
+            # municipalities are too small to run their own administration, so
+            # the appointment system — where there is one — lives here.
+            verbaende[line[10:15] + line[18:22]] = line[22:72].strip()
         elif kind == "60":
             stand = stand or f"{line[2:6]}-{line[6:8]}-{line[8:10]}"
             ags = line[10:18]
@@ -125,6 +132,7 @@ def parse(text: str) -> dict:
         "kinds": KINDS,
         "laender": laender,
         "kreise": kreise,
+        "verbaende": verbaende,
         "gemeinden": gemeinden,
     }
 

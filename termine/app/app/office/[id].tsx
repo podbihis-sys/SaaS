@@ -51,17 +51,28 @@ export default function OfficeDetailScreen() {
 
       <View>
         <SectionTitle>Anliegen</SectionTitle>
-        <View className="overflow-hidden rounded-card border border-border bg-background">
-          {office.services.map((service) => (
-            <Row
-              key={service.id}
-              title={service.name}
-              subtitle={`${categoryLabel(service.category)}${
-                service.duration_minutes ? ` · ca. ${service.duration_minutes} Min.` : ''
-              }`}
-            />
-          ))}
-        </View>
+        {office.services.length === 0 ? (
+          <Card>
+            <Text className="text-sm leading-5 text-muted-foreground">
+              {office.scan_enabled
+                ? 'Die Anliegen dieses Amtes sind noch nicht erfasst.'
+                : 'Welche Anliegen buchbar sind, zeigt das Terminportal des Amtes. Dorthin ' +
+                  'führt der Knopf oben — überwachen können wir dieses Portal nicht.'}
+            </Text>
+          </Card>
+        ) : (
+          <View className="overflow-hidden rounded-card border border-border bg-background">
+            {office.services.map((service) => (
+              <Row
+                key={service.id}
+                title={service.name}
+                subtitle={`${categoryLabel(service.category)}${
+                  service.duration_minutes ? ` · ca. ${service.duration_minutes} Min.` : ''
+                }`}
+              />
+            ))}
+          </View>
+        )}
       </View>
 
       <View>

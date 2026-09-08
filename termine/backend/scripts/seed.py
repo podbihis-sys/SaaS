@@ -26,19 +26,20 @@ async def seed() -> None:
     created = updated = 0
 
     async with sessionmaker() as session:
+        # One query for the whole catalogue rather than one per entry: with
+        # thousands of portal rows the per-entry lookup was the seeder.
+        existing = {
+            (str(office.provider), office.external_id): office
+            for office in (await session.execute(select(Office))).scalars()
+        }
+
         for entry in CATALOG:
             data = dict(entry)
             data.pop("verified", None)
             external_id = data["external_id"]
             provider = data["provider"]
 
-            office = (
-                await session.execute(
-                    select(Office).where(
-                        Office.provider == provider, Office.external_id == external_id
-                    )
-                )
-            ).scalar_one_or_none()
+            office = existing.get((str(provider), external_id))
 
             if office is None:
                 office = Office(**data)
@@ -48,9 +49,13 @@ async def seed() -> None:
                 for field, value in data.items():
                     setattr(office, field, value)
                 updated += 1
+
+            services = DEMO_SERVICES.get(external_id, [])
+            if not services:
+                continue
             await session.flush()
 
-            for service_id, name, category, duration in DEMO_SERVICES.get(external_id, []):
+            for service_id, name, category, duration in services:
                 service = (
                     await session.execute(
                         select(Service).where(

@@ -158,22 +158,66 @@ async def discover_landing(client: httpx.AsyncClient, url: str, city: str, state
     return HostOutcome(host, city, status, offices)
 
 
+def landing_of(url: str) -> str:
+    """The instance's landing page for a URL somewhere inside it.
+
+    ``…/stdar/select2?md=4`` and ``…/stdar/`` are the same instance; the
+    landing page is everything up to the directory that holds ``select2``,
+    with the trailing slash that keeps the prefix intact when paths are
+    joined onto it later.
+    """
+    parsed = urlparse(url)
+    path = parsed.path
+    marker = path.lower().rfind("/select2")
+    if marker >= 0:
+        path = path[: marker + 1]
+    elif not path.endswith("/"):
+        path = path.rsplit("/", 1)[0] + "/" if "." in path.rsplit("/", 1)[-1] else path + "/"
+    return f"{parsed.scheme}://{parsed.netloc}{path}"
+
+
+def targets_from_sniff(paths: list[str]) -> dict[str, tuple[str, str]]:
+    """TEVIS landings the portal survey found, one per instance."""
+    targets: dict[str, tuple[str, str]] = {}
+    for path in paths:
+        with open(path, encoding="utf-8") as handle:
+            for line in handle:
+                if not line.strip():
+                    continue
+                row = json.loads(line)
+                for link in row.get("links", []):
+                    if link.get("vendor") != "tevis" or link.get("allowed") is False:
+                        continue
+                    targets.setdefault(landing_of(link["url"]), (row["city"], row.get("state", "")))
+                    break
+    return targets
+
+
 async def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--survey", required=True, help="survey_cities.py JSON output")
+    parser.add_argument("--survey", help="survey_cities.py JSON output")
+    parser.add_argument(
+        "--sniff", action="append", help="sniff_portals.py JSONL output (repeatable)"
+    )
     parser.add_argument("--json", metavar="PATH")
     args = parser.parse_args()
+    if not args.survey and not args.sniff:
+        parser.error("give --survey, --sniff, or both")
 
-    with open(args.survey, encoding="utf-8") as handle:
-        survey = json.load(handle)
     targets: dict[str, tuple[str, str]] = {}
-    for row in survey:
-        best = row.get("best")
-        confirmed = best and best["vendor"] == "tevis" and best["booking_allowed"]
-        if confirmed and (best.get("status_code") or 200) < 400:
-            # One fetch per host root; the shared ekom21 host is excluded here
-            # because its root refuses, and is covered by prefix below.
-            targets.setdefault(f"https://{best['host']}/", (row["city"], row["state"]))
+    if args.survey:
+        with open(args.survey, encoding="utf-8") as handle:
+            survey = json.load(handle)
+        for row in survey:
+            best = row.get("best")
+            confirmed = best and best["vendor"] == "tevis" and best["booking_allowed"]
+            if confirmed and (best.get("status_code") or 200) < 400:
+                # One fetch per host root; the shared ekom21 host is excluded
+                # here because its root refuses, and is covered by prefix below.
+                targets.setdefault(f"https://{best['host']}/", (row["city"], row["state"]))
+    if args.sniff:
+        for url, city_state in targets_from_sniff(args.sniff).items():
+            targets.setdefault(url, city_state)
     for prefix, (city, state) in EKOM21_LANDINGS.items():
         targets[f"https://tevis.ekom21.de/{prefix}/"] = (city, state)
 

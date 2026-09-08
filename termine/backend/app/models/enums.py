@@ -15,6 +15,12 @@ class Provider(StrEnum):
     TEVIS = "tevis"
     NETAPPOINT = "netappoint"
     ETERMIN = "etermin"
+    #: A booking system we can link to but not read: either no adapter exists
+    #: for that vendor, or the authority does not permit polling. The office is
+    #: still worth listing — the user searches a postcode, finds the right
+    #: authority and taps through to its own portal. Never scanned: entries
+    #: carry ``scan_enabled=False``, and no adapter is registered for this key.
+    PORTAL = "portal"
 
 
 class ServiceCategory(StrEnum):

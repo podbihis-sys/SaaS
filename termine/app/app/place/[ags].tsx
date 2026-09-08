@@ -54,7 +54,7 @@ export default function PlaceScreen() {
 
       {withOffices.length > 0 ? (
         <View>
-          <SectionTitle>Direkt buchbar</SectionTitle>
+          <SectionTitle>Ämter</SectionTitle>
           <View className="gap-3">
             {withOffices.map((entry) => (
               <ResponsibilityCard
@@ -141,7 +141,7 @@ function ResponsibilityCard({
             {office.scan_enabled ? (
               <Badge label="überwachbar" tone="available" />
             ) : (
-              <Badge label="nur Portal" tone="neutral" />
+              <Badge label="direkt buchen" tone="neutral" />
             )}
           </View>
         </Pressable>
