@@ -89,6 +89,29 @@ CITIES: list[tuple[str, str, int, list[str]]] = [
     ("Leverkusen", "Nordrhein-Westfalen", 160, ["termine.leverkusen.de", "www.leverkusen.de"]),
     ("Darmstadt", "Hessen", 160, ["tevis.ekom21.de", "www.darmstadt.de"]),
     ("Heidelberg", "Baden-Württemberg", 160, ["www.heidelberg.de", "termine.heidelberg.de"]),
+    # Remaining cities of 100k+ outside Nordrhein-Westfalen; NRW's arrive via
+    # --cities-file from the full municipality list.
+    ("Regensburg", "Bayern", 160, ["www.regensburg.de"]),
+    ("Ingolstadt", "Bayern", 140, ["www.ingolstadt.de"]),
+    ("Würzburg", "Bayern", 130, ["www.wuerzburg.de"]),
+    ("Fürth", "Bayern", 130, ["www.fuerth.de"]),
+    ("Wolfsburg", "Niedersachsen", 130, ["www.wolfsburg.de"]),
+    ("Offenbach am Main", "Hessen", 130, ["www.offenbach.de", "tevis.ekom21.de"]),
+    ("Ulm", "Baden-Württemberg", 130, ["www.ulm.de"]),
+    ("Heilbronn", "Baden-Württemberg", 130, ["www.heilbronn.de"]),
+    ("Pforzheim", "Baden-Württemberg", 130, ["www.pforzheim.de"]),
+    ("Göttingen", "Niedersachsen", 120, ["www.goettingen.de"]),
+    ("Trier", "Rheinland-Pfalz", 110, ["www.trier.de"]),
+    ("Reutlingen", "Baden-Württemberg", 110, ["www.reutlingen.de"]),
+    ("Bremerhaven", "Bremen", 110, ["www.bremerhaven.de"]),
+    ("Koblenz", "Rheinland-Pfalz", 110, ["www.koblenz.de"]),
+    ("Jena", "Thüringen", 110, ["www.jena.de"]),
+    ("Erlangen", "Bayern", 110, ["www.erlangen.de"]),
+    ("Hildesheim", "Niedersachsen", 100, ["www.hildesheim.de"]),
+    ("Salzgitter", "Niedersachsen", 100, ["www.salzgitter.de"]),
+    ("Cottbus", "Brandenburg", 100, ["www.cottbus.de"]),
+    ("Kaiserslautern", "Rheinland-Pfalz", 100, ["www.kaiserslautern.de"]),
+    ("Hanau", "Hessen", 100, ["www.hanau.de", "tevis.ekom21.de"]),
 ]
 
 #: Hostname patterns tried for every city, using an ASCII slug.
@@ -131,12 +154,29 @@ VENDOR_BOOKING_PATHS = {
 USER_AGENT_TOKEN = "TerminRadar"
 
 
-def slugify(city: str) -> str:
-    slug = city.lower()
+#: Filler words cities drop from their own domains: "Mülheim an der Ruhr" is
+#: muelheim-ruhr.de, "Monheim am Rhein" is monheim.de.
+_FILLER = re.compile(r"\b(an der|an den|am|im|in der|bei|a\.d\.|a\. d\.)\b")
+
+
+def slug_variants(city: str) -> list[str]:
+    """Hostname stems a city plausibly uses, most specific first.
+
+    "Bergisch Gladbach" yields bergisch-gladbach and bergischgladbach;
+    "Gronau (Westf.)" yields gronau — the disambiguator is for Wikipedia, not
+    for DNS. The first word alone is added last as a long shot, because
+    "Halle (Saale)" really is halle.de.
+    """
+    base = city.lower()
     for src, dst in (("ä", "ae"), ("ö", "oe"), ("ü", "ue"), ("ß", "ss")):
-        slug = slug.replace(src, dst)
-    slug = re.split(r"[ (]", slug)[0]  # "halle (saale)" -> "halle"
-    return re.sub(r"[^a-z0-9-]", "", slug)
+        base = base.replace(src, dst)
+    base = re.sub(r"\(.*?\)", " ", base)
+    base = _FILLER.sub(" ", base)
+    words = [w for w in re.split(r"[^a-z0-9]+", base) if w]
+    if not words:
+        return []
+    variants = ["-".join(words), "".join(words), words[0]]
+    return list(dict.fromkeys(v for v in variants if v))
 
 
 @dataclass
@@ -185,7 +225,7 @@ async def probe_host(client: httpx.AsyncClient, host: str, sem: asyncio.Semaphor
     result = HostResult(host=host, reachable=False)
     async with sem:
         try:
-            response = await client.get(f"https://{host}/", timeout=10.0)
+            response = await client.get(f"https://{host}/", timeout=httpx.Timeout(10.0, connect=5.0))
         except httpx.HTTPError as exc:
             result.error = type(exc).__name__
             return result
@@ -236,15 +276,23 @@ async def probe_host(client: httpx.AsyncClient, host: str, sem: asyncio.Semaphor
         return result
 
 
-async def survey(only: set[str] | None = None) -> list[CityResult]:
-    sem = asyncio.Semaphore(6)
+async def survey(
+    cities: list[tuple[str, str, int, list[str]]],
+    only: set[str] | None = None,
+    skip: set[str] | None = None,
+    concurrency: int = 12,
+) -> list[CityResult]:
+    sem = asyncio.Semaphore(concurrency)
     results: list[CityResult] = []
     async with build_client() as client:
-        for city, state, pop, explicit in CITIES:
+        for city, state, pop, explicit in cities:
             if only and city not in only:
                 continue
-            slug = slugify(city)
-            candidates = list(dict.fromkeys(explicit + [p.format(slug=slug) for p in GENERIC_PATTERNS]))
+            if skip and city in skip:
+                continue
+            candidates = list(dict.fromkeys(
+                explicit + [p.format(slug=slug) for slug in slug_variants(city) for p in GENERIC_PATTERNS]
+            ))
             hosts = await asyncio.gather(*(probe_host(client, h, sem) for h in candidates))
             results.append(CityResult(city, state, pop, list(hosts)))
             print(".", end="", file=sys.stderr, flush=True)
@@ -270,9 +318,31 @@ async def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--json", metavar="PATH")
     parser.add_argument("--city", action="append", help="restrict to these cities (repeatable)")
+    parser.add_argument(
+        "--cities-file", metavar="PATH",
+        help="JSON list of {city, state, population_k, hosts?}; merged with the built-in list",
+    )
+    parser.add_argument(
+        "--skip-json", metavar="PATH", action="append",
+        help="earlier survey output whose cities are skipped (repeatable)",
+    )
+    parser.add_argument("--concurrency", type=int, default=12)
     args = parser.parse_args()
 
-    results = await survey(set(args.city) if args.city else None)
+    cities = list(CITIES)
+    if args.cities_file:
+        with open(args.cities_file, encoding="utf-8") as handle:
+            known = {c[0] for c in cities}
+            for entry in json.load(handle):
+                if entry["city"] not in known:
+                    cities.append((entry["city"], entry["state"], entry.get("population_k", 0), entry.get("hosts", [])))
+
+    skip: set[str] = set()
+    for path in args.skip_json or []:
+        with open(path, encoding="utf-8") as handle:
+            skip.update(row["city"] for row in json.load(handle))
+
+    results = await survey(cities, set(args.city) if args.city else None, skip, args.concurrency)
     print(render(results))
 
     if args.json:
