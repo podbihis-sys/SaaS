@@ -184,6 +184,41 @@ export interface AuthResponse {
   user_id: string;
 }
 
+/** A municipality from the official register, as a search result. */
+export interface Place {
+  ags: string;
+  name: string;
+  short_name: string;
+  kind: string;
+  kind_label: string;
+  population: number;
+  plz: string | null;
+  district_name: string;
+  district_seat: string | null;
+  state: string;
+  is_kreisfrei: boolean;
+  /** Set when the search was a postcode: which one matched, and its localities here. */
+  matched_plz: string | null;
+  localities: string[];
+  office_count: number;
+}
+
+export type ResponsibilityLevel = 'gemeinde' | 'kreis' | 'region';
+
+export interface Responsibility {
+  authority_type: AuthorityType;
+  label_de: string;
+  level: ResponsibilityLevel;
+  responsible_name: string;
+  note: string | null;
+  offices: Office[];
+}
+
+export interface PlaceDetail {
+  place: Place;
+  responsibilities: Responsibility[];
+}
+
 export interface ApiErrorBody {
   code: string;
   message: string;

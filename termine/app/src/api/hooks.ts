@@ -8,6 +8,8 @@ import type {
   Category,
   Office,
   Page,
+  Place,
+  PlaceDetail,
   ServiceCategory,
   Slot,
   Watch,
@@ -20,6 +22,8 @@ export const queryKeys = {
   categories: ['categories'] as const,
   offices: (params: OfficeSearch) => ['offices', params] as const,
   office: (id: string) => ['office', id] as const,
+  places: (q: string) => ['places', q] as const,
+  place: (ags: string) => ['place', ags] as const,
   slots: (params: SlotSearch) => ['slots', params] as const,
   watches: ['watches'] as const,
   watch: (id: string) => ['watch', id] as const,
@@ -69,6 +73,29 @@ export function useOffice(id: string) {
     queryKey: queryKeys.office(id),
     queryFn: () => request<Office>(`/api/v1/offices/${id}`, { anonymous: true }),
     staleTime: 60 * 60 * 1000,
+  });
+}
+
+/**
+ * Postcode or town name → municipalities. Runs from two characters on; the
+ * register answers instantly, only an unseen postcode costs a lookup.
+ */
+export function usePlaces(q: string) {
+  const query = q.trim();
+  return useQuery({
+    queryKey: queryKeys.places(query),
+    queryFn: () =>
+      request<Place[]>('/api/v1/places', { anonymous: true, query: { q: query, limit: 8 } }),
+    enabled: query.length >= 2,
+    staleTime: 60 * 60 * 1000,
+  });
+}
+
+export function usePlace(ags: string) {
+  return useQuery({
+    queryKey: queryKeys.place(ags),
+    queryFn: () => request<PlaceDetail>(`/api/v1/places/${ags}`, { anonymous: true }),
+    staleTime: 10 * 60 * 1000,
   });
 }
 

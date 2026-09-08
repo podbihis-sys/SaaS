@@ -96,6 +96,7 @@ export default function RootLayout() {
           <Stack.Screen name="watch/[id]" options={{ title: 'Suchauftrag' }} />
           <Stack.Screen name="slot/[id]" options={{ title: 'Termin' }} />
           <Stack.Screen name="office/[id]" options={{ title: 'Amt' }} />
+          <Stack.Screen name="place/[ags]" options={{ title: 'Zuständige Behörden' }} />
         </Stack>
       </SafeAreaProvider>
     </QueryClientProvider>

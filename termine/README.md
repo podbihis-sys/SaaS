@@ -122,6 +122,12 @@ noch nicht live verifiziert. Bremen (17) ist erfasst, aber gesperrt; Berlin
 ebenso. Die vollständige Tabelle mit „geht / geht nach Freigabe / geht nicht /
 unklar" steht in [`docs/bundeslaender.md`](./docs/bundeslaender.md).
 
+**Orte:** Das amtliche Gemeindeverzeichnis (GV100AD, Destatis, Stand
+30.06.2026) ist importiert — alle 10 943 Gemeinden mit Gemeindeschlüssel,
+Kreis, Land und Sitz-PLZ. Eingabe von PLZ oder Ort führt zur Gemeinde und von
+dort zur zuständigen Behörde je Anliegen (Gemeinde oder Kreis), auch wenn dafür
+noch kein Amt im Katalog ist. Details in [`docs/orte.md`](./docs/orte.md).
+
 **Noch nicht geprüft:** Die vier Adapter für echte Buchungssysteme sind
 vollständig implementiert und über Fixtures getestet, aber nicht gegen die
 Live-Systeme verifiziert. Was vor einer Freischaltung zu tun ist, steht in
@@ -135,5 +141,6 @@ Sperren.
 - [`backend/README.md`](./backend/README.md) — Umgebungsvariablen, Aufbau
 - [`app/README.md`](./app/README.md) — Bildschirme, Build für iOS/Android
 - [`docs/bundeslaender.md`](./docs/bundeslaender.md) — Katalogstand je Bundesland
+- [`docs/orte.md`](./docs/orte.md) — PLZ/Ort → Gemeinde → zuständige Behörde
 - [`docs/providers.md`](./docs/providers.md) — Adapter, Prüfstand, eigene ergänzen
 - [`docs/legal.md`](./docs/legal.md) — rechtliche Leitplanken

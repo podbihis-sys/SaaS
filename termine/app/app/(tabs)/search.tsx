@@ -3,8 +3,8 @@ import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { FlatList, Pressable, Text, View } from 'react-native';
 
-import { useCategories, useOffices, useSlots } from '@/api/hooks';
-import type { ServiceCategory } from '@/api/types';
+import { useCategories, useOffices, usePlaces, useSlots } from '@/api/hooks';
+import type { Place, ServiceCategory } from '@/api/types';
 import { SlotCard } from '@/components/SlotCard';
 import { HorizontalChips, TextField } from '@/components/pickers';
 import { Badge, Button, EmptyState, ErrorState, LoadingState } from '@/components/ui';
@@ -34,9 +34,14 @@ export default function SearchScreen() {
     [categoriesQuery.data],
   );
 
+  const placeQuery = city.trim();
+  const isPostcode = /^\d{5}$/.test(placeQuery);
+  const placesQuery = usePlaces(placeQuery);
+
   const officeParams = {
     ...(category ? { category } : {}),
-    ...(city.trim() ? { city: city.trim() } : {}),
+    // A postcode matches an office's own postcode; a name matches its city.
+    ...(placeQuery ? (isPostcode ? { q: placeQuery } : { city: placeQuery }) : {}),
     ...(coords ? { latitude: coords.latitude, longitude: coords.longitude, radius_km: 25 } : {}),
   };
 
@@ -124,6 +129,11 @@ export default function SearchScreen() {
           {locationError ? (
             <Text className="mt-1 text-xs text-destructive">{locationError}</Text>
           ) : null}
+          <PlaceSuggestions
+            places={placesQuery.data ?? []}
+            visible={placeQuery.length >= 2}
+            onOpen={(place) => router.push(`/place/${place.ags}`)}
+          />
         </View>
 
         {categoryOptions.length > 0 ? (
@@ -144,6 +154,56 @@ export default function SearchScreen() {
       ) : (
         <OfficeResults query={officesQuery} onOpen={(id) => router.push(`/office/${id}`)} />
       )}
+    </View>
+  );
+}
+
+/**
+ * Municipalities matching what was typed, from the official register.
+ *
+ * Tapping one opens the responsibility view — which office serves this place
+ * for which errand — because "Odenthal" has no office of its own for half of
+ * what people need, and the plain office search would show nothing.
+ */
+function PlaceSuggestions({
+  places,
+  visible,
+  onOpen,
+}: {
+  places: Place[];
+  visible: boolean;
+  onOpen: (place: Place) => void;
+}) {
+  if (!visible || places.length === 0) return null;
+  return (
+    <View className="mt-3 overflow-hidden rounded-card border border-border bg-background">
+      {places.map((place, index) => (
+        <Pressable
+          key={place.ags}
+          accessibilityRole="button"
+          onPress={() => onOpen(place)}
+          className={`flex-row items-center justify-between px-4 py-3 ${
+            index > 0 ? 'border-t border-border' : ''
+          }`}
+        >
+          <View className="flex-1 pr-2">
+            <Text className="text-sm font-medium text-foreground">
+              {place.short_name}
+              {place.matched_plz && place.localities.length > 0 && place.localities[0] !== place.short_name
+                ? ` (${place.localities.join(', ')})`
+                : ''}
+            </Text>
+            <Text className="mt-0.5 text-xs text-muted-foreground">
+              {place.kind_label}
+              {place.is_kreisfrei ? '' : ` · ${place.district_name}`} · {place.state}
+            </Text>
+          </View>
+          <Badge
+            label={place.office_count > 0 ? `${place.office_count} Ämter` : 'Zuständigkeit'}
+            tone={place.office_count > 0 ? 'primary' : 'neutral'}
+          />
+        </Pressable>
+      ))}
     </View>
   );
 }

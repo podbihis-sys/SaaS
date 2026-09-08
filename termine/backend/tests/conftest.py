@@ -8,6 +8,7 @@ os.environ.setdefault("JWT_SECRET", "test-secret-that-is-comfortably-long-enough
 os.environ.setdefault("PUSH_ENABLED", "false")
 os.environ.setdefault("SCANNER_ENABLED", "false")
 os.environ.setdefault("SCANNER_PROVIDERS", "demo")
+os.environ.setdefault("OPENPLZ_ENABLED", "false")
 
 import pytest
 from httpx import ASGITransport, AsyncClient

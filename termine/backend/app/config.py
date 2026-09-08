@@ -49,6 +49,15 @@ class Settings(BaseSettings):
         "TerminRadar/0.1 (+https://example.org/terminradar; appointment availability monitor)"
     )
 
+    # --- Places ------------------------------------------------------------
+    # The official register (GV100AD) resolves town names and single-postcode
+    # municipalities offline. Postcodes of larger towns are completed through
+    # the OpenPLZ API (https://www.openplzapi.org, open data), once per
+    # postcode, and remembered. Off in tests; the resolver then answers from
+    # the register alone.
+    OPENPLZ_ENABLED: bool = True
+    OPENPLZ_API_URL: str = "https://openplzapi.org"
+
     # --- Notifications ----------------------------------------------------
     EXPO_PUSH_URL: str = "https://exp.host/--/api/v2/push/send"
     EXPO_ACCESS_TOKEN: str | None = None

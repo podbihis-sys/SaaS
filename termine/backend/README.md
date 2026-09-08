@@ -25,12 +25,13 @@ app/
   api/v1/      HTTP routes
   catalog/     hand-maintained office catalogue
   core/        errors, ids, geo helpers
+  data/        gv100ad.json — the official municipality register (Destatis)
   models/      SQLAlchemy models
   providers/   one adapter per booking system + shared HTML/taxonomy helpers
   schemas/     Pydantic request/response models
-  services/    scanner, matcher, alerting, notifier
+  services/    scanner, matcher, alerting, notifier, places (PLZ/town → authority)
 alembic/       migrations
-scripts/       seed.py
+scripts/       seed.py, import_gv100ad.py, survey and discovery scripts
 tests/
 ```
 
@@ -74,6 +75,8 @@ act: see the environment table below and read `../docs/legal.md` first.
 | `SCANNER_FAILURE_THRESHOLD` | `5` | Consecutive failures before an office cools down. |
 | `SCANNER_COOLDOWN_SECONDS` | `1800` | Length of that cool-down. |
 | `HTTP_USER_AGENT` | identifying string | Sent on every outbound request. Keep it honest and contactable. |
+| `OPENPLZ_ENABLED` | `true` | Complete postcodes the register cannot resolve through the OpenPLZ API, once per postcode. Off in tests. |
+| `OPENPLZ_API_URL` | `https://openplzapi.org` | Base URL of that API. |
 | `HTTP_TIMEOUT_SECONDS` | `15` | Per-request timeout. |
 | `PUSH_ENABLED` | `true` | Set false to log pushes instead of sending them. |
 | `EXPO_PUSH_URL` | Expo endpoint | Push API URL. |

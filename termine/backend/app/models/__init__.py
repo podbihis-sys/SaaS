@@ -13,6 +13,7 @@ from app.models.enums import (
 )
 from app.models.notification import BookingIntent, Notification
 from app.models.office import Office, Service
+from app.models.place import Municipality, PostalCode, PostalCodeLookup
 from app.models.slot import ScanRun, Slot
 from app.models.user import Device, User
 from app.models.watch import ALL_WEEKDAYS, Watch, watch_offices
@@ -25,9 +26,12 @@ __all__ = [
     "BookingStatus",
     "Device",
     "DevicePlatform",
+    "Municipality",
     "Notification",
     "NotificationStatus",
     "Office",
+    "PostalCode",
+    "PostalCodeLookup",
     "Provider",
     "ScanRun",
     "ScanStatus",

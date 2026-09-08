@@ -43,6 +43,10 @@ class Office(Base, TimestampMixin):
     state: Mapped[str | None] = mapped_column(String(64))
     latitude: Mapped[float | None] = mapped_column(Float)
     longitude: Mapped[float | None] = mapped_column(Float)
+    #: Amtlicher Gemeindeschlüssel of the Gemeinde this office sits in. Filled
+    #: by the seeder from the official register; it is what lets a postcode
+    #: or town name land on the offices responsible for it.
+    municipality_ags: Mapped[str | None] = mapped_column(String(8), index=True)
 
     timezone: Mapped[str] = mapped_column(String(64), nullable=False, default="Europe/Berlin")
     #: Public page a user lands on to actually book.

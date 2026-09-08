@@ -16,6 +16,7 @@ from app.catalog import CATALOG, DEMO_SERVICES
 from app.database import get_sessionmaker
 from app.logging_config import configure_logging, get_logger
 from app.models.office import Office, Service
+from app.services.places import link_offices, seed_municipalities
 
 log = get_logger(__name__)
 
@@ -72,9 +73,20 @@ async def seed() -> None:
                     service.category = category
                     service.duration_minutes = duration
 
+        # The official register goes in after the offices so every office can
+        # be tied to its Gemeinde; unmatched cities are named, not hidden.
+        m_created, m_updated = await seed_municipalities(session)
+        unmatched = await link_offices(session, relink=True)
         await session.commit()
 
-    log.info("seed.done", created=created, updated=updated)
+    log.info(
+        "seed.done",
+        created=created,
+        updated=updated,
+        municipalities_created=m_created,
+        municipalities_updated=m_updated,
+        offices_unmatched=[f"{o.city} ({o.name})" for o in unmatched],
+    )
 
 
 if __name__ == "__main__":
