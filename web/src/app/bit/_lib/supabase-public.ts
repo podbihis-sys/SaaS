@@ -16,6 +16,16 @@ export function createPublicClient() {
   return createSupabaseClient(
     process.env.NEXT_PUBLIC_BIT_SUPABASE_URL ?? "",
     process.env.NEXT_PUBLIC_BIT_SUPABASE_ANON_KEY ?? "",
-    { auth: { persistSession: false, autoRefreshToken: false } },
+    {
+      auth: { persistSession: false, autoRefreshToken: false },
+      global: {
+        // Next.js legt fetch-Antworten sonst im Data Cache ab und friert die
+        // CMS-Inhalte damit auf dem Build-Stand ein: Die ISR-Regeneration lief,
+        // bekam aber immer die gecachte Antwort. no-store erzwingt bei jeder
+        // Regeneration einen echten Datenbank-Zugriff; die Seiten selbst
+        // bleiben statisch mit revalidate.
+        fetch: (input, init) => fetch(input, { ...init, cache: "no-store" }),
+      },
+    },
   );
 }
