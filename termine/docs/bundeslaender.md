@@ -10,10 +10,11 @@ davon unabhängige Frage — siehe `scan_enabled`.
 | **Bremen** | 17 | TEVIS (`termin.bremen.de`) | ✅ | ❌ | robots.txt `Disallow: /`, API zugangsgeschützt |
 | **Bayern** | 10 | TEVIS (Nürnberg) | ✅ | ⏳ | wie NRW |
 | **Baden-Württemberg** | 9 | TEVIS (Heidelberg) | ✅ | ⏳ | wie NRW |
+| **Hessen** | 7 | TEVIS/ekom21 (Frankfurt, `/fra/`) | ✅ | ⏳ | wie NRW |
 | **Niedersachsen** | 2 | TEVIS (Oldenburg) | ✅ | ⏳ | wie NRW |
 | **Berlin** | 2 | ZMS (`service.berlin.de`) | ❌ | ❌ | robots.txt sperrt `/terminvereinbarung/termin` und `/api`; API auf Anfrage |
 | Schleswig-Holstein | 1 | netAppoint (Kiel) | ❌ | ❌ | Alteintrag, unverifiziert |
-| übrige 9 | 0 | – | – | – | noch nicht erfasst |
+| übrige 8 | 0 | – | – | – | noch nicht erfasst |
 
 ⏳ = Erlaubnis liegt vor (robots.txt), Freischaltung wartet auf die erste
 Live-Verifikation des Adapters; bis dahin bleibt `SCANNER_PROVIDERS` ohne `tevis`.
@@ -101,7 +102,7 @@ Reproduzierbar mit drei Skripten, in dieser Reihenfolge:
    `/suggest`, den Kalenderpfad, den der Adapter tatsächlich abfragt, und
    erzeugt `app/catalog/tevis_cities.py`.
 
-### Geht — 53 Ämter in 7 Städten im Katalog
+### Geht — 60 Ämter in 8 Städten im Katalog
 
 | Stadt | Host | Ämter |
 | --- | --- | ---: |
@@ -110,6 +111,7 @@ Reproduzierbar mit drei Skripten, in dieser Reihenfolge:
 | Düsseldorf | `termine.duesseldorf.de` | 9 |
 | Heidelberg | `termin.heidelberg.de` | 9 |
 | Münster | `termine.stadt-muenster.de` | 8 |
+| Frankfurt am Main | `tevis.ekom21.de/fra/` | 7 |
 | Oldenburg | `terminvereinbarung.oldenburg.de` | 2 |
 | Duisburg | `termine.duisburg.de` | 1 (Ausländerbehörde) |
 
@@ -135,7 +137,7 @@ Voraussetzung, `tevis` in `SCANNER_PROVIDERS` aufzunehmen.
 | Bochum | smartCJM — kein Adapter |
 | Halle (Saale) | smartCJM — kein Adapter |
 
-### Unklar — Terminhost gefunden, mehr nicht — 9
+### Unklar — Terminhost gefunden, mehr nicht — 8
 
 | Stadt | Host | Was fehlt |
 | --- | --- | --- |
@@ -145,15 +147,15 @@ Voraussetzung, `tevis` in `SCANNER_PROVIDERS` aufzunehmen.
 | Bonn | `termine.bonn.de` | Anbieter unbekannt |
 | Erfurt | `termin.erfurt.de` | Anbieter unbekannt; robots.txt 403 |
 | Braunschweig | `termine.braunschweig.de` | TEVIS bestätigt, aber keine Mandanten-Links auf der Startseite |
-| Frankfurt am Main | `tevis.ekom21.de` | TEVIS vermutet (Hostname); Root antwortet 403 |
-| Kassel | `tevis.ekom21.de` | dito |
+| Kassel | `tevis.ekom21.de` | TEVIS vermutet (Hostname); Root antwortet 403 |
 | Darmstadt | `www.darmstadt.de` | Hauptseite verweist auf TEVIS/ekom21; Instanz nicht direkt erreichbar |
 
-Für die ekom21-Städte (Hessen: Frankfurt, Wiesbaden, Kassel, Darmstadt) gilt:
-die Instanz existiert, verweigert aber jede Anfrage ohne Stadtpräfix und
-Mandant. Die Präfixe (`/fra/`, `/wi/`, `/ks/`, `/da/`) sind im
-Discovery-Skript vorbereitet; es fehlen die Einstiegs-URLs aus den
-Stadtportalen.
+**ekom21 (Hessen).** Die geteilte Instanz `tevis.ekom21.de` verweigert ihren
+Root (403) und antwortet auf geratene Präfixe mit 404 — `/wi/`, `/ks/`, `/da/`
+existieren nicht. Der Einstieg muss aus dem Stadtportal kommen: Frankfurts
+`/fra/` kam so und lieferte sofort 7 Mandanten. Wiesbaden, Kassel und
+Darmstadt brauchen dasselbe — je eine URL aus ihrem Portal, dann ist es eine
+Zeile in `EKOM21_LANDINGS`.
 
 ### Kein Terminhost gefunden — 29
 

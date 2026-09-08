@@ -10,9 +10,10 @@ the catalogue needs.
     python -m scripts.discover_tevis --survey survey.json --json offices.json
 
 Shared instances are handled by path prefix: `tevis.ekom21.de/fra/select2`
-belongs to Frankfurt, `/wi/` to Wiesbaden, and so on, so the base URL kept for
-each office includes the prefix. The TEVIS adapter joins paths onto that base
-without dropping it — the bug Bremen exposed.
+belongs to Frankfurt, so the base URL kept for each office includes the
+prefix, and the TEVIS adapter joins paths onto that base without dropping it —
+the bug Bremen exposed. Only confirmed prefixes are used (see
+``EKOM21_LANDINGS``); the instance's root refuses and guessed prefixes 404.
 
 A landing page that yields no mandant links is reported, not silently skipped:
 Köln's instance answers 400 to everything without a valid ``md``, and the same
@@ -36,12 +37,14 @@ from selectolax.parser import HTMLParser
 from app.providers.base import build_client
 from app.providers.robots import robots
 
-#: Path prefixes on shared ekom21 instances -> city.
-EKOM21_PREFIXES = {
-    "fra": "Frankfurt am Main",
-    "wi": "Wiesbaden",
-    "ks": "Kassel",
-    "da": "Darmstadt",
+#: Confirmed landings on the shared ekom21 instance, by path prefix.
+#:
+#: The instance answers 403 at its root and 404 for guessed prefixes — `/wi/`,
+#: `/ks/` and `/da/` do not exist, so Wiesbaden, Kassel and Darmstadt are not
+#: here. A city's real prefix has to come from its own portal, the way `/fra/`
+#: did. Guessing further would be probing, not discovery.
+EKOM21_LANDINGS: dict[str, tuple[str, str]] = {
+    "fra": ("Frankfurt am Main", "Hessen"),
 }
 
 _MD_RE = re.compile(r"select2\?.*\bmd=(\d+)", re.I)
@@ -117,8 +120,8 @@ def parse_landing(page: str, page_url: str, city: str, state: str) -> list[Tevis
 
         office_city = city
         prefix = base_path.strip("/").split("/")[0] if base_path.strip("/") else ""
-        if prefix in EKOM21_PREFIXES:
-            office_city = EKOM21_PREFIXES[prefix]
+        if prefix in EKOM21_LANDINGS:
+            office_city = EKOM21_LANDINGS[prefix][0]
 
         key = (base_url, mandant)
         if key in found:
@@ -135,9 +138,12 @@ def parse_landing(page: str, page_url: str, city: str, state: str) -> list[Tevis
     return list(found.values())
 
 
-async def discover_host(client: httpx.AsyncClient, host: str, city: str, state: str) -> HostOutcome:
-    url = f"https://{host}/"
-    verdict = await robots.allowed(client, url)
+async def discover_landing(client: httpx.AsyncClient, url: str, city: str, state: str) -> HostOutcome:
+    """Read one landing page — a host root, or a prefixed path on a shared instance."""
+    host = urlparse(url).netloc + urlparse(url).path.rstrip("/")
+    # The calendar path is what the adapter will poll, so that is what robots
+    # is asked about — a host may allow the landing page and forbid the rest.
+    verdict = await robots.allowed(client, url + "suggest")
     if not verdict.allowed:
         return HostOutcome(host, city, f"robots.txt: {verdict.reason}", [])
     try:
@@ -163,14 +169,18 @@ async def main() -> None:
     targets: dict[str, tuple[str, str]] = {}
     for row in survey:
         best = row.get("best")
-        if best and best["vendor"] == "tevis" and best["booking_allowed"]:
-            # One fetch per host; shared instances are split by prefix later.
-            targets.setdefault(best["host"], (row["city"], row["state"]))
+        confirmed = best and best["vendor"] == "tevis" and best["booking_allowed"]
+        if confirmed and (best.get("status_code") or 200) < 400:
+            # One fetch per host root; the shared ekom21 host is excluded here
+            # because its root refuses, and is covered by prefix below.
+            targets.setdefault(f"https://{best['host']}/", (row["city"], row["state"]))
+    for prefix, (city, state) in EKOM21_LANDINGS.items():
+        targets[f"https://tevis.ekom21.de/{prefix}/"] = (city, state)
 
     outcomes: list[HostOutcome] = []
     async with build_client() as client:
-        for host, (city, state) in targets.items():
-            outcomes.append(await discover_host(client, host, city, state))
+        for url, (city, state) in targets.items():
+            outcomes.append(await discover_landing(client, url, city, state))
             await asyncio.sleep(2.0)
             print(".", end="", file=sys.stderr, flush=True)
     print(file=sys.stderr)

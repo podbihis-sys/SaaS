@@ -114,9 +114,9 @@ REST-API, Buchungsübergabe, die vollständige App (Suchaufträge, Suche mit
 Standort, Meldungen, Einstellungen, Buchungs-Flow), 135 Backend-Tests, sauberer
 Typecheck der App.
 
-**Katalog:** 77 Ämter. Die 50 größten Städte sind vermessen
-(`scripts/survey_cities.py`): 53 Ämter in sieben TEVIS-Städten (Düsseldorf,
-Nürnberg, Münster, Mönchengladbach, Heidelberg, Oldenburg, Duisburg) sind
+**Katalog:** 84 Ämter. Die 50 größten Städte sind vermessen
+(`scripts/survey_cities.py`): 60 Ämter in acht TEVIS-Städten (Düsseldorf,
+Nürnberg, Münster, Mönchengladbach, Heidelberg, Frankfurt, Oldenburg, Duisburg) sind
 erfasst und per robots.txt **überwachbar** — der Adapter ist gegen sie aber
 noch nicht live verifiziert. Bremen (17) ist erfasst, aber gesperrt; Berlin
 ebenso. Die vollständige Tabelle mit „geht / geht nach Freigabe / geht nicht /
