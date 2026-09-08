@@ -2,12 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ChevronRight, CircleCheck, FileText, Thermometer } from "lucide-react";
-import {
-  PRODUCTS,
-  getCategory,
-  getProduct,
-  productsByCategory,
-} from "../../../_data/catalog";
+import { PRODUCTS, getCategory } from "../../../_data/catalog";
+import { getCatalog, getCmsProduct } from "../../../_data/products-server";
 import { applicationTaxa, formatMm, materialTaxa, propertyTaxonForText, slugify } from "../../../_data/attributes";
 import { clampText, clampDesc } from "../../../_lib/seo";
 import { getRolls } from "../../../_data/rolls";
@@ -20,13 +16,18 @@ export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ kategorie: p.category, slug: p.slug }));
 }
 
+// Neue CMS-Produkte werden on demand gerendert; Inhalte erneuern sich alle
+// 5 Minuten im Hintergrund (ISR) – Aenderungen im Admin wirken ohne Deploy.
+export const dynamicParams = true;
+export const revalidate = 300;
+
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ kategorie: string; slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getCmsProduct(slug);
   if (!product) return { title: "Produkt nicht gefunden" };
   const categoryName = getCategory(product.category)?.name ?? "";
   let base = product.name.replace(/\s+/g, " ").trim().replace(/[\s:.]+$/u, "");
@@ -68,15 +69,16 @@ export default async function ProductDetail({
   params: Promise<{ kategorie: string; slug: string }>;
 }) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const [product, catalog] = await Promise.all([getCmsProduct(slug), getCatalog()]);
   if (!product) notFound();
 
-  const category = getCategory(product.category);
-  const related = productsByCategory(product.category)
-    .filter((p) => p.slug !== product.slug)
+  const category =
+    catalog.categories.find((c) => c.id === product.category) ?? getCategory(product.category);
+  const related = catalog.products
+    .filter((p) => p.category === product.category && p.slug !== product.slug)
     .slice(0, 3);
   const applicationSlugs = new Set(applicationTaxa().map((t) => t.slug));
-  const materialLink = materialTaxa().find((t) => t.products.includes(product));
+  const materialLink = materialTaxa().find((t) => t.products.some((p) => p.slug === product.slug));
   const rolls = getRolls(product.slug);
   const packs = !rolls ? getPacks(product.slug) : undefined;
 

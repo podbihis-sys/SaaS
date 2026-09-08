@@ -20,6 +20,7 @@ import {
 import { COMPANY } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
+import { getCmsJobs } from "../_data/misc-server";
 
 
 // Seite alle 5 Minuten im Hintergrund erneuern (ISR) – Besucher bekommen
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
     "Karriere bei der BIT: Vertrieb, Lagerist und Ausbildung zum Kaufmann/zur Kauffrau für Groß- und Außenhandelsmanagement – beim familiären Spezialisten für Schrumpf- und Isolierschläuche.",
 };
 
-/** Offene Stellen – Reihenfolge und Umfang laut Kundenvorgabe (09/2026). */
+/** Offene Stellen – Fallback, falls das CMS (bit_jobs) nicht erreichbar ist. */
 const JOBS = [
   {
     id: "vertrieb",
@@ -150,6 +151,8 @@ const ENGAGEMENT = [
 
 export default async function KarrierePage() {
   const content = await getContent();
+  // CMS-first: Stellen aus bit_jobs; Fallback ist die eingebaute Liste.
+  const jobs = await getCmsJobs(JOBS);
   return (
     <>
       {/* Hero */}
@@ -169,7 +172,7 @@ export default async function KarrierePage() {
           </p>
           {/* Sprungmarken zu den Stellen */}
           <div className="mt-6 flex flex-wrap gap-2">
-            {JOBS.map((j) => (
+            {jobs.map((j) => (
               <a
                 key={j.id}
                 href={`#${j.id}`}
@@ -188,7 +191,7 @@ export default async function KarrierePage() {
           Offene Stellen
         </h2>
         <div className="mt-8 space-y-8">
-          {JOBS.map((job) => (
+          {jobs.map((job) => (
             <article
               key={job.id}
               id={job.id}

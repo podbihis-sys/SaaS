@@ -23,7 +23,7 @@ const BUCKET = "bit-product-images";
 export function bitImageUrl(path?: string | null): string | undefined {
   if (!path) return undefined;
   if (path.startsWith("http") || path.startsWith("/")) return path;
-  const base = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const base = process.env.NEXT_PUBLIC_BIT_SUPABASE_URL;
   return base ? `${base}/storage/v1/object/public/${BUCKET}/${path}` : undefined;
 }
 

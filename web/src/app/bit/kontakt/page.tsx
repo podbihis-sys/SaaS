@@ -5,6 +5,7 @@ import { COMPANY } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
 import { MapEmbed } from "../_components/map-embed";
+import { getCmsTeam, type TeamMember } from "../_data/misc-server";
 
 
 // Seite alle 5 Minuten im Hintergrund erneuern (ISR) – Besucher bekommen
@@ -15,7 +16,7 @@ export const revalidate = 300;
 const MAP = { lat: 50.72287, lon: 6.91813 };
 const MAP_BBOX = `${MAP.lon - 0.014}%2C${MAP.lat - 0.009}%2C${MAP.lon + 0.014}%2C${MAP.lat + 0.009}`;
 
-/** Team-Kontakte – übernommen von der bisherigen Website bit-gmbh.de. */
+/** Team-Kontakte – Fallback, falls das CMS (bit_team) nicht erreichbar ist. */
 const TEAM: { name: string; role: string; phone: string; email: string }[] = [
   { name: "Frank Bierther", role: "Geschäftsführer", phone: "+49 (0)2254 9610-0", email: "info@bit-gmbh.de" },
   { name: "Kimberley Bierther", role: "Prokuristin / Assistentin Geschäftsleitung", phone: "+49 (0)2254 9610-36", email: "k.bierther@bit-gmbh.de" },
@@ -41,6 +42,15 @@ export const metadata: Metadata = {
 
 export default async function KontaktPage() {
   const content = await getContent();
+  // CMS-first: Team aus bit_team; css_only-Einträge erscheinen nur als
+  // CSS-content (nicht indexierbar) und werden unten separat gerendert.
+  const teamFallback: TeamMember[] = [
+    ...TEAM.map((m) => ({ ...m, cssOnly: false })),
+    { name: "css", role: "Administration", phone: "", email: "", cssOnly: true },
+  ];
+  const team = await getCmsTeam(teamFallback);
+  const visible = team.filter((m) => !m.cssOnly);
+  const cssOnly = team.find((m) => m.cssOnly);
   const mapsQuery = encodeURIComponent(
     `${COMPANY.street}, ${COMPANY.zip} ${COMPANY.city}`,
   );
@@ -147,7 +157,7 @@ export default async function KontaktPage() {
             Fax-Nummer: {COMPANY.fax}.
           </p>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {TEAM.map((m) => (
+            {visible.map((m) => (
               <div key={m.name} className="rounded-2xl border border-slate-200 bg-white p-5">
                 <div className="font-semibold text-slate-900">{m.name}</div>
                 <div className="mt-0.5 text-sm text-[#1e4a7a]">{m.role}</div>
@@ -169,9 +179,10 @@ export default async function KontaktPage() {
             ))}
             {/* Auf Kundenwunsch steht dieser Kontakt nur als CSS-content im
                 Stylesheet (bit.css) – nicht im indexierbaren HTML-Text. */}
+            {cssOnly && (
             <div className="rounded-2xl border border-slate-200 bg-white p-5">
               <div className="bit-nf-name font-semibold text-slate-900" />
-              <div className="mt-0.5 text-sm text-[#1e4a7a]">Administration</div>
+              <div className="mt-0.5 text-sm text-[#1e4a7a]">{cssOnly.role}</div>
               <ul className="mt-3 space-y-1.5 text-sm text-slate-600">
                 <li className="flex items-center gap-2">
                   <Phone className="h-4 w-4 shrink-0 text-slate-500" />
@@ -183,6 +194,7 @@ export default async function KontaktPage() {
                 </li>
               </ul>
             </div>
+            )}
           </div>
         </div>
       </section>

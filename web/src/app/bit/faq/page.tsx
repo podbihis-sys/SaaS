@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { BreadcrumbLd } from "../_components/breadcrumb-ld";
+import { getCmsFaq, type FaqItem } from "../_data/misc-server";
+
+// FAQ kommt aus dem CMS und erneuert sich alle 5 Minuten (ISR).
+export const revalidate = 300;
 import { Reveal } from "../_components/reveal";
 
 export const metadata: Metadata = {
@@ -103,7 +107,18 @@ const FAQ_GROUPS: { group: string; items: { q: string; a: string }[] }[] = [
   },
 ];
 
-export default function FaqPage() {
+export default async function FaqPage() {
+  // CMS-first: Fragen aus bit_faq; Fallback ist die eingebaute Liste.
+  const flat: FaqItem[] = FAQ_GROUPS.flatMap((g) =>
+    g.items.map((f) => ({ group: g.group, q: f.q, a: f.a })),
+  );
+  const cms = await getCmsFaq(flat);
+  const groups: { group: string; items: { q: string; a: string }[] }[] = [];
+  for (const item of cms) {
+    const last = groups[groups.length - 1];
+    if (last && last.group === item.group) last.items.push({ q: item.q, a: item.a });
+    else groups.push({ group: item.group, items: [{ q: item.q, a: item.a }] });
+  }
   return (
     <>
       <BreadcrumbLd items={[{ name: "Home", path: "/bit" }, { name: "FAQ", path: "/bit/faq" }]} />
@@ -113,7 +128,7 @@ export default function FaqPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "FAQPage",
-            mainEntity: FAQ_GROUPS.flatMap((g) =>
+            mainEntity: groups.flatMap((g) =>
               g.items.map((f) => ({
                 "@type": "Question",
                 name: f.q,
@@ -136,7 +151,7 @@ export default function FaqPage() {
           </p>
           {/* Sprungmarken zu den Themenblöcken */}
           <div className="mt-6 flex flex-wrap gap-2">
-            {FAQ_GROUPS.map((g, i) => (
+            {groups.map((g, i) => (
               <a
                 key={g.group}
                 href={`#faq-${i}`}
@@ -151,7 +166,7 @@ export default function FaqPage() {
 
       <section className="container py-16">
         <div className="mx-auto max-w-3xl space-y-12">
-          {FAQ_GROUPS.map((g, i) => (
+          {groups.map((g, i) => (
             <div key={g.group} id={`faq-${i}`} className="scroll-mt-32">
               <h2 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
                 {g.group}
