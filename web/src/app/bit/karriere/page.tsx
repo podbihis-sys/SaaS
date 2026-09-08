@@ -17,11 +17,16 @@ import { COMPANY } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
 
+
+// Seite alle 5 Minuten im Hintergrund erneuern (ISR) – Besucher bekommen
+// immer die zwischengespeicherte Fassung statt auf die Datenbank zu warten.
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   alternates: { canonical: "/bit/karriere" },
   title: "Karriere",
   description:
-    "Verstärkung im Bereich Vertrieb gesucht: Karriere bei der BIT Bierther GmbH, dem familiären Spezialisten für Schrumpf- und Isolierschläuche in Swisttal-Heimerzheim.",
+    "Verstärkung im Bereich Vertrieb gesucht: Karriere bei der BIT, dem familiären Spezialisten für Schrumpf- und Isolierschläuche in Swisttal-Heimerzheim.",
 };
 
 const AUFGABEN = [
@@ -71,14 +76,14 @@ export default async function KarrierePage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-[#0f2742]">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0f2742] via-[#0f2742]/95 to-[#1e4a7a]/80" />
-        <div className="container relative py-20">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Karriere</p>
-          <h1 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
+      {/* Heller Hero – einheitlich mit den übrigen Seiten (Kundenvorgabe). */}
+      <section className="border-b border-slate-200 bg-slate-50">
+        <div className="container py-14">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">Karriere</p>
+          <h1 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             {c(content, "karriere.title", "Verstärkung im Bereich Vertrieb*")}
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-300">
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
             {c(
               content,
               "karriere.intro",
@@ -153,7 +158,7 @@ export default async function KarrierePage() {
             </li>
           </ul>
           <a
-            href={`mailto:s.widera@bit-gmbh.de?subject=${encodeURIComponent("Bewerbung – Vertrieb bei der BIT Bierther GmbH")}`}
+            href={`mailto:s.widera@bit-gmbh.de?subject=${encodeURIComponent("Bewerbung – Vertrieb bei der BIT")}`}
             className="mt-6 inline-flex rounded-xl bg-[#38bdf8] px-6 py-3.5 text-sm font-semibold text-slate-900 hover:bg-[#0ea5e9]"
           >
             Jetzt bewerben
@@ -169,13 +174,13 @@ export default async function KarrierePage() {
               Wer sind wir?
             </h2>
             <p className="mt-4 leading-relaxed text-slate-700">
-              Die {COMPANY.legalName} ist ein familiäres, erfolgreiches Unternehmen, welches auf den
+              Die {COMPANY.shortName} ist ein familiäres, erfolgreiches Unternehmen, welches auf den
               Vertrieb von Schrumpf- u. Isolierschläuchen spezialisiert ist. Unsere aktuell 25
               Mitarbeiter bilden abteilungsübergreifend ein dynamisches Team, in den Bereichen
               Einkauf, Vertrieb, Verwaltung, Lager und Produktion.
             </p>
             <p className="mt-4 leading-relaxed text-slate-700">
-              Sie möchten mehr über die {COMPANY.legalName} erfahren?{" "}
+              Sie möchten mehr über die {COMPANY.shortName} erfahren?{" "}
               <Link href="/bit/unternehmen" className="text-[#1e4a7a] underline hover:no-underline">
                 Lernen Sie die BIT kennen
               </Link>

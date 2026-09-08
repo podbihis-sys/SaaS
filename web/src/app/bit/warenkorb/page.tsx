@@ -129,7 +129,7 @@ export default function CartPage() {
                     <tr key={item.id}>
                       <td className="px-5 py-4">
                         <Link
-                          href={`/bit/produkte/${item.slug}`}
+                          href={`/bit/produkte/${item.category}/${item.slug}`}
                           className="font-medium text-slate-900 hover:text-[#1e4a7a]"
                         >
                           {item.name}

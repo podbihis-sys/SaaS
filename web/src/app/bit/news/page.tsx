@@ -8,13 +8,17 @@ import { formatDate } from "../_lib/format";
 import { Reveal } from "../_components/reveal";
 import { BreadcrumbLd } from "../_components/breadcrumb-ld";
 
-export const dynamic = "force-dynamic";
+
+// Seite alle 5 Minuten im Hintergrund erneuern (ISR) – Besucher bekommen
+// immer die zwischengespeicherte Fassung statt auf die Datenbank zu warten.
+export const revalidate = 300;
+
 
 export const metadata: Metadata = {
   alternates: { canonical: "/bit/news" },
   title: "News",
   description:
-    "Aktuelles von der BIT Bierther GmbH: Neuheiten, Produkttipps und Anwendungen rund um Schrumpf-, Isolier- und Geflechtschläuche, Wellrohre und Kabelbinder.",
+    "Aktuelles von der BIT: Neuheiten, Produkttipps und Anwendungen rund um Schrumpf-, Isolier- und Geflechtschläuche, Wellrohre und Kabelbinder.",
 };
 
 export default async function NewsPage() {
@@ -28,7 +32,7 @@ export default async function NewsPage() {
       <section className="border-b border-slate-200 bg-slate-50">
         <div className="container py-16">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">News</p>
-          <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-slate-900">
+          <h1 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:whitespace-nowrap lg:text-4xl">
             {c(content, "news.hero.title", "Erfahren Sie mehr über uns und unsere Produkte")}
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">

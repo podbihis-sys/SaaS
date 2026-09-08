@@ -11,11 +11,8 @@ import {
   type Wall,
   hasAdhesive,
   materialGroups,
-  materialTaxa,
   maxTemp,
-  propertyTaxa,
   shrinkRatio,
-  shrinkTaxa,
   wallType,
 } from "../_data/attributes";
 
@@ -160,17 +157,6 @@ export function Catalog({ active }: { active: CategoryId | "alle" }) {
       return { ...f, materials };
     });
 
-  // Eigenschaften/Material/Schrumpfrate erst anzeigen, wenn eine Kategorie
-  // geöffnet ist – und nur mit Treffern innerhalb dieser Kategorie.
-  const inCategory = (items: Product[]) => items.filter((p) => p.category === active).length;
-  const properties = category
-    ? propertyTaxa().filter((t) => inCategory(t.products) > 0).slice(0, 8)
-    : [];
-  const materialLinks = category
-    ? materialTaxa().filter((t) => inCategory(t.products) > 0)
-    : [];
-  const shrinks = category ? shrinkTaxa().filter((t) => inCategory(t.products) > 0) : [];
-
   return (
     <>
       {/* Page header */}
@@ -186,19 +172,6 @@ export function Catalog({ active }: { active: CategoryId | "alle" }) {
               : "Über 1.000 Standardartikel aus Schrumpf-, Isolier- und Geflechtschlauchtechnik. Wählen Sie eine Kategorie, filtern Sie nach technischen Eigenschaften und legen Sie Artikel in der gewünschten Größe in den Warenkorb."}
           </p>
 
-          {/* Eigenschaften erst bei geöffneter Kategorie */}
-          {category &&
-            (properties.length > 0 || materialLinks.length > 0 || shrinks.length > 0) && (
-              <div className="mt-6 space-y-2">
-                <SeoChipRow label="Eigenschaften" prefix="/bit/produkte/eigenschaft" items={properties} />
-                <SeoChipRow label="Material" prefix="/bit/produkte/material" items={materialLinks} />
-                <SeoChipRow
-                  label="Schrumpfrate"
-                  prefix="/bit/produkte/schrumpfrate"
-                  items={shrinks.map((t) => ({ slug: t.slug, label: t.label }))}
-                />
-              </div>
-            )}
         </div>
       </section>
 
@@ -416,32 +389,6 @@ function Check({
       />
       {label}
     </label>
-  );
-}
-
-function SeoChipRow({
-  label,
-  prefix,
-  items,
-}: {
-  label: string;
-  prefix: string;
-  items: { slug: string; label: string }[];
-}) {
-  if (items.length === 0) return null;
-  return (
-    <div className="flex flex-wrap gap-2">
-      <span className="w-24 shrink-0 self-center text-sm text-slate-500">{label}:</span>
-      {items.map((t) => (
-        <Link
-          key={t.slug}
-          href={`${prefix}/${t.slug}`}
-          className="rounded-full border border-slate-300 bg-white px-3 py-1 text-sm text-slate-700 transition-colors hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
-        >
-          {t.label}
-        </Link>
-      ))}
-    </div>
   );
 }
 

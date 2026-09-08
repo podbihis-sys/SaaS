@@ -39,7 +39,7 @@ export async function generateMetadata({
   const r = resolve(slug, kategorie);
   if (!r) return { title: "Seite nicht gefunden" };
   const title = `${r.category.name} aus ${r.taxon.label}`;
-  const description = `${r.category.name} aus dem Werkstoff ${r.taxon.label} von BIT Bierther: ${r.products.length} Artikel mit allen verfügbaren Größen direkt anfragbar.`;
+  const description = `${r.category.name} aus dem Werkstoff ${r.taxon.label} von BIT: ${r.products.length} Artikel mit allen verfügbaren Größen direkt anfragbar.`;
   return {
     title: clampText(title, 60),
     description: clampDesc(description),
@@ -47,7 +47,7 @@ export async function generateMetadata({
     alternates: { canonical: `${BASE_PATH}/${slug}/${kategorie}` },
     openGraph: {
       type: "website",
-      title: `${title} · BIT Bierther GmbH`,
+      title: `${title} · BIT`,
       description,
       url: `${BASE_PATH}/${slug}/${kategorie}`,
     },

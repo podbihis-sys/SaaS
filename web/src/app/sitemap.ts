@@ -18,12 +18,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/bit/nachhaltigkeit",
     "/bit/qualitaet",
     "/bit/kontakt",
+    "/bit/faq",
+    "/bit/en",
     "/bit/impressum",
     "/bit/barrierefreiheit",
+    "/bit/datenschutz",
   ];
   const contentPaths = CONTENT_PAGES.map((p) => `/bit/${p.slug}`);
   const categoryPaths = CATEGORIES.map((c) => `/bit/${c.id}`);
-  const productPaths = PRODUCTS.map((p) => `/bit/produkte/${p.slug}`);
+  const productPaths = PRODUCTS.map((p) => `/bit/produkte/${p.category}/${p.slug}`);
   const newsPaths = NEWS.map((n) => `/bit/news/${n.slug}`);
   // Die Filter-/Landing-Seiten (eigenschaft/anwendung/material/schrumpfrate und
   // ihre Kategorie-Varianten) sind bewusst noindex (Duplicate-Content/

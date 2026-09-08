@@ -30,7 +30,7 @@ export async function generateMetadata({
     alternates: { canonical: `${BASE_PATH}/${taxon.slug}` },
     openGraph: {
       type: "website",
-      title: `${title} · BIT Bierther GmbH`,
+      title: `${title} · BIT`,
       description: clampDesc(taxon.intro),
       url: `${BASE_PATH}/${taxon.slug}`,
     },

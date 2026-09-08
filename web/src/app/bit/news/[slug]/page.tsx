@@ -9,7 +9,11 @@ import { COMPANY } from "../../_data/catalog";
 import { BreadcrumbLd } from "../../_components/breadcrumb-ld";
 import { clampText, clampDesc } from "../../_lib/seo";
 
-export const dynamic = "force-dynamic";
+
+// Seite alle 5 Minuten im Hintergrund erneuern (ISR) – Besucher bekommen
+// immer die zwischengespeicherte Fassung statt auf die Datenbank zu warten.
+export const revalidate = 300;
+
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
 
@@ -112,7 +116,7 @@ export default async function NewsPostPage({
     dateModified: post.date || undefined,
     inLanguage: "de-DE",
     mainEntityOfPage: `${BASE}/bit/news/${post.slug}`,
-    author: { "@type": "Organization", name: COMPANY.legalName },
+    author: { "@type": "Organization", name: COMPANY.shortName },
     publisher: {
       "@type": "Organization",
       name: COMPANY.legalName,

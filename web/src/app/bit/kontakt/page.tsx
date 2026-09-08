@@ -4,6 +4,12 @@ import { Clock, Mail, MapPin, Phone, Printer, ShoppingCart } from "lucide-react"
 import { COMPANY } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
+import { MapEmbed } from "../_components/map-embed";
+
+
+// Seite alle 5 Minuten im Hintergrund erneuern (ISR) – Besucher bekommen
+// immer die zwischengespeicherte Fassung statt auf die Datenbank zu warten.
+export const revalidate = 300;
 
 // Exakte Koordinaten des BIT-Gebäudes, Dützhofer Str. 7 (OpenStreetMap, Gewerbegebiet Heimerzheim).
 const MAP = { lat: 50.72287, lon: 6.91813 };
@@ -25,13 +31,12 @@ const TEAM: { name: string; role: string; phone: string; email: string }[] = [
   { name: "Marc Weber", role: "Einkauf", phone: "+49 (0)2254 9610-12", email: "m.weber@bit-gmbh.de" },
   { name: "Gisela Di Bernardo", role: "Prokuristin / Rechnungswesen", phone: "+49 (0)2254 9610-30", email: "g.dibernardo@bit-gmbh.de" },
   { name: "Silke Richter", role: "Administration", phone: "+49 (0)2254 9610-11", email: "s.richter@bit-gmbh.de" },
-  { name: "Nicole Faßbender", role: "Administration", phone: "+49 (0)2254 9610-27", email: "n.fassbender@bit-gmbh.de" },
 ];
 
 export const metadata: Metadata = {
   alternates: { canonical: "/bit/kontakt" },
   title: "Kontakt",
-  description: `Kontakt zur ${COMPANY.legalName} in ${COMPANY.city}: Telefon ${COMPANY.phone}, E-Mail ${COMPANY.email}.`,
+  description: `Kontakt zur ${COMPANY.shortName} in ${COMPANY.city}: Telefon ${COMPANY.phone}, E-Mail ${COMPANY.email}.`,
 };
 
 export default async function KontaktPage() {
@@ -113,11 +118,9 @@ export default async function KontaktPage() {
           </div>
 
           <div className="overflow-hidden rounded-2xl border border-slate-200">
-            <iframe
-              title="Standort BIT Bierther GmbH"
+            <MapEmbed
+              title="Standort BIT"
               className="h-full min-h-[420px] w-full"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
               src={`https://www.openstreetmap.org/export/embed.html?bbox=${MAP_BBOX}&layer=mapnik&marker=${MAP.lat}%2C${MAP.lon}`}
             />
             <a
@@ -164,6 +167,22 @@ export default async function KontaktPage() {
                 </ul>
               </div>
             ))}
+            {/* Auf Kundenwunsch steht dieser Kontakt nur als CSS-content im
+                Stylesheet (bit.css) – nicht im indexierbaren HTML-Text. */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-5">
+              <div className="bit-nf-name font-semibold text-slate-900" />
+              <div className="mt-0.5 text-sm text-[#1e4a7a]">Administration</div>
+              <ul className="mt-3 space-y-1.5 text-sm text-slate-600">
+                <li className="flex items-center gap-2">
+                  <Phone className="h-4 w-4 shrink-0 text-slate-500" />
+                  <span className="bit-nf-phone" />
+                </li>
+                <li className="flex items-center gap-2">
+                  <Mail className="h-4 w-4 shrink-0 text-slate-500" />
+                  <span className="bit-nf-email break-all" />
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>

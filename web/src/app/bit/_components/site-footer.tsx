@@ -3,6 +3,7 @@ import { Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import { CATEGORIES, COMPANY } from "../_data/catalog";
 import { materialTaxa, propertyTaxa, shrinkTaxa } from "../_data/attributes";
 import { ShareButtons } from "./share-buttons";
+import { ConsentSettingsLink } from "./cookie-banner";
 
 export function SiteFooter() {
   const popular = [
@@ -28,10 +29,10 @@ export function SiteFooter() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/bit/logo.png"
-              alt="BIT Bierther GmbH"
-              className="h-20 w-auto"
-              width={410}
-              height={80}
+              alt="BIT"
+              className="h-[90px] w-auto max-w-full"
+              width={656}
+              height={128}
             />
           </div>
           <p className="mt-4 text-sm leading-relaxed text-slate-500">
@@ -43,7 +44,7 @@ export function SiteFooter() {
               href="https://www.linkedin.com/company/bit-bierther-gmbh1"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="BIT Bierther GmbH auf LinkedIn"
+              aria-label="BIT auf LinkedIn"
               className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 text-slate-600 transition-colors hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
             >
               <Linkedin className="h-4 w-4" />
@@ -77,9 +78,12 @@ export function SiteFooter() {
             <li><Link href="/bit/karriere" className="text-slate-500 hover:text-[#1e4a7a]">Karriere</Link></li>
             <li><Link href="/bit/nachhaltigkeit" className="text-slate-500 hover:text-[#1e4a7a]">Nachhaltigkeit</Link></li>
             <li><Link href="/bit/qualitaet" className="text-slate-500 hover:text-[#1e4a7a]">Qualität & Zertifikate</Link></li>
+            <li><Link href="/bit/service/downloads" className="text-slate-500 hover:text-[#1e4a7a]">Downloads</Link></li>
+            <li><Link href="/bit/faq" className="text-slate-500 hover:text-[#1e4a7a]">FAQ</Link></li>
             <li><Link href="/bit/kontakt" className="text-slate-500 hover:text-[#1e4a7a]">Kontakt</Link></li>
             <li><Link href="/bit/impressum" className="text-slate-500 hover:text-[#1e4a7a]">Impressum</Link></li>
             <li><Link href="/bit/barrierefreiheit" className="text-slate-500 hover:text-[#1e4a7a]">Barrierefreiheit</Link></li>
+            <li><Link href="/bit/datenschutz" className="text-slate-500 hover:text-[#1e4a7a]">Datenschutz</Link></li>
             <li><Link href="/bit/warenkorb" rel="nofollow" className="text-slate-500 hover:text-[#1e4a7a]">Anfrage / Warenkorb</Link></li>
           </ul>
         </div>
@@ -125,7 +129,9 @@ export function SiteFooter() {
           <span>
             © {new Date().getFullYear()} {COMPANY.legalName}. Alle Rechte vorbehalten. ·{" "}
             <Link href="/bit/impressum" className="hover:text-[#1e4a7a]">Impressum</Link> ·{" "}
-            <Link href="/bit/barrierefreiheit" className="hover:text-[#1e4a7a]">Barrierefreiheit</Link>
+            <Link href="/bit/datenschutz" className="hover:text-[#1e4a7a]">Datenschutz</Link> ·{" "}
+            <Link href="/bit/barrierefreiheit" className="hover:text-[#1e4a7a]">Barrierefreiheit</Link> ·{" "}
+            <ConsentSettingsLink className="hover:text-[#1e4a7a] hover:underline" />
           </span>
           <span>{COMPANY.register} · Geschäftsführer: {COMPANY.managingDirector}</span>
         </div>

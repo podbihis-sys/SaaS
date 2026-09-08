@@ -13,14 +13,18 @@ import { COMPANY } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
 import { Reveal } from "../_components/reveal";
-import { ProductIllustration } from "../_components/product-illustration";
 import { BreadcrumbLd } from "../_components/breadcrumb-ld";
+
+
+// Seite alle 5 Minuten im Hintergrund erneuern (ISR) – Besucher bekommen
+// immer die zwischengespeicherte Fassung statt auf die Datenbank zu warten.
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   alternates: { canonical: "/bit/kompetenzen" },
   title: "Kompetenzen",
   description:
-    "Konfektion, Bedruckung, Sonderwerkstoffe, UL-Zulassung, farbige Schrumpfschläuche & viele Abmessungen – die Kompetenzen der BIT Bierther.",
+    "Konfektion, Bedruckung, Sonderwerkstoffe, UL-Zulassung, farbige Schrumpfschläuche & viele Abmessungen – die Kompetenzen der BIT.",
 };
 
 const COMPETENCES = [
@@ -80,17 +84,14 @@ export default async function KompetenzenPage() {
     <>
       <BreadcrumbLd items={[{ name: "Home", path: "/bit" }, { name: "Kompetenzen", path: "/bit/kompetenzen" }]} />
       {/* ----------------------------------------------------------------- Hero */}
-      <section className="relative overflow-hidden bg-[#0f2742]">
-        <div className="absolute inset-0 opacity-20">
-          <ProductIllustration category="schrumpfschlauch" fit="cover" className="h-full w-full" />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0f2742] via-[#0f2742]/90 to-[#0f2742]/60" />
-        <div className="container relative py-20">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Kompetenzen</p>
-          <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl">
+      {/* Heller Hero – einheitlich mit den übrigen Seiten (Kundenvorgabe). */}
+      <section className="border-b border-slate-200 bg-slate-50">
+        <div className="container py-14">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">Kompetenzen</p>
+          <h1 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             {c(content, "kompetenzen.hero.title", "Mehr als Standardware – unsere Kompetenzen")}
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-300">
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
             {c(
               content,
               "kompetenzen.hero.intro",

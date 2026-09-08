@@ -1,6 +1,9 @@
 /**
- * Menüstruktur – übernommen von bit-gmbh.de (Hauptnavigation inkl. Untermenüs).
- * Die Zielpfade zeigen auf die entsprechenden Seiten unter /bit.
+ * Menüstruktur der Website.
+ *
+ * Der Header rendert NUR die oberste Ebene – bewusst ohne Dropdowns
+ * (Kundenvorgabe). Die `children` bleiben erhalten: Sie speisen die
+ * Bereichsnavigation („In diesem Bereich") auf den Unterseiten.
  */
 
 export interface NavItem {
@@ -23,13 +26,8 @@ export const NAV: NavItem[] = [
       { label: "Wellrohr", href: "/bit/wellrohr" },
       { label: "Kabelbinder", href: "/bit/kabelbinder" },
       { label: "Verarbeitungsgeräte", href: "/bit/verarbeitungsgeraete" },
+      { label: "Weitere Schrumpfprodukte", href: "/bit/weitere-schrumpfprodukte" },
       { label: "Weitere Produkte", href: "/bit/weitere-produkte" },
-    ],
-  },
-  {
-    label: "News",
-    href: "/bit/news",
-    children: [
       { label: "Schrumpfschlauch Abmessungen", href: "/bit/schrumpfschlauch-abmessungen" },
       { label: "Schrumpfschlauch bedruckt", href: "/bit/schrumpfschlauch-bedruckt" },
       {
@@ -45,8 +43,11 @@ export const NAV: NavItem[] = [
         href: "/bit/schrumpfschlauch-isolierschlauch-mit-ul-224-zulassung",
       },
       { label: "Schrumpfschlauch farbig", href: "/bit/schrumpfschlauch-farbig" },
-      { label: "Downloads", href: "/bit/service/downloads" },
     ],
+  },
+  {
+    label: "News",
+    href: "/bit/news",
   },
   {
     label: "Branchen",
@@ -77,6 +78,7 @@ export const NAV: NavItem[] = [
       { label: "Nachhaltigkeit", href: "/bit/nachhaltigkeit" },
       { label: "Qualität & Zertifikate", href: "/bit/qualitaet" },
       { label: "Service", href: "/bit/service" },
+      { label: "Downloads", href: "/bit/service/downloads" },
       { label: "Glossar", href: "/bit/service/glossar" },
       { label: "Dat sin mir!", href: "/bit/die-bit/dat-sin-mir" },
       { label: "Accueil (FR)", href: "/bit/die-bit/accueil" },
@@ -84,5 +86,7 @@ export const NAV: NavItem[] = [
       { label: "Inicio (ES)", href: "/bit/die-bit/inicio" },
     ],
   },
+  { label: "Karriere", href: "/bit/karriere" },
+  { label: "Nachhaltigkeit", href: "/bit/nachhaltigkeit" },
   { label: "Kontakt", href: "/bit/kontakt" },
 ];

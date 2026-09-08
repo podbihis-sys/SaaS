@@ -4,9 +4,13 @@ import { ArrowRight, Phone } from "lucide-react";
 import { COMPANY } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
-import { ProductIllustration } from "../_components/product-illustration";
 import { Reveal } from "../_components/reveal";
 import { BreadcrumbLd } from "../_components/breadcrumb-ld";
+
+
+// Seite alle 5 Minuten im Hintergrund erneuern (ISR) – Besucher bekommen
+// immer die zwischengespeicherte Fassung statt auf die Datenbank zu warten.
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   alternates: { canonical: "/bit/branchen" },
@@ -36,7 +40,7 @@ const INDUSTRIES: Industry[] = [
     image: "/bit/branchen/energietechnik.jpg",
     imageAlt: "Energietechnik / Erneuerbare Energien",
     text: [
-      "In der schnell wachsenden Branche der erneuerbaren Energien sind zuverlässige und langlebige Materialien unerlässlich. Die BIT Bierther GmbH hebt sich mit ihren hochqualitativen Schrumpf- und Isolierschläuchen hervor.",
+      "In der schnell wachsenden Branche der erneuerbaren Energien sind zuverlässige und langlebige Materialien unerlässlich. Die BIT hebt sich mit ihren hochqualitativen Schrumpf- und Isolierschläuchen hervor.",
       "Besonders gefragt sind hochtemperaturbeständige Schrumpfschläuche aus Polyolefin, Silikon, PTFE und FEP sowie UV-beständige Werkstoffe wie Kynar® (PVDF), PVC und Polyolefin – ideal für Solarenergie, Windkraft und weitere Anwendungen der Energiewirtschaft.",
     ],
   },
@@ -48,7 +52,7 @@ const INDUSTRIES: Industry[] = [
     image: "/bit/branchen/automotive.jpg",
     imageAlt: "Automotive",
     text: [
-      "Seit 1996 ist die BIT Bierther GmbH in der Automobilindustrie für Produkte bekannt, die höchste Qualitätsansprüche erfüllen – sei es bei Schrumpfschläuchen, Kabelschutzschläuchen oder Geflechtschläuchen.",
+      "Seit 1996 ist die BIT in der Automobilindustrie für Produkte bekannt, die höchste Qualitätsansprüche erfüllen – sei es bei Schrumpfschläuchen, Kabelschutzschläuchen oder Geflechtschläuchen.",
       "Unsere Kunden können auf maßgeschneiderte Lösungen zählen, die perfekt auf ihre Bedürfnisse abgestimmt sind. Wir bieten komplette Systemlösungen ebenso wie individuelle Sonderanfertigungen – die langjährige Treue internationaler Automobilzulieferer bestätigt unseren Ansatz.",
     ],
   },
@@ -120,21 +124,18 @@ export default async function BranchenPage() {
     <>
       <BreadcrumbLd items={[{ name: "Home", path: "/bit" }, { name: "Branchen", path: "/bit/branchen" }]} />
       {/* ----------------------------------------------------------------- Hero */}
-      <section className="relative overflow-hidden bg-[#0f2742]">
-        <div className="absolute inset-0 opacity-20">
-          <ProductIllustration category="geflechtschlauch" fit="cover" className="h-full w-full" />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0f2742] via-[#0f2742]/90 to-[#0f2742]/60" />
-        <div className="container relative py-20">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Branchen</p>
-          <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl">
+      {/* Heller Hero – einheitlich mit den übrigen Seiten (Kundenvorgabe). */}
+      <section className="border-b border-slate-200 bg-slate-50">
+        <div className="container py-14">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">Branchen</p>
+          <h1 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             {c(content, "branchen.hero.title", "Branchen, die auf BIT vertrauen")}
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-300">
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
             {c(
               content,
               "branchen.hero.intro",
-              `Die ${COMPANY.legalName} ist seit ${COMPANY.foundedYear} ein zuverlässiger Ansprechpartner in unterschiedlichsten Branchen. Mit Schrumpf-, Isolier-, Glasseiden- und Geflechtschläuchen, Wellrohren und Kabelbindern sowie der technischen Kompetenz unserer Mitarbeiter entwickeln wir individuelle Lösungen für Ihr Anliegen.`,
+              `Die ${COMPANY.shortName} ist seit ${COMPANY.foundedYear} ein zuverlässiger Ansprechpartner in unterschiedlichsten Branchen. Mit Schrumpf-, Isolier-, Glasseiden- und Geflechtschläuchen, Wellrohren und Kabelbindern sowie der technischen Kompetenz unserer Mitarbeiter entwickeln wir individuelle Lösungen für Ihr Anliegen.`,
             )}
           </p>
         </div>

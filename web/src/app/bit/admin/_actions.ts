@@ -38,7 +38,7 @@ function revalidateProduct(slug: string) {
   revalidatePath("/bit/admin");
   revalidatePath("/bit");
   revalidatePath("/bit/produkte");
-  revalidatePath(`/bit/produkte/${slug}`);
+  revalidatePath(`/bit/produkte/[kategorie]/${slug}`, "page");
 }
 
 export async function saveProduct(input: ProductInput): Promise<ActionResult> {

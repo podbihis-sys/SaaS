@@ -25,7 +25,7 @@ export async function generateMetadata({
   return {
     title: seoTitle(`${category.name} kaufen`),
     description: clampDesc(
-      `${category.name} ${category.tagline} – ${count} Artikel bei BIT Bierther: ${category.description}`,
+      `${category.name} ${category.tagline} – ${count} Artikel bei BIT: ${category.description}`,
     ),
     alternates: { canonical: `/bit/${category.id}` },
   };
@@ -55,7 +55,7 @@ export default async function KategoriePage({
         "@type": "ListItem",
         position: i + 1,
         name: p.name,
-        url: `${BASE}/bit/produkte/${p.slug}`,
+        url: `${BASE}/bit/produkte/${p.category}/${p.slug}`,
       })),
     },
   };

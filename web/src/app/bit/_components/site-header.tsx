@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { ChevronDown, Menu, Phone, ShoppingCart, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Menu, Phone, ShoppingCart, X } from "lucide-react";
 import { useCart } from "../_lib/cart";
 import { COMPANY } from "../_data/catalog";
 import { NAV, type NavItem } from "../_data/navigation";
@@ -12,12 +12,8 @@ export function SiteHeader() {
   const pathname = usePathname();
   const { count, openCart } = useCart();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const [mobileSub, setMobileSub] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
-  const navRef = useRef<HTMLElement | null>(null);
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -31,28 +27,9 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Untermenü schließen: Escape und Klick außerhalb.
+  // Beim Seitenwechsel das mobile Menü schließen.
   useEffect(() => {
-    if (!openMenu) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpenMenu(null);
-    };
-    const onClick = (e: MouseEvent) => {
-      if (navRef.current && !navRef.current.contains(e.target as Node)) setOpenMenu(null);
-    };
-    document.addEventListener("keydown", onKey);
-    document.addEventListener("mousedown", onClick);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("mousedown", onClick);
-    };
-  }, [openMenu]);
-
-  // Beim Seitenwechsel alles schließen.
-  useEffect(() => {
-    setOpenMenu(null);
     setMobileOpen(false);
-    setMobileSub(null);
   }, [pathname]);
 
   const isActive = (item: NavItem) => {
@@ -61,14 +38,7 @@ export function SiteHeader() {
     return (item.children ?? []).some((c) => pathname.startsWith(c.href));
   };
 
-  const hoverOpen = (label: string) => {
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-    setOpenMenu(label);
-  };
-  const hoverClose = () => {
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-    closeTimer.current = setTimeout(() => setOpenMenu(null), 150);
-  };
+  const english = pathname.startsWith("/bit/en");
 
   return (
     <header
@@ -79,9 +49,7 @@ export function SiteHeader() {
       {/* Topbar */}
       <div className="hidden border-b border-slate-100 bg-slate-50/80 md:block">
         <div className="container flex h-9 items-center justify-between text-xs text-slate-500">
-          <span>
-            {COMPANY.legalName} · {COMPANY.city}
-          </span>
+          <span>{COMPANY.legalName} – Verkauf nur an Gewerbekunden</span>
           <div className="flex items-center gap-4">
             <a
               href={`tel:${COMPANY.phone.replace(/\s/g, "")}`}
@@ -89,98 +57,63 @@ export function SiteHeader() {
             >
               <Phone className="h-3.5 w-3.5" aria-hidden="true" /> {COMPANY.phone}
             </a>
-            <span>{COMPANY.hours}</span>
+            <span className="hidden lg:inline">{COMPANY.hours}</span>
+            {/* Sprachwahl */}
+            <span className="flex items-center gap-1.5 border-l border-slate-200 pl-4 font-medium">
+              <Link
+                href="/bit"
+                aria-current={!english ? "true" : undefined}
+                className={!english ? "text-[#1e4a7a]" : "text-slate-500 hover:text-[#1e4a7a]"}
+              >
+                DE
+              </Link>
+              <span aria-hidden="true">/</span>
+              <Link
+                href="/bit/en"
+                aria-current={english ? "true" : undefined}
+                className={english ? "text-[#1e4a7a]" : "text-slate-500 hover:text-[#1e4a7a]"}
+              >
+                EN
+              </Link>
+            </span>
           </div>
         </div>
       </div>
 
-      <div className="container flex h-24 items-center justify-between gap-4">
+      <div className="container flex h-24 items-center justify-between gap-4 sm:h-28">
         <Link
           href="/bit"
           className="shrink-0"
-          aria-label="BIT Bierther GmbH – Startseite"
+          aria-label="BIT – Startseite"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/bit/logo.png"
-            alt="BIT Bierther GmbH"
-            className="h-14 w-auto transition-transform duration-300 hover:scale-105 sm:h-16"
-            width={328}
-            height={64}
+            alt="BIT"
+            className="h-[67px] w-auto transition-transform duration-300 hover:scale-105 lg:h-[78px] xl:h-[90px]"
+            width={656}
+            height={128}
           />
         </Link>
 
-        {/* Hauptnavigation mit Untermenüs – ab lg, darunter Burger-Menü. */}
+        {/* Hauptnavigation – bewusst ohne Dropdowns (nur oberste Ebene). */}
         <nav
-          ref={navRef}
           className="hidden shrink items-center gap-0.5 lg:flex xl:gap-1"
           aria-label="Hauptnavigation"
         >
           {NAV.map((item) => {
             const active = isActive(item);
-            if (!item.children) {
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  data-active={active}
-                  className={`bit-nav-link whitespace-nowrap rounded-lg px-2.5 py-2 text-sm font-medium transition-colors xl:px-3 ${
-                    active ? "text-[#1e4a7a]" : "text-slate-600 hover:text-slate-900"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              );
-            }
-            const open = openMenu === item.label;
             return (
-              <div
+              <Link
                 key={item.href}
-                className="relative"
-                onMouseEnter={() => hoverOpen(item.label)}
-                onMouseLeave={hoverClose}
+                href={item.href}
+                data-active={active}
+                className={`bit-nav-link whitespace-nowrap rounded-lg px-2 py-2 text-sm font-medium transition-colors xl:px-2.5 ${
+                  active ? "text-[#1e4a7a]" : "text-slate-600 hover:text-slate-900"
+                }`}
               >
-                <div className="flex items-center">
-                  <Link
-                    href={item.href}
-                    data-active={active}
-                    className={`bit-nav-link whitespace-nowrap rounded-lg py-2 pl-2.5 pr-1 text-sm font-medium transition-colors xl:pl-3 ${
-                      active ? "text-[#1e4a7a]" : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => setOpenMenu(open ? null : item.label)}
-                    aria-expanded={open}
-                    aria-label={`Untermenü ${item.label} ${open ? "schließen" : "öffnen"}`}
-                    className="rounded-md p-1 text-slate-500 hover:text-[#1e4a7a]"
-                  >
-                    <ChevronDown
-                      className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`}
-                      aria-hidden="true"
-                    />
-                  </button>
-                </div>
-                {open && (
-                  <div className="absolute left-0 top-full z-50 w-72 rounded-xl border border-slate-200 bg-white py-2 shadow-xl">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        className={`block px-4 py-2 text-sm transition-colors hover:bg-slate-50 hover:text-[#1e4a7a] ${
-                          pathname === child.href
-                            ? "font-semibold text-[#1e4a7a]"
-                            : "text-slate-700"
-                        }`}
-                      >
-                        {child.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+                {item.label}
+              </Link>
             );
           })}
         </nav>
@@ -195,7 +128,7 @@ export function SiteHeader() {
               className="h-5 w-5 transition-transform group-hover:-rotate-6"
               aria-hidden="true"
             />
-            <span className="hidden sm:inline">Warenkorb</span>
+            <span className="hidden xl:inline">Warenkorb</span>
             {count > 0 && (
               <span
                 aria-hidden="true"
@@ -229,7 +162,7 @@ export function SiteHeader() {
         />
       </div>
 
-      {/* Mobile nav – mit aufklappbaren Untermenüs */}
+      {/* Mobile nav – flache Liste ohne Untermenüs */}
       {mobileOpen && (
         <nav
           id="bit-mobile-nav"
@@ -238,50 +171,21 @@ export function SiteHeader() {
         >
           <div className="container flex flex-col py-2">
             {NAV.map((item) => (
-              <div key={item.href} className="border-b border-slate-100 last:border-b-0">
-                <div className="flex items-center justify-between">
-                  <Link
-                    href={item.href}
-                    className={`flex-1 rounded-lg px-3 py-3 text-sm font-medium ${
-                      isActive(item) ? "text-[#1e4a7a]" : "text-slate-700"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                  {item.children && (
-                    <button
-                      type="button"
-                      onClick={() => setMobileSub(mobileSub === item.label ? null : item.label)}
-                      aria-expanded={mobileSub === item.label}
-                      aria-label={`Untermenü ${item.label} ${
-                        mobileSub === item.label ? "schließen" : "öffnen"
-                      }`}
-                      className="rounded-md p-2 text-slate-500"
-                    >
-                      <ChevronDown
-                        className={`h-4 w-4 transition-transform ${
-                          mobileSub === item.label ? "rotate-180" : ""
-                        }`}
-                        aria-hidden="true"
-                      />
-                    </button>
-                  )}
-                </div>
-                {item.children && mobileSub === item.label && (
-                  <div className="pb-2 pl-3">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        className="block rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-[#1e4a7a]"
-                      >
-                        {child.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`border-b border-slate-100 px-3 py-3 text-sm font-medium last:border-b-0 ${
+                  isActive(item) ? "text-[#1e4a7a]" : "text-slate-700"
+                }`}
+              >
+                {item.label}
+              </Link>
             ))}
+            <div className="flex items-center gap-3 px-3 py-3 text-sm font-medium text-slate-600">
+              <span className="text-xs uppercase tracking-wide text-slate-400">Sprache:</span>
+              <Link href="/bit" className={!english ? "text-[#1e4a7a]" : ""}>DE</Link>
+              <Link href="/bit/en" className={english ? "text-[#1e4a7a]" : ""}>EN</Link>
+            </div>
           </div>
         </nav>
       )}

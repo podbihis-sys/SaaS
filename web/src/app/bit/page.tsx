@@ -13,7 +13,7 @@ import {
   ShieldCheck,
   Truck,
 } from "lucide-react";
-import { CATEGORIES, COMPANY, INDUSTRIES, PRODUCTS, getProduct } from "./_data/catalog";
+import { CATEGORIES, CATEGORY_IMAGE, COMPANY, INDUSTRIES, PRODUCTS, industryHref } from "./_data/catalog";
 import { c } from "./_data/content";
 import { getContent } from "./_data/content-server";
 import { getCmsNews } from "./_data/news-server";
@@ -24,28 +24,30 @@ import { HeroSlider, type HeroSlide } from "./_components/hero-slider";
 import { Reveal } from "./_components/reveal";
 import type { Metadata } from "next";
 
+
+// Seite alle 5 Minuten im Hintergrund erneuern (ISR) – Besucher bekommen
+// immer die zwischengespeicherte Fassung statt auf die Datenbank zu warten.
+export const revalidate = 300;
+
 export const metadata: Metadata = {
-  title: { absolute: "BIT Bierther GmbH – Schrumpf- & Isolierschlauchtechnik" },
+  title: { absolute: "BIT – Schrumpf- & Isolierschlauchtechnik" },
   description:
-    "Halogenfreie Schrumpf-, Isolier- & Geflechtschläuche, Wellrohre & Kabelbinder. 1.000+ Artikel, Lieferung in 24 h, Konfektion ab Losgröße 1.",
+    "Halogenfreie Schrumpf-, Isolier- & Geflechtschläuche, Wellrohre & Kabelbinder. 1.000+ Artikel, Lieferung in 24 h, Zuschnitt und Bedruckung.",
   alternates: { canonical: "/bit" },
 };
 
-// Wechselnde Hero-Bilder (rechte Seite) aus dem realen Sortiment.
-const HERO_SLIDES: HeroSlide[] = [
-  "3-1-schrumpfschlauch-bp-300",
-  "schrumpfschlauch-bp-135",
-  "hart-pvc-schrumpfschlauch",
-  "dickwandiger-schrumpfschlauch-bptw",
-]
-  .map(getProduct)
-  .filter((p): p is NonNullable<typeof p> => Boolean(p))
-  .map((p) => ({ src: p.image, alt: p.imageAlt }));
+// Hero-Diashow: ein Bild je Produktkategorie, jeweils klickbar zur Kategorie.
+const HERO_SLIDES: HeroSlide[] = CATEGORIES.map((cat) => ({
+  src: CATEGORY_IMAGE[cat.id],
+  alt: cat.name,
+  href: `/bit/${cat.id}`,
+  label: cat.name,
+})).filter((s) => Boolean(s.src));
 
 const HERO_TRUST = [
   { icon: Headset, title: "Technische Beratung", text: "Persönlich, kompetent und lösungsorientiert." },
   { icon: Truck, title: "Schnelle Lieferung", text: "Standardware in der Regel in 24 h." },
-  { icon: PencilRuler, title: "Individuelle Konfektion", text: "Zuschnitt & Sätze ab Losgröße 1." },
+  { icon: PencilRuler, title: "Individuelle Konfektion", text: "Zuschnitt und Bedruckung nach Ihren Vorgaben." },
   { icon: ShieldCheck, title: "Zertifizierte Qualität", text: "DIN EN ISO 9001 seit 1997." },
 ];
 
@@ -53,29 +55,6 @@ const KOMPETENZEN = [
   { title: "Schlauch-Abschnitte & Konfektion", image: "/bit/kompetenzen/abschnitte.jpg" },
   { title: "Schrumpfschlauch bedruckt", image: "/bit/kompetenzen/bedruckt.jpg" },
   { title: "Farbige Schrumpfschläuche", image: "/bit/kompetenzen/farbig.jpg" },
-];
-
-const FAQ = [
-  {
-    q: "Was ist ein Schrumpfschlauch und wofür wird er verwendet?",
-    a: "Ein Schrumpfschlauch ist ein Kunststoffschlauch, der sich bei Wärme auf einen definierten Durchmesser zusammenzieht. Er wird zur elektrischen Isolation, zur Bündelung und Kennzeichnung von Kabeln sowie zum mechanischen Schutz und zur Abdichtung von Verbindungen eingesetzt.",
-  },
-  {
-    q: "Welche Schrumpfraten bietet die BIT Bierther GmbH an?",
-    a: "Wir führen Schrumpfschläuche mit Schrumpfraten von 1,3:1 bis 6:1 – aus Polyolefin, PVC, PTFE, FEP, PVDF (Kynar®), Silikon und Elastomer, dünn- bis dickwandig und optional mit Innenkleber.",
-  },
-  {
-    q: "Wie schnell liefert BIT Bierther?",
-    a: "Standardartikel sind in der Regel ab Lager verfügbar und werden meist innerhalb von 24 Stunden versendet. Für Konfektion, Bedruckung und Sonderwerkstoffe nennen wir Ihnen mit dem Angebot einen verbindlichen Liefertermin.",
-  },
-  {
-    q: "Bietet BIT Bierther Konfektion und Bedruckung an?",
-    a: "Ja. Über sechs Produktionsstrecken schneiden, bedrucken und konfektionieren wir Schrumpf-, Isolier- und Glasseidenschläuche nach Ihren Vorgaben – vom einzelnen Zuschnitt bis zur Serie.",
-  },
-  {
-    q: "In welchen Branchen werden die Produkte eingesetzt?",
-    a: "Unsere Schläuche, Wellrohre und Kabelbinder kommen u. a. in Automotive, Energietechnik, Hausgeräten, Medizintechnik, Maschinen- und Anlagenbau, Licht- und Sicherheitstechnik zum Einsatz.",
-  },
 ];
 
 const STATS = [
@@ -87,7 +66,7 @@ const STATS = [
 
 const ADVANTAGES = [
   { icon: Truck, title: "Lieferfähig in 24 h", text: "Umfassende Lagerhaltung und kundenorientierte Logistik für Standardartikel." },
-  { icon: PencilRuler, title: "Konfektion ab Losgröße 1", text: "Zuschnitt, Kennzeichnung und Sätze exakt nach Ihrer Zeichnung." },
+  { icon: PencilRuler, title: "Zuschnitt und Bedruckung", text: "Zuschnitt, Kennzeichnung und Sätze exakt nach Ihrer Zeichnung." },
   { icon: Layers, title: "Werkstoffvielfalt", text: "Polyolefin, PVC, PTFE, Silikon, Glasseide, PVDF und mehr – für jede Anforderung." },
   { icon: ShieldCheck, title: "Geprüfte Qualität", text: "Seit 1997 nach DIN EN ISO 9001 zertifiziert – dokumentiert und rückverfolgbar." },
 ];
@@ -109,7 +88,7 @@ export default async function BitHome() {
       <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-white to-slate-50">
         <div className="bit-hero-glow" />
         <div className="absolute inset-0 bit-grid-light" />
-        <div className="container relative grid items-center gap-12 py-16 lg:grid-cols-[0.95fr_1.05fr] lg:py-24">
+        <div className="container relative grid items-center gap-12 pb-4 pt-4 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:pb-5 lg:pt-5">
           <div>
             <Reveal
               as="span"
@@ -176,19 +155,29 @@ export default async function BitHome() {
           </div>
         </div>
 
-        {/* Category marquee – rein dekorativ, Inhalte stehen in der Navigation */}
-        <div className="relative border-t border-slate-200 py-4" aria-hidden="true">
+        {/* Kategorie-Laufschrift – anklickbar; die zweite Hälfte ist nur die
+            optische Wiederholung für den nahtlosen Lauf und daher aria-hidden. */}
+        <nav className="relative border-t border-slate-200 py-4" aria-label="Kategorien im Überblick">
           <div className="bit-marquee">
-            <div className="bit-marquee__track text-sm font-medium uppercase tracking-[0.18em] text-slate-400">
-              {[...CATEGORIES, ...CATEGORIES].map((c, i) => (
-                <span key={i} className="flex items-center gap-3">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#38bdf8]" />
-                  {c.name}
-                </span>
-              ))}
+            <div className="bit-marquee__track text-sm font-medium uppercase tracking-[0.18em] text-slate-500">
+              {[...CATEGORIES, ...CATEGORIES].map((c, i) => {
+                const duplicate = i >= CATEGORIES.length;
+                return (
+                  <Link
+                    key={i}
+                    href={`/bit/${c.id}`}
+                    tabIndex={duplicate ? -1 : undefined}
+                    aria-hidden={duplicate || undefined}
+                    className="flex items-center gap-3 whitespace-nowrap rounded-lg px-2 py-1.5 transition-colors hover:bg-[#1e4a7a]/5 hover:text-[#1e4a7a]"
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#38bdf8]" aria-hidden="true" />
+                    {c.name}
+                  </Link>
+                );
+              })}
             </div>
           </div>
-        </div>
+        </nav>
 
         {/* Stat strip */}
         <div className="relative border-t border-slate-200 bg-slate-50">
@@ -215,10 +204,6 @@ export default async function BitHome() {
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             Unsere Produktwelten
           </h2>
-          <p className="mt-3 text-slate-600">
-            Für Isolation, Schutz und Bündelung – jeder Artikel mit allen verfügbaren Größen direkt
-            anfragbar.
-          </p>
         </Reveal>
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {CATEGORIES.map((cat, i) => (
@@ -255,7 +240,7 @@ export default async function BitHome() {
       <section className="border-y border-slate-200 bg-slate-50 py-20 sm:py-24">
         <div className="container">
           <Reveal as="h2" className="text-center text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            Warum BIT Bierther
+            Warum BIT
           </Reveal>
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {ADVANTAGES.map(({ icon: Icon, title, text }, i) => (
@@ -320,11 +305,9 @@ export default async function BitHome() {
         <div className="container">
         <Reveal className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <span className="text-sm font-semibold uppercase tracking-wide text-[#1d4ed8]">Beliebt</span>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
               Beliebte Artikel
             </h2>
-            <p className="mt-2 text-slate-600">Direkt mit allen Größen in den Warenkorb legen.</p>
           </div>
           <Link
             href="/bit/produkte"
@@ -355,14 +338,20 @@ export default async function BitHome() {
         </div>
         <div className="bit-marquee mt-10">
           <div className="bit-marquee__track">
-            {[...INDUSTRIES, ...INDUSTRIES].map((industry, i) => (
-              <span
-                key={i}
-                className="rounded-full border border-slate-200 bg-white px-6 py-3 text-base font-medium text-slate-700 shadow-sm"
-              >
-                {industry}
-              </span>
-            ))}
+            {[...INDUSTRIES, ...INDUSTRIES].map((industry, i) => {
+              const duplicate = i >= INDUSTRIES.length;
+              return (
+                <Link
+                  key={i}
+                  href={industryHref(industry)}
+                  tabIndex={duplicate ? -1 : undefined}
+                  aria-hidden={duplicate || undefined}
+                  className="whitespace-nowrap rounded-full border border-slate-200 bg-white px-6 py-3 text-base font-medium text-slate-700 shadow-sm transition-colors hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
+                >
+                  {industry}
+                </Link>
+              );
+            })}
           </div>
         </div>
         <div className="container mt-10 text-center">
@@ -465,40 +454,6 @@ export default async function BitHome() {
               <span>Konfektion &amp; Kompetenzen</span>
             </Link>
           </Reveal>
-        </div>
-      </section>
-
-      {/* --------------------------------------------------------------- FAQ */}
-      <section className="border-t border-slate-200 bg-white py-20 sm:py-24">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: FAQ.map((f) => ({
-                "@type": "Question",
-                name: f.q,
-                acceptedAnswer: { "@type": "Answer", text: f.a },
-              })),
-            }),
-          }}
-        />
-        <div className="container">
-          <Reveal className="mx-auto max-w-2xl text-center">
-            <span className="text-sm font-semibold uppercase tracking-wide text-[#c27803]">FAQ</span>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-              Häufige Fragen
-            </h2>
-          </Reveal>
-          <div className="mx-auto mt-10 max-w-3xl divide-y divide-slate-200 border-y border-slate-200">
-            {FAQ.map((f) => (
-              <Reveal key={f.q} as="div" className="py-5">
-                <p className="text-lg font-semibold text-slate-900">{f.q}</p>
-                <p className="mt-2 leading-relaxed text-slate-600">{f.a}</p>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 

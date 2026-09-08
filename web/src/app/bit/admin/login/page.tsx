@@ -36,7 +36,7 @@ export default function AdminLogin() {
           </span>
           <div>
             <h1 className="text-lg font-semibold text-slate-900">CMS-Anmeldung</h1>
-            <p className="text-xs text-slate-500">BIT Bierther · Produktpflege</p>
+            <p className="text-xs text-slate-500">BIT · Produktpflege</p>
           </div>
         </div>
 
