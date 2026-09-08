@@ -18,9 +18,10 @@ export function ProductCard({ product }: { product: Product }) {
           alt={product.imageAlt}
           className="bit-card-img h-full w-full"
         />
-        {/* Typ-Bezeichnung links oben – bewusst größer und in der Farbe des
-            Schrumpfraten-Badges (Kundenvorgabe); Kategorie rechts oben. */}
-        {product.code !== product.name && (
+        {/* Typ-Bezeichnung links oben – immer sichtbar, bewusst größer und in
+            der Farbe des Schrumpfraten-Badges (Kundenvorgabe); Kategorie
+            rechts oben. */}
+        {product.code && (
           <span className="absolute left-3 top-3 rounded-md bg-[#38bdf8] px-3 py-1 font-mono text-base font-bold text-[#0f2742] shadow-sm">
             {product.code}
           </span>
