@@ -143,7 +143,11 @@ def slugify(city: str) -> str:
 class HostResult:
     host: str
     reachable: bool
+    status_code: int | None = None
     final_url: str | None = None
+    #: Set when the landing page was refused but the hostname itself suggests
+    #: a vendor — a hint to follow up, never a confirmation.
+    hint: str | None = None
     vendor: str | None = None
     supported: bool = False
     robots_status: str = "not fetched"
@@ -163,7 +167,7 @@ class CityResult:
         """The most useful host: supported vendor first, then any vendor, then any reachable."""
         ranked = sorted(
             (h for h in self.hosts if h.reachable),
-            key=lambda h: (h.supported, h.vendor is not None),
+            key=lambda h: (h.supported, h.vendor is not None, (h.status_code or 999) < 400),
             reverse=True,
         )
         return ranked[0] if ranked else None
@@ -187,8 +191,17 @@ async def probe_host(client: httpx.AsyncClient, host: str, sem: asyncio.Semaphor
             return result
 
         result.reachable = True
+        result.status_code = response.status_code
         result.final_url = str(response.url)
-        result.vendor, result.supported = fingerprint(result.final_url, response.text[:200_000])
+        if response.status_code < 400:
+            result.vendor, result.supported = fingerprint(result.final_url, response.text[:200_000])
+        else:
+            # A refused landing page proves the host exists, not what runs on
+            # it. tevis.ekom21.de answers 403 to a bare request; calling that
+            # "TEVIS, confirmed" because of the hostname is how five cities
+            # ended up in the wrong column.
+            hint, _ = fingerprint(host, "")
+            result.hint = f"Hostname deutet auf {hint}" if hint else None
 
         await asyncio.sleep(1.0)
         try:
@@ -197,8 +210,21 @@ async def probe_host(client: httpx.AsyncClient, host: str, sem: asyncio.Semaphor
             result.robots_status = f"error: {type(exc).__name__}"
             return result
 
-        if robots_response.status_code >= 400:
-            result.robots_status = f"{robots_response.status_code} (keine Datei → erlaubt)"
+        status = robots_response.status_code
+        if status >= 500:
+            # RFC 9309 §2.3.1.4: a server error means the rules are unknown,
+            # and a crawler must assume it is disallowed until they can be
+            # read. Treating a 503 as "no file, go ahead" would be the one
+            # reading the spec explicitly rules out.
+            result.robots_status = f"{status} (Serverfehler → vorerst gesperrt)"
+            result.booking_allowed = False
+            return result
+        if status >= 400:
+            # 4xx means "no robots.txt", which the spec reads as unrestricted.
+            # A 403 is technically the same, but it usually means the host
+            # refuses our client outright, so it is worth a second look.
+            note = "Zugriff verweigert, formal erlaubt" if status == 403 else "keine Datei → erlaubt"
+            result.robots_status = f"{status} ({note})"
             result.booking_allowed = True
             return result
 
@@ -233,9 +259,10 @@ def render(results: list[CityResult]) -> str:
         if best is None:
             lines.append(f"{r.city:22} {'—':12} {'—':8} {'kein Terminhost gefunden':26}")
             continue
-        vendor = best.vendor or "unbekannt"
+        vendor = best.vendor or ("unbestätigt" if best.hint else "unbekannt")
         adapter = "ja" if best.supported else "nein"
-        lines.append(f"{r.city:22} {vendor:12} {adapter:8} {best.robots_status:26} {best.host}")
+        note = f" [Root HTTP {best.status_code}]" if (best.status_code or 0) >= 400 else ""
+        lines.append(f"{r.city:22} {vendor:12} {adapter:8} {best.robots_status:26} {best.host}{note}")
     return "\n".join(lines)
 
 

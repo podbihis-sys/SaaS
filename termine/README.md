@@ -114,11 +114,13 @@ REST-API, Buchungsübergabe, die vollständige App (Suchaufträge, Suche mit
 Standort, Meldungen, Einstellungen, Buchungs-Flow), 135 Backend-Tests, sauberer
 Typecheck der App.
 
-**Katalog:** Bremen ist als erstes Bundesland vollständig erfasst — 17 Behörden,
-72 Dienstleistungen, automatisch aus dem Landesportal erzeugt. Auffindbar und
-direkt buchbar, aber **nicht überwachbar**: Bremens Buchungssystem verbietet
-automatisiertes Abrufen per robots.txt und seine API ist zugangsgeschützt.
-Details und der Weg zur Freigabe in [`docs/bundeslaender.md`](./docs/bundeslaender.md).
+**Katalog:** 77 Ämter. Die 50 größten Städte sind vermessen
+(`scripts/survey_cities.py`): 53 Ämter in sieben TEVIS-Städten (Düsseldorf,
+Nürnberg, Münster, Mönchengladbach, Heidelberg, Oldenburg, Duisburg) sind
+erfasst und per robots.txt **überwachbar** — der Adapter ist gegen sie aber
+noch nicht live verifiziert. Bremen (17) ist erfasst, aber gesperrt; Berlin
+ebenso. Die vollständige Tabelle mit „geht / geht nach Freigabe / geht nicht /
+unklar" steht in [`docs/bundeslaender.md`](./docs/bundeslaender.md).
 
 **Noch nicht geprüft:** Die vier Adapter für echte Buchungssysteme sind
 vollständig implementiert und über Fixtures getestet, aber nicht gegen die
