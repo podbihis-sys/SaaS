@@ -11,7 +11,7 @@ const BUCKET = "bit-product-images";
 function publicUrl(path: string): string {
   if (!path) return "";
   if (path.startsWith("http") || path.startsWith("/")) return path;
-  const base = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  const base = process.env.NEXT_PUBLIC_BIT_SUPABASE_URL ?? "";
   return `${base}/storage/v1/object/public/${BUCKET}/${path}`;
 }
 

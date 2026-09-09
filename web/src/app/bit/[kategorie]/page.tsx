@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CATEGORIES, PRODUCTS, getCategory, type CategoryId } from "../_data/catalog";
+import { CATEGORIES, getCategory, type CategoryId } from "../_data/catalog";
+import { getCatalog } from "../_data/products-server";
 import { Catalog } from "../_components/catalog";
 import { clampDesc, seoTitle } from "../_lib/seo";
 
-// Kategorie-URLs wie auf bit-gmbh.de (/isolierschlauch/ etc.) – statisch generiert.
-export const dynamicParams = false;
+// Kategorie-URLs wie auf bit-gmbh.de (/isolierschlauch/ etc.). Neue
+// CMS-Kategorien werden on demand gerendert; Inhalte erneuern sich alle
+// 5 Minuten im Hintergrund (ISR).
+export const dynamicParams = true;
+export const revalidate = 300;
 
 export function generateStaticParams() {
   return CATEGORIES.map((c) => ({ kategorie: c.id }));
@@ -19,9 +23,11 @@ export async function generateMetadata({
   params: Promise<{ kategorie: string }>;
 }): Promise<Metadata> {
   const { kategorie } = await params;
-  const category = getCategory(kategorie as CategoryId);
+  const { categories, products } = await getCatalog();
+  const category =
+    categories.find((c) => c.id === kategorie) ?? getCategory(kategorie as CategoryId);
   if (!category) return {};
-  const count = PRODUCTS.filter((p) => p.category === category.id).length;
+  const count = products.filter((p) => p.category === category.id).length;
   return {
     title: seoTitle(`${category.name} kaufen`),
     description: clampDesc(
@@ -37,10 +43,12 @@ export default async function KategoriePage({
   params: Promise<{ kategorie: string }>;
 }) {
   const { kategorie } = await params;
-  const category = getCategory(kategorie as CategoryId);
+  const { categories, products } = await getCatalog();
+  const category =
+    categories.find((c) => c.id === kategorie) ?? getCategory(kategorie as CategoryId);
   if (!category) notFound();
 
-  const items = PRODUCTS.filter((p) => p.category === category.id);
+  const items = products.filter((p) => p.category === category.id);
 
   const collectionLd = {
     "@context": "https://schema.org",
@@ -80,7 +88,7 @@ export default async function KategoriePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
-      <Catalog active={category.id} />
+      <Catalog active={category.id} categories={categories} products={products} />
     </>
   );
 }

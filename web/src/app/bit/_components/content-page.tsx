@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, ChevronRight, Mail, Phone } from "lucide-react";
 import { getContentPage } from "../_data/pages";
+import { getCmsPage } from "../_data/pages-server";
 import { NAV, type NavItem } from "../_data/navigation";
 import { COMPANY } from "../_data/catalog";
 import { clampDesc, seoTitle } from "../_lib/seo";
@@ -70,7 +71,7 @@ function splitLead(
 }
 
 /** Rendert eine übernommene Originalseite mit Kopfbereich und Bereichsnavigation. */
-export function ContentPage({
+export async function ContentPage({
   slug,
   parent,
 }: {
@@ -78,7 +79,7 @@ export function ContentPage({
   /** Optionale Zwischenebene für die Brotkrümel, z. B. Branchen. */
   parent?: { label: string; href: string };
 }) {
-  const page = getContentPage(slug);
+  const page = await getCmsPage(slug);
   if (!page) notFound();
 
   const href = `/bit/${slug}`;

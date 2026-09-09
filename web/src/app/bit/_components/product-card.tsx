@@ -18,14 +18,17 @@ export function ProductCard({ product }: { product: Product }) {
           alt={product.imageAlt}
           className="bit-card-img h-full w-full"
         />
-        <span className="absolute left-3 top-3 rounded-full bg-white/85 px-2.5 py-1 text-xs font-medium text-[#1e4a7a] shadow-sm backdrop-blur">
-          {category?.name}
-        </span>
-        {product.code !== product.name && (
-          <span className="absolute right-3 top-3 rounded-md bg-[#0f2742]/80 px-2.5 py-1 font-mono text-sm font-medium text-white/90 backdrop-blur">
+        {/* Typ-Bezeichnung links oben – immer sichtbar, bewusst größer und in
+            der Farbe des Schrumpfraten-Badges (Kundenvorgabe); Kategorie
+            rechts oben. */}
+        {product.code && (
+          <span className="absolute left-3 top-3 rounded-md bg-[#38bdf8] px-3 py-1 font-mono text-base font-bold text-[#0f2742] shadow-sm">
             {product.code}
           </span>
         )}
+        <span className="absolute right-3 top-3 rounded-full bg-white/85 px-2.5 py-1 text-xs font-medium text-[#1e4a7a] shadow-sm backdrop-blur">
+          {category?.name}
+        </span>
         {/* Schrumpfrate als Icon-Badge */}
         {shrink && (
           <span

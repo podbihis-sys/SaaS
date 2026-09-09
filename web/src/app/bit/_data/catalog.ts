@@ -258,6 +258,7 @@ export const PRODUCTS: Product[] = [
       { label: "Durchmesser innen bis (mm)", value: "350,00" },
       { label: "Schrumpfrate", value: "3:1" },
       { label: "Schrumpftemperatur", value: "120 °C" },
+      { label: "VPE", value: "Alle Abmessungen als Längenware á 1,22 m" },
     ],
     features: ["Dickwandig", "Hohes Schrumpfverhältnis", "UV-beständig"],
     applications: ["Isolation & Aderkennzeichnung", "Zugentlastung", "Korrosions- & Spritzwasserschutz", "Bündelung von Leitungen"],
@@ -535,6 +536,7 @@ export const PRODUCTS: Product[] = [
       { label: "Durchmesser innen bis (mm)", value: "52,00" },
       { label: "Schrumpfrate", value: "4:1" },
       { label: "Schrumpftemperatur", value: "110 °C" },
+      { label: "VPE", value: "Rolle; jede Größe auch als 1,22-m-Länge erhältlich" },
     ],
     features: ["Flammhemmend", "Hohes Schrumpfverhältnis", "Kleberbeschichtet", "Schwer entflammbar", "UL-zugelassen", "Zulassung: UL 224 (außer transparent)"],
     applications: ["Isolation & Aderkennzeichnung", "Zugentlastung", "Korrosions- & Spritzwasserschutz", "Bündelung von Leitungen"],
@@ -958,6 +960,7 @@ export const PRODUCTS: Product[] = [
       { label: "Durchmesser innen bis (mm)", value: "350,00" },
       { label: "Schrumpfrate", value: "3:1" },
       { label: "Schrumpftemperatur", value: "120 °C" },
+      { label: "VPE", value: "Alle Abmessungen als Längenware á 1,22 m" },
     ],
     features: ["Dickwandig", "Hohes Schrumpfverhältnis", "Kleberbeschichtet", "UV-beständig"],
     applications: ["Isolation & Aderkennzeichnung", "Zugentlastung", "Korrosions- & Spritzwasserschutz", "Bündelung von Leitungen"],
@@ -1128,6 +1131,7 @@ export const PRODUCTS: Product[] = [
       { label: "Durchmesser innen bis (mm)", value: "39,00" },
       { label: "Schrumpfrate", value: "3:1" },
       { label: "Schrumpftemperatur", value: "110 °C" },
+      { label: "VPE", value: "Rolle; jede Größe auch als 1,22-m-Länge erhältlich" },
     ],
     features: ["Flammhemmend", "Hohes Schrumpfverhältnis", "Kleberbeschichtet", "Schwer entflammbar", "UL-zugelassen", "Zulassung: UL 224 (außer transparent)"],
     applications: ["Isolation & Aderkennzeichnung", "Zugentlastung", "Korrosions- & Spritzwasserschutz", "Bündelung von Leitungen"],
@@ -1157,6 +1161,7 @@ export const PRODUCTS: Product[] = [
       { label: "Durchmesser innen bis (mm)", value: "25,40" },
       { label: "Schrumpfrate", value: "2:1" },
       { label: "Schrumpftemperatur", value: "110 °C" },
+      { label: "VPE", value: "Rolle; jede Größe auch als 1,22-m-Länge erhältlich" },
     ],
     features: ["Dünnwandig", "Flammhemmend", "Kleberbeschichtet", "Schwer entflammbar", "UL-zugelassen", "Zulassung: UL 224"],
     applications: ["Isolation & Aderkennzeichnung", "Zugentlastung", "Korrosions- & Spritzwasserschutz", "Bündelung von Leitungen"],
@@ -1185,6 +1190,7 @@ export const PRODUCTS: Product[] = [
       { label: "Durchmesser innen bis (mm)", value: "350,00" },
       { label: "Schrumpfrate", value: "3:1" },
       { label: "Schrumpftemperatur", value: "120 °C" },
+      { label: "VPE", value: "Alle Abmessungen als Längenware á 1,22 m" },
     ],
     features: ["Hohes Schrumpfverhältnis", "Kleberbeschichtet", "Mittelwandig", "UV-beständig"],
     applications: ["Isolation & Aderkennzeichnung", "Zugentlastung", "Korrosions- & Spritzwasserschutz", "Bündelung von Leitungen"],
@@ -1229,7 +1235,7 @@ export const PRODUCTS: Product[] = [
     imageAlt: "PTFE Schrumpfschlauch 4:1",
     sizes: ["Ø 2 mm", "Ø 2,5 mm", "Ø 3 mm", "Ø 4 mm", "Ø 5 mm", "Ø 6 mm", "Ø 8 mm", "Ø 10 mm", "Ø 12 mm", "Ø 16 mm", "Ø 20 mm", "Ø 25 mm", "Ø 30 mm", "Ø 40 mm", "Ø 50 mm", "Ø 65 mm", "Ø 80 mm", "Ø 100 mm"],
     unit: "Meter",
-    colors: ["Transparent", "Andere auf Anfrage"],
+    colors: ["Transparent", "Schwarz", "Andere auf Anfrage"],
     material: "PTFE",
     temperature: "-67 °C bis +260 °C",
     tech: [
@@ -1241,6 +1247,7 @@ export const PRODUCTS: Product[] = [
       { label: "Durchmesser innen bis (mm)", value: "101,60" },
       { label: "Schrumpfrate", value: "4:1" },
       { label: "Schrumpftemperatur", value: "327 °C" },
+      { label: "VPE", value: "Längenware á 1,22 m; Rollen nur auf Anfrage" },
     ],
     features: ["Antiadhäsiv", "Dünnwandig", "Hohe chemische Beständigkeit", "Hohe Temperaturbeständigkeit", "Sehr hohes Schrumpfverhältnis", "Unbrennbar"],
     applications: ["Isolation & Aderkennzeichnung", "Zugentlastung", "Korrosions- & Spritzwasserschutz", "Bündelung von Leitungen"],
@@ -1325,6 +1332,7 @@ export const PRODUCTS: Product[] = [
       { label: "Durchmesser innen bis (mm)", value: "350,00" },
       { label: "Schrumpfrate", value: "3:1" },
       { label: "Schrumpftemperatur", value: "120 °C" },
+      { label: "VPE", value: "Alle Abmessungen als Längenware á 1,22 m" },
     ],
     features: ["Hohes Schrumpfverhältnis", "Mittelwandig", "UV-beständig"],
     applications: ["Isolation & Aderkennzeichnung", "Zugentlastung", "Korrosions- & Spritzwasserschutz", "Bündelung von Leitungen"],
@@ -3680,6 +3688,39 @@ export const CATEGORY_IMAGE: Record<CategoryId, string> = (() => {
   }
   return map;
 })();
+
+/**
+ * Anordnung der Schrumpfschläuche laut Vorgabe „Produktauflistung" (09/2026):
+ * Polyolefin, dann Fluorpolymer/Elastomer, PVC, sonstige Polyolefinprodukte,
+ * Sonstige. Nicht gelistete Artikel folgen dahinter in bisheriger Reihenfolge.
+ * (BLVK aus der Vorgabe liegt lt. separater Vorgabe in „Weitere
+ * Schrumpfprodukte" und bleibt dort; BPRS existiert nicht im Sortiment.)
+ */
+const SCHRUMPF_ORDER: string[] = [
+  // Polyolefin
+  "BP 105", "BP 125", "BP 125 HV", "BP 135", "BP 135 VW-1", "BP 135 GE/GR",
+  "BP 300", "BP 400", "BPUTW", "BPIMS 300", "BPMW", "BPTW", "BPDW 100",
+  "BPDW 102", "BPDW 104", "BPBK", "BPMW A", "BPTW A", "BPHW A",
+  // Fluorpolymer und Elastomer
+  "BPVDF 175 KYNAR®", "PTFE 200 AWG", "PTFE 400", "PTFE/FEP", "BER 100", "BP VIT",
+  // PVC
+  "WPS 105", "HPS",
+  // Sonstige Polyolefinprodukte
+  "BPATT", "BPBT", "BPSCON",
+  // Sonstige
+  "BHW CS",
+];
+{
+  const rank = (code: string) => {
+    const i = SCHRUMPF_ORDER.indexOf(code);
+    return i === -1 ? SCHRUMPF_ORDER.length : i;
+  };
+  const schrumpf = PRODUCTS.filter((p) => p.category === "schrumpfschlauch");
+  schrumpf.sort((a, b) => rank(a.code) - rank(b.code));
+  const rest = PRODUCTS.filter((p) => p.category !== "schrumpfschlauch");
+  PRODUCTS.length = 0;
+  PRODUCTS.push(...schrumpf, ...rest);
+}
 
 export function getProduct(slug: string): Product | undefined {
   return PRODUCTS.find((p) => p.slug === slug);

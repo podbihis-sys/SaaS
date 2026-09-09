@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { SlidersHorizontal, X } from "lucide-react";
-import { CATEGORIES, PRODUCTS, type CategoryId, type Product, getCategory } from "../_data/catalog";
+import { CATEGORIES, PRODUCTS, type Category, type CategoryId, type Product } from "../_data/catalog";
 import { ProductCard } from "./product-card";
 import {
   MATERIAL_GROUPS,
@@ -69,15 +69,24 @@ function matches(p: Product, f: Filters): boolean {
  * Kriterien und Werte angeboten, die im aktuellen Sortiment auch vorkommen –
  * z. B. keine Wandstärke bei Kabelbindern, keine Schrumpfrate bei Wellrohren.
  */
-export function Catalog({ active }: { active: CategoryId | "alle" }) {
+export function Catalog({
+  active,
+  categories = CATEGORIES,
+  products = PRODUCTS,
+}: {
+  active: CategoryId | "alle";
+  /** CMS-Daten (Fallback: statischer Katalog). */
+  categories?: Category[];
+  products?: Product[];
+}) {
   const [filters, setFilters] = useState<Filters>(EMPTY);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const category = active === "alle" ? undefined : getCategory(active);
+  const category = active === "alle" ? undefined : categories.find((c) => c.id === active);
 
   const byCategory = useMemo(
-    () => (active === "alle" ? PRODUCTS : PRODUCTS.filter((p) => p.category === active)),
-    [active],
+    () => (active === "alle" ? products : products.filter((p) => p.category === active)),
+    [active, products],
   );
 
   // Verfügbare Filterkriterien aus dem Sortiment der Kategorie ableiten.
@@ -132,7 +141,7 @@ export function Catalog({ active }: { active: CategoryId | "alle" }) {
     [filters, facets],
   );
 
-  const products = useMemo(
+  const filtered = useMemo(
     () => byCategory.filter((p) => matches(p, effective)),
     [byCategory, effective],
   );
@@ -178,14 +187,14 @@ export function Catalog({ active }: { active: CategoryId | "alle" }) {
       <div className="container py-10">
         {/* Kategorie-Navigation mit eigenen URLs */}
         <nav className="flex flex-wrap gap-2" aria-label="Kategorien">
-          <CategoryChip href="/bit/produkte" label="Alle" active={active === "alle"} count={PRODUCTS.length} />
-          {CATEGORIES.map((c) => (
+          <CategoryChip href="/bit/produkte" label="Alle" active={active === "alle"} count={products.length} />
+          {categories.map((c) => (
             <CategoryChip
               key={c.id}
               href={`/bit/${c.id}`}
               label={c.name}
               active={active === c.id}
-              count={PRODUCTS.filter((p) => p.category === c.id).length}
+              count={products.filter((p) => p.category === c.id).length}
             />
           ))}
         </nav>
@@ -319,7 +328,7 @@ export function Catalog({ active }: { active: CategoryId | "alle" }) {
           <div>
             <div className="mb-5 flex items-center justify-between gap-3">
               <p className="text-sm text-slate-600">
-                <span className="font-semibold text-slate-900">{products.length}</span> Artikel
+                <span className="font-semibold text-slate-900">{filtered.length}</span> Artikel
               </p>
               {facets.any && (
                 <button
@@ -333,9 +342,9 @@ export function Catalog({ active }: { active: CategoryId | "alle" }) {
               )}
             </div>
 
-            {products.length > 0 ? (
+            {filtered.length > 0 ? (
               <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                {products.map((p) => (
+                {filtered.map((p) => (
                   <ProductCard key={p.slug} product={p} />
                 ))}
               </div>

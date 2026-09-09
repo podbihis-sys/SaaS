@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
+  Car,
   GraduationCap,
   Heart,
   Leaf,
@@ -8,7 +9,9 @@ import {
   Package,
   Recycle,
   ShieldCheck,
+  Sun,
   Timer,
+  Zap,
 } from "lucide-react";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
@@ -26,6 +29,22 @@ export const metadata: Metadata = {
 };
 
 const PILLARS = [
+  // Energie & Standort – Punkte laut Kundenvorgabe (09/2026).
+  {
+    icon: Zap,
+    title: "Wir setzen auf Ökostrom",
+    text: "Verwaltung, Lager und Konfektion arbeiten am Standort Swisttal-Heimerzheim mit Strom aus erneuerbaren Energien.",
+  },
+  {
+    icon: Sun,
+    title: "Eigene Photovoltaik-Anlage",
+    text: "Die PV-Anlage auf unserem Firmendach erzeugt einen großen Teil unseres Strombedarfs selbst – die BIT ist damit weitgehend energieautark.",
+  },
+  {
+    icon: Car,
+    title: "Elektrischer Fuhrpark",
+    text: "Unser Fuhrpark fährt elektrisch und lädt direkt am Standort – mit Sonnenstrom vom eigenen Dach.",
+  },
   {
     icon: Timer,
     title: "Langlebige Produkte",

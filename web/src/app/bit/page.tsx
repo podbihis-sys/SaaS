@@ -13,7 +13,8 @@ import {
   ShieldCheck,
   Truck,
 } from "lucide-react";
-import { CATEGORIES, CATEGORY_IMAGE, COMPANY, INDUSTRIES, PRODUCTS, industryHref } from "./_data/catalog";
+import { COMPANY, INDUSTRIES, industryHref } from "./_data/catalog";
+import { getCatalog } from "./_data/products-server";
 import { c } from "./_data/content";
 import { getContent } from "./_data/content-server";
 import { getCmsNews } from "./_data/news-server";
@@ -36,13 +37,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/bit" },
 };
 
-// Hero-Diashow: ein Bild je Produktkategorie, jeweils klickbar zur Kategorie.
-const HERO_SLIDES: HeroSlide[] = CATEGORIES.map((cat) => ({
-  src: CATEGORY_IMAGE[cat.id],
-  alt: cat.name,
-  href: `/bit/${cat.id}`,
-  label: cat.name,
-})).filter((s) => Boolean(s.src));
+
 
 const HERO_TRUST = [
   { icon: Headset, title: "Technische Beratung", text: "Persönlich, kompetent und lösungsorientiert." },
@@ -72,15 +67,22 @@ const ADVANTAGES = [
 ];
 
 export default async function BitHome() {
-  const [content, news] = await Promise.all([getContent(), getCmsNews()]);
+  const [content, news, catalog] = await Promise.all([getContent(), getCmsNews(), getCatalog()]);
   const latestNews = news.slice(0, 3);
-  const featured = PRODUCTS.filter((p) =>
+  const { categories, products, categoryImage } = catalog;
+  const featured = products.filter((p) =>
     [
       "schrumpfschlauch-mit-kleber-bpdw-100",
       "geflechtschlauch-bis-ge-pp",
       "kabelbinder-uv-bestaendig",
     ].includes(p.slug),
   );
+
+  // Hero-Diashow: ein Bild je Produktkategorie, jeweils klickbar zur Kategorie.
+  const HERO_SLIDES: HeroSlide[] = categories.flatMap((cat) => {
+    const src = categoryImage[cat.id];
+    return src ? [{ src, alt: cat.name, href: `/bit/${cat.id}`, label: cat.name }] : [];
+  });
 
   return (
     <>
@@ -160,8 +162,8 @@ export default async function BitHome() {
         <nav className="relative border-t border-slate-200 py-4" aria-label="Kategorien im Überblick">
           <div className="bit-marquee">
             <div className="bit-marquee__track text-sm font-medium uppercase tracking-[0.18em] text-slate-500">
-              {[...CATEGORIES, ...CATEGORIES].map((c, i) => {
-                const duplicate = i >= CATEGORIES.length;
+              {[...categories, ...categories].map((c, i) => {
+                const duplicate = i >= categories.length;
                 return (
                   <Link
                     key={i}
@@ -206,7 +208,7 @@ export default async function BitHome() {
           </h2>
         </Reveal>
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {CATEGORIES.map((cat, i) => (
+          {categories.map((cat, i) => (
             <Reveal key={cat.id} delay={i * 70} className="h-full">
               <Link
                 href={`/bit/${cat.id}`}
