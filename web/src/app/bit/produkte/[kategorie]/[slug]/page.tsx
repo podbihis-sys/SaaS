@@ -81,6 +81,8 @@ export default async function ProductDetail({
   const materialLink = materialTaxa().find((t) => t.products.some((p) => p.slug === product.slug));
   const rolls = getRolls(product.slug);
   const packs = !rolls ? getPacks(product.slug) : undefined;
+  // Längenware: alle Größen werden als feste Länge (1,22 m) geliefert.
+  const laengenware = rolls?.every((r) => r.vpe.includes("1,22")) ?? false;
 
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
   const imageUrl = product.image?.startsWith("/") ? `${base}${product.image}` : product.image;
@@ -337,8 +339,9 @@ export default async function ProductDetail({
             <div className="border-b border-slate-200 bg-slate-50 px-6 py-4">
               <h2 className="text-lg font-semibold text-slate-900">Lieferform & Verpackung</h2>
               <p className="mt-1 text-sm text-slate-600">
-                Lieferung in ganzen Rollen. Die Meterzahl je Rolle (VPE) hängt vom Durchmesser ab –
-                je kleiner der Durchmesser, desto mehr Meter pro Rolle.
+                {laengenware
+                  ? "Lieferung als Längenware: Jede Größe wird in Längen á 1,22 m geliefert."
+                  : "Lieferung in ganzen Rollen. Die Meterzahl je Rolle (VPE) hängt vom Durchmesser ab – je kleiner der Durchmesser, desto mehr Meter pro Rolle."}
               </p>
             </div>
             <div className="overflow-x-auto">
@@ -348,7 +351,7 @@ export default async function ProductDetail({
                     <th className="px-6 py-3 font-medium">Ø vor Schrumpfung</th>
                     <th className="px-3 py-3 font-medium">Ø nach Schrumpfung</th>
                     <th className="px-3 py-3 font-medium">Wandstärke</th>
-                    <th className="px-6 py-3 text-right font-medium">VPE (m / Rolle)</th>
+                    <th className="px-6 py-3 text-right font-medium">{laengenware ? "VPE (Länge)" : "VPE (m / Rolle)"}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -362,7 +365,7 @@ export default async function ProductDetail({
                         {r.wall != null ? `${formatMm(r.wall)} mm` : "–"}
                       </td>
                       <td className="px-6 py-3 text-right font-semibold text-slate-900">
-                        {r.metersPerRoll} m
+                        {r.vpe}
                       </td>
                     </tr>
                   ))}
