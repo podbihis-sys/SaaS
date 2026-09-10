@@ -11,9 +11,7 @@ import {
   HeartPulse,
   Laptop,
   Lightbulb,
-  Mail,
   PartyPopper,
-  Phone,
   PiggyBank,
   Trophy,
   Users,
@@ -159,35 +157,6 @@ export default async function KarrierePage() {
           Sie finden sich in einem dieser Profile wieder? Oder sehen hier den Job, den Sie
           anstreben? Dann freuen wir uns jetzt schon darauf, Sie persönlich kennen zu lernen.
         </p>
-
-        {/* Bewerbung */}
-        <div className="mt-10 max-w-3xl rounded-3xl bg-[#0f2742] px-8 py-10">
-          <h2 className="text-xl font-bold text-white sm:text-2xl">Kontaktieren Sie uns</h2>
-          <p className="mt-3 leading-relaxed text-slate-300">
-            Kontaktieren Sie uns unter 02254 – 96 10 31 oder senden Sie uns Ihre Bewerbung an
-            s.widera@bit-gmbh.de – Ihr Ansprechpartner ist Herr Simon Widera.
-          </p>
-          <ul className="mt-5 space-y-2 text-sm text-slate-300">
-            <li className="flex items-center gap-2">
-              <Phone className="h-4 w-4 text-[#38bdf8]" aria-hidden="true" />
-              <a href="tel:+4922549610-31" className="hover:text-white">
-                02254 – 96 10 31
-              </a>
-            </li>
-            <li className="flex items-center gap-2">
-              <Mail className="h-4 w-4 text-[#38bdf8]" aria-hidden="true" />
-              <a href="mailto:s.widera@bit-gmbh.de" className="hover:text-white">
-                s.widera@bit-gmbh.de
-              </a>
-            </li>
-          </ul>
-          <a
-            href={`mailto:s.widera@bit-gmbh.de?subject=${encodeURIComponent("Bewerbung bei der BIT")}`}
-            className="mt-6 inline-flex rounded-xl bg-[#38bdf8] px-6 py-3.5 text-sm font-semibold text-slate-900 hover:bg-[#0ea5e9]"
-          >
-            Jetzt bewerben
-          </a>
-        </div>
       </section>
 
       {/* Wer sind wir? + Benefits */}
