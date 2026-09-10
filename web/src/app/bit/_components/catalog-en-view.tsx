@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CATEGORIES, PRODUCTS, type CategoryId } from "../_data/catalog";
 import { EN_CATEGORY_LABELS, EN_PRODUCTS } from "../_data/catalog-en";
-import { ProductCard } from "./product-card";
+import { CatalogEnResults } from "./catalog-en-results";
 
 /**
  * Englische Katalogansicht – gleiches Design wie die deutsche Produktübersicht
@@ -42,6 +42,13 @@ export function CatalogEnView({ active }: { active: CategoryId | "alle" }) {
   const category = active === "alle" ? undefined : CATEGORIES.find((c) => c.id === active);
   const filtered =
     active === "alle" ? PRODUCTS : PRODUCTS.filter((p) => p.category === active);
+  // Nur die englischen Namen der angezeigten Produkte an den Client geben
+  // (das komplette EN-Overlay bleibt serverseitig).
+  const names: Record<string, string> = {};
+  for (const p of filtered) {
+    const n = EN_PRODUCTS[p.slug]?.name;
+    if (n) names[p.slug] = n;
+  }
 
   return (
     <>
@@ -79,18 +86,8 @@ export function CatalogEnView({ active }: { active: CategoryId | "alle" }) {
           ))}
         </nav>
 
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((p) => (
-            <ProductCard
-              key={p.slug}
-              product={p}
-              locale="en"
-              href={`/bit/en/products/${p.category}/${p.slug}`}
-              nameOverride={EN_PRODUCTS[p.slug]?.name}
-              categoryLabel={EN_CATEGORY_LABELS[p.category]}
-            />
-          ))}
-        </div>
+        {/* Suchfeld + Kartenraster (Client) */}
+        <CatalogEnResults active={active} names={names} categoryLabels={EN_CATEGORY_LABELS} />
       </div>
     </>
   );

@@ -95,10 +95,10 @@ export default async function BitHome() {
       </section>
 
       {/* ---------------------------------------------------------- Categories */}
-      <section className="container py-20 sm:py-24">
+      {/* Direkt unter der Laufschrift, ohne großen Abstand (Kundenvorgabe). */}
+      <section className="container pb-20 pt-8 sm:pb-24 sm:pt-10">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-semibold uppercase tracking-wide text-[#1d4ed8]">Sortiment</span>
-          <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             Unsere Produktwelten
           </h2>
         </Reveal>
