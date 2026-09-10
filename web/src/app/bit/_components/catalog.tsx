@@ -169,13 +169,13 @@ export function Catalog({
   return (
     <>
       {/* Page header */}
-      <section className="border-b border-slate-200 bg-slate-50">
+      <section className="border-b border-slate-800 bg-[#0f2742]">
         <div className="container py-14">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">Produkte</p>
-          <h1 className="mt-2 text-4xl font-bold tracking-tight text-slate-900">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Produkte</p>
+          <h1 className="mt-2 text-4xl font-bold tracking-tight text-white">
             {category ? category.name : "Schläuche, Wellrohre & Befestigung"}
           </h1>
-          <p className="mt-3 max-w-2xl text-slate-600">
+          <p className="mt-3 max-w-2xl text-slate-300">
             {category
               ? category.description
               : "Über 1.000 Standardartikel aus Schrumpf-, Isolier- und Geflechtschlauchtechnik. Wählen Sie eine Kategorie, filtern Sie nach technischen Eigenschaften und legen Sie Artikel in der gewünschten Größe in den Warenkorb."}

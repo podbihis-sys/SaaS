@@ -30,29 +30,29 @@ const EN_CATEGORY: Record<string, string> = {
 export default function EnglishHome() {
   return (
     <>
-      <section className="border-b border-slate-200 bg-gradient-to-b from-white to-slate-50">
+      <section className="border-b border-slate-800 bg-[#0f2742]">
         <div className="container py-14">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">
             {COMPANY.legalName} – business customers only
           </p>
-          <h1 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          <h1 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Heat-shrink tubing, insulation sleeving &amp; cable protection from a single source
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-300">
             Since {COMPANY.foundedYear} we have been supplying automotive, electronics, machine
             building and medical technology with more than 1,000 standard articles – plus customised
             cutting and printing. Standard articles are usually delivered within 24 hours.
           </p>
-          <p className="mt-4 max-w-2xl text-sm text-slate-500">
+          <p className="mt-4 max-w-2xl text-sm text-slate-400">
             Detailed product pages are currently available in German. Our team will be happy to
             assist you in English – just give us a call or send an e-mail.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/bit/produkte" className="bit-btn bit-btn-dark">
+            <Link href="/bit/produkte" className="bit-btn bit-btn-primary">
               <span>Browse products</span>
               <ArrowRight className="bit-arrow h-4 w-4" />
             </Link>
-            <a href={`mailto:${COMPANY.email}`} className="bit-btn bit-btn-outline">
+            <a href={`mailto:${COMPANY.email}`} className="bit-btn bit-btn-ghost">
               <span>Request a quote</span>
             </a>
           </div>

@@ -125,13 +125,13 @@ export default async function BranchenPage() {
       <BreadcrumbLd items={[{ name: "Home", path: "/bit" }, { name: "Branchen", path: "/bit/branchen" }]} />
       {/* ----------------------------------------------------------------- Hero */}
       {/* Heller Hero – einheitlich mit den übrigen Seiten (Kundenvorgabe). */}
-      <section className="border-b border-slate-200 bg-slate-50">
+      <section className="border-b border-slate-800 bg-[#0f2742]">
         <div className="container py-14">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">Branchen</p>
-          <h1 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Branchen</p>
+          <h1 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
             {c(content, "branchen.hero.title", "Branchen, die auf BIT vertrauen")}
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-300">
             {c(
               content,
               "branchen.hero.intro",

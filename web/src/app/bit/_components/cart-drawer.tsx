@@ -160,7 +160,11 @@ export function CartDrawer() {
                     </div>
                     <span className="text-right text-xs text-slate-500">
                       {item.metersPerRoll
-                        ? `${item.quantity === 1 ? "Rolle" : "Rollen"} · ${item.quantity * item.metersPerRoll} m`
+                        ? `${
+                            item.unit === "Länge" || item.metersPerRoll === 1.22
+                              ? item.quantity === 1 ? "Länge" : "Längen"
+                              : item.quantity === 1 ? "Rolle" : "Rollen"
+                          } · ${(item.quantity * item.metersPerRoll).toLocaleString("de-DE", { maximumFractionDigits: 2 })} m`
                         : item.unitsPerPack
                           ? `${item.quantity === 1 ? "Gebinde" : "Gebinde"} · ${item.quantity * item.unitsPerPack} Stück`
                           : item.unit}

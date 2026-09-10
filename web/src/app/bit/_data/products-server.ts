@@ -38,6 +38,7 @@ interface ProductRow {
   material: string | null;
   temperature: string | null;
   unit: string;
+  vpe_type: string | null;
   sizes: string[];
   colors: string[];
   features: string[];
@@ -77,6 +78,9 @@ function mapProduct(row: ProductRow): Product {
     imageAlt: row.image_alt ?? row.name,
     sizes: row.sizes.length ? row.sizes : ["Standardausführung"],
     unit: (["Meter", "Stück", "Beutel (100 St.)"].includes(row.unit) ? row.unit : "Stück") as Product["unit"],
+    vpeType: (["rolle", "laenge", "rolle_laenge", "meterware"].includes(row.vpe_type ?? "")
+      ? row.vpe_type
+      : PRODUCTS.find((p) => p.slug === row.slug)?.vpeType) as Product["vpeType"],
     colors: row.colors,
     material: row.material ?? "",
     temperature: row.temperature ?? undefined,
@@ -102,7 +106,7 @@ export async function getCatalog(): Promise<CatalogData> {
       supabase
         .from("bit_products")
         .select(
-          "slug,category_id,code,name,tagline,description,material,temperature,unit,sizes,colors,features,applications,tech,datasheet_url,image_path,image_alt,sort_order",
+          "slug,category_id,code,name,tagline,description,material,temperature,unit,vpe_type,sizes,colors,features,applications,tech,datasheet_url,image_path,image_alt,sort_order",
         )
         .order("sort_order")
         .returns<ProductRow[]>(),

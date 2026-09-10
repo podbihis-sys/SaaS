@@ -29,13 +29,13 @@ export default async function NewsPage() {
     <>
       <BreadcrumbLd items={[{ name: "Home", path: "/bit" }, { name: "News", path: "/bit/news" }]} />
       {/* ----------------------------------------------------------------- Hero */}
-      <section className="border-b border-slate-200 bg-slate-50">
+      <section className="border-b border-slate-800 bg-[#0f2742]">
         <div className="container py-16">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">News</p>
-          <h1 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:whitespace-nowrap lg:text-4xl">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">News</p>
+          <h1 className="mt-3 text-2xl font-bold tracking-tight text-white sm:text-3xl lg:whitespace-nowrap lg:text-4xl">
             {c(content, "news.hero.title", "Erfahren Sie mehr über uns und unsere Produkte")}
           </h1>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
+          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-300">
             {c(
               content,
               "news.hero.intro",

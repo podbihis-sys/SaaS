@@ -81,8 +81,11 @@ export default async function ProductDetail({
   const materialLink = materialTaxa().find((t) => t.products.some((p) => p.slug === product.slug));
   const rolls = getRolls(product.slug);
   const packs = !rolls ? getPacks(product.slug) : undefined;
-  // Längenware: alle Größen werden als feste Länge (1,22 m) geliefert.
-  const laengenware = rolls?.every((r) => r.vpe.includes("1,22")) ?? false;
+  // VPE-Art: im CMS gepflegt; ohne Angabe aus der Größentabelle abgeleitet.
+  const laengenware =
+    product.vpeType === "laenge" ||
+    (!product.vpeType && (rolls?.every((r) => r.vpe.includes("1,22")) ?? false));
+  const auchAlsLaenge = product.vpeType === "rolle_laenge";
 
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
   const imageUrl = product.image?.startsWith("/") ? `${base}${product.image}` : product.image;
@@ -212,11 +215,15 @@ export default async function ProductDetail({
               <div>
                 <dt className="text-slate-500">Bezugseinheit</dt>
                 <dd className="mt-0.5 font-medium text-slate-900">
-                  {rolls
-                    ? "Rolle (nur ganze Rollen)"
-                    : packs
-                      ? "Gebinde (nur ganze Gebinde)"
-                      : product.unit}
+                  {laengenware
+                    ? "Länge (á 1,22 m)"
+                    : rolls
+                      ? auchAlsLaenge
+                        ? "Rolle · auch als 1,22-m-Länge"
+                        : "Rolle (nur ganze Rollen)"
+                      : packs
+                        ? "Gebinde (nur ganze Gebinde)"
+                        : product.unit}
                 </dd>
               </div>
               <div>
@@ -310,7 +317,13 @@ export default async function ProductDetail({
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-sm font-medium text-[#1e4a7a] hover:underline"
                 >
-                  <FileText className="h-4 w-4" /> Produktdatenblatt (PDF)
+                  <span
+                    aria-hidden="true"
+                    className="inline-flex items-center gap-0.5 rounded-md bg-red-600 px-1.5 py-0.5 text-[10px] font-bold uppercase leading-none text-white"
+                  >
+                    <FileText className="h-3 w-3" /> PDF
+                  </span>
+                  Produktdatenblatt
                 </a>
               )}
             </div>
@@ -342,6 +355,8 @@ export default async function ProductDetail({
                 {laengenware
                   ? "Lieferung als Längenware: Jede Größe wird in Längen á 1,22 m geliefert."
                   : "Lieferung in ganzen Rollen. Die Meterzahl je Rolle (VPE) hängt vom Durchmesser ab – je kleiner der Durchmesser, desto mehr Meter pro Rolle."}
+                {auchAlsLaenge &&
+                  " Jede Größe ist ebenfalls als Länge mit 1,22 m erhältlich."}
               </p>
             </div>
             <div className="overflow-x-auto">

@@ -110,22 +110,22 @@ export async function ContentPage({
       </nav>
 
       {/* Kopfbereich */}
-      <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-slate-50 to-white">
+      <section className="relative overflow-hidden border-b border-slate-800 bg-[#0f2742]">
         <div className="bit-hero-glow" aria-hidden="true" />
         <div className="container relative py-14">
           {section && (
-            <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">
+            <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">
               {section.label}
             </p>
           )}
-          <h1 className="mt-2 max-w-4xl text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl">
+          <h1 className="mt-2 max-w-4xl text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
             {page.title}
           </h1>
           {subtitle && (
-            <p className="mt-4 max-w-3xl text-lg font-medium text-[#1d4ed8]">{subtitle}</p>
+            <p className="mt-4 max-w-3xl text-lg font-medium text-[#38bdf8]">{subtitle}</p>
           )}
           {lead && (
-            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-600">{lead}</p>
+            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-300">{lead}</p>
           )}
         </div>
       </section>

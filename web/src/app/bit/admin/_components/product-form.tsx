@@ -48,6 +48,7 @@ export function ProductForm({
       material: "",
       temperature: "",
       unit: "Stück",
+      vpe_type: "auto",
       sizes: [],
       colors: [],
       features: [],
@@ -143,6 +144,19 @@ export function ProductForm({
         </Field>
         <Field label="Einheit">
           <input className={FIELD} value={f.unit} onChange={(e) => set("unit", e.target.value)} />
+        </Field>
+        <Field label="VPE-Art">
+          <select
+            className={FIELD}
+            value={f.vpe_type}
+            onChange={(e) => set("vpe_type", e.target.value as ProductInput["vpe_type"])}
+          >
+            <option value="auto">Automatisch (aus Größentabelle)</option>
+            <option value="rolle">Rollenware (nur ganze Rollen)</option>
+            <option value="laenge">Längenware (á 1,22 m)</option>
+            <option value="rolle_laenge">Rollenware, auch als 1,22-m-Länge</option>
+            <option value="meterware">Meterware</option>
+          </select>
         </Field>
         <Field label="Material">
           <input className={FIELD} value={f.material} onChange={(e) => set("material", e.target.value)} />

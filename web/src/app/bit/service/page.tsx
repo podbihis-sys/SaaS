@@ -93,13 +93,13 @@ export default function ServicePage() {
         ]}
       />
 
-      <section className="border-b border-slate-200 bg-slate-50">
+      <section className="border-b border-slate-800 bg-[#0f2742]">
         <div className="container py-14">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">Die BIT</p>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Die BIT</p>
+          <h1 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Service
           </h1>
-          <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-600">
+          <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-300">
             „Wer aufhört besser zu werden, hat aufgehört gut zu sein.“ Höchste Qualität, kürzeste
             Reaktionszeiten, größte Zuverlässigkeit und ein umfassender Service zeichnen die{" "}
             {COMPANY.legalName} seit fast 30 Jahren aus.

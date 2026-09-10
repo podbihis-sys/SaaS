@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Apple,
+  ArrowRight,
   BadgeEuro,
   Coffee,
   CupSoda,
@@ -20,6 +21,7 @@ import {
 import { COMPANY } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
+import { JOBS, jobShortLabel } from "../_data/jobs";
 import { getCmsJobs } from "../_data/misc-server";
 
 
@@ -33,64 +35,6 @@ export const metadata: Metadata = {
   description:
     "Karriere bei der BIT: Vertrieb, Lagerist und Ausbildung zum Kaufmann/zur Kauffrau für Groß- und Außenhandelsmanagement – beim familiären Spezialisten für Schrumpf- und Isolierschläuche.",
 };
-
-/** Offene Stellen – Fallback, falls das CMS (bit_jobs) nicht erreichbar ist. */
-const JOBS = [
-  {
-    id: "vertrieb",
-    title: "Verstärkung im Bereich Vertrieb*",
-    intro:
-      "Sie haben eine Leidenschaft für Kommunikation? Auf neue Menschen zuzugehen macht Ihnen Spaß? Sie zeichnet Offenheit und Dienstleistungsorientierung aus? Dann sind Sie genau, was wir suchen …",
-    text: [
-      "Bauen Sie Ihren eigenen Arbeitsbereich auf, in dem Sie Bestandskunden und die, die es noch werden wollen, bei der zukünftigen Zusammenarbeit betreuen.",
-      "Greifen Sie unter anderem auf ein Portfolio von über 6000 Kontakten in unserem System zu, welches zu Ihrer freien Verfügung steht.",
-    ],
-    aufgabenTitel: "Ihre zukünftigen Aufgaben könnten darin bestehen,",
-    aufgaben: [
-      "nachhaltige Kundenbeziehungen aufzubauen und zu pflegen",
-      "technische Beratung zu bieten, deren Grundlage Sie zuvor von unseren erfahrenen Verkäufern vermittelt bekommen",
-      "kommunikative Schnittstelle zwischen Ihren Kunden und den Kollegen zu sein, die Ihnen den Rücken freihalten, so dass Sie sich voll auf Ihre Vertriebsaufgaben konzentrieren können",
-    ],
-    schluss:
-      "Ob Berufsstarter, Verkaufs-Profi oder Quereinsteiger – alle Ausgangssituationen bringen neue, positive Einflüsse ins Unternehmen. Wir suchen Persönlichkeiten, die sich über abwechslungsreiche Arbeit in einem klar strukturierten, bunten Team freuen und denen eine sehr gute Arbeitsatmosphäre genauso wichtig ist wie Professionalität und Service gegenüber dem Kunden.",
-  },
-  {
-    id: "lagerist",
-    title: "Lagerist*",
-    intro:
-      "Sie packen gerne mit an, arbeiten sorgfältig und behalten auch bei vielen Aufträgen den Überblick? Dann verstärken Sie unser Lagerteam in Swisttal-Heimerzheim.",
-    text: [
-      "In unserem Lager sorgen Sie dafür, dass über 1.000 Standardartikel zuverlässig ihren Weg zum Kunden finden – in der Regel innerhalb von 24 Stunden.",
-    ],
-    aufgabenTitel: "Ihre Aufgaben:",
-    aufgaben: [
-      "Wareneingang inklusive Kontrolle und Einlagerung",
-      "Kommissionierung, Verpackung und Versand der Kundenaufträge",
-      "Unterstützung der Konfektionierung (Zuschnitt und Verpackungseinheiten)",
-      "Bestandspflege und Mitarbeit bei Inventuren",
-    ],
-    schluss:
-      "Erfahrung im Lager ist von Vorteil, ein Staplerschein wünschenswert – wichtiger sind uns Zuverlässigkeit, Sorgfalt und Teamgeist. Auch motivierte Quereinsteiger sind herzlich willkommen.",
-  },
-  {
-    id: "ausbildung",
-    title: "Ausbildung bei der BIT: Kaufmann/-frau für Groß- und Außenhandelsmanagement",
-    intro:
-      "Du willst nach der Schule richtig durchstarten? Bei uns lernst du den Großhandel von Grund auf – vom Einkauf über Vertrieb und Lagerlogistik bis zum Rechnungswesen.",
-    text: [
-      "Als Ausbildungsbetrieb seit der Gründung begleiten wir dich durch alle Abteilungen: Du übernimmst früh eigene Aufgaben, bekommst feste Ansprechpartner und arbeitest von Anfang an im Tagesgeschäft mit.",
-    ],
-    aufgabenTitel: "Das erwartet dich:",
-    aufgaben: [
-      "Einkauf, Vertrieb, Auftragsbearbeitung und Disposition kennenlernen",
-      "Kundenanfragen, Angebote und Aufträge selbstständig bearbeiten",
-      "Lagerlogistik und Warenwirtschaft in der Praxis erleben",
-      "Rechnungswesen und moderne Warenwirtschafts-IT",
-    ],
-    schluss:
-      "Die Ausbildung dauert in der Regel drei Jahre und findet im Wechsel mit der Berufsschule statt. Bei guter Leistung stehen die Chancen auf Übernahme sehr gut.",
-  },
-];
 
 /** Benefits – Wortlaut laut Kundenvorgabe, ergänzt um bestehende Punkte. */
 const BENEFITS = [
@@ -155,71 +99,59 @@ export default async function KarrierePage() {
   const jobs = await getCmsJobs(JOBS);
   return (
     <>
-      {/* Hero */}
-      {/* Heller Hero – einheitlich mit den übrigen Seiten (Kundenvorgabe). */}
-      <section className="border-b border-slate-200 bg-slate-50">
+      {/* Hero – dunkel, einheitlich mit den übrigen Unterseiten (Kundenvorgabe). */}
+      <section className="border-b border-slate-800 bg-[#0f2742]">
         <div className="container py-14">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">Karriere</p>
-          <h1 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Karriere</p>
+          <h1 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
             {c(content, "karriere.title", "Karriere bei der BIT")}
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-300">
             {c(
               content,
               "karriere.intro",
               "Vertrieb, Lager oder Ausbildung: Werden Sie Teil eines familiären Teams beim Spezialisten für Schrumpf- und Isolierschläuche in Swisttal-Heimerzheim.",
             )}
           </p>
-          {/* Sprungmarken zu den Stellen */}
+          {/* Direkteinstieg zu den Stellen-Unterseiten */}
           <div className="mt-6 flex flex-wrap gap-2">
             {jobs.map((j) => (
-              <a
+              <Link
                 key={j.id}
-                href={`#${j.id}`}
-                className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
+                href={`/bit/karriere/${j.id}`}
+                className="rounded-full border border-slate-600 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 transition-colors hover:border-[#38bdf8] hover:text-[#38bdf8]"
               >
-                {j.id === "ausbildung" ? "Ausbildung" : j.title.replace("Verstärkung im Bereich ", "")}
-              </a>
+                {jobShortLabel(j)}
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Offene Stellen */}
+      {/* Offene Stellen – Übersicht, jede Stelle hat ihre eigene Unterseite */}
       <section className="container py-16">
         <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
           Offene Stellen
         </h2>
-        <div className="mt-8 space-y-8">
+        <div className="mt-8 grid gap-4 lg:grid-cols-3">
           {jobs.map((job) => (
-            <article
+            <Link
               key={job.id}
-              id={job.id}
-              className="max-w-3xl scroll-mt-32 rounded-3xl border border-slate-200 bg-white p-7 sm:p-9"
+              href={`/bit/karriere/${job.id}`}
+              className="group flex flex-col rounded-3xl border border-slate-200 bg-white p-7 transition-colors hover:border-[#1e4a7a]"
             >
-              <h3 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+              <h3 className="text-lg font-bold tracking-tight text-slate-900 group-hover:text-[#1e4a7a]">
                 {job.title}
               </h3>
-              <p className="mt-3 font-medium leading-relaxed text-[#1e4a7a]">{job.intro}</p>
-              {job.text.map((t) => (
-                <p key={t} className="mt-4 leading-relaxed text-slate-700">
-                  {t}
-                </p>
-              ))}
-              <p className="mt-5 font-semibold text-slate-900">{job.aufgabenTitel}</p>
-              <ul className="mt-3 space-y-2.5">
-                {job.aufgaben.map((t) => (
-                  <li key={t} className="flex gap-3 leading-relaxed text-slate-700">
-                    <span
-                      className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#38bdf8]"
-                      aria-hidden="true"
-                    />
-                    {t}
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-5 leading-relaxed text-slate-700">{job.schluss}</p>
-            </article>
+              <p className="mt-3 flex-1 leading-relaxed text-slate-600">{job.intro}</p>
+              <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[#1e4a7a]">
+                Zur Stellenausschreibung
+                <ArrowRight
+                  className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                  aria-hidden="true"
+                />
+              </span>
+            </Link>
           ))}
         </div>
 

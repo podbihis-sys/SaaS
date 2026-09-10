@@ -139,13 +139,13 @@ export default async function FaqPage() {
         }}
       />
 
-      <section className="border-b border-slate-200 bg-slate-50">
+      <section className="border-b border-slate-800 bg-[#0f2742]">
         <div className="container py-14">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">FAQ</p>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">FAQ</p>
+          <h1 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Häufig gestellte Fragen
           </h1>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
+          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-300">
             Antworten rund um Produkte, Konfektionierung, Lieferung, Qualität und Kontakt. Ihre
             Frage ist nicht dabei? Sprechen Sie uns an – wir helfen gerne weiter.
           </p>
@@ -155,7 +155,7 @@ export default async function FaqPage() {
               <a
                 key={g.group}
                 href={`#faq-${i}`}
-                className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
+                className="rounded-full border border-slate-600 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 transition-colors hover:border-[#38bdf8] hover:text-[#38bdf8]"
               >
                 {g.group}
               </a>
