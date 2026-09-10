@@ -136,6 +136,30 @@ async def test_a_server_error_blocks_rather_than_permits() -> None:
     assert "RFC 9309" in verdict.reason
 
 
+async def test_an_outage_does_not_strike_the_office_out_of_the_catalogue(
+    session: AsyncSession, office: Office, service: Service
+) -> None:
+    """A bad gateway stops the scan; it must not disable the office.
+
+    The two "do not fetch" cases pull in opposite directions: a Disallow is a
+    decision by the authority and should stick, while an unreadable file is
+    usually over in minutes. Before this distinction existed, one 502 would
+    have removed the office until somebody re-seeded the catalogue by hand.
+    """
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.path == "/robots.txt":
+            return httpx.Response(502, text="")
+        return httpx.Response(200, text="<html></html>")
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+        result = await scan_pair(session, office, service, client)
+
+    assert result.ok is False
+    assert office.scan_enabled is True
+    assert office.scan_blocked_reason is None
+
+
 async def test_an_unreachable_host_blocks_rather_than_permits() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         raise httpx.ConnectError("no route to host")

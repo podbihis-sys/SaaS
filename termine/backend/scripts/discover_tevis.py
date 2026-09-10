@@ -45,6 +45,12 @@ from app.providers.robots import robots
 #: did. Guessing further would be probing, not discovery.
 EKOM21_LANDINGS: dict[str, tuple[str, str]] = {
     "fra": ("Frankfurt am Main", "Hessen"),
+    # Both came from the cities' own websites, the same way `/fra/` did —
+    # found by the deep crawl, not guessed. Kassel and Offenbach block our
+    # client on their main site, so their entry point had to come from a page
+    # that does answer.
+    "kas": ("Kassel", "Hessen"),
+    "offkul": ("Offenbach am Main", "Hessen"),
 }
 
 _MD_RE = re.compile(r"select2\?.*\bmd=(\d+)", re.I)

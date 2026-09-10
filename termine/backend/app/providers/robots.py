@@ -29,6 +29,24 @@ _UNAVAILABLE_TTL_SECONDS = 15 * 60
 class RobotsVerdict:
     allowed: bool
     reason: str
+    #: Why, in a form code can branch on:
+    #:
+    #: * ``"allowed"``     — a rule permits it, or none applies
+    #: * ``"no_file"``     — the host publishes no robots.txt
+    #: * ``"disallowed"``  — a rule forbids it
+    #: * ``"unavailable"`` — the file could not be read at all
+    #:
+    #: The last two both mean "do not fetch", and they mean opposite things
+    #: about the future: a prohibition is a decision by the authority and
+    #: should stop us permanently, while an unreadable file is usually a
+    #: five-minute outage. Treating them alike would let one bad gateway
+    #: response strike an office out of the catalogue for good.
+    outcome: str = "allowed"
+
+    @property
+    def prohibited(self) -> bool:
+        """True only when the authority actually said no."""
+        return self.outcome == "disallowed"
 
 
 @dataclass(slots=True)
@@ -192,16 +210,18 @@ class RobotsCache:
 
         rules, outcome, _ = cached
         if outcome == "unavailable":
-            return RobotsVerdict(False, "robots.txt nicht lesbar — vorerst gesperrt (RFC 9309)")
+            return RobotsVerdict(
+                False, "robots.txt nicht lesbar — vorerst gesperrt (RFC 9309)", "unavailable"
+            )
         if rules is None:
-            return RobotsVerdict(True, "no robots.txt")
+            return RobotsVerdict(True, "no robots.txt", "no_file")
 
         # The product token, e.g. "TerminRadar" out of "TerminRadar/0.1 (+...)".
         agent = settings.HTTP_USER_AGENT.split("/")[0].strip() or "*"
         path = urlparse(url).path or "/"
         if rules.allowed(agent, path):
-            return RobotsVerdict(True, "allowed by robots.txt")
-        return RobotsVerdict(False, "disallowed by robots.txt")
+            return RobotsVerdict(True, "allowed by robots.txt", "allowed")
+        return RobotsVerdict(False, "disallowed by robots.txt", "disallowed")
 
     def clear(self) -> None:
         """Drop everything cached. Used by tests."""

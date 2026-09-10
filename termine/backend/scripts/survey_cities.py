@@ -144,9 +144,14 @@ VENDOR_SIGNATURES: list[tuple[str, str, bool]] = [
     ("qmatic", r"qmatic", False),
     ("no-q", r"no-q\.info", False),
     ("timify", r"timify", False),
-    ("smartcjm", r"smartcjm|smart-cjm", False),
+    # smartCJM runs both as a hosted service (<city>.saas.smartcjm.com) and on
+    # the city's own host, where nothing in the domain gives it away — only the
+    # URL shape does: /m/<mandant>/extern/calendar/?uid=<guid>. Cologne, Bonn
+    # and Bochum are all this, and were all "unknown" until the shape was added.
+    ("smartcjm", r"smartcjm|smart-cjm|/m/[^/]+/extern/calendar", False),
     ("nolis", r"nolis", False),
     ("tempus", r"tempus-termine\.com", False),
+    ("crossing", r"crossing\.de/\d+/appointment|arasweb\.de/\d+/appointment", False),
     ("dtms", r"dtmsterminweb", False),
     ("meinentermin", r"meinenterminvereinbaren\.de", False),
     ("termin-online-buchen", r"termin-online-buchen\.de", False),

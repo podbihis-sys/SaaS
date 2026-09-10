@@ -3,20 +3,6 @@
  "register_stand": "2026-06-30",
  "portals": [
   {
-   "external_id": "portal-01051",
-   "ags": "01051044",
-   "city": "Dithmarschen",
-   "state": "Schleswig-Holstein",
-   "postal_code": "25746",
-   "name": "Terminvergabe Dithmarschen (Kreisverwaltung)",
-   "authority_type": "sonstiges",
-   "base_url": "https://termine-reservieren.de",
-   "booking_url": "https://termine-reservieren.de/termine/kreis-dithmarschen/",
-   "vendor": "tevis",
-   "robots_allowed": true,
-   "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
-  },
-  {
    "external_id": "portal-01051001",
    "ags": "01051001",
    "city": "Albersdorf",
@@ -157,18 +143,32 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
-   "external_id": "portal-01053083",
-   "ags": "01053083",
-   "city": "Lauenburg/ Elbe",
+   "external_id": "portal-01053034",
+   "ags": "01053034",
+   "city": "Göldenitz",
    "state": "Schleswig-Holstein",
-   "postal_code": "21481",
-   "name": "Terminvergabe Lauenburg/ Elbe",
+   "postal_code": "23919",
+   "name": "Terminvergabe Göldenitz",
    "authority_type": "buergeramt",
-   "base_url": "https://termine-reservieren.de",
-   "booking_url": "https://termine-reservieren.de/termine/lauenburg/",
-   "vendor": "tevis",
-   "robots_allowed": true,
-   "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+   "base_url": "https://terminvereinbarung.berkenthin-amt.de",
+   "booking_url": "https://terminvereinbarung.berkenthin-amt.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-01053094",
+   "ags": "01053094",
+   "city": "Niendorf bei Berkenthin",
+   "state": "Schleswig-Holstein",
+   "postal_code": "23919",
+   "name": "Terminvergabe Niendorf bei Berkenthin",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminvereinbarung.berkenthin-amt.de",
+   "booking_url": "https://terminvereinbarung.berkenthin-amt.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-01053129",
@@ -409,6 +409,20 @@
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-01058012",
+   "ags": "01058012",
+   "city": "Barkelsby",
+   "state": "Schleswig-Holstein",
+   "postal_code": "24360",
+   "name": "Terminvergabe Barkelsby",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.termine-regional.de",
+   "booking_url": "https://www.termine-regional.de",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-01058024",
    "ags": "01058024",
    "city": "Borgstedt",
@@ -421,6 +435,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-01058040",
+   "ags": "01058040",
+   "city": "Damp",
+   "state": "Schleswig-Holstein",
+   "postal_code": "24351",
+   "name": "Terminvergabe Damp",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.termine-regional.de",
+   "booking_url": "https://www.termine-regional.de",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-01058063",
@@ -465,6 +493,20 @@
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-01058104",
+   "ags": "01058104",
+   "city": "Melsdorf",
+   "state": "Schleswig-Holstein",
+   "postal_code": "24109",
+   "name": "Terminvergabe Melsdorf",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.termine-regional.de",
+   "booking_url": "https://www.termine-regional.de",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-01058127",
    "ags": "01058127",
    "city": "Owschlag",
@@ -507,6 +549,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-01058169",
+   "ags": "01058169",
+   "city": "Wasbek",
+   "state": "Schleswig-Holstein",
+   "postal_code": "24647",
+   "name": "Terminvergabe Wasbek",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.neumuenster.de",
+   "booking_url": "https://termin.neumuenster.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-01059008",
    "ags": "01059008",
    "city": "Böklund",
@@ -519,6 +575,20 @@
    "vendor": "cleverq",
    "robots_allowed": false,
    "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
+  },
+  {
+   "external_id": "portal-01059044",
+   "ags": "01059044",
+   "city": "Jübek",
+   "state": "Schleswig-Holstein",
+   "postal_code": "24855",
+   "name": "Terminvergabe Jübek",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.amt-arensharde.de",
+   "booking_url": "https://termine.amt-arensharde.de/770668207/Appointment/Index/1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-01059045",
@@ -547,6 +617,48 @@
    "vendor": "cleverq",
    "robots_allowed": false,
    "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
+  },
+  {
+   "external_id": "portal-01059077",
+   "ags": "01059077",
+   "city": "Schuby",
+   "state": "Schleswig-Holstein",
+   "postal_code": "24850",
+   "name": "Terminvergabe Schuby",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.amt-arensharde.de",
+   "booking_url": "https://termine.amt-arensharde.de/770668207/Appointment/Index/1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-01059079",
+   "ags": "01059079",
+   "city": "Silberstedt",
+   "state": "Schleswig-Holstein",
+   "postal_code": "24887",
+   "name": "Terminvergabe Silberstedt",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.amt-arensharde.de",
+   "booking_url": "https://termine.amt-arensharde.de/770668207/Appointment/Index/1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-01059092",
+   "ags": "01059092",
+   "city": "Treia",
+   "state": "Schleswig-Holstein",
+   "postal_code": "24896",
+   "name": "Terminvergabe Treia",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.amt-arensharde.de",
+   "booking_url": "https://termine.amt-arensharde.de/770668207/Appointment/Index/1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-01060011",
@@ -885,6 +997,20 @@
    "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
   },
   {
+   "external_id": "portal-02000000",
+   "ags": "02000000",
+   "city": "Hamburg",
+   "state": "Hamburg",
+   "postal_code": "20038",
+   "name": "Terminvergabe Hamburg",
+   "authority_type": "standesamt",
+   "base_url": "https://standesamtstermine.hamburg.de",
+   "booking_url": "https://standesamtstermine.hamburg.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-03103000",
    "ags": "03103000",
    "city": "Wolfsburg",
@@ -899,6 +1025,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-03151036",
+   "ags": "03151036",
+   "city": "Wahrenholz",
+   "state": "Niedersachsen",
+   "postal_code": "29399",
+   "name": "Terminvergabe Wahrenholz",
+   "authority_type": "buergeramt",
+   "base_url": "https://apitermin.wesendorf.de",
+   "booking_url": "https://apitermin.wesendorf.de/terminplaner/assistent-stellenauswahl.cfm",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-03153",
    "ags": "03153017",
    "city": "Goslar",
@@ -911,6 +1051,20 @@
    "vendor": "tevis",
    "robots_allowed": false,
    "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
+  },
+  {
+   "external_id": "portal-03153002",
+   "ags": "03153002",
+   "city": "Bad Harzburg",
+   "state": "Niedersachsen",
+   "postal_code": "38667",
+   "name": "Terminvergabe Bad Harzburg",
+   "authority_type": "buergeramt",
+   "base_url": "https://onlinetermine.stadt-bad-harzburg.de",
+   "booking_url": "https://onlinetermine.stadt-bad-harzburg.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-03153008",
@@ -997,6 +1151,20 @@
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-03158",
+   "ags": "03158037",
+   "city": "Wolfenbüttel",
+   "state": "Niedersachsen",
+   "postal_code": "38300",
+   "name": "Terminvergabe Wolfenbüttel (Kreisverwaltung)",
+   "authority_type": "sonstiges",
+   "base_url": "https://termin.wolfenbuettel.de",
+   "booking_url": "https://termin.wolfenbuettel.de/m/331-1/extern/calendar/?uid=251255cd-10cf-4ffd-ad2e-535d817a9b9a",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-03158006",
    "ags": "03158006",
    "city": "Cremlingen",
@@ -1009,6 +1177,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-03158037",
+   "ags": "03158037",
+   "city": "Wolfenbüttel",
+   "state": "Niedersachsen",
+   "postal_code": "38300",
+   "name": "Terminvergabe Wolfenbüttel (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.wolfenbuettel.de",
+   "booking_url": "https://termin.wolfenbuettel.de/m/331-1/extern/calendar/?uid=251255cd-10cf-4ffd-ad2e-535d817a9b9a",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-03159",
@@ -1065,6 +1247,20 @@
    "vendor": "nolis",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für nolis: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-03241001",
+   "ags": "03241001",
+   "city": "Hannover",
+   "state": "Niedersachsen",
+   "postal_code": "30159",
+   "name": "Terminvergabe Hannover",
+   "authority_type": "buergeramt",
+   "base_url": "http://termin.hannover-stadt.de",
+   "booking_url": "http://termin.hannover-stadt.de/buergeramt",
+   "vendor": "tevis",
+   "robots_allowed": true,
+   "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
    "external_id": "portal-03241004",
@@ -1627,6 +1823,20 @@
    "scan_blocked_reason": "Kein Adapter für nolis: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-03257031",
+   "ags": "03257031",
+   "city": "Rinteln",
+   "state": "Niedersachsen",
+   "postal_code": "31737",
+   "name": "Terminvergabe Rinteln",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminvergabe.rinteln.de",
+   "booking_url": "https://terminvergabe.rinteln.de",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-03257034",
    "ags": "03257034",
    "city": "Seggebruch",
@@ -1765,6 +1975,20 @@
    "vendor": "timify",
    "robots_allowed": false,
    "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
+  },
+  {
+   "external_id": "portal-03353",
+   "ags": "03353040",
+   "city": "Harburg",
+   "state": "Niedersachsen",
+   "postal_code": "21423",
+   "name": "Terminvergabe Harburg (Kreisverwaltung)",
+   "authority_type": "sonstiges",
+   "base_url": "https://termin.landkreis-harburg.de",
+   "booking_url": "https://termin.landkreis-harburg.de",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-03353005",
@@ -1949,6 +2173,20 @@
    "scan_blocked_reason": "Kein Adapter für nolis: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-03357",
+   "ags": "03357039",
+   "city": "Rotenburg (Wümme)",
+   "state": "Niedersachsen",
+   "postal_code": "27356",
+   "name": "Terminvergabe Rotenburg (Wümme) (Kreisverwaltung)",
+   "authority_type": "sonstiges",
+   "base_url": "https://termin.rotenburg.de",
+   "booking_url": "https://termin.rotenburg.de/Online-Terminvergabe/book-appointment",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-03357006",
    "ags": "03357006",
    "city": "Bothel",
@@ -1989,6 +2227,34 @@
    "vendor": "nolis",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für nolis: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-03357039",
+   "ags": "03357039",
+   "city": "Rotenburg (Wümme)",
+   "state": "Niedersachsen",
+   "postal_code": "27356",
+   "name": "Terminvergabe Rotenburg (Wümme) (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.rotenburg.de",
+   "booking_url": "https://termin.rotenburg.de/Online-Terminvergabe/book-appointment",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-03357041",
+   "ags": "03357041",
+   "city": "Scheeßel",
+   "state": "Niedersachsen",
+   "postal_code": "27383",
+   "name": "Terminvergabe Scheeßel",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.scheessel.de",
+   "booking_url": "https://termin.scheessel.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-03357057",
@@ -2313,6 +2579,20 @@
    "scan_blocked_reason": "Kein Adapter für nolis: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-03453006",
+   "ags": "03453006",
+   "city": "Essen (Oldenburg)",
+   "state": "Niedersachsen",
+   "postal_code": "49632",
+   "name": "Terminvergabe Essen (Oldenburg)",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.essen.de",
+   "booking_url": "https://termine.essen.de/?link=b8b2",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-03453008",
    "ags": "03453008",
    "city": "Garrel",
@@ -2425,6 +2705,20 @@
    "scan_blocked_reason": "Kein Adapter für nolis: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-03454041",
+   "ags": "03454041",
+   "city": "Papenburg",
+   "state": "Niedersachsen",
+   "postal_code": "26871",
+   "name": "Terminvergabe Papenburg",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.papenburg.de",
+   "booking_url": "https://termin.papenburg.de/m/stadt-papenburg/extern/calendar/?uid=cd77e3a7-32ef-488a-b8c0-48fdbbc7f2e3",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-03454046",
    "ags": "03454046",
    "city": "Schapen",
@@ -2467,6 +2761,34 @@
    "scan_blocked_reason": "Kein Adapter für nolis: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-03457006",
+   "ags": "03457006",
+   "city": "Detern",
+   "state": "Niedersachsen",
+   "postal_code": "26847",
+   "name": "Terminvergabe Detern",
+   "authority_type": "buergeramt",
+   "base_url": "https://buchung.juemme.de",
+   "booking_url": "https://buchung.juemme.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-03457014",
+   "ags": "03457014",
+   "city": "Moormerland",
+   "state": "Niedersachsen",
+   "postal_code": "26802",
+   "name": "Terminvergabe Moormerland",
+   "authority_type": "buergeramt",
+   "base_url": "https://buchung.moormerland-tourismus.de",
+   "booking_url": "https://buchung.moormerland-tourismus.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-03458005",
    "ags": "03458005",
    "city": "Ganderkesee",
@@ -2479,6 +2801,20 @@
    "vendor": "smartcjm",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-03458007",
+   "ags": "03458007",
+   "city": "Großenkneten",
+   "state": "Niedersachsen",
+   "postal_code": "26197",
+   "name": "Terminvergabe Großenkneten",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.crossing.de",
+   "booking_url": "https://termine.crossing.de/4878781/Appointment/Index/1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-03459001",
@@ -2495,6 +2831,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-03459003",
+   "ags": "03459003",
+   "city": "Bad Essen",
+   "state": "Niedersachsen",
+   "postal_code": "49152",
+   "name": "Terminvergabe Bad Essen",
+   "authority_type": "buergeramt",
+   "base_url": "https://api.termin.badessen.de",
+   "booking_url": "https://api.termin.badessen.de/terminplaner/assistent-stellenauswahl.cfm",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-03459008",
    "ags": "03459008",
    "city": "Belm",
@@ -2507,6 +2857,20 @@
    "vendor": "etermin",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-03459013",
+   "ags": "03459013",
+   "city": "Bohmte",
+   "state": "Niedersachsen",
+   "postal_code": "49163",
+   "name": "Terminvergabe Bohmte",
+   "authority_type": "buergeramt",
+   "base_url": "https://api.termin.bohmte.de",
+   "booking_url": "https://api.termin.bohmte.de/terminplaner/assistent-stellenauswahl.cfm",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-03459016",
@@ -2607,6 +2971,20 @@
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-04011000",
+   "ags": "04011000",
+   "city": "Bremen",
+   "state": "Bremen",
+   "postal_code": "28195",
+   "name": "Terminvergabe Bremen",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.bremen.de",
+   "booking_url": "https://termin.bremen.de/termine/select2?md=4&lang=de_DE",
+   "vendor": "tevis",
+   "robots_allowed": false,
+   "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
+  },
+  {
    "external_id": "portal-04012000",
    "ags": "04012000",
    "city": "Bremerhaven",
@@ -2621,18 +2999,46 @@
    "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
   },
   {
-   "external_id": "portal-05154056",
-   "ags": "05154056",
-   "city": "Uedem",
+   "external_id": "portal-05113000",
+   "ags": "05113000",
+   "city": "Essen",
    "state": "Nordrhein-Westfalen",
-   "postal_code": "47589",
-   "name": "Terminvergabe Uedem",
+   "postal_code": "45121",
+   "name": "Terminvergabe Essen",
    "authority_type": "buergeramt",
-   "base_url": "https://tevis.krzn.de",
-   "booking_url": "https://tevis.krzn.de/tevisweb560/",
+   "base_url": "https://service.essen.de",
+   "booking_url": "https://service.essen.de/",
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-05122000",
+   "ags": "05122000",
+   "city": "Solingen",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "42651",
+   "name": "Terminvergabe Solingen",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.solingen.de",
+   "booking_url": "https://termin.solingen.de/select2?md=1",
+   "vendor": "tevis",
+   "robots_allowed": false,
+   "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
+  },
+  {
+   "external_id": "portal-05124000",
+   "ags": "05124000",
+   "city": "Wuppertal",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "42275",
+   "name": "Terminvergabe Wuppertal",
+   "authority_type": "buergeramt",
+   "base_url": "https://tempus-termine.com",
+   "booking_url": "https://tempus-termine.com/termine/index.php?anlagennr=56",
+   "vendor": "tempus",
+   "robots_allowed": false,
+   "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
   },
   {
    "external_id": "portal-05154060",
@@ -2691,6 +3097,20 @@
    "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-05158036",
+   "ags": "05158036",
+   "city": "Wülfrath",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "42489",
+   "name": "Terminvergabe Wülfrath",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.wuelfrath.de",
+   "booking_url": "https://termine.wuelfrath.de/m/buergerservice/extern/calendar/?uid=a33dc123-a730-4dd9-a69c-c86ae01b5505",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-05162004",
    "ags": "05162004",
    "city": "Dormagen",
@@ -2717,6 +3137,34 @@
    "vendor": "etermin",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-05314000",
+   "ags": "05314000",
+   "city": "Bonn",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "53111",
+   "name": "Terminvergabe Bonn",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.bonn.de",
+   "booking_url": "https://termine.bonn.de/m/dlz/extern/calendar/?uid=b91bb67b-15cf-44df-ab0b-96ebe25c1ae3",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-05315000",
+   "ags": "05315000",
+   "city": "Köln",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "50667",
+   "name": "Terminvergabe Köln",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.stadt-koeln.de",
+   "booking_url": "https://termine.stadt-koeln.de/m/kundenzentren/extern/calendar/?uid=b5a5a394-ec33-4130-9af3-490f99517071",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-05334004",
@@ -2887,6 +3335,48 @@
    "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-05366008",
+   "ags": "05366008",
+   "city": "Blankenheim",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "53945",
+   "name": "Terminvergabe Blankenheim",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.cm-terminreservierung.de",
+   "booking_url": "https://www.cm-terminreservierung.de/blankenheim",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-05366016",
+   "ags": "05366016",
+   "city": "Euskirchen",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "53879",
+   "name": "Terminvergabe Euskirchen (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.euskirchen.de",
+   "booking_url": "https://termine.euskirchen.de//m/Buergerbuero/extern/calendar/?uid=a227006c-4591-4065-a9ce-a2686a85eb06",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-05366032",
+   "ags": "05366032",
+   "city": "Nettersheim",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "53947",
+   "name": "Terminvergabe Nettersheim",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/nettersheim?calendarId=167",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-05366044",
    "ags": "05366044",
    "city": "Zülpich",
@@ -2913,6 +3403,20 @@
    "vendor": "smartcjm",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-05370012",
+   "ags": "05370012",
+   "city": "Geilenkirchen",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "52511",
+   "name": "Terminvergabe Geilenkirchen",
+   "authority_type": "buergeramt",
+   "base_url": "https://staedteterminal.de",
+   "booking_url": "https://staedteterminal.de/geilenkirchen",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-05370016",
@@ -2943,6 +3447,20 @@
    "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-05370028",
+   "ags": "05370028",
+   "city": "Übach-Palenberg",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "52531",
+   "name": "Terminvergabe Übach-Palenberg",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.uebach-palenberg.de",
+   "booking_url": "https://termine.uebach-palenberg.de/999229282/Appointment/Index/1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-05370036",
    "ags": "05370036",
    "city": "Wassenberg",
@@ -2971,6 +3489,20 @@
    "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-05374020",
+   "ags": "05374020",
+   "city": "Lindlar",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "51789",
+   "name": "Terminvergabe Lindlar",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.lindlar.de",
+   "booking_url": "https://termine.lindlar.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-05374024",
    "ags": "05374024",
    "city": "Marienheide",
@@ -2983,6 +3515,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-05374036",
+   "ags": "05374036",
+   "city": "Radevormwald",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "42477",
+   "name": "Terminvergabe Radevormwald",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.radevormwald.de",
+   "booking_url": "https://termine.radevormwald.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-05374048",
@@ -3111,6 +3657,20 @@
    "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-05382020",
+   "ags": "05382020",
+   "city": "Hennef (Sieg)",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "53773",
+   "name": "Terminvergabe Hennef (Sieg)",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.hennef.de",
+   "booking_url": "https://termine.hennef.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-05382028",
    "ags": "05382028",
    "city": "Lohmar",
@@ -3125,6 +3685,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-05382032",
+   "ags": "05382032",
+   "city": "Meckenheim",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "53340",
+   "name": "Terminvergabe Meckenheim",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.meckenheim.de",
+   "booking_url": "https://termine.meckenheim.de/?rs",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-05382036",
    "ags": "05382036",
    "city": "Much",
@@ -3137,6 +3711,20 @@
    "vendor": "etermin",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-05382052",
+   "ags": "05382052",
+   "city": "Ruppichteroth",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "53809",
+   "name": "Terminvergabe Ruppichteroth",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.ruppichteroth.de",
+   "booking_url": "https://termine.ruppichteroth.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-05382068",
@@ -3277,6 +3865,20 @@
    "vendor": "nolis",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für nolis: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-05554060",
+   "ags": "05554060",
+   "city": "Südlohn",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "46354",
+   "name": "Terminvergabe Südlohn",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.suedlohn.de",
+   "booking_url": "https://termine.suedlohn.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-05558",
@@ -3461,6 +4063,20 @@
    "scan_blocked_reason": "Kein Adapter für nolis: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-05566076",
+   "ags": "05566076",
+   "city": "Rheine",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "48431",
+   "name": "Terminvergabe Rheine",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.rheine.de",
+   "booking_url": "https://termine.rheine.de/m/buergerbuero/extern/calendar/?uid=31154d45-9b11-4d24-aadf-e4663a35a0fb&wsid=15c48a43-21a8-42b0-b196-cf11e2f881e8&lang=de",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-05566080",
    "ags": "05566080",
    "city": "Saerbeck",
@@ -3473,6 +4089,20 @@
    "vendor": "etermin",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-05566092",
+   "ags": "05566092",
+   "city": "Westerkappeln",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "49492",
+   "name": "Terminvergabe Westerkappeln",
+   "authority_type": "buergeramt",
+   "base_url": "https://api.termin.gemeinde-westerkappeln.de",
+   "booking_url": "https://api.termin.gemeinde-westerkappeln.de/terminplaner/assistent-dienstleistungswahl.cfm?stelle=27",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-05570",
@@ -3699,6 +4329,20 @@
    "scan_blocked_reason": "Kein Adapter für nolis: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-05766",
+   "ags": "05766020",
+   "city": "Lippe",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "32756",
+   "name": "Terminvergabe Lippe (Kreisverwaltung)",
+   "authority_type": "sonstiges",
+   "base_url": "https://termine.kreislippe.de",
+   "booking_url": "https://termine.kreislippe.de/m/kreis-lippe/extern/calendar/?uid=54ffe7d0-4c9b-4e84-abe5-0ca713843713",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-05766012",
    "ags": "05766012",
    "city": "Barntrup",
@@ -3755,32 +4399,18 @@
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
-   "external_id": "portal-05770024",
-   "ags": "05770024",
-   "city": "Minden",
+   "external_id": "portal-05911000",
+   "ags": "05911000",
+   "city": "Bochum",
    "state": "Nordrhein-Westfalen",
-   "postal_code": "32423",
-   "name": "Terminvergabe Minden",
+   "postal_code": "44787",
+   "name": "Terminvergabe Bochum",
    "authority_type": "buergeramt",
-   "base_url": "https://termine-reservieren.de",
-   "booking_url": "https://termine-reservieren.de/termine/minden/",
-   "vendor": "tevis",
-   "robots_allowed": true,
-   "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
-  },
-  {
-   "external_id": "portal-05774",
-   "ags": "05774032",
-   "city": "Paderborn",
-   "state": "Nordrhein-Westfalen",
-   "postal_code": "33104",
-   "name": "Terminvergabe Paderborn (Kreisverwaltung)",
-   "authority_type": "sonstiges",
-   "base_url": "https://cqm.cleverq.de",
-   "booking_url": "https://cqm.cleverq.de/public/sites/184/appointments/index.html?lang=de",
-   "vendor": "cleverq",
-   "robots_allowed": false,
-   "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
+   "base_url": "https://termine.bochum.de",
+   "booking_url": "https://termine.bochum.de/m/buergerbuero/extern/calendar/?uid=eab3c2ce-bd9c-4c81-8dab-663aebdc0ce3",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-05954004",
@@ -3895,6 +4525,20 @@
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-05962008",
+   "ags": "05962008",
+   "city": "Balve",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "58802",
+   "name": "Terminvergabe Balve",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/balve?calendarId=171",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-05962012",
    "ags": "05962012",
    "city": "Halver",
@@ -3907,20 +4551,6 @@
    "vendor": "meinentermin",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für meinentermin: Termine können hier nur direkt beim Amt gebucht werden."
-  },
-  {
-   "external_id": "portal-05962016",
-   "ags": "05962016",
-   "city": "Hemer",
-   "state": "Nordrhein-Westfalen",
-   "postal_code": "58675",
-   "name": "Terminvergabe Hemer",
-   "authority_type": "buergeramt",
-   "base_url": "https://termine-reservieren.de",
-   "booking_url": "https://termine-reservieren.de/termine/hemer/",
-   "vendor": "tevis",
-   "robots_allowed": true,
-   "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
    "external_id": "portal-05962020",
@@ -3949,6 +4579,20 @@
    "vendor": "meinentermin",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für meinentermin: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-05962044",
+   "ags": "05962044",
+   "city": "Nachrodt-Wiblingwerde",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "58769",
+   "name": "Terminvergabe Nachrodt-Wiblingwerde",
+   "authority_type": "buergeramt",
+   "base_url": "https://api.termin.nachrodt-wiblingwerde.de",
+   "booking_url": "https://api.termin.nachrodt-wiblingwerde.de/terminplaner/assistent-dienstleistungswahl.cfm?stelle=1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-05962048",
@@ -4007,6 +4651,20 @@
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-05966012",
+   "ags": "05966012",
+   "city": "Finnentrop",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "57413",
+   "name": "Terminvergabe Finnentrop",
+   "authority_type": "buergeramt",
+   "base_url": "https://finnentrop.abfuhrtermine.info",
+   "booking_url": "https://finnentrop.abfuhrtermine.info/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-05966016",
    "ags": "05966016",
    "city": "Kirchhundem",
@@ -4049,6 +4707,20 @@
    "scan_blocked_reason": "Kein Adapter für meinentermin: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-05970012",
+   "ags": "05970012",
+   "city": "Erndtebrück",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "57339",
+   "name": "Terminvergabe Erndtebrück",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine-wittgenstein.de",
+   "booking_url": "https://termine-wittgenstein.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-05970020",
    "ags": "05970020",
    "city": "Hilchenbach",
@@ -4061,6 +4733,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-05970036",
+   "ags": "05970036",
+   "city": "Neunkirchen",
+   "state": "Nordrhein-Westfalen",
+   "postal_code": "57290",
+   "name": "Terminvergabe Neunkirchen (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.crossing.de",
+   "booking_url": "https://termine.crossing.de/743986329/Appointment/Index/1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-05974004",
@@ -4259,6 +4945,20 @@
    "scan_blocked_reason": "Kein Adapter für qmatic: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-06431005",
+   "ags": "06431005",
+   "city": "Bürstadt",
+   "state": "Hessen",
+   "postal_code": "68642",
+   "name": "Terminvergabe Bürstadt",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/buerstadt",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-06432001",
    "ags": "06432001",
    "city": "Alsbach-Hähnlein",
@@ -4313,6 +5013,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-06432006",
+   "ags": "06432006",
+   "city": "Erzhausen",
+   "state": "Hessen",
+   "postal_code": "64390",
+   "name": "Terminvergabe Erzhausen",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.terminkalender-erzhausen.de",
+   "booking_url": "https://www.terminkalender-erzhausen.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-06432008",
@@ -4539,20 +5253,6 @@
    "scan_blocked_reason": "Kein Adapter für termin-online-buchen: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
-   "external_id": "portal-06435029",
-   "ags": "06435029",
-   "city": "Wächtersbach",
-   "state": "Hessen",
-   "postal_code": "63607",
-   "name": "Terminvergabe Wächtersbach",
-   "authority_type": "buergeramt",
-   "base_url": "https://termine-reservieren.de",
-   "booking_url": "https://termine-reservieren.de/termine/waechtersbach/",
-   "vendor": "tevis",
-   "robots_allowed": true,
-   "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
-  },
-  {
    "external_id": "portal-06436004",
    "ags": "06436004",
    "city": "Flörsheim am Main",
@@ -4749,6 +5449,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-06440007",
+   "ags": "06440007",
+   "city": "Florstadt",
+   "state": "Hessen",
+   "postal_code": "61197",
+   "name": "Terminvergabe Florstadt",
+   "authority_type": "buergeramt",
+   "base_url": "https://bookings.cloud.microsoft",
+   "booking_url": "https://bookings.cloud.microsoft/book/StadtverwaltungFlorstadt@florstadt.de/?ismsaljsauthenabled",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-06440008",
    "ags": "06440008",
    "city": "Friedberg (Hessen)",
@@ -4775,6 +5489,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-06440019",
+   "ags": "06440019",
+   "city": "Ortenberg",
+   "state": "Hessen",
+   "postal_code": "63683",
+   "name": "Terminvergabe Ortenberg",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminbuchungstool-ortenberg.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-ortenberg.mein-intra.net/booking",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-06531002",
@@ -4831,6 +5559,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-06531008",
+   "ags": "06531008",
+   "city": "Hungen",
+   "state": "Hessen",
+   "postal_code": "35410",
+   "name": "Terminvergabe Hungen",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.arasweb.de",
+   "booking_url": "https://termine.arasweb.de/811925861/Appointment/Index/1/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-06531010",
@@ -4959,6 +5701,20 @@
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-06534",
+   "ags": "06534014",
+   "city": "Marburg-Biedenkopf",
+   "state": "Hessen",
+   "postal_code": "35037",
+   "name": "Terminvergabe Marburg-Biedenkopf (Kreisverwaltung)",
+   "authority_type": "sonstiges",
+   "base_url": "https://termin.marburg-biedenkopf.de",
+   "booking_url": "https://termin.marburg-biedenkopf.de",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-06534012",
    "ags": "06534012",
    "city": "Lahntal",
@@ -4985,6 +5741,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-06535001",
+   "ags": "06535001",
+   "city": "Alsfeld",
+   "state": "Hessen",
+   "postal_code": "36304",
+   "name": "Terminvergabe Alsfeld",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.crossing.de",
+   "booking_url": "https://termine.crossing.de/509076782/Appointment/Index/1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-06535003",
@@ -5043,6 +5813,34 @@
    "scan_blocked_reason": "Kein Adapter für meinentermin: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-06632018",
+   "ags": "06632018",
+   "city": "Rotenburg a. d. Fulda",
+   "state": "Hessen",
+   "postal_code": "36199",
+   "name": "Terminvergabe Rotenburg a. d. Fulda",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.rotenburg.de",
+   "booking_url": "https://termin.rotenburg.de/Online-Terminvergabe/book-appointment",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-06633006",
+   "ags": "06633006",
+   "city": "Bad Emstal",
+   "state": "Hessen",
+   "postal_code": "34308",
+   "name": "Terminvergabe Bad Emstal",
+   "authority_type": "buergeramt",
+   "base_url": "https://onlinetermine.landkreiskassel.de",
+   "booking_url": "https://onlinetermine.landkreiskassel.de/Online-Terminvergabe/book-appointment/init",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-06633020",
    "ags": "06633020",
    "city": "Niestetal",
@@ -5085,18 +5883,18 @@
    "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
-   "external_id": "portal-06634016",
-   "ags": "06634016",
-   "city": "Neuental",
+   "external_id": "portal-06634022",
+   "ags": "06634022",
+   "city": "Schwalmstadt",
    "state": "Hessen",
-   "postal_code": "34599",
-   "name": "Terminvergabe Neuental",
+   "postal_code": "34613",
+   "name": "Terminvergabe Schwalmstadt",
    "authority_type": "buergeramt",
-   "base_url": "https://tevis.ekom21.de",
-   "booking_url": "https://tevis.ekom21.de/5nt/",
-   "vendor": "tevis",
-   "robots_allowed": true,
-   "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+   "base_url": "https://termine.schwalmstadt.de",
+   "booking_url": "https://termine.schwalmstadt.de/index.php/?provider=9&service=14&isEmbedded=1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-06635003",
@@ -5337,6 +6135,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-07132041",
+   "ags": "07132041",
+   "city": "Giershausen",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "57632",
+   "name": "Terminvergabe Giershausen",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.terminplaner-online.de",
+   "booking_url": "https://www.terminplaner-online.de/verbandsgemeinde_altenkirchen-flammersfeld/verbandsgemeinde_altenkirchen-flammersfeld/rathaus_altenkirchen/buergerbuero/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-07132044",
    "ags": "07132044",
    "city": "Hamm (Sieg)",
@@ -5377,6 +6189,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-07132058",
+   "ags": "07132058",
+   "city": "Isert",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "57612",
+   "name": "Terminvergabe Isert",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.terminplaner-online.de",
+   "booking_url": "https://www.terminplaner-online.de/verbandsgemeinde_altenkirchen-flammersfeld/verbandsgemeinde_altenkirchen-flammersfeld/rathaus_altenkirchen/buergerbuero/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-07132063",
@@ -5447,6 +6273,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-07132110",
+   "ags": "07132110",
+   "city": "Volkerzen",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "57612",
+   "name": "Terminvergabe Volkerzen",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.terminplaner-online.de",
+   "booking_url": "https://www.terminplaner-online.de/verbandsgemeinde_altenkirchen-flammersfeld/verbandsgemeinde_altenkirchen-flammersfeld/rathaus_altenkirchen/buergerbuero/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-07132114",
@@ -5645,20 +6485,6 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
-   "external_id": "portal-07137003",
-   "ags": "07137003",
-   "city": "Andernach",
-   "state": "Rheinland-Pfalz",
-   "postal_code": "56626",
-   "name": "Terminvergabe Andernach",
-   "authority_type": "buergeramt",
-   "base_url": "https://termine-reservieren.de",
-   "booking_url": "https://termine-reservieren.de/termine/andernach/",
-   "vendor": "tevis",
-   "robots_allowed": true,
-   "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
-  },
-  {
    "external_id": "portal-07137006",
    "ags": "07137006",
    "city": "Arft",
@@ -5726,6 +6552,20 @@
    "booking_url": "https://stadt-bendorf.saas.smartcjm.com/m/ordnung-soziales/extern/calendar/?uid=f5d7b976-3f94-4e8a-adbc-136104b39ad8&wsid=b5957c43-58c8-4f82-a04c-cf3cbc582fcf&lang=de",
    "vendor": "smartcjm",
    "robots_allowed": true,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-07138045",
+   "ags": "07138045",
+   "city": "Neuwied",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "56564",
+   "name": "Terminvergabe Neuwied (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.neuwied.de",
+   "booking_url": "https://termin.neuwied.de/m/bb/extern/calendar/?uid=e3c64b1e-0629-4681-99dd-2e3c34ec9347",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
    "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
@@ -5827,6 +6667,48 @@
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-07141009",
+   "ags": "07141009",
+   "city": "Berg",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "56357",
+   "name": "Terminvergabe Berg",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.vg-nastaetten.de:444",
+   "booking_url": "https://termin.vg-nastaetten.de:444/m/buergerservice-nastaetten/extern/calendar/?uid=216684b2-79dd-479e-8e63-b40f9cb9df01",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-07141040",
+   "ags": "07141040",
+   "city": "Eschbach",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "56357",
+   "name": "Terminvergabe Eschbach",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.vg-nastaetten.de:444",
+   "booking_url": "https://termin.vg-nastaetten.de:444/m/buergerservice-nastaetten/extern/calendar/?uid=216684b2-79dd-479e-8e63-b40f9cb9df01",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-07141070",
+   "ags": "07141070",
+   "city": "Kehlbach",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "56355",
+   "name": "Terminvergabe Kehlbach",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.vg-nastaetten.de:444",
+   "booking_url": "https://termin.vg-nastaetten.de:444/m/buergerservice-nastaetten/extern/calendar/?uid=216684b2-79dd-479e-8e63-b40f9cb9df01",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-07141130",
    "ags": "07141130",
    "city": "Steinsberg",
@@ -5853,6 +6735,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-07143203",
+   "ags": "07143203",
+   "city": "Arnshöfen",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "56244",
+   "name": "Terminvergabe Arnshöfen",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.terminplaner-online.de",
+   "booking_url": "https://www.terminplaner-online.de/verbandsgemeinde_wallmerod/verbandsgemeinde_wallmerod/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-07143235",
@@ -5951,20 +6847,6 @@
    "vendor": "tevis",
    "robots_allowed": false,
    "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
-  },
-  {
-   "external_id": "portal-07231502",
-   "ags": "07231502",
-   "city": "Morbach",
-   "state": "Rheinland-Pfalz",
-   "postal_code": "54497",
-   "name": "Terminvergabe Morbach",
-   "authority_type": "buergeramt",
-   "base_url": "https://termine-reservieren.de",
-   "booking_url": "https://termine-reservieren.de/termine/gemeinde-morbach/",
-   "vendor": "tevis",
-   "robots_allowed": true,
-   "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
    "external_id": "portal-07232016",
@@ -6219,6 +7101,34 @@
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-07232216",
+   "ags": "07232216",
+   "city": "Dingdorf",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "54614",
+   "name": "Terminvergabe Dingdorf",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.terminland.eu",
+   "booking_url": "https://www.terminland.eu/vg-pruem/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-07232250",
+   "ags": "07232250",
+   "city": "Kleinlangenfeld",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "54597",
+   "name": "Terminvergabe Kleinlangenfeld",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.terminland.eu",
+   "booking_url": "https://www.terminland.eu/vg-pruem/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-07232261",
    "ags": "07232261",
    "city": "Lierfeld",
@@ -6245,6 +7155,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-07232272",
+   "ags": "07232272",
+   "city": "Neuendorf",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "54597",
+   "name": "Terminvergabe Neuendorf",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.terminland.eu",
+   "booking_url": "https://www.terminland.eu/vg-pruem/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-07232279",
@@ -6287,6 +7211,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-07232307",
+   "ags": "07232307",
+   "city": "Seiwerath",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "54597",
+   "name": "Terminvergabe Seiwerath",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.terminland.eu",
+   "booking_url": "https://www.terminland.eu/vg-pruem/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-07232321",
@@ -6345,6 +7283,20 @@
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-07233030",
+   "ags": "07233030",
+   "city": "Hinterweiler",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "54570",
+   "name": "Terminvergabe Hinterweiler",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.booking.com",
+   "booking_url": "https://www.booking.com/hotel/de/haus-schritte.de.html",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-07235022",
    "ags": "07235022",
    "city": "Fell",
@@ -6373,6 +7325,34 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-07313000",
+   "ags": "07313000",
+   "city": "Landau in der Pfalz",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "76829",
+   "name": "Terminvergabe Landau in der Pfalz",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.landau.de",
+   "booking_url": "https://termin.landau.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-07317000",
+   "ags": "07317000",
+   "city": "Pirmasens",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "66953",
+   "name": "Terminvergabe Pirmasens",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminvergabe.stadt-pirmasens.de",
+   "booking_url": "https://terminvergabe.stadt-pirmasens.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-07331014",
    "ags": "07331014",
    "city": "Dintesheim",
@@ -6399,6 +7379,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-07332035",
+   "ags": "07332035",
+   "city": "Meckenheim",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "67149",
+   "name": "Terminvergabe Meckenheim",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.meckenheim.de",
+   "booking_url": "https://termine.meckenheim.de/?rs",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-07333",
@@ -6525,6 +7519,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-07335017",
+   "ags": "07335017",
+   "city": "Katzweiler",
+   "state": "Rheinland-Pfalz",
+   "postal_code": "67734",
+   "name": "Terminvergabe Katzweiler",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine3.crossing.de",
+   "booking_url": "https://termine3.crossing.de/834728941",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-07335040",
@@ -6849,6 +7857,20 @@
    "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-08115050",
+   "ags": "08115050",
+   "city": "Weil der Stadt",
+   "state": "Baden-Württemberg",
+   "postal_code": "71263",
+   "name": "Terminvergabe Weil der Stadt",
+   "authority_type": "buergeramt",
+   "base_url": "https://online-terminvereinbarung.weil-der-stadt.de",
+   "booking_url": "https://online-terminvereinbarung.weil-der-stadt.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-08115054",
    "ags": "08115054",
    "city": "Grafenau",
@@ -6861,6 +7883,48 @@
    "vendor": "tempus",
    "robots_allowed": false,
    "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
+  },
+  {
+   "external_id": "portal-08116",
+   "ags": "08116019",
+   "city": "Esslingen",
+   "state": "Baden-Württemberg",
+   "postal_code": "73728",
+   "name": "Terminvergabe Esslingen (Kreisverwaltung)",
+   "authority_type": "sonstiges",
+   "base_url": "https://termine.lra-es.de",
+   "booking_url": "https://termine.lra-es.de/m/strassenverkehrsamt/extern/calendar/?uid=396fc9d8-b0e0-4138-8ab3-82bad96cdb3e",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08116014",
+   "ags": "08116014",
+   "city": "Deizisau",
+   "state": "Baden-Württemberg",
+   "postal_code": "73779",
+   "name": "Terminvergabe Deizisau",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.lra-es.de",
+   "booking_url": "https://termine.lra-es.de/m/strassenverkehrsamt/extern/calendar/?uid=396fc9d8-b0e0-4138-8ab3-82bad96cdb3e",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08116049",
+   "ags": "08116049",
+   "city": "Nürtingen",
+   "state": "Baden-Württemberg",
+   "postal_code": "72622",
+   "name": "Terminvergabe Nürtingen",
+   "authority_type": "buergeramt",
+   "base_url": "https://bookingkit.com",
+   "booking_url": "https://bookingkit.com/de/datenschutzerklaerung/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08116071",
@@ -6889,6 +7953,20 @@
    "vendor": "etermin",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-08116078",
+   "ags": "08116078",
+   "city": "Leinfelden-Echterdingen",
+   "state": "Baden-Württemberg",
+   "postal_code": "70771",
+   "name": "Terminvergabe Leinfelden-Echterdingen",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.le-extranet.de",
+   "booking_url": "https://termine.le-extranet.de/Online-Terminvergabe/book-appointment",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08116080",
@@ -6933,6 +8011,20 @@
    "scan_blocked_reason": "Kein Adapter für termin-online-buchen: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-08117024",
+   "ags": "08117024",
+   "city": "Geislingen an der Steige",
+   "state": "Baden-Württemberg",
+   "postal_code": "73312",
+   "name": "Terminvergabe Geislingen an der Steige",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/geislingen-an-der-steige?calendarId=57",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-08117055",
    "ags": "08117055",
    "city": "Wangen",
@@ -6945,6 +8037,48 @@
    "vendor": "tempus",
    "robots_allowed": false,
    "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
+  },
+  {
+   "external_id": "portal-08118",
+   "ags": "08118048",
+   "city": "Ludwigsburg",
+   "state": "Baden-Württemberg",
+   "postal_code": "71638",
+   "name": "Terminvergabe Ludwigsburg (Kreisverwaltung)",
+   "authority_type": "sonstiges",
+   "base_url": "http://termine.crossing.de",
+   "booking_url": "http://termine.crossing.de/319833962/Appointment/Index/1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08118003",
+   "ags": "08118003",
+   "city": "Asperg",
+   "state": "Baden-Württemberg",
+   "postal_code": "71679",
+   "name": "Terminvergabe Asperg",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/asperg",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08118006",
+   "ags": "08118006",
+   "city": "Benningen am Neckar",
+   "state": "Baden-Württemberg",
+   "postal_code": "71726",
+   "name": "Terminvergabe Benningen am Neckar",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/benningen?calendarId=218",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08118011",
@@ -7129,6 +8263,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-08118073",
+   "ags": "08118073",
+   "city": "Vaihingen an der Enz",
+   "state": "Baden-Württemberg",
+   "postal_code": "71665",
+   "name": "Terminvergabe Vaihingen an der Enz",
+   "authority_type": "buergeramt",
+   "base_url": "https://vaihingen.terminvereinbarung.eu",
+   "booking_url": "https://vaihingen.terminvereinbarung.eu/Online-Terminvergabe/book-appointment",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-08118080",
    "ags": "08118080",
    "city": "Korntal-Münchingen",
@@ -7141,6 +8289,20 @@
    "vendor": "timify",
    "robots_allowed": false,
    "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
+  },
+  {
+   "external_id": "portal-08118081",
+   "ags": "08118081",
+   "city": "Remseck am Neckar",
+   "state": "Baden-Württemberg",
+   "postal_code": "71686",
+   "name": "Terminvergabe Remseck am Neckar",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.crossing.de",
+   "booking_url": "https://termine.crossing.de/723592356/Appointment/Index/1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08119",
@@ -7197,6 +8359,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08119067",
+   "ags": "08119067",
+   "city": "Schorndorf",
+   "state": "Baden-Württemberg",
+   "postal_code": "73614",
+   "name": "Terminvergabe Schorndorf",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.schorndorf.de",
+   "booking_url": "https://termin.schorndorf.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08119083",
@@ -7267,6 +8443,20 @@
    "vendor": "termin-online-buchen",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für termin-online-buchen: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08125013",
+   "ags": "08125013",
+   "city": "Brackenheim",
+   "state": "Baden-Württemberg",
+   "postal_code": "74336",
+   "name": "Terminvergabe Brackenheim",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.brackenheim.de",
+   "booking_url": "https://termine.brackenheim.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08125021",
@@ -7435,6 +8625,20 @@
    "vendor": "timify",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für timify: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08127046",
+   "ags": "08127046",
+   "city": "Kirchberg an der Jagst",
+   "state": "Baden-Württemberg",
+   "postal_code": "74592",
+   "name": "Terminvergabe Kirchberg an der Jagst",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine-kirchberg-jagst.mein-intra.net",
+   "booking_url": "https://termine-kirchberg-jagst.mein-intra.net/booking",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08128",
@@ -7633,6 +8837,20 @@
    "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-08136087",
+   "ags": "08136087",
+   "city": "Riesbürg",
+   "state": "Baden-Württemberg",
+   "postal_code": "73469",
+   "name": "Terminvergabe Riesbürg",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/riesbuerg?calendarId=122",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-08211000",
    "ags": "08211000",
    "city": "Baden-Baden",
@@ -7645,6 +8863,34 @@
    "vendor": "termin-online-buchen",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für termin-online-buchen: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08212000",
+   "ags": "08212000",
+   "city": "Karlsruhe",
+   "state": "Baden-Württemberg",
+   "postal_code": "76133",
+   "name": "Terminvergabe Karlsruhe (Kreisverwaltung)",
+   "authority_type": "standesamt",
+   "base_url": "https://stadt-karlsruhe.saas.smartcjm.com",
+   "booking_url": "https://stadt-karlsruhe.saas.smartcjm.com/m/stadt-karlsruhe-standesamt/extern/calendar/?uid=6385cdf9-0825-4d94-bff2-d4f1315f05f1&lang=de",
+   "vendor": "smartcjm",
+   "robots_allowed": false,
+   "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
+  },
+  {
+   "external_id": "portal-08215",
+   "ags": "08212000",
+   "city": "Karlsruhe",
+   "state": "Baden-Württemberg",
+   "postal_code": "76133",
+   "name": "Terminvergabe Karlsruhe (Kreisverwaltung)",
+   "authority_type": "sonstiges",
+   "base_url": "https://termine.landkreis-karlsruhe.de",
+   "booking_url": "https://termine.landkreis-karlsruhe.de/m/Zulassung/extern/calendar/?uid=81ebbc74-3681-4900-84e7-457ade4662ec",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08215007",
@@ -7927,6 +9173,34 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-08216024",
+   "ags": "08216024",
+   "city": "Kuppenheim",
+   "state": "Baden-Württemberg",
+   "postal_code": "76456",
+   "name": "Terminvergabe Kuppenheim",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/kuppenheim?calendarId=191",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08216041",
+   "ags": "08216041",
+   "city": "Ottersweier",
+   "state": "Baden-Württemberg",
+   "postal_code": "77833",
+   "name": "Terminvergabe Ottersweier",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/ottersweier?calendarId=2",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-08222000",
    "ags": "08222000",
    "city": "Mannheim",
@@ -8009,6 +9283,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08226031",
+   "ags": "08226031",
+   "city": "Hemsbach",
+   "state": "Baden-Württemberg",
+   "postal_code": "69502",
+   "name": "Terminvergabe Hemsbach",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/hemsbach",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08226032",
@@ -8107,6 +9395,20 @@
    "vendor": "termin-online-buchen",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für termin-online-buchen: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08226068",
+   "ags": "08226068",
+   "city": "Reilingen",
+   "state": "Baden-Württemberg",
+   "postal_code": "68799",
+   "name": "Terminvergabe Reilingen",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/gemeinde-reilingen?calendarId=237",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08226082",
@@ -8221,6 +9523,34 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-08226107",
+   "ags": "08226107",
+   "city": "Hirschberg an der Bergstraße",
+   "state": "Baden-Württemberg",
+   "postal_code": "69493",
+   "name": "Terminvergabe Hirschberg an der Bergstraße",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/hirschberg-bergstrasse-terminreservierung",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08235006",
+   "ags": "08235006",
+   "city": "Altensteig",
+   "state": "Baden-Württemberg",
+   "postal_code": "72213",
+   "name": "Terminvergabe Altensteig",
+   "authority_type": "buergeramt",
+   "base_url": "https://online-terminvereinbarung.altensteig.de",
+   "booking_url": "https://online-terminvereinbarung.altensteig.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-08235007",
    "ags": "08235007",
    "city": "Althengstett",
@@ -8289,6 +9619,34 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-08236028",
+   "ags": "08236028",
+   "city": "Illingen",
+   "state": "Baden-Württemberg",
+   "postal_code": "75428",
+   "name": "Terminvergabe Illingen",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.enzkreis.de",
+   "booking_url": "https://termine.enzkreis.de/m/keep/extern/calendar/?uid=8f856609-8897-4d14-a06f-0e4ed40a178c&wsid=eb172cde-da72-463f-9643-307a488af028&lang=de&set_lang_ui=de&rev=xw2Fq",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08236033",
+   "ags": "08236033",
+   "city": "Knittlingen",
+   "state": "Baden-Württemberg",
+   "postal_code": "75438",
+   "name": "Terminvergabe Knittlingen",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/knittlingen?calendarId=94",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08236040",
@@ -8361,6 +9719,20 @@
    "scan_blocked_reason": "Kein Adapter für termin-online-buchen: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-08237074",
+   "ags": "08237074",
+   "city": "Waldachtal",
+   "state": "Baden-Württemberg",
+   "postal_code": "72178",
+   "name": "Terminvergabe Waldachtal",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/waldachtal?calendarId=68",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-08315006",
    "ags": "08315006",
    "city": "Bad Krozingen",
@@ -8373,6 +9745,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08315014",
+   "ags": "08315014",
+   "city": "Bollschweil",
+   "state": "Baden-Württemberg",
+   "postal_code": "79283",
+   "name": "Terminvergabe Bollschweil",
+   "authority_type": "buergeramt",
+   "base_url": "https://bollschweil-buchungen.de",
+   "booking_url": "https://bollschweil-buchungen.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08315050",
@@ -8473,6 +9859,20 @@
    "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-08316036",
+   "ags": "08316036",
+   "city": "Reute",
+   "state": "Baden-Württemberg",
+   "postal_code": "79276",
+   "name": "Terminvergabe Reute",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/reute?calendarId=183",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-08316038",
    "ags": "08316038",
    "city": "Sasbach am Kaiserstuhl",
@@ -8485,6 +9885,34 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08317026",
+   "ags": "08317026",
+   "city": "Ettenheim",
+   "state": "Baden-Württemberg",
+   "postal_code": "77955",
+   "name": "Terminvergabe Ettenheim",
+   "authority_type": "buergeramt",
+   "base_url": "https://buchung.ettenheim.de",
+   "booking_url": "https://buchung.ettenheim.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08317057",
+   "ags": "08317057",
+   "city": "Kehl",
+   "state": "Baden-Württemberg",
+   "postal_code": "77694",
+   "name": "Terminvergabe Kehl",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.termin.kehl.de",
+   "booking_url": "https://www.termin.kehl.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08317068",
@@ -8585,6 +10013,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-08326003",
+   "ags": "08326003",
+   "city": "Bad Dürrheim",
+   "state": "Baden-Württemberg",
+   "postal_code": "78073",
+   "name": "Terminvergabe Bad Dürrheim",
+   "authority_type": "buergeramt",
+   "base_url": "https://buchung.badduerrheim.de",
+   "booking_url": "https://buchung.badduerrheim.de/s?ctx=pyrGZpRlC5",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-08326012",
    "ags": "08326012",
    "city": "Donaueschingen",
@@ -8627,18 +10069,32 @@
    "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
-   "external_id": "portal-08335063",
-   "ags": "08335063",
-   "city": "Radolfzell am Bodensee",
+   "external_id": "portal-08335",
+   "ags": "08335043",
+   "city": "Konstanz",
    "state": "Baden-Württemberg",
-   "postal_code": "78315",
-   "name": "Terminvergabe Radolfzell am Bodensee",
+   "postal_code": "78462",
+   "name": "Terminvergabe Konstanz (Kreisverwaltung)",
+   "authority_type": "sonstiges",
+   "base_url": "https://termin.buebue.konstanz.digital",
+   "booking_url": "https://termin.buebue.konstanz.digital/m/stadt-konstanz-bb/extern/calendar/?uid=4166bd18-c683-47cf-93a3-559630b93162",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08335043",
+   "ags": "08335043",
+   "city": "Konstanz",
+   "state": "Baden-Württemberg",
+   "postal_code": "78462",
+   "name": "Terminvergabe Konstanz (Kreisverwaltung)",
    "authority_type": "buergeramt",
-   "base_url": "https://termine-reservieren.de",
-   "booking_url": "https://termine-reservieren.de/termine/radolfzell/?rs",
-   "vendor": "tevis",
-   "robots_allowed": true,
-   "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+   "base_url": "https://termin.buebue.konstanz.digital",
+   "booking_url": "https://termin.buebue.konstanz.digital/m/stadt-konstanz-bb/extern/calendar/?uid=4166bd18-c683-47cf-93a3-559630b93162",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08336008",
@@ -8809,6 +10265,34 @@
    "scan_blocked_reason": "Kein Adapter für termin-online-buchen: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-08415059",
+   "ags": "08415059",
+   "city": "Pfullingen",
+   "state": "Baden-Württemberg",
+   "postal_code": "72793",
+   "name": "Terminvergabe Pfullingen",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminvereinbarung.pfullingen.de",
+   "booking_url": "https://terminvereinbarung.pfullingen.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08415061",
+   "ags": "08415061",
+   "city": "Reutlingen",
+   "state": "Baden-Württemberg",
+   "postal_code": "72764",
+   "name": "Terminvergabe Reutlingen (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.crossing.de",
+   "booking_url": "https://termine.crossing.de/672637707/Appointment/Index/1",
+   "vendor": "crossing",
+   "robots_allowed": true,
+   "scan_blocked_reason": "Kein Adapter für crossing: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-08415062",
    "ags": "08415062",
    "city": "Riederich",
@@ -8823,6 +10307,34 @@
    "scan_blocked_reason": "Kein Adapter für termin-online-buchen: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-08416025",
+   "ags": "08416025",
+   "city": "Mössingen",
+   "state": "Baden-Württemberg",
+   "postal_code": "72116",
+   "name": "Terminvergabe Mössingen",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/moessingen?calendarId=195",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08416026",
+   "ags": "08416026",
+   "city": "Nehren",
+   "state": "Baden-Württemberg",
+   "postal_code": "72147",
+   "name": "Terminvergabe Nehren",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/nehren",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-08416036",
    "ags": "08416036",
    "city": "Rottenburg am Neckar",
@@ -8835,6 +10347,20 @@
    "vendor": "tempus",
    "robots_allowed": false,
    "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
+  },
+  {
+   "external_id": "portal-08417008",
+   "ags": "08417008",
+   "city": "Bisingen",
+   "state": "Baden-Württemberg",
+   "postal_code": "72406",
+   "name": "Terminvergabe Bisingen",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminvereinbarung.gemeinde-bisingen.de",
+   "booking_url": "https://terminvereinbarung.gemeinde-bisingen.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08425",
@@ -8879,6 +10405,48 @@
    "scan_blocked_reason": "Kein Adapter für termin-online-buchen: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-08425084",
+   "ags": "08425084",
+   "city": "Nellingen",
+   "state": "Baden-Württemberg",
+   "postal_code": "89191",
+   "name": "Terminvergabe Nellingen",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/nellingen",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08425088",
+   "ags": "08425088",
+   "city": "Oberdischingen",
+   "state": "Baden-Württemberg",
+   "postal_code": "89610",
+   "name": "Terminvergabe Oberdischingen",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/oberdischingen",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08425091",
+   "ags": "08425091",
+   "city": "Oberstadion",
+   "state": "Baden-Württemberg",
+   "postal_code": "89613",
+   "name": "Terminvergabe Oberstadion",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/oberstadion-ferienprogramm",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-08425134",
    "ags": "08425134",
    "city": "Westerheim",
@@ -8891,6 +10459,20 @@
    "vendor": "etermin",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-08425141",
+   "ags": "08425141",
+   "city": "Blaustein",
+   "state": "Baden-Württemberg",
+   "postal_code": "89134",
+   "name": "Terminvergabe Blaustein",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/blaustein?calendarId=86",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08426014",
@@ -8921,6 +10503,90 @@
    "scan_blocked_reason": "Kein Adapter für termin-online-buchen: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-08426097",
+   "ags": "08426097",
+   "city": "Riedlingen",
+   "state": "Baden-Württemberg",
+   "postal_code": "88499",
+   "name": "Terminvergabe Riedlingen",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminvereinbarung.riedlingen.de",
+   "booking_url": "https://terminvereinbarung.riedlingen.de",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08426120",
+   "ags": "08426120",
+   "city": "Ummendorf",
+   "state": "Baden-Württemberg",
+   "postal_code": "88444",
+   "name": "Terminvergabe Ummendorf",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/ummendorf?calendarId=222",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08435",
+   "ags": "08435016",
+   "city": "Bodenseekreis",
+   "state": "Baden-Württemberg",
+   "postal_code": "88045",
+   "name": "Terminvergabe Bodenseekreis (Kreisverwaltung)",
+   "authority_type": "sonstiges",
+   "base_url": "https://onlinetermine.bodenseekreis.de",
+   "booking_url": "https://onlinetermine.bodenseekreis.de/m/glaernischstrasse/extern/calendar/?uid=31579113-41b5-4d7a-9bc4-28314136a661",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08435005",
+   "ags": "08435005",
+   "city": "Bermatingen",
+   "state": "Baden-Württemberg",
+   "postal_code": "88697",
+   "name": "Terminvergabe Bermatingen",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/bermatingen?calendarId=238",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08435029",
+   "ags": "08435029",
+   "city": "Kressbronn am Bodensee",
+   "state": "Baden-Württemberg",
+   "postal_code": "88079",
+   "name": "Terminvergabe Kressbronn am Bodensee",
+   "authority_type": "buergeramt",
+   "base_url": "https://buchung.kressbronn.de",
+   "booking_url": "https://buchung.kressbronn.de",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-08435034",
+   "ags": "08435034",
+   "city": "Markdorf",
+   "state": "Baden-Württemberg",
+   "postal_code": "88677",
+   "name": "Terminvergabe Markdorf",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.cm-terminreservierung.de",
+   "booking_url": "https://www.cm-terminreservierung.de/markdorf",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-08435059",
    "ags": "08435059",
    "city": "Überlingen",
@@ -8947,6 +10613,20 @@
    "vendor": "tempus",
    "robots_allowed": false,
    "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
+  },
+  {
+   "external_id": "portal-08436008",
+   "ags": "08436008",
+   "city": "Aulendorf",
+   "state": "Baden-Württemberg",
+   "postal_code": "88326",
+   "name": "Terminvergabe Aulendorf",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine2.crossing.de",
+   "booking_url": "https://termine2.crossing.de/804637973/Appointment/Index/1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-08436009",
@@ -9173,6 +10853,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-09172129",
+   "ags": "09172129",
+   "city": "Ramsau b.Berchtesgaden",
+   "state": "Bayern",
+   "postal_code": "83486",
+   "name": "Terminvergabe Ramsau b.Berchtesgaden",
+   "authority_type": "buergeramt",
+   "base_url": "https://news.booking.com",
+   "booking_url": "https://news.booking.com/de/bookingcom-praesentiert-die-gastfreundlichsten-destinationen-deutschlands/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-09172130",
    "ags": "09172130",
    "city": "Saaldorf-Surheim",
@@ -9299,6 +10993,34 @@
    "scan_blocked_reason": "Kein Adapter für termin-online-buchen: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-09174121",
+   "ags": "09174121",
+   "city": "Haimhausen",
+   "state": "Bayern",
+   "postal_code": "85778",
+   "name": "Terminvergabe Haimhausen",
+   "authority_type": "buergeramt",
+   "base_url": "https://module.bookingtime.com",
+   "booking_url": "https://module.bookingtime.com/booking/organization/f6vF0YPdxRgHe46DSb21Qd4yuQPMxsuB/moduleConfig/5f3RFHdVeLgt4Fys1PCeq2Er904WUwPw?m=1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-09174122",
+   "ags": "09174122",
+   "city": "Hebertshausen",
+   "state": "Bayern",
+   "postal_code": "85241",
+   "name": "Terminvergabe Hebertshausen",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.onlinetermine.com",
+   "booking_url": "https://www.onlinetermine.com/datenschutz",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-09174126",
    "ags": "09174126",
    "city": "Karlsfeld",
@@ -9341,6 +11063,20 @@
    "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
   },
   {
+   "external_id": "portal-09174141",
+   "ags": "09174141",
+   "city": "Röhrmoos",
+   "state": "Bayern",
+   "postal_code": "85244",
+   "name": "Terminvergabe Röhrmoos",
+   "authority_type": "buergeramt",
+   "base_url": "https://module.bookingtime.com",
+   "booking_url": "https://module.bookingtime.com/booking/organization/f6gyJ3DBrBJCZXbqfLFhQ45HoTW9XYN4/moduleConfig/5fyUzhTpUBJN48FV4PXkurhOkuu63mX4/bookingTemplate",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-09174143",
    "ags": "09174143",
    "city": "Schwabhausen",
@@ -9367,6 +11103,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-09174151",
+   "ags": "09174151",
+   "city": "Weichs",
+   "state": "Bayern",
+   "postal_code": "85258",
+   "name": "Terminvergabe Weichs",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminbuchungstool-weichs.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-weichs.mein-intra.net/booking/service/0/0",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-09175111",
@@ -10097,6 +11847,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-09179142",
+   "ags": "09179142",
+   "city": "Olching",
+   "state": "Bayern",
+   "postal_code": "82140",
+   "name": "Terminvergabe Olching",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.crossing.de",
+   "booking_url": "https://termine.crossing.de/454243335",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-09180124",
    "ags": "09180124",
    "city": "Murnau a.Staffelsee",
@@ -10503,20 +12267,6 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
-   "external_id": "portal-09184145",
-   "ags": "09184145",
-   "city": "Taufkirchen",
-   "state": "Bayern",
-   "postal_code": "82024",
-   "name": "Terminvergabe Taufkirchen",
-   "authority_type": "buergeramt",
-   "base_url": "https://termine-reservieren.de",
-   "booking_url": "https://termine-reservieren.de/termine/meintaufkirchen/select2?md=1",
-   "vendor": "tevis",
-   "robots_allowed": true,
-   "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
-  },
-  {
    "external_id": "portal-09184146",
    "ags": "09184146",
    "city": "Neubiberg",
@@ -10587,6 +12337,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-09186122",
+   "ags": "09186122",
+   "city": "Geisenfeld",
+   "state": "Bayern",
+   "postal_code": "85290",
+   "name": "Terminvergabe Geisenfeld",
+   "authority_type": "buergeramt",
+   "base_url": "https://ticket.geisenfeld.de",
+   "booking_url": "https://ticket.geisenfeld.de/m/buergerservice/extern/calendar/?uid=48d73ac8-cf3f-4446-9569-505a0ea8e678",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-09186126",
    "ags": "09186126",
    "city": "Hettenshausen",
@@ -10655,6 +12419,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-09186149",
+   "ags": "09186149",
+   "city": "Rohrbach",
+   "state": "Bayern",
+   "postal_code": "85296",
+   "name": "Terminvergabe Rohrbach",
+   "authority_type": "buergeramt",
+   "base_url": "https://booking.locaboo.com",
+   "booking_url": "https://booking.locaboo.com/de/login",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-09187",
@@ -11245,6 +13023,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-09190154",
+   "ags": "09190154",
+   "city": "Steingaden",
+   "state": "Bayern",
+   "postal_code": "86989",
+   "name": "Terminvergabe Steingaden",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminreservierung.blutspendedienst.com",
+   "booking_url": "https://terminreservierung.blutspendedienst.com/oeffentliche-spendeorte/072130-1/termine?reservation_context=eyJhdXRoZW50aWNhdGlvbl9zdHJhdGVneSI6IiJ9",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-09190157",
    "ags": "09190157",
    "city": "Weilheim i.OB",
@@ -11271,6 +13063,20 @@
    "vendor": "termin-online-buchen",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für termin-online-buchen: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-09261000",
+   "ags": "09261000",
+   "city": "Landshut",
+   "state": "Bayern",
+   "postal_code": "84026",
+   "name": "Terminvergabe Landshut (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.landshut.de",
+   "booking_url": "https://termine.landshut.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-09263000",
@@ -11621,6 +13427,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-09273",
+   "ags": "09273137",
+   "city": "Kelheim",
+   "state": "Bayern",
+   "postal_code": "93309",
+   "name": "Terminvergabe Kelheim (Kreisverwaltung)",
+   "authority_type": "kfz_zulassungsstelle",
+   "base_url": "https://terminbuchung.landkreis-kelheim.de",
+   "booking_url": "https://terminbuchung.landkreis-kelheim.de/m/kfz-fsw/extern/calendar/?uid=e57e6c5e-c007-4178-a2b9-65be48bf7a32",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-09273113",
@@ -12307,6 +14127,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-09276",
+   "ags": "09276138",
+   "city": "Regen",
+   "state": "Bayern",
+   "postal_code": "94209",
+   "name": "Terminvergabe Regen (Kreisverwaltung)",
+   "authority_type": "sonstiges",
+   "base_url": "https://termin.landkreis-regen.de",
+   "booking_url": "https://termin.landkreis-regen.de/m/sva/extern/calendar/?uid=cbb08341-da87-49cc-9f6f-699c33509993",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-09276113",
@@ -13177,6 +15011,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-09372158",
+   "ags": "09372158",
+   "city": "Schorndorf",
+   "state": "Bayern",
+   "postal_code": "93489",
+   "name": "Terminvergabe Schorndorf",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.schorndorf.de",
+   "booking_url": "https://termin.schorndorf.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-09372161",
    "ags": "09372161",
    "city": "Stamsried",
@@ -13259,6 +15107,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-09373",
+   "ags": "09373147",
+   "city": "Neumarkt i.d.OPf.",
+   "state": "Bayern",
+   "postal_code": "92305",
+   "name": "Terminvergabe Neumarkt i.d.OPf. (Kreisverwaltung)",
+   "authority_type": "sonstiges",
+   "base_url": "https://termine.landkreis-neumarkt.de",
+   "booking_url": "https://termine.landkreis-neumarkt.de/m/Verkehrswesen/extern/calendar/?uid=cbe12c67-8e3c-49fe-abb9-8cc3ebe2ac9d",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-09373112",
@@ -13427,6 +15289,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-09375143",
+   "ags": "09375143",
+   "city": "Hagelstadt",
+   "state": "Bayern",
+   "postal_code": "93095",
+   "name": "Terminvergabe Hagelstadt",
+   "authority_type": "buergeramt",
+   "base_url": "https://hagelstadt.auf-termin.de",
+   "booking_url": "https://hagelstadt.auf-termin.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-09376119",
@@ -13625,6 +15501,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-09462000",
+   "ags": "09462000",
+   "city": "Bayreuth",
+   "state": "Bayern",
+   "postal_code": "95410",
+   "name": "Terminvergabe Bayreuth (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.crossing.de",
+   "booking_url": "https://termine.crossing.de/446485739/Appointment/Index/1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-09471",
    "ags": "09461000",
    "city": "Bamberg",
@@ -13637,6 +15527,20 @@
    "vendor": "berlin_zms",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-09471111",
+   "ags": "09471111",
+   "city": "Altendorf",
+   "state": "Bayern",
+   "postal_code": "96146",
+   "name": "Terminvergabe Altendorf",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.abfalltermine-bamberg.de",
+   "booking_url": "https://www.abfalltermine-bamberg.de/Bamberg/Landkreis/Altendorf/subscription/create",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-09471117",
@@ -13763,6 +15667,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-09471174",
+   "ags": "09471174",
+   "city": "Rattelsdorf",
+   "state": "Bayern",
+   "postal_code": "96179",
+   "name": "Terminvergabe Rattelsdorf",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.abfalltermine-bamberg.de",
+   "booking_url": "https://www.abfalltermine-bamberg.de/Bamberg/Landkreis/Rattelsdorf",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-09471185",
@@ -14661,6 +16579,34 @@
    "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
   },
   {
+   "external_id": "portal-09562000",
+   "ags": "09562000",
+   "city": "Erlangen",
+   "state": "Bayern",
+   "postal_code": "91051",
+   "name": "Terminvergabe Erlangen (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine-reservieren.de",
+   "booking_url": "https://termine-reservieren.de/VISITVIS-Online/verpflichtung_tab.xhtml?bhkz=021900",
+   "vendor": "tevis",
+   "robots_allowed": true,
+   "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-09565000",
+   "ags": "09565000",
+   "city": "Schwabach",
+   "state": "Bayern",
+   "postal_code": "91126",
+   "name": "Terminvergabe Schwabach (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.schwabach.de",
+   "booking_url": "https://termine.schwabach.de/modules/ota_public/form/1/?signup_new=1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-09571115",
    "ags": "09571115",
    "city": "Bechhofen",
@@ -14729,6 +16675,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-09571136",
+   "ags": "09571136",
+   "city": "Dinkelsbühl",
+   "state": "Bayern",
+   "postal_code": "91550",
+   "name": "Terminvergabe Dinkelsbühl",
+   "authority_type": "buergeramt",
+   "base_url": "https://online-buchung-service.de",
+   "booking_url": "https://online-buchung-service.de/datenschutzerklaerung/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-09571137",
@@ -15529,6 +17489,34 @@
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-09576113",
+   "ags": "09576113",
+   "city": "Allersberg",
+   "state": "Bayern",
+   "postal_code": "90580",
+   "name": "Terminvergabe Allersberg",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/allersberg?calendarId=157",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-09576121",
+   "ags": "09576121",
+   "city": "Georgensgmünd",
+   "state": "Bayern",
+   "postal_code": "91166",
+   "name": "Terminvergabe Georgensgmünd",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/georgensgmuend/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-09576128",
    "ags": "09576128",
    "city": "Kammerstein",
@@ -15555,6 +17543,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-09576137",
+   "ags": "09576137",
+   "city": "Rednitzhembach",
+   "state": "Bayern",
+   "postal_code": "91126",
+   "name": "Terminvergabe Rednitzhembach",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/rednitzhembach?calendarId=23",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-09576151",
@@ -15725,6 +17727,34 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-09671135",
+   "ags": "09671135",
+   "city": "Kleinkahl",
+   "state": "Bayern",
+   "postal_code": "63828",
+   "name": "Terminvergabe Kleinkahl",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.cm-terminreservierung.de",
+   "booking_url": "https://www.cm-terminreservierung.de/vg-schoellkrippen?calendarId=88",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-09671138",
+   "ags": "09671138",
+   "city": "Krombach",
+   "state": "Bayern",
+   "postal_code": "63829",
+   "name": "Terminvergabe Krombach",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.cm-terminreservierung.de",
+   "booking_url": "https://www.cm-terminreservierung.de/vg-schoellkrippen?calendarId=88",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-09671140",
    "ags": "09671140",
    "city": "Mainaschaff",
@@ -15793,6 +17823,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-09671159",
+   "ags": "09671159",
+   "city": "Westerngrund",
+   "state": "Bayern",
+   "postal_code": "63825",
+   "name": "Terminvergabe Westerngrund",
+   "authority_type": "buergeramt",
+   "base_url": "https://www.cm-terminreservierung.de",
+   "booking_url": "https://www.cm-terminreservierung.de/vg-schoellkrippen?calendarId=88",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-09671160",
@@ -15893,6 +17937,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-09673114",
+   "ags": "09673114",
+   "city": "Bad Neustadt a.d.Saale",
+   "state": "Bayern",
+   "postal_code": "97616",
+   "name": "Terminvergabe Bad Neustadt a.d.Saale",
+   "authority_type": "buergeramt",
+   "base_url": "https://direct.bookingandmore.com",
+   "booking_url": "https://direct.bookingandmore.com/desklineweb/99a06532-2b9e-4608-b63b-ce5af277c751?lang=de&profile=showAddSrvAvailabilityCount:true",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-09674129",
    "ags": "09674129",
    "city": "Ebelsbach",
@@ -15975,6 +18033,34 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-09675",
+   "ags": "09675141",
+   "city": "Kitzingen",
+   "state": "Bayern",
+   "postal_code": "97318",
+   "name": "Terminvergabe Kitzingen (Kreisverwaltung)",
+   "authority_type": "sonstiges",
+   "base_url": "https://termin.kitzingen.de",
+   "booking_url": "https://termin.kitzingen.de/m/zulassung/extern/info/infopoint/waitingtime3",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-09675141",
+   "ags": "09675141",
+   "city": "Kitzingen",
+   "state": "Bayern",
+   "postal_code": "97318",
+   "name": "Terminvergabe Kitzingen (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.kitzingen.de",
+   "booking_url": "https://termin.kitzingen.de/m/zulassung/extern/info/infopoint/waitingtime3",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-09675158",
@@ -16537,6 +18623,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-09679170",
+   "ags": "09679170",
+   "city": "Ochsenfurt",
+   "state": "Bayern",
+   "postal_code": "97199",
+   "name": "Terminvergabe Ochsenfurt",
+   "authority_type": "buergeramt",
+   "base_url": "https://my.bookingandmore.com",
+   "booking_url": "https://my.bookingandmore.com/privacy_policy",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-09679175",
    "ags": "09679175",
    "city": "Randersacker",
@@ -17083,6 +19183,34 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-09775129",
+   "ags": "09775129",
+   "city": "Illertissen",
+   "state": "Bayern",
+   "postal_code": "89257",
+   "name": "Terminvergabe Illertissen",
+   "authority_type": "buergeramt",
+   "base_url": "https://cm-terminreservierung.de",
+   "booking_url": "https://cm-terminreservierung.de/illertissen?calendarId=188",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-09775134",
+   "ags": "09775134",
+   "city": "Nersingen",
+   "state": "Bayern",
+   "postal_code": "89278",
+   "name": "Terminvergabe Nersingen",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.nersingen.de",
+   "booking_url": "https://termin.nersingen.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-09776111",
    "ags": "09776111",
    "city": "Bodolz",
@@ -17109,6 +19237,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-09776116",
+   "ags": "09776116",
+   "city": "Lindau (Bodensee)",
+   "state": "Bayern",
+   "postal_code": "88131",
+   "name": "Terminvergabe Lindau (Bodensee) (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://booking.lindau-tourismus.de",
+   "booking_url": "https://booking.lindau-tourismus.de",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-09776124",
@@ -17419,6 +19561,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-10041516",
+   "ags": "10041516",
+   "city": "Quierschied",
+   "state": "Saarland",
+   "postal_code": "66287",
+   "name": "Terminvergabe Quierschied",
+   "authority_type": "buergeramt",
+   "base_url": "https://module.bookingtime.com",
+   "booking_url": "https://module.bookingtime.com/booking/organization/f60vJQdHHc58Brja9c8yTaYz7ugIhyX3/moduleConfig/5fE9VBi7ee2FWDkyu3liNTnENTInkxI2?m=1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-10041517",
    "ags": "10041517",
    "city": "Riegelsberg",
@@ -17431,6 +19587,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-10041518",
+   "ags": "10041518",
+   "city": "Sulzbach/ Saar",
+   "state": "Saarland",
+   "postal_code": "66280",
+   "name": "Terminvergabe Sulzbach/ Saar",
+   "authority_type": "buergeramt",
+   "base_url": "https://module.bookingtime.com",
+   "booking_url": "https://module.bookingtime.com/booking/organization/f6PYgZoXHTU8yBtqzSLTMbN36vy8HFzC/moduleConfig/5f4xhcpbr22HmIZ8Gc18pLd8WhYiIeN0?m=1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-10042",
@@ -17459,6 +19629,20 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-10043114",
+   "ags": "10043114",
+   "city": "Neunkirchen",
+   "state": "Saarland",
+   "postal_code": "66538",
+   "name": "Terminvergabe Neunkirchen (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.crossing.de",
+   "booking_url": "https://termine.crossing.de/743986329/Appointment/Index/1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-10043116",
@@ -17545,20 +19729,6 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
-   "external_id": "portal-10045112",
-   "ags": "10045112",
-   "city": "Blieskastel",
-   "state": "Saarland",
-   "postal_code": "66440",
-   "name": "Terminvergabe Blieskastel",
-   "authority_type": "buergeramt",
-   "base_url": "https://termine-reservieren.de",
-   "booking_url": "https://termine-reservieren.de/termine/blieskastel/",
-   "vendor": "tevis",
-   "robots_allowed": true,
-   "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
-  },
-  {
    "external_id": "portal-10045117",
    "ags": "10045117",
    "city": "St. Ingbert",
@@ -17587,6 +19757,20 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
+   "external_id": "portal-10046112",
+   "ags": "10046112",
+   "city": "Marpingen",
+   "state": "Saarland",
+   "postal_code": "66646",
+   "name": "Terminvergabe Marpingen",
+   "authority_type": "buergeramt",
+   "base_url": "http://bookings.marpingen.de",
+   "booking_url": "http://bookings.marpingen.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-11000000",
    "ags": "11000000",
    "city": "Berlin",
@@ -17599,6 +19783,20 @@
    "vendor": "berlin_zms",
    "robots_allowed": false,
    "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
+  },
+  {
+   "external_id": "portal-12054000",
+   "ags": "12054000",
+   "city": "Potsdam",
+   "state": "Brandenburg",
+   "postal_code": "14469",
+   "name": "Terminvergabe Potsdam",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.potsdam.de",
+   "booking_url": "https://termin.potsdam.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-12060280",
@@ -17657,20 +19855,6 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
-   "external_id": "portal-12061433",
-   "ags": "12061433",
-   "city": "Schönefeld",
-   "state": "Brandenburg",
-   "postal_code": "12529",
-   "name": "Terminvergabe Schönefeld",
-   "authority_type": "buergeramt",
-   "base_url": "https://termine-reservieren.de",
-   "booking_url": "https://termine-reservieren.de/termine/gemeinde-schoenefeld/",
-   "vendor": "tevis",
-   "robots_allowed": true,
-   "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
-  },
-  {
    "external_id": "portal-12061540",
    "ags": "12061540",
    "city": "Wildau",
@@ -17683,6 +19867,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-12063",
+   "ags": "12063252",
+   "city": "Havelland",
+   "state": "Brandenburg",
+   "postal_code": "14712",
+   "name": "Terminvergabe Havelland (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.hvlnet.de",
+   "booking_url": "https://termine.hvlnet.de/m/buergerservice/extern/calendar/?uid=70197eac-4343-4c4f-9e70-fce5271bd39c",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-12063208",
@@ -17753,6 +19951,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-12065",
+   "ags": "12065256",
+   "city": "Oberhavel",
+   "state": "Brandenburg",
+   "postal_code": "16515",
+   "name": "Terminvergabe Oberhavel (Kreisverwaltung)",
+   "authority_type": "auslaenderbehoerde",
+   "base_url": "https://terminreservierung.oberhavel.de",
+   "booking_url": "https://terminreservierung.oberhavel.de/m/lk-oberhavel-sp-migration/extern/calendar/?uid=13325332-18c2-4f41-9a62-a1df2a484a2c",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-12065165",
@@ -18047,6 +20259,20 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-12073532",
+   "ags": "12073532",
+   "city": "Schwedt/Oder",
+   "state": "Brandenburg",
+   "postal_code": "16303",
+   "name": "Terminvergabe Schwedt/Oder",
+   "authority_type": "buergeramt",
+   "base_url": "https://staedteterminal.de",
+   "booking_url": "https://staedteterminal.de/schwedt",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-13071033",
@@ -18413,6 +20639,20 @@
    "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
   },
   {
+   "external_id": "portal-13076108",
+   "ags": "13076108",
+   "city": "Parchim",
+   "state": "Mecklenburg-Vorpommern",
+   "postal_code": "19370",
+   "name": "Terminvergabe Parchim",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.crossing.de",
+   "booking_url": "https://termine.crossing.de/625561856/Appointment/Index/1",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-14521040",
    "ags": "14521040",
    "city": "Auerbach",
@@ -18467,6 +20707,20 @@
    "vendor": "nolis",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für nolis: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-14522080",
+   "ags": "14522080",
+   "city": "Döbeln",
+   "state": "Sachsen",
+   "postal_code": "04720",
+   "name": "Terminvergabe Döbeln",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminvergabe.doebeln.de",
+   "booking_url": "https://terminvergabe.doebeln.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-14522150",
@@ -18525,6 +20779,20 @@
    "scan_blocked_reason": "Kein Adapter für nolis: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-14523120",
+   "ags": "14523120",
+   "city": "Falkenstein/Vogtl.",
+   "state": "Sachsen",
+   "postal_code": "08223",
+   "name": "Terminvergabe Falkenstein/Vogtl.",
+   "authority_type": "buergeramt",
+   "base_url": "https://tc-falkenstein.app.platzbuchung.de",
+   "booking_url": "https://tc-falkenstein.app.platzbuchung.de/login",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-14523300",
    "ags": "14523300",
    "city": "Oelsnitz/Vogtl.",
@@ -18565,6 +20833,48 @@
    "vendor": "terminland",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-14524190",
+   "ags": "14524190",
+   "city": "Meerane",
+   "state": "Sachsen",
+   "postal_code": "08393",
+   "name": "Terminvergabe Meerane",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.meerane.de",
+   "booking_url": "https://termin.meerane.de",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-14524250",
+   "ags": "14524250",
+   "city": "Reinsdorf",
+   "state": "Sachsen",
+   "postal_code": "08141",
+   "name": "Terminvergabe Reinsdorf",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminbuchungstool-gv-reinsdorf.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-gv-reinsdorf.mein-intra.net/booking/service/0/0",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-14625040",
+   "ags": "14625040",
+   "city": "Bischofswerda",
+   "state": "Sachsen",
+   "postal_code": "01877",
+   "name": "Terminvergabe Bischofswerda",
+   "authority_type": "buergeramt",
+   "base_url": "https://staedteterminal.de",
+   "booking_url": "https://staedteterminal.de/bischofswerda",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-14625060",
@@ -18651,6 +20961,76 @@
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-14625560",
+   "ags": "14625560",
+   "city": "Sohland a. d. Spree",
+   "state": "Sachsen",
+   "postal_code": "02689",
+   "name": "Terminvergabe Sohland a. d. Spree",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminbuchungstool-sohland.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-sohland.mein-intra.net/booking/service/0/0",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-14626",
+   "ags": "14626110",
+   "city": "Görlitz",
+   "state": "Sachsen",
+   "postal_code": "02826",
+   "name": "Terminvergabe Görlitz (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://termin.kreis-goerlitz.de",
+   "booking_url": "https://termin.kreis-goerlitz.de/m/buergerservice/extern/calendar/?uid=9a11e7de-888a-4d88-a2c5-e85650ad2f97",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-14626030",
+   "ags": "14626030",
+   "city": "Bernstadt a. d. Eigen",
+   "state": "Sachsen",
+   "postal_code": "02748",
+   "name": "Terminvergabe Bernstadt a. d. Eigen",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminservice-bernstadt.enjoy-quality.de",
+   "booking_url": "https://terminservice-bernstadt.enjoy-quality.de/",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-14626085",
+   "ags": "14626085",
+   "city": "Ebersbach-Neugersdorf",
+   "state": "Sachsen",
+   "postal_code": "02730",
+   "name": "Terminvergabe Ebersbach-Neugersdorf",
+   "authority_type": "buergeramt",
+   "base_url": "https://termine.ebersbach-neugersdorf.de",
+   "booking_url": "https://termine.ebersbach-neugersdorf.de",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-14626110",
+   "ags": "14626110",
+   "city": "Görlitz",
+   "state": "Sachsen",
+   "postal_code": "02826",
+   "name": "Terminvergabe Görlitz (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://booking.goerlitz.de",
+   "booking_url": "https://booking.goerlitz.de",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-14626600",
    "ags": "14626600",
    "city": "Weißwasser/O.L.",
@@ -18733,6 +21113,34 @@
    "vendor": "qmatic",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für qmatic: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-14713000",
+   "ags": "14713000",
+   "city": "Leipzig",
+   "state": "Sachsen",
+   "postal_code": "04109",
+   "name": "Terminvergabe Leipzig (Kreisverwaltung)",
+   "authority_type": "kfz_zulassungsstelle",
+   "base_url": "https://terminvereinbarung.leipzig.de",
+   "booking_url": "https://terminvereinbarung.leipzig.de/m/leipzig-kfz/extern/calendar/?uid=c97bb32a-92b8-41ba-b5c2-f91d0e90019f",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-14729",
+   "ags": "14713000",
+   "city": "Leipzig",
+   "state": "Sachsen",
+   "postal_code": "04109",
+   "name": "Terminvergabe Leipzig (Kreisverwaltung)",
+   "authority_type": "kfz_zulassungsstelle",
+   "base_url": "https://terminvereinbarung.leipzig.de",
+   "booking_url": "https://terminvereinbarung.leipzig.de/m/leipzig-kfz/extern/calendar/?uid=c97bb32a-92b8-41ba-b5c2-f91d0e90019f",
+   "vendor": "smartcjm",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-14729080",
@@ -18873,6 +21281,34 @@
    "vendor": "smartcjm",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für smartcjm: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-15003000",
+   "ags": "15003000",
+   "city": "Magdeburg",
+   "state": "Sachsen-Anhalt",
+   "postal_code": "39104",
+   "name": "Terminvergabe Magdeburg",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminvergabe.magdeburg.de",
+   "booking_url": "https://terminvergabe.magdeburg.de/select2?md=2",
+   "vendor": "tevis",
+   "robots_allowed": false,
+   "scan_blocked_reason": "Das Buchungssystem untersagt automatisiertes Abrufen (robots.txt)."
+  },
+  {
+   "external_id": "portal-15081280",
+   "ags": "15081280",
+   "city": "Klötze",
+   "state": "Sachsen-Anhalt",
+   "postal_code": "38486",
+   "name": "Terminvergabe Klötze",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminbuchung-kloetze.mein-intra.net",
+   "booking_url": "https://terminbuchung-kloetze.mein-intra.net/booking/service/0/0",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-15083",
@@ -19141,6 +21577,20 @@
    "scan_blocked_reason": "Kein Adapter für terminland: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-15088065",
+   "ags": "15088065",
+   "city": "Braunsbedra",
+   "state": "Sachsen-Anhalt",
+   "postal_code": "06242",
+   "name": "Terminvergabe Braunsbedra",
+   "authority_type": "buergeramt",
+   "base_url": "https://braunsbedra-terminbuchung.mein-intra.net",
+   "booking_url": "https://braunsbedra-terminbuchung.mein-intra.net/booking/service/0/0",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-15088150",
    "ags": "15088150",
    "city": "Kabelsketal",
@@ -19183,6 +21633,20 @@
    "scan_blocked_reason": "Kein Adapter für termin-online-buchen: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-15088220",
+   "ags": "15088220",
+   "city": "Merseburg",
+   "state": "Sachsen-Anhalt",
+   "postal_code": "06217",
+   "name": "Terminvergabe Merseburg",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminvergabe.merseburg.de",
+   "booking_url": "https://terminvergabe.merseburg.de",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-15088330",
    "ags": "15088330",
    "city": "Schkopau",
@@ -19209,6 +21673,34 @@
    "vendor": "termin-online-buchen",
    "robots_allowed": true,
    "scan_blocked_reason": "Kein Adapter für termin-online-buchen: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-15089026",
+   "ags": "15089026",
+   "city": "Barby",
+   "state": "Sachsen-Anhalt",
+   "postal_code": "39249",
+   "name": "Terminvergabe Barby",
+   "authority_type": "buergeramt",
+   "base_url": "https://adkomm.auf-termin.de",
+   "booking_url": "https://adkomm.auf-termin.de/barby/stadt",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-15089042",
+   "ags": "15089042",
+   "city": "Bördeland",
+   "state": "Sachsen-Anhalt",
+   "postal_code": "39221",
+   "name": "Terminvergabe Bördeland",
+   "authority_type": "buergeramt",
+   "base_url": "https://adkomm.auf-termin.de",
+   "booking_url": "https://adkomm.auf-termin.de/boerdeland/rathaus",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-15089055",
@@ -19281,6 +21773,20 @@
    "scan_blocked_reason": "Kein Adapter für qmatic: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
+   "external_id": "portal-15091391",
+   "ags": "15091391",
+   "city": "Zahna-Elster",
+   "state": "Sachsen-Anhalt",
+   "postal_code": "06895",
+   "name": "Terminvergabe Zahna-Elster",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminbuchungstool-stadt-zahna-elster.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-stadt-zahna-elster.mein-intra.net/booking/service/0/0",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
    "external_id": "portal-16055000",
    "ags": "16055000",
    "city": "Weimar",
@@ -19349,6 +21855,62 @@
    "vendor": "etermin",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-16068017",
+   "ags": "16068017",
+   "city": "Großmölsen",
+   "state": "Thüringen",
+   "postal_code": "99198",
+   "name": "Terminvergabe Großmölsen",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminbuchungstool-vg-gramme-aue.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-vg-gramme-aue.mein-intra.net/booking/service/0/2",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-16069",
+   "ags": "16069024",
+   "city": "Hildburghausen",
+   "state": "Thüringen",
+   "postal_code": "98646",
+   "name": "Terminvergabe Hildburghausen (Kreisverwaltung)",
+   "authority_type": "sonstiges",
+   "base_url": "https://terminbuchungstool-hildburghausen.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-hildburghausen.mein-intra.net/booking",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-16069024",
+   "ags": "16069024",
+   "city": "Hildburghausen",
+   "state": "Thüringen",
+   "postal_code": "98646",
+   "name": "Terminvergabe Hildburghausen (Kreisverwaltung)",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminbuchungstool-hildburghausen.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-hildburghausen.mein-intra.net/booking",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-16069053",
+   "ags": "16069053",
+   "city": "Veilsdorf",
+   "state": "Thüringen",
+   "postal_code": "98669",
+   "name": "Terminvergabe Veilsdorf",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminbuchungstool-hildburghausen.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-hildburghausen.mein-intra.net/booking",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-16070048",
@@ -19449,18 +22011,74 @@
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
   },
   {
-   "external_id": "portal-16074082",
-   "ags": "16074082",
-   "city": "Scheiditz",
+   "external_id": "portal-16074012",
+   "ags": "16074012",
+   "city": "Crossen an der Elster",
    "state": "Thüringen",
-   "postal_code": "07646",
-   "name": "Terminvergabe Scheiditz",
+   "postal_code": "07613",
+   "name": "Terminvergabe Crossen an der Elster",
    "authority_type": "buergeramt",
-   "base_url": "https://termine-reservieren.de",
-   "booking_url": "https://termine-reservieren.de/termine/bad-klosterlausnitz/?rs",
-   "vendor": "tevis",
-   "robots_allowed": true,
-   "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+   "base_url": "https://terminbuchungstool-vg-heideland-elstertal.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-vg-heideland-elstertal.mein-intra.net/booking/service/0/0",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-16074036",
+   "ags": "16074036",
+   "city": "Hainichen",
+   "state": "Thüringen",
+   "postal_code": "07778",
+   "name": "Terminvergabe Hainichen",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminbuchungstool-vg-doca.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-vg-doca.mein-intra.net/booking/service/0/0",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-16074039",
+   "ags": "16074039",
+   "city": "Heideland",
+   "state": "Thüringen",
+   "postal_code": "07613",
+   "name": "Terminvergabe Heideland",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminbuchungstool-vg-heideland-elstertal.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-vg-heideland-elstertal.mein-intra.net/booking/service/0/0",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-16074054",
+   "ags": "16074054",
+   "city": "Löberschütz",
+   "state": "Thüringen",
+   "postal_code": "07751",
+   "name": "Terminvergabe Löberschütz",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminbuchungstool-vg-doca.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-vg-doca.mein-intra.net/booking/service/0/0",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-16074099",
+   "ags": "16074099",
+   "city": "Thierschneck",
+   "state": "Thüringen",
+   "postal_code": "07774",
+   "name": "Terminvergabe Thierschneck",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminbuchungstool-vg-doca.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-vg-doca.mein-intra.net/booking/service/0/0",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-16074105",
@@ -19475,6 +22093,48 @@
    "vendor": "tevis",
    "robots_allowed": true,
    "scan_blocked_reason": "Noch nicht verifiziert: Termine hier bitte direkt beim Amt buchen."
+  },
+  {
+   "external_id": "portal-16074112",
+   "ags": "16074112",
+   "city": "Wichmar",
+   "state": "Thüringen",
+   "postal_code": "07774",
+   "name": "Terminvergabe Wichmar",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminbuchungstool-vg-doca.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-vg-doca.mein-intra.net/booking/service/0/0",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-16074113",
+   "ags": "16074113",
+   "city": "Zimmern",
+   "state": "Thüringen",
+   "postal_code": "07778",
+   "name": "Terminvergabe Zimmern",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminbuchungstool-vg-doca.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-vg-doca.mein-intra.net/booking/service/0/0",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
+  },
+  {
+   "external_id": "portal-16076079",
+   "ags": "16076079",
+   "city": "Weida",
+   "state": "Thüringen",
+   "postal_code": "07570",
+   "name": "Terminvergabe Weida",
+   "authority_type": "buergeramt",
+   "base_url": "https://terminbuchungstool-weida.mein-intra.net",
+   "booking_url": "https://terminbuchungstool-weida.mein-intra.net/booking/service/0/0",
+   "vendor": "unbekannt",
+   "robots_allowed": null,
+   "scan_blocked_reason": "Kein Adapter für unbekannt: Termine können hier nur direkt beim Amt gebucht werden."
   },
   {
    "external_id": "portal-16077001",

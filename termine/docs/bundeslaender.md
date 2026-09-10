@@ -18,23 +18,23 @@ Jede Gemeinde landet in genau einem von drei Zuständen:
 
 | Bundesland | Gemeinden | überwachbar | verlinkt | Einwohner erreicht |
 | --- | ---: | ---: | ---: | ---: |
-| Baden-Württemberg | 1103 | 16 | 164 | 36 % |
-| Bayern | 2217 | 29 | 588 | 44 % |
+| Baden-Württemberg | 1103 | 17 | 208 | 46 % |
+| Bayern | 2217 | 30 | 617 | 47 % |
 | Berlin | 1 | 0 | 1 | 100 % |
-| Brandenburg | 413 | 16 | 32 | 30 % |
-| Bremen | 2 | 0 | 1 | 17 % |
-| Hamburg | 1 | 0 | 0 | 0 % |
-| Hessen | 425 | 69 | 70 | 57 % |
-| Mecklenburg-Vorpommern | 726 | 17 | 26 | 24 % |
-| Niedersachsen | 964 | 38 | 121 | 42 % |
-| Nordrhein-Westfalen | 396 | 97 | 111 | 60 % |
-| Rheinland-Pfalz | 2301 | 28 | 105 | 33 % |
-| Saarland | 53 | 4 | 12 | 57 % |
-| Sachsen | 418 | 9 | 32 | 28 % |
-| Sachsen-Anhalt | 218 | 6 | 30 | 32 % |
-| Schleswig-Holstein | 1104 | 14 | 63 | 42 % |
-| Thüringen | 601 | 11 | 14 | 30 % |
-| **gesamt** | **10943** | **354** | **1370** | **46 %** |
+| Brandenburg | 413 | 17 | 34 | 40 % |
+| Bremen | 2 | 0 | 2 | 100 % |
+| Hamburg | 1 | 0 | 1 | 100 % |
+| Hessen | 425 | 73 | 78 | 65 % |
+| Mecklenburg-Vorpommern | 726 | 18 | 27 | 38 % |
+| Niedersachsen | 964 | 39 | 136 | 55 % |
+| Nordrhein-Westfalen | 396 | 102 | 133 | 79 % |
+| Rheinland-Pfalz | 2301 | 30 | 119 | 35 % |
+| Saarland | 53 | 5 | 14 | 61 % |
+| Sachsen | 418 | 9 | 42 | 47 % |
+| Sachsen-Anhalt | 218 | 6 | 37 | 48 % |
+| Schleswig-Holstein | 1104 | 16 | 71 | 42 % |
+| Thüringen | 601 | 12 | 24 | 32 % |
+| **gesamt** | **10943** | **374** | **1544** | **59 %** |
 
 Die Tabelle wird erzeugt, nicht gepflegt:
 `python -m scripts.coverage_report --sniff sniff.jsonl --markdown`.
@@ -44,8 +44,36 @@ die App eine Terminbuchung nennen kann — überwacht oder verlinkt. Das ist der
 ehrlichere Maßstab als die Zahl der Gemeinden: Bayerns 2 217 Gemeinden sind zu
 großen Teilen Dörfer mit wenigen hundert Einwohnern.
 
-**Im Katalog:** 1 199 einzeln erfasste, überwachbare Ämter in 360 Orten und
-1 392 verlinkte Portale — zusammen 2 615 Einträge.
+**Im Katalog:** 1 276 einzeln erfasste, überwachbare Ämter in 381 Orten und
+1 582 verlinkte Portale — zusammen 2 882 Einträge.
+
+## Großstädte zuerst
+
+Von den **80 Städten über 100 000 Einwohnern** ist bei **68** das Terminsystem
+erkannt: 45 TEVIS, 9 smartCJM, 5 Tempus, dazu eTermin, nolis, ZMS und einige
+Kleinanbieter. Dafür reicht das Lesen der Startseite nicht — eine Großstadt
+versteckt ihr Buchungssystem hinter „Rathaus" → „Bürgerservice" →
+„Dienstleistungen A–Z" → Anliegen → „Termin vereinbaren".
+`scripts/deep_crawl.py` läuft diesen Weg ab: bis zu 90 Seiten je Stadt,
+sortiert danach, wie sehr ein Link nach Termin klingt, und bricht ab, sobald
+ein Buchungssystem gefunden ist. Jede Seite wird vorher gegen die robots.txt
+der Stadt geprüft — wer tiefer krabbelt, muss das erst recht.
+
+Das brachte 47 → 68 erkannte Städte, darunter Köln, Bonn, Karlsruhe und Aachen
+(alle smartCJM), Kassel und Offenbach (beide auf der geteilten ekom21-Instanz,
+deren Präfixe vorher unbekannt waren), Braunschweig, Herne, Essen, Osnabrück
+und Rostock.
+
+**Die zwölf offenen Großstädte** und warum:
+
+| Stadt | Lage |
+| --- | --- |
+| Hamburg | nur der Traukalender ist verlinkt; das allgemeine Portal war in 84 Seiten nicht auffindbar |
+| München | Buchung liegt hinter `terminvereinbarung.muenchen.de`, deren robots.txt sie sperrt |
+| Frankfurt, Chemnitz, Fürth, Ulm | Stadtseite weist unseren Client mit HTTP 403 ab (Frankfurts TEVIS-Ämter sind über ekom21 trotzdem im Katalog) |
+| Stuttgart | `service.stuttgart.de`: `Disallow: /` |
+| Freiburg, Regensburg, Ludwigshafen | Terminhosts existieren nicht unter den üblichen Namen; auf der Website kein Link gefunden |
+| Erfurt, Potsdam | Terminhost vorhanden, robots.txt sperrt ihn |
 
 ## Warum die Landkreise so viel zählen
 
@@ -91,34 +119,45 @@ erhalten, die Hauptquelle ist der Weg über die Gemeinde-Website.
 
 ## Gefundene Anbieter
 
-| Anbieter | Kommunen | Adapter |
-| --- | ---: | --- |
-| TEVIS | 1053 | **ja**, live verifiziert |
-| Terminland | 198 | nein |
-| termin-online-buchen | 111 | nein |
-| eTermin | 94 | ja (API-Schlüssel nötig) |
-| nolis | 94 | nein |
-| Tempus | 63 | nein |
-| smartCJM | 50 | nein |
-| cleverQ | 43 | nein |
-| meinenTermin | 21 | nein |
-| timify | 21 | nein |
-| ZMS (Berlin) | 15 | ja (gesperrt, siehe unten) |
-| qmatic | 13 | nein |
-| DTMS | 1 | nein |
+| Anbieter | Kommunen | davon Großstädte | Adapter |
+| --- | ---: | ---: | --- |
+| TEVIS | 1066 | 45 | **ja**, live verifiziert |
+| unbekannt | 267 | 3 | — Buchungshost erkannt, Software nicht |
+| Terminland | 198 | 0 | nein |
+| termin-online-buchen | 111 | 1 | nein |
+| eTermin | 94 | 2 | ja (API-Schlüssel nötig) |
+| nolis | 94 | 2 | nein |
+| smartCJM | 84 | 9 | nein |
+| Tempus | 64 | 5 | nein |
+| cleverQ | 43 | 0 | nein |
+| meinenTermin | 21 | 1 | nein |
+| timify | 21 | 0 | nein |
+| ZMS (Berlin) | 15 | 1 | ja (gesperrt, siehe unten) |
+| qmatic | 13 | 0 | nein |
+| DTMS, crossing | je 1 | 1 | nein |
 
 TEVIS ist mit Abstand der Marktführer, und der Adapter dafür ist gegen zehn
-Instanzen live geprüft (siehe [`providers.md`](./providers.md)). Der nächste
-Adapter, der sich lohnt, ist Terminland, danach termin-online-buchen — zusammen
-rund 300 weitere Kommunen.
+Instanzen live geprüft (siehe [`providers.md`](./providers.md)).
+
+Der nächste Adapter, der sich lohnt, ist **smartCJM**: nach Kommunen erst
+Platz sieben, aber neun Großstädte — Köln, Bonn, Karlsruhe, Aachen, Bochum,
+Halle, Heilbronn und weitere. Nach Kommunen gerechnet wäre Terminland (198)
+der größere Fang, nach Einwohnern smartCJM.
+
+smartCJM war lange unter „unbekannt" einsortiert, weil die Firma nur bei
+kleineren Kunden auf eigener Domain hostet; bei den Großstädten läuft es unter
+deren Adresse und verrät sich einzig am URL-Muster
+`/m/<mandant>/extern/calendar/?uid=<guid>`. Seit dieses Muster als Signatur
+hinterlegt ist, ordnet `scripts/reclassify.py` alle bereits vermessenen
+Kommunen neu ein, ohne eine einzige Seite erneut zu laden.
 
 ## Was noch offen ist
 
 | Ergebnis | Gemeinden | Was das heißt |
 | --- | ---: | --- |
-| kein Terminsystem verlinkt | 4130 | Website erreichbar, aber kein Link auf ein Buchungssystem gefunden. Viele kleine Gemeinden haben keins; manche verstecken es tiefer als zwei Klicks oder bauen die Navigation per JavaScript. |
+| kein Terminsystem verlinkt | 4116 | Website erreichbar, aber kein Link auf ein Buchungssystem gefunden. Viele kleine Gemeinden haben keins; manche verstecken es tiefer als zwei Klicks oder bauen die Navigation per JavaScript. |
 | Website nicht gefunden | 4812 | Weder die amtliche Adresse noch die geratenen Namen antworteten. Betrifft fast nur sehr kleine Gemeinden, die oft von ihrer Verbandsgemeinde mitverwaltet werden. |
-| Website blockiert (403) | 21 | Die Seite existiert und weist unseren Client ab. Wir tarnen ihn nicht. |
+| Website blockiert (403) | 19 | Die Seite existiert und weist unseren Client ab. Wir tarnen ihn nicht. |
 
 Der Weg für die erste Gruppe: die Verbandsgemeinden, Samtgemeinden und Ämter
 (4 583 im Register verzeichnet) als eigene Ebene vermessen. Für die zweite: die

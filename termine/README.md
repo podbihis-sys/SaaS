@@ -120,15 +120,17 @@ Kreis, Land und Sitz-PLZ. Eingabe von PLZ oder Ort führt zur Gemeinde und von
 dort zur zuständigen Behörde je Anliegen (Gemeinde oder Kreis). Details in
 [`docs/orte.md`](./docs/orte.md).
 
-**Katalog: 2 615 Ämter.** Jede Gemeinde und jeder Landkreis wurde geprüft, indem
-die eigene Website gelesen und dem Link zum Terminsystem gefolgt wurde.
+**Katalog: 2 882 Ämter.** Jede Gemeinde und jeder Landkreis wurde geprüft, indem
+die eigene Website gelesen und dem Link zum Terminsystem gefolgt wurde — bei den
+Großstädten bis zu 90 Seiten tief.
 
-- **1 199 Ämter in 360 Orten sind überwachbar** — TEVIS-Instanzen, deren
+- **1 276 Ämter in 381 Orten sind überwachbar** — TEVIS-Instanzen, deren
   robots.txt das Abfragen erlaubt und deren Mandanten einzeln erfasst sind.
-- **1 392 Portale sind verlinkt** — Terminsysteme ohne Adapter oder mit
+- **1 582 Portale sind verlinkt** — Terminsysteme ohne Adapter oder mit
   robots.txt-Verbot. Die App führt zur richtigen Behörde und übergibt.
-- Zusammen erreichen sie **46 % der Bevölkerung**. Die Tabelle je Bundesland
-  steht in [`docs/bundeslaender.md`](./docs/bundeslaender.md).
+- Zusammen erreichen sie **59 % der Bevölkerung**; von den 80 Großstädten sind
+  **68** erfasst. Die Tabelle je Bundesland steht in
+  [`docs/bundeslaender.md`](./docs/bundeslaender.md).
 
 **TEVIS ist live verifiziert.** Der Adapter wurde gegen zehn Instanzen aller
 drei Bauformen geprüft; neun liefern echte Termine. Der erste Live-Lauf zeigte,

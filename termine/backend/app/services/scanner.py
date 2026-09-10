@@ -69,14 +69,21 @@ async def scan_pair(
     # docs/legal.md structural instead of a matter of remembering it.
     verdict = await robots.allowed(client, office.base_url)
     if not verdict.allowed:
-        office.scan_enabled = False
-        office.scan_blocked_reason = f"robots.txt: {office.base_url} verbietet automatisiertes Abrufen"
+        # Only an actual prohibition takes the office out of the catalogue. An
+        # unreadable robots.txt also stops this scan — it must — but it is
+        # usually a brief outage, and striking the office out for it would
+        # need a human to put it back.
+        if verdict.prohibited:
+            office.scan_enabled = False
+            office.scan_blocked_reason = f"robots.txt: {office.base_url} verbietet automatisiertes Abrufen"
+            log.warning("scanner.robots_disallowed", office=office.name, base_url=office.base_url)
+        else:
+            log.warning("scanner.robots_unreadable", office=office.name, base_url=office.base_url)
         run.status = ScanStatus.ERROR
         run.error = verdict.reason
         run.finished_at = utcnow()
         run.duration_ms = int((time.monotonic() - started) * 1000)
         await session.flush()
-        log.warning("scanner.robots_disallowed", office=office.name, base_url=office.base_url)
         return ScanResult(error=verdict.reason)
 
     try:
@@ -140,14 +147,18 @@ async def _reconcile(
 ) -> ScanResult:
     now = utcnow()
     known = (
-        await session.execute(
-            select(Slot).where(
-                Slot.office_id == office.id,
-                Slot.service_id == service.id,
-                Slot.starts_at >= now,
+        (
+            await session.execute(
+                select(Slot).where(
+                    Slot.office_id == office.id,
+                    Slot.service_id == service.id,
+                    Slot.starts_at >= now,
+                )
             )
         )
-    ).scalars().all()
+        .scalars()
+        .all()
+    )
     known_by_start = {slot.starts_at: slot for slot in known}
 
     result = ScanResult(seen=len(raw_slots))

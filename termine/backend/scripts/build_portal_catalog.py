@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -64,6 +65,34 @@ def name_for(row: dict, kreis_names: set[str]) -> str:
     return f"Terminvergabe {city}"
 
 
+#: A host that exists to take appointments says so in its own name or path.
+_BOOKING_HOST = re.compile(r"termin|buchung|booking|appointment", re.I)
+
+
+def usable_links(row: dict) -> list[dict]:
+    """The links worth cataloguing for this municipality, best first.
+
+    A recognised vendor is the strong case. But some of the largest cities run
+    something nobody else runs — ``termine.essen.de``, ``termin.potsdam.de``,
+    ``standesamtstermine.hamburg.de`` — and refusing to catalogue those would
+    drop Hamburg and Munich from the app over a missing fingerprint. A separate
+    host whose name says "Termin" is a booking system whether or not we can
+    name the software, and linking to it is all a portal row ever does.
+    """
+    known = [link for link in row.get("links", []) if link.get("vendor")]
+    if known:
+        return known
+
+    home_host = urlparse(row.get("homepage") or "").netloc.lower()
+    unknown = []
+    for link in row.get("links", []):
+        parsed = urlparse(link["url"])
+        if parsed.netloc.lower() == home_host or not _BOOKING_HOST.search(parsed.netloc):
+            continue
+        unknown.append({**link, "vendor": "unbekannt"})
+    return unknown
+
+
 def load_rows(paths: list[str]) -> dict[str, dict]:
     """Best portal per municipality, keyed by AGS; later files win."""
     best: dict[str, dict] = {}
@@ -73,7 +102,7 @@ def load_rows(paths: list[str]) -> dict[str, dict]:
                 if not line.strip():
                     continue
                 row = json.loads(line)
-                links = [link for link in row.get("links", []) if link.get("vendor")]
+                links = usable_links(row)
                 if not links or not row.get("ags"):
                     continue
                 # The survey already ranks; the first link is the best one.
