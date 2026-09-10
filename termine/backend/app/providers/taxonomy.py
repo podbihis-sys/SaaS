@@ -44,15 +44,25 @@ _CATEGORY_PATTERNS: list[tuple[ServiceCategory, str]] = [
     (ServiceCategory.ANMELDUNG, r"anmeld|wohnsitz|wohnung.*(anmeld|meld)"),
 ]
 
+#: Order matters: the first match wins, and several names carry two of these
+#: words ("Straßenverkehrsamt — Führerscheinstelle" is a driving-licence
+#: office, not a vehicle-registration one), so the more specific errand is
+#: tested before the department it sits in.
 _AUTHORITY_PATTERNS: list[tuple[AuthorityType, str]] = [
-    (AuthorityType.AUSLAENDERBEHOERDE, r"ausl(ae|ä)nder|migration|einwanderung|immigration"),
-    (AuthorityType.KFZ_ZULASSUNGSSTELLE, r"zulassungsstelle|kfz"),
-    (AuthorityType.FUEHRERSCHEINSTELLE, r"f(ue|ü)hrerscheinstelle"),
-    (AuthorityType.STANDESAMT, r"standesamt"),
-    (AuthorityType.GEWERBEAMT, r"gewerbeamt|gewerbemeldestelle"),
-    (AuthorityType.JOBCENTER, r"jobcenter|arbeitsagentur|agentur f(ue|ü)r arbeit"),
-    (AuthorityType.FINANZAMT, r"finanzamt"),
-    (AuthorityType.BUERGERAMT, r"b(ue|ü)rgeramt|b(ue|ü)rgerb(ue|ü)ro|b(ue|ü)rgerservice|rathaus|einwohnermelde|kundenzentrum|stadtb(ue|ü)ro"),
+    (AuthorityType.AUSLAENDERBEHOERDE, r"ausl(ae|ä)nder|migration|einwanderung|immigration|einb(ue|ü)rgerung|staatsangeh(oe|ö)rigkeit|aufenthalt|welcome ?center"),
+    # Driving licences before vehicles: a Straßenverkehrsamt runs both, and
+    # its name says which counter this mandant is.
+    (AuthorityType.FUEHRERSCHEINSTELLE, r"f(ue|ü)hrerschein|fahrerlaubnis|fahrschule|fahrlehrer"),
+    (
+        AuthorityType.KFZ_ZULASSUNGSSTELLE,
+        r"zulassung|kfz|kraftfahrzeug|stra(ss|ß)enverkehrs(amt|behoerde|behörde)|"
+        r"fahrzeug|kennzeichen|zulassungsbeh(oe|ö)rde",
+    ),
+    (AuthorityType.STANDESAMT, r"standesamt|eheschlie(ss|ß)ung|geburtsurkunde|sterbefall|trauung"),
+    (AuthorityType.GEWERBEAMT, r"gewerbe"),
+    (AuthorityType.JOBCENTER, r"jobcenter|arbeitsagentur|agentur f(ue|ü)r arbeit|grundsicherung"),
+    (AuthorityType.FINANZAMT, r"finanzamt|steueramt|stadtkasse|gemeindekasse|steuern"),
+    (AuthorityType.BUERGERAMT, r"b(ue|ü)rgeramt|b(ue|ü)rgerb(ue|ü)ro|b(ue|ü)rgerservice|rathaus|einwohnermelde|meldeamt|meldestelle|kundenzentrum|stadtb(ue|ü)ro|b(ue|ü)rgercenter|servicecenter|pass|ausweis"),
 ]
 
 

@@ -135,7 +135,21 @@ VENDOR_SIGNATURES: list[tuple[str, str, bool]] = [
     # run one instance for many cities behind a path prefix (tevis.ekom21.de,
     # tevis.krzn.de). All of it answers on /select2 and identifies itself as
     # TEVISWEB, which is why the body is fingerprinted and not just the host.
-    ("tevis", r"select2\?md=|/select2|tevisweb|tevis|termine-reservieren\.(de|online)|cnc-\d+", True),
+    # Two vendors that would otherwise be read as TEVIS, so they come first:
+    # the Bavarian municipal portal and Locaboo both ship the jQuery "Select2"
+    # widget, whose stylesheet path contains the word.
+    ("bayern-portal", r"buergerservice-portal\.de|bayernportal", False),
+    ("locaboo", r"locaboo\.com", False),
+    # ``/select2`` only counts when it is the endpoint itself — followed by a
+    # query or the end of the URL. Without that guard
+    # ``/css/vendor/select2/select2.css`` makes every site that uses the widget
+    # look like a TEVIS instance, which is how several hundred "TEVIS" hosts
+    # turned out to have no mandants to enumerate.
+    (
+        "tevis",
+        r"select2\?md=|/select2(?=[?\"'\s>]|$)|tevisweb|termine-reservieren\.(de|online)|\btevis\b|cnc-\d+",
+        True,
+    ),
     ("berlin_zms", r"service\.berlin\.de/terminvereinbarung|terminvereinbarung/termin", True),
     ("netappoint", r"netappoint", True),
     ("etermin", r"etermin\.net", True),
