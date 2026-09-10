@@ -59,20 +59,12 @@ export default async function BitHome() {
     ].includes(p.slug),
   );
 
-  // Hero-Diashow: ein Bild je Produktkategorie plus die Kompetenzen-Bilder
-  // (Kundenvorgabe), jeweils klickbar zum Ziel.
-  const HERO_SLIDES: HeroSlide[] = [
-    ...categories.flatMap((cat) => {
-      const src = categoryImage[cat.id];
-      return src ? [{ src, alt: cat.name, href: `/bit/${cat.id}`, label: cat.name }] : [];
-    }),
-    ...KOMPETENZEN.map((k) => ({
-      src: k.image,
-      alt: k.title,
-      href: "/bit/kompetenzen",
-      label: k.title,
-    })),
-  ];
+  // Hero-Diashow: ein Bild je Produktkategorie (Kundenvorgabe: nur die
+  // Produkte, keine Kompetenzen-Bilder), jeweils klickbar zur Kategorie.
+  const HERO_SLIDES: HeroSlide[] = categories.flatMap((cat) => {
+    const src = categoryImage[cat.id];
+    return src ? [{ src, alt: cat.name, href: `/bit/${cat.id}`, label: cat.name }] : [];
+  });
 
   return (
     <>
