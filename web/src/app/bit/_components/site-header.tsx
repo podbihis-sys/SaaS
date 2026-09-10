@@ -8,6 +8,16 @@ import { useCart } from "../_lib/cart";
 import { COMPANY } from "../_data/catalog";
 import { NAV, type NavItem } from "../_data/navigation";
 import { NAV_EN } from "../_data/navigation-en";
+import { FlagIcon } from "./flag-icon";
+
+/** Aktive Sprache mit blauem Rahmen, inaktive gedimmt. */
+function flagLinkClass(active: boolean) {
+  return `inline-flex shrink-0 overflow-hidden rounded-[3px] transition ${
+    active
+      ? "ring-2 ring-[#1e4a7a] ring-offset-1"
+      : "opacity-70 ring-1 ring-slate-300 hover:opacity-100 hover:ring-[#1e4a7a]"
+  }`;
+}
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -65,22 +75,25 @@ export function SiteHeader() {
               <Phone className="h-3.5 w-3.5" aria-hidden="true" /> {COMPANY.phone}
             </a>
             <span className="hidden lg:inline">{COMPANY.hours}</span>
-            {/* Sprachwahl */}
-            <span className="flex items-center gap-1.5 border-l border-slate-200 pl-4 font-medium">
+            {/* Sprachwahl – Flaggen statt Text (Kundenvorgabe) */}
+            <span className="flex items-center gap-2 border-l border-slate-200 pl-4">
               <Link
                 href="/bit"
                 aria-current={!english ? "true" : undefined}
-                className={!english ? "text-[#1e4a7a]" : "text-slate-500 hover:text-[#1e4a7a]"}
+                aria-label="Deutsch"
+                title="Deutsch"
+                className={flagLinkClass(!english)}
               >
-                DE
+                <FlagIcon code="de" className="h-4 w-6" />
               </Link>
-              <span aria-hidden="true">/</span>
               <Link
                 href="/bit/en"
                 aria-current={english ? "true" : undefined}
-                className={english ? "text-[#1e4a7a]" : "text-slate-500 hover:text-[#1e4a7a]"}
+                aria-label="English"
+                title="English"
+                className={flagLinkClass(english)}
               >
-                EN
+                <FlagIcon code="gb" className="h-4 w-6" />
               </Link>
             </span>
           </div>
@@ -200,8 +213,24 @@ export function SiteHeader() {
               <span className="text-xs uppercase tracking-wide text-slate-400">
                 {english ? "Language:" : "Sprache:"}
               </span>
-              <Link href="/bit" className={!english ? "text-[#1e4a7a]" : ""}>DE</Link>
-              <Link href="/bit/en" className={english ? "text-[#1e4a7a]" : ""}>EN</Link>
+              <Link
+                href="/bit"
+                aria-current={!english ? "true" : undefined}
+                aria-label="Deutsch"
+                title="Deutsch"
+                className={flagLinkClass(!english)}
+              >
+                <FlagIcon code="de" className="h-5 w-[30px]" />
+              </Link>
+              <Link
+                href="/bit/en"
+                aria-current={english ? "true" : undefined}
+                aria-label="English"
+                title="English"
+                className={flagLinkClass(english)}
+              >
+                <FlagIcon code="gb" className="h-5 w-[30px]" />
+              </Link>
             </div>
           </div>
         </nav>
