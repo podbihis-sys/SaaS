@@ -7,6 +7,7 @@ import { Menu, Phone, ShoppingCart, X } from "lucide-react";
 import { useCart } from "../_lib/cart";
 import { COMPANY } from "../_data/catalog";
 import { NAV, type NavItem } from "../_data/navigation";
+import { NAV_EN } from "../_data/navigation-en";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -33,12 +34,14 @@ export function SiteHeader() {
   }, [pathname]);
 
   const isActive = (item: NavItem) => {
-    if (item.href === "/bit") return pathname === "/bit";
+    if (item.href === "/bit" || item.href === "/bit/en") return pathname === item.href;
     if (pathname.startsWith(item.href)) return true;
     return (item.children ?? []).some((c) => pathname.startsWith(c.href));
   };
 
   const english = pathname.startsWith("/bit/en");
+  const nav = english ? NAV_EN : NAV;
+  const home = english ? "/bit/en" : "/bit";
 
   return (
     <header
@@ -49,7 +52,11 @@ export function SiteHeader() {
       {/* Topbar */}
       <div className="hidden border-b border-slate-100 bg-slate-50/80 md:block">
         <div className="container flex h-9 items-center justify-between text-xs text-slate-500">
-          <span>{COMPANY.legalName} – Verkauf nur an Gewerbekunden</span>
+          <span>
+            {english
+              ? `${COMPANY.legalName} – business customers only`
+              : `${COMPANY.legalName} – Verkauf nur an Gewerbekunden`}
+          </span>
           <div className="flex items-center gap-4">
             <a
               href={`tel:${COMPANY.phone.replace(/\s/g, "")}`}
@@ -82,9 +89,9 @@ export function SiteHeader() {
 
       <div className="container flex h-24 items-center justify-between gap-4 sm:h-28">
         <Link
-          href="/bit"
+          href={home}
           className="shrink-0"
-          aria-label="BIT – Startseite"
+          aria-label={english ? "BIT – Home" : "BIT – Startseite"}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -101,7 +108,7 @@ export function SiteHeader() {
           className="hidden shrink items-center gap-0.5 lg:flex xl:gap-1"
           aria-label="Hauptnavigation"
         >
-          {NAV.map((item) => {
+          {nav.map((item) => {
             const active = isActive(item);
             return (
               <Link
@@ -122,13 +129,17 @@ export function SiteHeader() {
           <button
             onClick={openCart}
             className="group relative flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition-all hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
-            aria-label={`Warenkorb öffnen${count > 0 ? `, ${count} Artikel` : ""}`}
+            aria-label={
+              english
+                ? `Open cart${count > 0 ? `, ${count} items` : ""}`
+                : `Warenkorb öffnen${count > 0 ? `, ${count} Artikel` : ""}`
+            }
           >
             <ShoppingCart
               className="h-5 w-5 transition-transform group-hover:-rotate-6"
               aria-hidden="true"
             />
-            <span className="hidden xl:inline">Warenkorb</span>
+            <span className="hidden xl:inline">{english ? "Cart" : "Warenkorb"}</span>
             {count > 0 && (
               <span
                 aria-hidden="true"
@@ -141,7 +152,11 @@ export function SiteHeader() {
           <button
             onClick={() => setMobileOpen((v) => !v)}
             className="rounded-full border border-slate-200 p-2 text-slate-700 lg:hidden"
-            aria-label={mobileOpen ? "Menü schließen" : "Menü öffnen"}
+            aria-label={
+              mobileOpen
+                ? english ? "Close menu" : "Menü schließen"
+                : english ? "Open menu" : "Menü öffnen"
+            }
             aria-expanded={mobileOpen}
             aria-controls="bit-mobile-nav"
           >
@@ -170,7 +185,7 @@ export function SiteHeader() {
           aria-label="Hauptnavigation mobil"
         >
           <div className="container flex flex-col py-2">
-            {NAV.map((item) => (
+            {nav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -182,7 +197,9 @@ export function SiteHeader() {
               </Link>
             ))}
             <div className="flex items-center gap-3 px-3 py-3 text-sm font-medium text-slate-600">
-              <span className="text-xs uppercase tracking-wide text-slate-400">Sprache:</span>
+              <span className="text-xs uppercase tracking-wide text-slate-400">
+                {english ? "Language:" : "Sprache:"}
+              </span>
               <Link href="/bit" className={!english ? "text-[#1e4a7a]" : ""}>DE</Link>
               <Link href="/bit/en" className={english ? "text-[#1e4a7a]" : ""}>EN</Link>
             </div>

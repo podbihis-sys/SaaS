@@ -70,7 +70,7 @@ export const NAV: NavItem[] = [
   },
   {
     label: "Die BIT",
-    href: "/bit/unternehmen",
+    href: "/bit/die-bit",
     children: [
       { label: "Karriere", href: "/bit/karriere" },
       { label: "Firmengeschichte", href: "/bit/die-bit" },

@@ -88,7 +88,7 @@ export default function ServicePage() {
       <BreadcrumbLd
         items={[
           { name: "Home", path: "/bit" },
-          { name: "Die BIT", path: "/bit/unternehmen" },
+          { name: "Die BIT", path: "/bit/die-bit" },
           { name: "Service", path: "/bit/service" },
         ]}
       />

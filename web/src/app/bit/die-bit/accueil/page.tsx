@@ -10,5 +10,5 @@ export const metadata: Metadata = contentMetadata(SLUG);
 
 export default function Page() {
   return <ContentPage slug={SLUG}
-      parent={{ label: "Die BIT", href: "/bit/unternehmen" }} />;
+      parent={{ label: "Die BIT", href: "/bit/die-bit" }} />;
 }

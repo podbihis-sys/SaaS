@@ -19,16 +19,17 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   if (pathname?.startsWith("/bit/admin")) {
     return <>{children}</>;
   }
+  const locale = pathname?.startsWith("/bit/en") ? ("en" as const) : ("de" as const);
   return (
     <ConsentProvider>
     <CartProvider>
       <div className="min-h-screen bg-white font-sans text-slate-900 antialiased">
         <a href="#bit-main" className="bit-skip-link">
-          Zum Inhalt springen
+          {locale === "en" ? "Skip to content" : "Zum Inhalt springen"}
         </a>
         <SiteHeader />
         <main id="bit-main">{children}</main>
-        <SiteFooter />
+        <SiteFooter locale={locale} />
         <ContactRail />
         <CartDrawer />
         <CookieBanner />
