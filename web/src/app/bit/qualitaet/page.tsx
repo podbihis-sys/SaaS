@@ -21,7 +21,7 @@ export default async function QualitaetPage() {
   return (
     <>
       <section className="border-b border-slate-800 bg-[#0f2742]">
-        <div className="container py-16">
+        <div className="bit-page-hero container py-10">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Qualität</p>
           <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white">
             {c(content, "qualitaet.title", "Geprüfte Qualität, dokumentiert und rückverfolgbar")}

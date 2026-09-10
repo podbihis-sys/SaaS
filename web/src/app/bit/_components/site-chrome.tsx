@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { CartProvider } from "../_lib/cart";
 import { ConsentProvider } from "../_lib/consent";
 import { CartDrawer } from "./cart-drawer";
+import { ChatWidget } from "./chat-widget";
 import { ContactRail } from "./contact-rail";
 import { CookieBanner } from "./cookie-banner";
 import { SiteHeader } from "./site-header";
@@ -33,6 +34,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
         <ContactRail />
         <CartDrawer />
         <CookieBanner />
+        <ChatWidget />
       </div>
     </CartProvider>
     </ConsentProvider>

@@ -170,7 +170,7 @@ export function Catalog({
     <>
       {/* Page header */}
       <section className="border-b border-slate-800 bg-[#0f2742]">
-        <div className="container py-14">
+        <div className="bit-page-hero container py-10">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Produkte</p>
           <h1 className="mt-2 text-4xl font-bold tracking-tight text-white">
             {category ? category.name : "Schläuche, Wellrohre & Befestigung"}

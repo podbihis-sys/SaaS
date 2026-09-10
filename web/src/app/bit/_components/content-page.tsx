@@ -112,7 +112,7 @@ export async function ContentPage({
       {/* Kopfbereich */}
       <section className="relative overflow-hidden border-b border-slate-800 bg-[#0f2742]">
         <div className="bit-hero-glow" aria-hidden="true" />
-        <div className="container relative py-14">
+        <div className="bit-page-hero container relative py-10">
           {section && (
             <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">
               {section.label}

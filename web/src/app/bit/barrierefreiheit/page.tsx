@@ -28,7 +28,7 @@ export default function BarrierefreiheitPage() {
   return (
     <>
       <section className="border-b border-slate-800 bg-[#0f2742]">
-        <div className="container py-14">
+        <div className="bit-page-hero container py-10">
           <p className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">
             <Accessibility className="h-4 w-4" aria-hidden="true" /> Barrierefreiheit
           </p>

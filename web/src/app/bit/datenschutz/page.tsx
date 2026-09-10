@@ -22,7 +22,7 @@ export default function DatenschutzPage() {
   return (
     <>
       <section className="border-b border-slate-800 bg-[#0f2742]">
-        <div className="container py-14">
+        <div className="bit-page-hero container py-10">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Rechtliches</p>
           <h1 className="mt-2 text-4xl font-bold tracking-tight text-white">
             Datenschutzerklärung
@@ -148,8 +148,23 @@ export default function DatenschutzPage() {
           </div>
 
           <div>
+            <h2 className="text-xl font-bold text-slate-900">7. Live-Chat (Smartsupp)</h2>
+            <p className="mt-3 leading-relaxed text-slate-700">
+              Für den Live-Chat nutzen wir den Dienst Smartsupp der Smartsupp.com, s.r.o.,
+              Šumavská 31, 602 00 Brno, Tschechische Republik. Der Chat wird{" "}
+              <strong>erst geladen, wenn Sie ihn starten und dem ausdrücklich zustimmen</strong>{" "}
+              (§ 25 Abs. 1 TDDDG, Art. 6 Abs. 1 lit. a DSGVO). Bis dahin werden keine Daten an
+              Smartsupp übertragen. Nach dem Start verarbeitet Smartsupp Ihre IP-Adresse, den
+              Chatverlauf sowie von Ihnen freiwillig gemachte Angaben und setzt Cookies, damit Ihre
+              Unterhaltung beim Seitenwechsel erhalten bleibt. Ihre Zustimmung wird nur lokal in
+              Ihrem Browser gespeichert; Sie können sie jederzeit widerrufen, indem Sie die
+              Website-Daten in Ihrem Browser löschen.
+            </p>
+          </div>
+
+          <div>
             <h2 className="text-xl font-bold text-slate-900">
-              7. Anfragen über Warenkorb und E-Mail
+              8. Anfragen über Warenkorb und E-Mail
             </h2>
             <p className="mt-3 leading-relaxed text-slate-700">
               Wenn Sie uns eine Anfrage über den Warenkorb oder per E-Mail senden, verarbeiten wir
@@ -164,7 +179,7 @@ export default function DatenschutzPage() {
 
           <div>
             <h2 className="text-xl font-bold text-slate-900">
-              8. Weitergabe von Daten und Drittländer
+              9. Weitergabe von Daten und Drittländer
             </h2>
             <p className="mt-3 leading-relaxed text-slate-700">
               Eine Übermittlung Ihrer Daten an Dritte erfolgt nur, soweit dies zur Vertrags- oder
@@ -176,7 +191,7 @@ export default function DatenschutzPage() {
           </div>
 
           <div>
-            <h2 className="text-xl font-bold text-slate-900">9. Datensicherheit</h2>
+            <h2 className="text-xl font-bold text-slate-900">10. Datensicherheit</h2>
             <p className="mt-3 leading-relaxed text-slate-700">
               Wir setzen bei einem Besuch dieser Website das verbreitete TLS-Verfahren in
               Verbindung mit der jeweils höchsten Verschlüsselungsstufe ein, die Ihr Browser
@@ -187,7 +202,7 @@ export default function DatenschutzPage() {
           </div>
 
           <div>
-            <h2 className="text-xl font-bold text-slate-900">10. Beschwerderecht</h2>
+            <h2 className="text-xl font-bold text-slate-900">11. Beschwerderecht</h2>
             <p className="mt-3 leading-relaxed text-slate-700">
               Sie haben unbeschadet anderweitiger Rechtsbehelfe das Recht, sich bei einer
               Aufsichtsbehörde zu beschweren (Art. 77 DSGVO). Zuständig ist die Landesbeauftragte
@@ -197,7 +212,7 @@ export default function DatenschutzPage() {
           </div>
 
           <div>
-            <h2 className="text-xl font-bold text-slate-900">11. Aktualität</h2>
+            <h2 className="text-xl font-bold text-slate-900">12. Aktualität</h2>
             <p className="mt-3 leading-relaxed text-slate-700">
               Durch die Weiterentwicklung unserer Website oder geänderte gesetzliche Vorgaben kann
               es notwendig werden, diese Datenschutzerklärung anzupassen. Es gilt jeweils die hier

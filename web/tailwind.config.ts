@@ -7,7 +7,9 @@ const config: Config = {
     container: {
       center: true,
       padding: "1.5rem",
-      screens: { "2xl": "1400px" },
+      // 1600 px statt 1400 px: auf 1920-px-Monitoren (Windows-Standard) blieb
+      // sonst je Seite ein sehr breiter leerer Rand.
+      screens: { "2xl": "1600px" },
     },
     extend: {
       fontFamily: {

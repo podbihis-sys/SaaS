@@ -1,11 +1,6 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  BadgeCheck,
-  Boxes,
-  Clock,
-  Factory,
-  Headset,
   Layers,
   PencilRuler,
   Phone,
@@ -33,13 +28,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/bit/en" },
 };
 
-const HERO_TRUST = [
-  { icon: Headset, title: "Technical advice", text: "Personal, competent and solution-oriented." },
-  { icon: Truck, title: "Fast delivery", text: "Standard articles usually within 24 h." },
-  { icon: PencilRuler, title: "Custom cutting & printing", text: "Cut and printed to your specification." },
-  { icon: ShieldCheck, title: "Certified quality", text: "DIN EN ISO 9001 since 1997." },
-];
-
 const COMPETENCES = [
   {
     title: "Tubing cut to length",
@@ -56,13 +44,6 @@ const COMPETENCES = [
     image: "/bit/kompetenzen/farbig.jpg",
     href: "/bit/en/coloured-heat-shrink-tubing",
   },
-];
-
-const STATS = [
-  { icon: Boxes, value: "1,000+", label: "standard articles" },
-  { icon: Clock, value: "24 h", label: "delivery of standard articles" },
-  { icon: Factory, value: "6", label: "production lines" },
-  { icon: BadgeCheck, value: "1996", label: "founded" },
 ];
 
 const ADVANTAGES = [
@@ -131,112 +112,25 @@ export default function EnglishHome() {
   return (
     <>
       {/* ---------------------------------------------------------------- Hero */}
+      {/* Kundenvorgabe: nur der Produktslider – danach direkt die Produktwelten. */}
       <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-white to-slate-50">
         <div className="bit-hero-glow" />
         <div className="absolute inset-0 bit-grid-light" />
-        <div className="container relative grid items-center gap-12 pb-4 pt-4 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:pb-5 lg:pt-5">
-          <div>
-            <Reveal
-              as="span"
-              className="inline-flex w-fit items-center gap-2 rounded-full bg-[#1e4a7a]/10 px-3 py-1 text-xs font-medium text-[#1e4a7a] ring-1 ring-[#1e4a7a]/15"
-            >
-              <BadgeCheck className="h-3.5 w-3.5 text-[#1e4a7a]" />
-              DIN EN ISO 9001 certified since 1997
-            </Reveal>
-            <Reveal
-              as="h1"
-              delay={90}
-              className="mt-5 text-[1.9rem] font-bold leading-[1.15] tracking-tight text-slate-900 sm:text-[2.35rem] xl:text-[2.75rem]"
-            >
-              Heat-shrink tubing, insulating tubing & cable protection from a single source
-            </Reveal>
-            <Reveal as="p" delay={170} className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">
-              Since {COMPANY.foundedYear} we have been supplying automotive, electronics, machine
-              building and medical technology with more than 1,000 standard articles – plus custom
-              cutting and printing. Standard articles are usually delivered within 24 hours.
-            </Reveal>
-            <Reveal delay={250} className="mt-9 flex flex-wrap gap-3">
-              <Link href="/bit/en/products" className="bit-btn bit-btn-dark">
-                <span>Browse products</span>
-                <ArrowRight className="bit-arrow h-4 w-4" />
-              </Link>
-              <Link href="/bit/en/contact" className="bit-btn bit-btn-outline">
-                <span>Request advice</span>
-              </Link>
-            </Reveal>
-          </div>
-
-          {/* Wechselndes Hero-Bild (Slider) */}
-          <Reveal delay={220} className="relative hidden lg:block">
-            {HERO_SLIDES.length > 0 ? (
-              <HeroSlider slides={HERO_SLIDES} />
-            ) : (
-              <div className="relative mx-auto max-w-md">
-                <ProductIllustration
-                  category="geflechtschlauch"
-                  fit="cover"
-                  className="aspect-square w-full rounded-[1.75rem]"
-                />
-              </div>
-            )}
-          </Reveal>
-        </div>
-
-        {/* Trust row */}
-        <div className="relative border-t border-slate-200 bg-white/60">
-          <div className="container grid gap-6 py-8 sm:grid-cols-2 lg:grid-cols-4">
-            {HERO_TRUST.map(({ icon: Icon, title, text }, i) => (
-              <Reveal key={title} delay={i * 70} className="flex items-start gap-3">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#1e4a7a]/10 text-[#1e4a7a]">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <div>
-                  <div className="text-sm font-semibold text-slate-900">{title}</div>
-                  <div className="text-xs text-slate-500">{text}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-
-        {/* Kategorie-Laufschrift */}
-        <nav className="relative border-t border-slate-200 py-4" aria-label="Categories at a glance">
-          <div className="bit-marquee">
-            <div className="bit-marquee__track text-sm font-medium uppercase tracking-[0.18em] text-slate-500">
-              {[...CATEGORIES, ...CATEGORIES].map((c, i) => {
-                const duplicate = i >= CATEGORIES.length;
-                return (
-                  <Link
-                    key={i}
-                    href={`/bit/en/products/${c.id}`}
-                    tabIndex={duplicate ? -1 : undefined}
-                    aria-hidden={duplicate || undefined}
-                    className="flex items-center gap-3 whitespace-nowrap rounded-lg px-2 py-1.5 transition-colors hover:bg-[#1e4a7a]/5 hover:text-[#1e4a7a]"
-                  >
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#38bdf8]" aria-hidden="true" />
-                    {EN_CATEGORY_LABELS[c.id] ?? c.name}
-                  </Link>
-                );
-              })}
+        <div className="container relative py-6 sm:py-8">
+          <h1 className="bit-sr-only">
+            Heat-shrink tubing, insulating tubing & cable protection from a single source
+          </h1>
+          {HERO_SLIDES.length > 0 ? (
+            <HeroSlider slides={HERO_SLIDES} />
+          ) : (
+            <div className="relative mx-auto max-w-md">
+              <ProductIllustration
+                category="geflechtschlauch"
+                fit="cover"
+                className="aspect-square w-full rounded-[1.75rem]"
+              />
             </div>
-          </div>
-        </nav>
-
-        {/* Stat strip */}
-        <div className="relative border-t border-slate-200 bg-slate-50">
-          <div className="container grid grid-cols-2 gap-6 py-8 md:grid-cols-4">
-            {STATS.map(({ icon: Icon, value, label }, i) => (
-              <Reveal key={label} delay={i * 80} className="flex items-center gap-3">
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white ring-1 ring-slate-200">
-                  <Icon className="h-6 w-6 text-[#1e4a7a]" />
-                </span>
-                <div>
-                  <div className="text-2xl font-bold text-slate-900">{value}</div>
-                  <div className="text-xs text-slate-500">{label}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          )}
         </div>
       </section>
 

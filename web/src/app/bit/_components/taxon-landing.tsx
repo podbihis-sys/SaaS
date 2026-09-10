@@ -113,7 +113,7 @@ export function TaxonLanding({
 
       {/* Header */}
       <section className="border-b border-slate-800 bg-[#0f2742]">
-        <div className="container py-14">
+        <div className="bit-page-hero container py-10">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">
             {kind} · {products.length} {products.length === 1 ? "Artikel" : "Artikel"}
           </p>

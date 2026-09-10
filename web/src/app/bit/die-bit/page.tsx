@@ -36,7 +36,7 @@ export default async function UnternehmenPage() {
     <>
       {/* Heller Hero – einheitlich mit den übrigen Seiten (Kundenvorgabe). */}
       <section className="border-b border-slate-800 bg-[#0f2742]">
-        <div className="container py-14">
+        <div className="bit-page-hero container py-10">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Unternehmen</p>
           <h1 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
             {c(content, "unternehmen.title", "Die BIT")}
@@ -139,12 +139,6 @@ export default async function UnternehmenPage() {
               >
                 Zu den offenen Stellen
               </Link>
-              <a
-                href={`mailto:${COMPANY.email}`}
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-white"
-              >
-                Initiativ bewerben
-              </a>
             </div>
           </div>
         </div>
