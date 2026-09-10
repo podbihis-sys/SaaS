@@ -1,10 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { SlidersHorizontal, X } from "lucide-react";
 import { CATEGORIES, PRODUCTS, type Category, type CategoryId, type Product } from "../_data/catalog";
+import { buildSearchIndex, searchIndex } from "../_lib/product-search";
 import { ProductCard } from "./product-card";
+import { ProductSearchBox } from "./product-search-box";
 import {
   MATERIAL_GROUPS,
   type MaterialGroup,
@@ -81,6 +83,13 @@ export function Catalog({
 }) {
   const [filters, setFilters] = useState<Filters>(EMPTY);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [query, setQuery] = useState("");
+
+  // Suchbegriff aus der URL übernehmen (?q=…), z. B. von „In allen Kategorien suchen“.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get("q");
+    if (q) setQuery(q);
+  }, []);
 
   const category = active === "alle" ? undefined : categories.find((c) => c.id === active);
 
@@ -88,6 +97,12 @@ export function Catalog({
     () => (active === "alle" ? products : products.filter((p) => p.category === active)),
     [active, products],
   );
+
+  // Produktsuche über Typ, Name, Material, Eigenschaften und Größen – Treffer
+  // kommen nach Relevanz sortiert zurück, ohne Suchbegriff in Katalogreihenfolge.
+  const index = useMemo(() => buildSearchIndex(byCategory), [byCategory]);
+  const searched = useMemo(() => searchIndex(index, query), [index, query]);
+  const searching = query.trim().length >= 2;
 
   // Verfügbare Filterkriterien aus dem Sortiment der Kategorie ableiten.
   const facets = useMemo(() => {
@@ -142,8 +157,8 @@ export function Catalog({
   );
 
   const filtered = useMemo(
-    () => byCategory.filter((p) => matches(p, effective)),
-    [byCategory, effective],
+    () => searched.filter((p) => matches(p, effective)),
+    [searched, effective],
   );
 
   const activeFilterCount =
@@ -326,9 +341,19 @@ export function Catalog({
 
           {/* Results */}
           <div>
+            {/* Produktsuche (Kundenvorgabe): Name, Typ, Material, Eigenschaften, Größen */}
+            <div className="mb-4">
+              <ProductSearchBox value={query} onChange={setQuery} />
+            </div>
             <div className="mb-5 flex items-center justify-between gap-3">
               <p className="text-sm text-slate-600">
                 <span className="font-semibold text-slate-900">{filtered.length}</span> Artikel
+                {searching && (
+                  <>
+                    {" "}
+                    für <span className="font-medium text-slate-900">„{query.trim()}“</span>
+                  </>
+                )}
               </p>
               {facets.any && (
                 <button
@@ -350,13 +375,39 @@ export function Catalog({
               </div>
             ) : (
               <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-12 text-center">
-                <p className="text-slate-600">Keine Artikel für diese Filter gefunden.</p>
-                <button
-                  onClick={() => setFilters(EMPTY)}
-                  className="mt-3 text-sm font-semibold text-[#1e4a7a] hover:underline"
-                >
-                  Filter zurücksetzen
-                </button>
+                <p className="text-slate-600">
+                  {searching
+                    ? `Keine Artikel für „${query.trim()}“ gefunden.`
+                    : "Keine Artikel für diese Filter gefunden."}
+                </p>
+                <div className="mt-3 flex flex-wrap justify-center gap-4 text-sm font-semibold">
+                  {searching && (
+                    <button
+                      type="button"
+                      onClick={() => setQuery("")}
+                      className="text-[#1e4a7a] hover:underline"
+                    >
+                      Suche löschen
+                    </button>
+                  )}
+                  {activeFilterCount > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setFilters(EMPTY)}
+                      className="text-[#1e4a7a] hover:underline"
+                    >
+                      Filter zurücksetzen
+                    </button>
+                  )}
+                  {searching && active !== "alle" && (
+                    <Link
+                      href={`/bit/produkte?q=${encodeURIComponent(query.trim())}`}
+                      className="text-[#1e4a7a] hover:underline"
+                    >
+                      In allen Kategorien suchen
+                    </Link>
+                  )}
+                </div>
               </div>
             )}
           </div>
