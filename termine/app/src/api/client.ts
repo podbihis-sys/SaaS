@@ -37,6 +37,22 @@ function resolveBaseUrl(): string {
 export const API_BASE_URL = resolveBaseUrl();
 
 /**
+ * A release build has no packager to fall back on, so an unset
+ * `EXPO_PUBLIC_API_URL` leaves it pointing at the phone's own localhost —
+ * where every request fails with a network error that looks like a bug in
+ * the app. Saying so once, loudly, is the difference between "TestFlight
+ * build is broken" and "the build profile is missing its API URL".
+ */
+export const API_URL_MISSING = !__DEV__ && !process.env.EXPO_PUBLIC_API_URL;
+
+if (API_URL_MISSING) {
+  console.error(
+    'EXPO_PUBLIC_API_URL ist in diesem Build nicht gesetzt — die App kann keinen Server erreichen. ' +
+      'In eas.json im jeweiligen Build-Profil unter "env" eintragen.',
+  );
+}
+
+/**
  * Token acquisition is deduplicated: several queries mount at once on a cold
  * start, and without this each would create its own account.
  */

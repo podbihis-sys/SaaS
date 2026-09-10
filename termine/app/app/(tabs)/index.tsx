@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import { FlatList, RefreshControl, View } from 'react-native';
 
+import { API_URL_MISSING } from '@/api/client';
 import { useWatches } from '@/api/hooks';
 import { WatchCard } from '@/components/WatchCard';
 import { Button, EmptyState, ErrorState, LoadingState } from '@/components/ui';
@@ -9,6 +10,15 @@ import { Button, EmptyState, ErrorState, LoadingState } from '@/components/ui';
 export default function WatchesScreen() {
   const router = useRouter();
   const { data, isLoading, isError, error, refetch, isRefetching } = useWatches();
+
+  // A build shipped without an API URL cannot reach anything, and every screen
+  // would otherwise show "server not reachable" — true, but it sends whoever
+  // is testing to look in the wrong place.
+  if (API_URL_MISSING) {
+    return (
+      <ErrorState message="Dieser Build hat keine Server-Adresse (EXPO_PUBLIC_API_URL fehlt in eas.json)." />
+    );
+  }
 
   if (isLoading) return <LoadingState />;
 

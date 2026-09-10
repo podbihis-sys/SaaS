@@ -41,15 +41,75 @@ npm run typecheck          # tsc --noEmit, strict
 npx expo export --platform web   # proves the bundle builds
 ```
 
-## Native builds
+## Auf das eigene iPhone: TestFlight
 
-Push notifications need a real build, not Expo Go, and a real EAS project id in
-`app.json` (`extra.eas.projectId` is a placeholder).
+**Xcode wird nicht gebraucht.** EAS baut die iOS-Binary auf Apples Hardware in
+der Cloud und lädt sie zu App Store Connect hoch; ein Mac ist an keiner Stelle
+nötig. Was du brauchst, ist ein **Apple Developer Program**-Konto (99 $/Jahr)
+und ein Expo-Konto (kostenlos).
+
+Alles läuft in `termine/app`:
 
 ```bash
-npx eas build --platform ios --profile preview
-npx eas build --platform android --profile preview
+npm install -g eas-cli
+eas login                       # Expo-Konto
+eas init                        # ersetzt extra.eas.projectId in app.json
 ```
+
+Vor dem ersten Build sind **drei Werte** einzutragen — der Build ist sonst
+technisch in Ordnung und praktisch nutzlos:
+
+1. **`eas.json` → `build.production.env.EXPO_PUBLIC_API_URL`** — die öffentliche
+   Adresse deines Backends. `https://api.example.invalid` ist ein Platzhalter.
+   Ohne erreichbare Adresse zeigt die App auf dem Gerät nur Fehler; sie sagt das
+   inzwischen ausdrücklich, statt „Server nicht erreichbar" zu melden.
+2. **`app.json` → `ios.bundleIdentifier`** — `de.terminradar.app` ist geraten.
+   Er muss zu einer App-ID gehören, die dir gehört, und ist nach dem ersten
+   Upload nicht mehr änderbar.
+3. **`eas.json` → `submit.production.ios.ascAppId`** — die App-ID aus App Store
+   Connect, nachdem du dort einmal einen App-Eintrag angelegt hast.
+
+Dann:
+
+```bash
+eas build --platform ios --profile testflight
+eas submit --platform ios --latest
+```
+
+Der Build dauert 10–20 Minuten, der Upload wenige. Danach verarbeitet Apple die
+Binary (nochmal 5–30 Minuten), und sie erscheint in App Store Connect unter
+**TestFlight**. Dich selbst als internen Tester hinzufügen, TestFlight-App auf
+dem iPhone öffnen — fertig. Für interne Tester (bis 100, dein eigenes Team) ist
+**keine Beta-Prüfung** durch Apple nötig; erst externe Tester brauchen eine.
+
+Beim ersten `eas build` fragt die CLI nach deinen Apple-Zugangsdaten und legt
+Zertifikat und Provisioning-Profil selbst an. Gib die Daten in der CLI ein,
+nicht hier im Chat.
+
+**Android:** derselbe Weg, `--platform android`, und statt TestFlight der
+interne Testkanal der Play Console. Rechne dort mit der Hürde für neue private
+Entwicklerkonten: 20 Tester über 14 Tage geschlossenen Test vor der
+Produktivfreigabe.
+
+### Was schon geprüft ist
+
+| Prüfung | Ergebnis |
+| --- | --- |
+| `npx expo-doctor` | 18/18 |
+| `tsc --noEmit` | sauber |
+| `expo export --platform ios` | bündelt, 3,8 MB Hermes-Bytecode |
+| Icons, Splash, Notification-Icon | erzeugt (`scripts/make_icons.py`) |
+| `eas.json` mit Profilen development/preview/testflight/production | vorhanden |
+
+### Andere Builds
+
+```bash
+eas build --platform ios --profile preview   # Simulator-Build, ohne Apple-Konto
+eas build --platform android --profile preview
+```
+
+Push-Benachrichtigungen brauchen einen echten Build — in Expo Go funktionieren
+sie nicht.
 
 ## Notes on the setup
 
@@ -80,6 +140,9 @@ who is watching.
 
 ```
 app/                 expo-router screens
+assets/              icon, splash, notification icon — generated, not hand-drawn
+scripts/
+  make_icons.py      redraws assets/ from thirty lines of geometry
 src/
   api/               client, typed endpoints, React Query hooks
   components/        ui primitives, SlotCard, WatchCard, form pickers
