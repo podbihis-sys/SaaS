@@ -213,7 +213,9 @@ export default async function ProductDetail({
                 <dt className="text-slate-500">Bezugseinheit</dt>
                 <dd className="mt-0.5 font-medium text-slate-900">
                   {rolls
-                    ? "Rolle (nur ganze Rollen)"
+                    ? laengenware
+                      ? "Länge (á 1,22 m)"
+                      : "Rolle (nur ganze Rollen)"
                     : packs
                       ? "Gebinde (nur ganze Gebinde)"
                       : product.unit}
@@ -310,7 +312,13 @@ export default async function ProductDetail({
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-sm font-medium text-[#1e4a7a] hover:underline"
                 >
-                  <FileText className="h-4 w-4" /> Produktdatenblatt (PDF)
+                  <span
+                    aria-hidden="true"
+                    className="inline-flex items-center gap-0.5 rounded-md bg-red-600 px-1.5 py-0.5 text-[10px] font-bold uppercase leading-none text-white"
+                  >
+                    <FileText className="h-3 w-3" /> PDF
+                  </span>
+                  Produktdatenblatt
                 </a>
               )}
             </div>

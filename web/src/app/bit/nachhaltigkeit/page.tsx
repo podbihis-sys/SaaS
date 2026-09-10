@@ -89,15 +89,15 @@ export default async function NachhaltigkeitPage() {
   const content = await getContent();
   return (
     <>
-      <section className="border-b border-slate-200 bg-slate-50">
+      <section className="border-b border-slate-800 bg-[#0f2742]">
         <div className="container py-16">
-          <p className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">
+          <p className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">
             <Leaf className="h-4 w-4" /> Nachhaltigkeit
           </p>
-          <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-slate-900">
+          <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white">
             {c(content, "nachhaltigkeit.title", "Verantwortung für Produkt, Region und Team")}
           </h1>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
+          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-300">
             {c(
               content,
               "nachhaltigkeit.intro",

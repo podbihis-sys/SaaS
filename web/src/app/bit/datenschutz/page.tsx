@@ -21,13 +21,13 @@ const RIGHTS = [
 export default function DatenschutzPage() {
   return (
     <>
-      <section className="border-b border-slate-200 bg-slate-50">
+      <section className="border-b border-slate-800 bg-[#0f2742]">
         <div className="container py-14">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">Rechtliches</p>
-          <h1 className="mt-2 text-4xl font-bold tracking-tight text-slate-900">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Rechtliches</p>
+          <h1 className="mt-2 text-4xl font-bold tracking-tight text-white">
             Datenschutzerklärung
           </h1>
-          <p className="mt-3 max-w-2xl text-slate-600">
+          <p className="mt-3 max-w-2xl text-slate-300">
             Wir informieren Sie nachfolgend über die Verarbeitung personenbezogener Daten beim
             Besuch dieser Website.
           </p>

@@ -112,18 +112,18 @@ export function TaxonLanding({
       </nav>
 
       {/* Header */}
-      <section className="border-b border-slate-200 bg-slate-50">
+      <section className="border-b border-slate-800 bg-[#0f2742]">
         <div className="container py-14">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">
             {kind} · {products.length} {products.length === 1 ? "Artikel" : "Artikel"}
           </p>
-          <h1 className="mt-2 text-4xl font-bold tracking-tight text-slate-900">{h1}</h1>
-          <p className="mt-4 max-w-3xl leading-relaxed text-slate-600">{intro}</p>
+          <h1 className="mt-2 text-4xl font-bold tracking-tight text-white">{h1}</h1>
+          <p className="mt-4 max-w-3xl leading-relaxed text-slate-300">{intro}</p>
 
           {/* Verfeinerung nach Kategorie – je eigene URL */}
           {refine && refine.length > 0 && (
             <div className="mt-6 flex flex-wrap gap-2">
-              <span className="self-center text-sm text-slate-500">Nach Kategorie:</span>
+              <span className="self-center text-sm text-slate-400">Nach Kategorie:</span>
               {refine.map((r) => (
                 <Link
                   key={r.href}
@@ -131,13 +131,13 @@ export function TaxonLanding({
                   aria-current={r.active ? "page" : undefined}
                   className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm font-medium transition-colors ${
                     r.active
-                      ? "border-[#1e4a7a] bg-[#1e4a7a] text-white"
-                      : "border-slate-300 bg-white text-slate-700 hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
+                      ? "border-[#38bdf8] bg-[#38bdf8] text-[#0f2742]"
+                      : "border-slate-600 bg-white/5 text-slate-200 hover:border-[#38bdf8] hover:text-[#38bdf8]"
                   }`}
                 >
                   {r.label}
                   {typeof r.count === "number" && (
-                    <span className={r.active ? "text-white/70" : "text-slate-500"}>{r.count}</span>
+                    <span className={r.active ? "text-[#0f2742]/70" : "text-slate-400"}>{r.count}</span>
                   )}
                 </Link>
               ))}

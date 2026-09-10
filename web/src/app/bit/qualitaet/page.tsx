@@ -20,13 +20,13 @@ export default async function QualitaetPage() {
   const content = await getContent();
   return (
     <>
-      <section className="border-b border-slate-200 bg-slate-50">
+      <section className="border-b border-slate-800 bg-[#0f2742]">
         <div className="container py-16">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#1e4a7a]">Qualität</p>
-          <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-slate-900">
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Qualität</p>
+          <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white">
             {c(content, "qualitaet.title", "Geprüfte Qualität, dokumentiert und rückverfolgbar")}
           </h1>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
+          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-300">
             {c(
               content,
               "qualitaet.intro",

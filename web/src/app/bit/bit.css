@@ -429,9 +429,13 @@
   .bit-aurora::after,
   .bit-float,
   .bit-spin-slow,
-  .bit-marquee__track,
   .bit-pulse {
     animation: none !important;
+  }
+  /* Laufschriften bleiben auf Kundenwunsch in Bewegung – bei reduzierter
+     Bewegung deutlich langsamer statt gestoppt. */
+  .bit-marquee__track {
+    animation-duration: 90s !important;
   }
   .bit-btn::after {
     display: none;

@@ -15,8 +15,9 @@ export interface HeroSlide {
  * jedes klickbar zur jeweiligen Kategorieseite (Kundenvorgabe: ohne
  * sichtbare Steuerleiste und ohne Badge).
  *
- * Barrierefreiheit: Der Lauf pausiert bei Hover und Tastatur-Fokus; bei
- * prefers-reduced-motion läuft die Diashow gar nicht erst los.
+ * Barrierefreiheit: Der Lauf pausiert bei Hover und Tastatur-Fokus. Bei
+ * prefers-reduced-motion läuft der Wechsel weiter (Kundenvorgabe), aber als
+ * harter Bildwechsel ohne Überblendung.
  */
 export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
   const [index, setIndex] = useState(0);
@@ -30,10 +31,10 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
   }, []);
 
   useEffect(() => {
-    if (slides.length <= 1 || paused || reduced) return;
+    if (slides.length <= 1 || paused) return;
     const id = setInterval(() => setIndex((i) => (i + 1) % slides.length), 4000);
     return () => clearInterval(id);
-  }, [slides.length, paused, reduced]);
+  }, [slides.length, paused]);
 
   const current = slides[index];
   if (!current) return null;
@@ -63,9 +64,9 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
               alt={slide.alt}
               loading={i === 0 ? "eager" : "lazy"}
               aria-hidden={i !== index}
-              className={`absolute inset-0 h-full w-full object-contain object-top mix-blend-multiply transition-opacity duration-1000 ${
-                i === index ? "opacity-100" : "opacity-0"
-              }`}
+              className={`absolute inset-0 h-full w-full object-contain object-top mix-blend-multiply ${
+                reduced ? "" : "transition-opacity duration-1000"
+              } ${i === index ? "opacity-100" : "opacity-0"}`}
             />
           ))}
           {/* Kategorie-Label als Pill auf dem Bild – kostet keine Bauhöhe. */}

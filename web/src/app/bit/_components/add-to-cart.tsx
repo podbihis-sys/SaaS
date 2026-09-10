@@ -11,16 +11,25 @@ export function AddToCart({ product }: { product: Product }) {
   const { addItem } = useCart();
   const rolls = getRolls(product.slug);
   const packs = !rolls ? getPacks(product.slug) : undefined;
+  // Längenware: jede Größe wird als feste Länge (1,22 m) geliefert.
+  const laengenware = rolls?.every((r) => r.vpe.includes("1,22")) ?? false;
+  // Rollenware, die es laut Artikeltext zusätzlich als 1,22-m-Länge gibt.
+  const auchAlsLaenge = !laengenware && !!rolls && product.description.includes("1,22");
 
   // Einheitliche Variantenliste für Rollen- bzw. Gebindeware.
   const variantList = rolls
-    ? rolls.map((r) => ({ label: r.label, amount: r.metersPerRoll }))
+    ? rolls.map((r) => ({
+        label: r.label,
+        amount: laengenware ? 1.22 : r.metersPerRoll,
+        vpe: r.vpe,
+      }))
     : packs
-      ? packs.map((p) => ({ label: p.label, amount: p.stueckPerPack }))
+      ? packs.map((p) => ({ label: p.label, amount: p.stueckPerPack, vpe: p.vpe }))
       : null;
   const amountUnit = rolls ? "m" : "Stück";
-  const bundle = rolls ? "Rolle" : "Gebinde";
-  const bundlePl = rolls ? "Rollen" : "Gebinde";
+  const bundle = rolls ? (laengenware ? "Länge" : "Rolle") : "Gebinde";
+  const bundlePl = rolls ? (laengenware ? "Längen" : "Rollen") : "Gebinde";
+  const fmt = (n: number) => n.toLocaleString("de-DE", { maximumFractionDigits: 2 });
 
   const [size, setSize] = useState<string>("");
   const [color, setColor] = useState<string>(product.colors?.[0] ?? "");
@@ -80,7 +89,7 @@ export function AddToCart({ product }: { product: Product }) {
                 >
                   <span>{v.label}</span>
                   <span className={`text-[11px] ${size === v.label ? "text-white/80" : "text-slate-500"}`}>
-                    {v.amount} {amountUnit} / {bundle}
+                    {rolls ? `${v.vpe} / ${bundle}` : `${v.amount} ${amountUnit} / ${bundle}`}
                   </span>
                 </button>
               ))
@@ -170,16 +179,24 @@ export function AddToCart({ product }: { product: Product }) {
           </div>
           {variantList && selected && (
             <span className="text-sm text-slate-600">
-              = <span className="font-semibold text-slate-900">{quantity * selected.amount} {amountUnit}</span>{" "}
-              gesamt ({quantity} {quantity === 1 ? bundle : bundlePl} × {selected.amount} {amountUnit})
+              = <span className="font-semibold text-slate-900">{fmt(quantity * selected.amount)} {amountUnit}</span>{" "}
+              gesamt ({quantity} {quantity === 1 ? bundle : bundlePl} × {fmt(selected.amount)} {amountUnit})
             </span>
           )}
         </div>
         {variantList && (
           <p className="mt-2 text-xs text-slate-500">
             {rolls
-              ? "Lieferung nur in ganzen Rollen – die Meterzahl je Rolle hängt vom Durchmesser ab."
+              ? laengenware
+                ? "Lieferung als Längenware – jede Größe wird in Längen á 1,22 m geliefert."
+                : "Lieferung nur in ganzen Rollen – die Meterzahl je Rolle hängt vom Durchmesser ab."
               : "Lieferung nur in ganzen Gebinden – die Stückzahl je Gebinde hängt von der Größe ab."}
+          </p>
+        )}
+        {auchAlsLaenge && (
+          <p className="mt-1 text-xs text-slate-500">
+            Jede Größe ist ebenfalls als Länge mit 1,22 m erhältlich – vermerken Sie den Wunsch
+            einfach in Ihrer Anfrage.
           </p>
         )}
       </div>
