@@ -112,12 +112,21 @@ export default function EnglishHome() {
     ].includes(p.slug),
   );
 
-  // Hero-Diashow: ein Bild je Produktkategorie, jeweils klickbar zur Kategorie.
-  const HERO_SLIDES: HeroSlide[] = CATEGORIES.flatMap((cat) => {
-    const src = CATEGORY_IMAGE[cat.id];
-    const label = EN_CATEGORY_LABELS[cat.id] ?? cat.name;
-    return src ? [{ src, alt: label, href: `/bit/en/products/${cat.id}`, label }] : [];
-  });
+  // Hero-Diashow: ein Bild je Produktkategorie plus die Kompetenzen-Bilder
+  // (Kundenvorgabe), jeweils klickbar zum Ziel.
+  const HERO_SLIDES: HeroSlide[] = [
+    ...CATEGORIES.flatMap((cat) => {
+      const src = CATEGORY_IMAGE[cat.id];
+      const label = EN_CATEGORY_LABELS[cat.id] ?? cat.name;
+      return src ? [{ src, alt: label, href: `/bit/en/products/${cat.id}`, label }] : [];
+    }),
+    ...COMPETENCES.map((k) => ({
+      src: k.image,
+      alt: k.title,
+      href: k.href,
+      label: k.title,
+    })),
+  ];
 
   return (
     <>
