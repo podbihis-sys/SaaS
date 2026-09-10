@@ -5,10 +5,28 @@ import { getCategory, productHref } from "../_data/catalog";
 import { diameterLabel, shrinkRatio } from "../_data/attributes";
 import { ProductIllustration } from "./product-illustration";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+  locale = "de",
+  href,
+  nameOverride,
+  categoryLabel,
+}: {
+  product: Product;
+  locale?: "de" | "en";
+  /** Abweichendes Linkziel (EN-Produktseiten). */
+  href?: string;
+  /** Abweichender Anzeigename (EN-Overlay). */
+  nameOverride?: string;
+  /** Abweichendes Kategorielabel (EN). */
+  categoryLabel?: string;
+}) {
+  const en = locale === "en";
   const category = getCategory(product.category);
   const shrink = shrinkRatio(product);
   const diameter = diameterLabel(product);
+  const name = nameOverride ?? product.name;
+  const target = href ?? productHref(product);
   return (
     <article className="bit-card group relative flex flex-col overflow-hidden">
       <div className="relative aspect-[4/3] overflow-hidden rounded-t-[1.3rem] bg-gradient-to-br from-slate-50 to-slate-100">
@@ -27,13 +45,13 @@ export function ProductCard({ product }: { product: Product }) {
           </span>
         )}
         <span className="absolute right-3 top-3 rounded-full bg-white/85 px-2.5 py-1 text-xs font-medium text-[#1e4a7a] shadow-sm backdrop-blur">
-          {category?.name}
+          {categoryLabel ?? category?.name}
         </span>
         {/* Schrumpfrate als Icon-Badge */}
         {shrink && (
           <span
             className="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full bg-[#38bdf8] px-2.5 py-1 text-xs font-bold text-[#0f2742] shadow-sm"
-            title={`Schrumpfrate ${shrink.label}`}
+            title={en ? `Shrink ratio ${shrink.label}` : `Schrumpfrate ${shrink.label}`}
           >
             <Shrink className="h-3.5 w-3.5" />
             {shrink.label}
@@ -50,13 +68,13 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="flex flex-1 flex-col p-5">
         <h3 className="text-lg font-semibold leading-snug text-slate-900 transition-colors group-hover:text-[#1e4a7a]">
           <Link
-            href={productHref(product)}
+            href={target}
             className="before:absolute before:inset-0 before:z-10"
-            aria-label={`${product.name} – Details & Anfrage`}
+            aria-label={en ? `${name} – details & inquiry` : `${name} – Details & Anfrage`}
           >
-            {product.code && product.code !== product.name && !product.name.includes(product.code)
-              ? `${product.name} (${product.code})`
-              : product.name}
+            {product.code && product.code !== name && !name.includes(product.code)
+              ? `${name} (${product.code})`
+              : name}
           </Link>
         </h3>
         <p className="mt-1 text-sm text-[#1d4ed8]">{product.tagline}</p>
@@ -78,12 +96,14 @@ export function ProductCard({ product }: { product: Product }) {
             </span>
           ))}
           <span className="inline-flex items-center rounded-full bg-[#1e4a7a]/10 px-2.5 py-1 text-xs font-medium text-[#1e4a7a]">
-            {product.sizes.length} Größen
+            {product.sizes.length} {en ? "sizes" : "Größen"}
           </span>
         </div>
 
         <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
-          <span className="text-sm font-semibold text-slate-900">Details &amp; Anfrage</span>
+          <span className="text-sm font-semibold text-slate-900">
+            {en ? "Details & inquiry" : "Details & Anfrage"}
+          </span>
           <span className="bit-arrow-circle">
             <ArrowUpRight className="h-4 w-4" />
           </span>

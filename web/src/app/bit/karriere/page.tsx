@@ -205,7 +205,7 @@ export default async function KarrierePage() {
             </p>
             <p className="mt-4 leading-relaxed text-slate-700">
               Sie möchten mehr über die {COMPANY.shortName} erfahren?{" "}
-              <Link href="/bit/unternehmen" className="text-[#1e4a7a] underline hover:no-underline">
+              <Link href="/bit/die-bit" className="text-[#1e4a7a] underline hover:no-underline">
                 Lernen Sie die BIT kennen
               </Link>
               .

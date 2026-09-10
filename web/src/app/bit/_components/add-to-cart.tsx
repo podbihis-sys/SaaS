@@ -7,7 +7,49 @@ import { getRolls } from "../_data/rolls";
 import { getPacks } from "../_data/packs";
 import { useCart } from "../_lib/cart";
 
-export function AddToCart({ product }: { product: Product }) {
+const STRINGS = {
+  de: {
+    chooseSize: "Größe wählen", required: "erforderlich",
+    sizeError: "Bitte wählen Sie zuerst eine Größe aus.",
+    finish: "Ausführung", quantity: "Menge", total: "gesamt",
+    laengenHint: "Lieferung als Längenware – jede Größe wird in Längen á 1,22 m geliefert.",
+    rollenHint: "Lieferung nur in ganzen Rollen – die Meterzahl je Rolle hängt vom Durchmesser ab.",
+    gebindeHint: "Lieferung nur in ganzen Gebinden – die Stückzahl je Gebinde hängt von der Größe ab.",
+    auchAlsLaenge: "Jede Größe ist ebenfalls als Länge mit 1,22 m erhältlich – vermerken Sie den Wunsch einfach in Ihrer Anfrage.",
+    added: "Zum Warenkorb hinzugefügt", add: "In den Warenkorb",
+    addedStatus: "wurde zum Warenkorb hinzugefügt.",
+    note: "Unverbindliche Anfrage · individuelles Angebot innerhalb von 24 Stunden",
+    less: "Weniger", more: "Mehr", qty: "Menge", whole: "ganze",
+    bundle: { laenge: "Länge", rolle: "Rolle", gebinde: "Gebinde" },
+    bundlePl: { laenge: "Längen", rolle: "Rollen", gebinde: "Gebinde" },
+    stueck: "Stück",
+  },
+  en: {
+    chooseSize: "Choose a size", required: "required",
+    sizeError: "Please choose a size first.",
+    finish: "Colour / version", quantity: "Quantity", total: "in total",
+    laengenHint: "Supplied as fixed lengths – every size ships in lengths of 1.22 m.",
+    rollenHint: "Supplied in whole rolls only – metres per roll depend on the diameter.",
+    gebindeHint: "Supplied in whole packs only – pieces per pack depend on the size.",
+    auchAlsLaenge: "Every size is also available as a 1.22 m length – simply mention it in your inquiry.",
+    added: "Added to cart", add: "Add to cart",
+    addedStatus: "was added to the cart.",
+    note: "Non-binding inquiry · individual quote within 24 hours",
+    less: "Less", more: "More", qty: "Quantity", whole: "whole",
+    bundle: { laenge: "Length", rolle: "Roll", gebinde: "Pack" },
+    bundlePl: { laenge: "lengths", rolle: "rolls", gebinde: "packs" },
+    stueck: "pcs",
+  },
+} as const;
+
+export function AddToCart({
+  product,
+  locale = "de",
+}: {
+  product: Product;
+  locale?: "de" | "en";
+}) {
+  const t = STRINGS[locale];
   const { addItem } = useCart();
   const rolls = getRolls(product.slug);
   const packs = !rolls ? getPacks(product.slug) : undefined;
@@ -33,10 +75,13 @@ export function AddToCart({ product }: { product: Product }) {
         ? packs.map((p) => ({ label: p.label, amount: p.stueckPerPack, vpe: p.vpe }))
         : null;
   const meterware = rolls != null || laengenOhneTabelle;
-  const amountUnit = meterware ? "m" : "Stück";
-  const bundle = meterware ? (laengenware ? "Länge" : "Rolle") : "Gebinde";
-  const bundlePl = meterware ? (laengenware ? "Längen" : "Rollen") : "Gebinde";
-  const fmt = (n: number) => n.toLocaleString("de-DE", { maximumFractionDigits: 2 });
+  const amountUnit = meterware ? "m" : t.stueck;
+  const bundle = meterware ? (laengenware ? t.bundle.laenge : t.bundle.rolle) : t.bundle.gebinde;
+  const bundlePl = meterware
+    ? (laengenware ? t.bundlePl.laenge : t.bundlePl.rolle)
+    : t.bundlePl.gebinde;
+  const fmt = (n: number) =>
+    n.toLocaleString(locale === "en" ? "en-GB" : "de-DE", { maximumFractionDigits: 2 });
 
   const [size, setSize] = useState<string>("");
   const [color, setColor] = useState<string>(product.colors?.[0] ?? "");
@@ -75,8 +120,8 @@ export function AddToCart({ product }: { product: Product }) {
       {/* Größe – Pflichtauswahl */}
       <div className="relative">
         <label className="flex items-center justify-between text-sm font-semibold text-slate-900">
-          <span>Größe wählen</span>
-          <span className="text-xs font-normal text-slate-500">erforderlich</span>
+          <span>{t.chooseSize}</span>
+          <span className="text-xs font-normal text-slate-500">{t.required}</span>
         </label>
         <div className="mt-2.5 flex flex-wrap gap-2">
           {variantList
@@ -120,7 +165,7 @@ export function AddToCart({ product }: { product: Product }) {
         </div>
         {error && (
           <p role="alert" className="mt-2 animate-[bit-pulse_0.4s] text-sm font-medium text-red-700">
-            Bitte wählen Sie zuerst eine Größe aus.
+            {t.sizeError}
           </p>
         )}
       </div>
@@ -128,7 +173,7 @@ export function AddToCart({ product }: { product: Product }) {
       {/* Farbe */}
       {product.colors && product.colors.length > 0 && (
         <div className="relative mt-5">
-          <label className="text-sm font-semibold text-slate-900">Ausführung</label>
+          <label className="text-sm font-semibold text-slate-900">{t.finish}</label>
           <div className="mt-2.5 flex flex-wrap gap-2">
             {product.colors.map((c) => (
               <button
@@ -151,9 +196,9 @@ export function AddToCart({ product }: { product: Product }) {
       {/* Menge */}
       <div className="relative mt-5">
         <label className="text-sm font-semibold text-slate-900">
-          Menge{" "}
+          {t.qty}{" "}
           <span className="font-normal text-slate-500">
-            ({variantList ? `ganze ${bundlePl}` : product.unit})
+            ({variantList ? `${t.whole} ${bundlePl}` : product.unit})
           </span>
         </label>
         <div className="mt-2.5 flex flex-wrap items-center gap-3">
@@ -161,7 +206,7 @@ export function AddToCart({ product }: { product: Product }) {
             <button
               type="button"
               onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-              aria-label="Weniger"
+              aria-label={t.less}
               className="rounded-l-full px-3 py-2.5 text-slate-600 transition-colors hover:bg-slate-50 hover:text-[#1e4a7a]"
             >
               <Minus className="h-4 w-4" />
@@ -170,7 +215,7 @@ export function AddToCart({ product }: { product: Product }) {
               type="number"
               min={1}
               step={1}
-              aria-label="Menge"
+              aria-label={t.qty}
               value={quantity}
               onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value || "1", 10)))}
               className="w-16 border-x border-slate-200 py-2 text-center text-sm font-medium text-slate-900 outline-none"
@@ -178,7 +223,7 @@ export function AddToCart({ product }: { product: Product }) {
             <button
               type="button"
               onClick={() => setQuantity((q) => q + 1)}
-              aria-label="Mehr"
+              aria-label={t.more}
               className="rounded-r-full px-3 py-2.5 text-slate-600 transition-colors hover:bg-slate-50 hover:text-[#1e4a7a]"
             >
               <Plus className="h-4 w-4" />
@@ -187,23 +232,18 @@ export function AddToCart({ product }: { product: Product }) {
           {variantList && selected && (
             <span className="text-sm text-slate-600">
               = <span className="font-semibold text-slate-900">{fmt(quantity * selected.amount)} {amountUnit}</span>{" "}
-              gesamt ({quantity} {quantity === 1 ? bundle : bundlePl} × {fmt(selected.amount)} {amountUnit})
+              {t.total} ({quantity} {quantity === 1 ? bundle : bundlePl} × {fmt(selected.amount)} {amountUnit})
             </span>
           )}
         </div>
         {variantList && (
           <p className="mt-2 text-xs text-slate-500">
-            {meterware
-              ? laengenware
-                ? "Lieferung als Längenware – jede Größe wird in Längen á 1,22 m geliefert."
-                : "Lieferung nur in ganzen Rollen – die Meterzahl je Rolle hängt vom Durchmesser ab."
-              : "Lieferung nur in ganzen Gebinden – die Stückzahl je Gebinde hängt von der Größe ab."}
+            {meterware ? (laengenware ? t.laengenHint : t.rollenHint) : t.gebindeHint}
           </p>
         )}
         {auchAlsLaenge && (
           <p className="mt-1 text-xs text-slate-500">
-            Jede Größe ist ebenfalls als Länge mit 1,22 m erhältlich – vermerken Sie den Wunsch
-            einfach in Ihrer Anfrage.
+            {t.auchAlsLaenge}
           </p>
         )}
       </div>
@@ -218,21 +258,21 @@ export function AddToCart({ product }: { product: Product }) {
         {added ? (
           <>
             <Check className="h-5 w-5" aria-hidden="true" />
-            <span>Zum Warenkorb hinzugefügt</span>
+            <span>{t.added}</span>
           </>
         ) : (
           <>
             <ShoppingCart className="h-5 w-5" aria-hidden="true" />
-            <span>In den Warenkorb</span>
+            <span>{t.add}</span>
           </>
         )}
       </button>
       {/* Statusmeldung für Screenreader (WCAG 4.1.3 Status Messages) */}
       <p role="status" aria-live="polite" className="bit-sr-only">
-        {added ? `${product.name} wurde zum Warenkorb hinzugefügt.` : ""}
+        {added ? `${product.name} ${t.addedStatus}` : ""}
       </p>
       <p className="relative mt-3 text-center text-xs text-slate-500">
-        Unverbindliche Anfrage · individuelles Angebot innerhalb von 24 Stunden
+        {t.note}
       </p>
     </div>
   );

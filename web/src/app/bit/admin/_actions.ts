@@ -106,7 +106,7 @@ export async function saveContent(
     "/bit/news",
     "/bit/kompetenzen",
     "/bit/branchen",
-    "/bit/unternehmen",
+    "/bit/die-bit",
     "/bit/qualitaet",
     "/bit/kontakt",
   ]) {
