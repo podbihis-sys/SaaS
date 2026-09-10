@@ -45,6 +45,7 @@ export const NAV: NavItem[] = [
       { label: "Schrumpfschlauch farbig", href: "/bit/schrumpfschlauch-farbig" },
     ],
   },
+  { label: "Kompetenzen", href: "/bit/kompetenzen" },
   {
     label: "News",
     href: "/bit/news",

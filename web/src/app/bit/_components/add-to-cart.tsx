@@ -68,11 +68,22 @@ export function AddToCart({
         label: r.label,
         amount: laengenware && r.vpe.includes("1,22") ? 1.22 : r.metersPerRoll,
         vpe: r.vpe,
+        typ: r.typ,
       }))
     : laengenOhneTabelle
-      ? product.sizes.map((s) => ({ label: s, amount: 1.22, vpe: "1,22 m" }))
+      ? product.sizes.map((s) => ({
+          label: s,
+          amount: 1.22,
+          vpe: "1,22 m",
+          typ: undefined as string | undefined,
+        }))
       : packs
-        ? packs.map((p) => ({ label: p.label, amount: p.stueckPerPack, vpe: p.vpe }))
+        ? packs.map((p) => ({
+            label: p.label,
+            amount: p.stueckPerPack,
+            vpe: p.vpe,
+            typ: p.typ,
+          }))
         : null;
   const meterware = rolls != null || laengenOhneTabelle;
   const amountUnit = meterware ? "m" : t.stueck;
@@ -102,7 +113,8 @@ export function AddToCart({
       name: product.name,
       code: product.code,
       category: product.category,
-      size,
+      // Typenbezeichnung mit in die Anfrage übernehmen.
+      size: selected?.typ ? `${size} · ${locale === "en" ? "Type" : "Typ"} ${selected.typ}` : size,
       color: product.colors ? color : undefined,
       unit,
       quantity,
@@ -140,6 +152,16 @@ export function AddToCart({
                   }`}
                 >
                   <span>{v.label}</span>
+                  {/* Typenbezeichnung des Herstellers (Kundenvorgabe) */}
+                  {v.typ && (
+                    <span
+                      className={`font-mono text-[11px] font-semibold ${
+                        size === v.label ? "text-white" : "text-[#1e4a7a]"
+                      }`}
+                    >
+                      {v.typ}
+                    </span>
+                  )}
                   <span className={`text-[11px] ${size === v.label ? "text-white/80" : "text-slate-500"}`}>
                     {meterware ? `${v.vpe} / ${bundle}` : `${v.amount} ${amountUnit} / ${bundle}`}
                   </span>

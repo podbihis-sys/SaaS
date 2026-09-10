@@ -86,6 +86,9 @@ export default async function ProductDetail({
     product.vpeType === "laenge" ||
     (!product.vpeType && (rolls?.every((r) => r.vpe.includes("1,22")) ?? false));
   const auchAlsLaenge = product.vpeType === "rolle_laenge";
+  // Produkte ohne Schrumpfrate (Isolier-/Glasseidenschläuche etc.): die
+  // Tabelle zeigt den Innendurchmesser, nicht "vor/nach Schrumpfung".
+  const ohneSchrumpfung = rolls?.every((r) => r.dPost == null) ?? false;
 
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bit-gmbh.de";
   const imageUrl = product.image?.startsWith("/") ? `${base}${product.image}` : product.image;
@@ -363,8 +366,13 @@ export default async function ProductDetail({
               <table className="w-full text-sm">
                 <thead className="bg-white text-left text-xs uppercase tracking-wide text-slate-500">
                   <tr className="border-b border-slate-100">
-                    <th className="px-6 py-3 font-medium">Ø vor Schrumpfung</th>
-                    <th className="px-3 py-3 font-medium">Ø nach Schrumpfung</th>
+                    <th className="px-6 py-3 font-medium">Typ</th>
+                    <th className="px-3 py-3 font-medium">
+                      {ohneSchrumpfung ? "Innendurchmesser" : "Ø vor Schrumpfung"}
+                    </th>
+                    {!ohneSchrumpfung && (
+                      <th className="px-3 py-3 font-medium">Ø nach Schrumpfung</th>
+                    )}
                     <th className="px-3 py-3 font-medium">Wandstärke</th>
                     <th className="px-6 py-3 text-right font-medium">{laengenware ? "VPE (Länge)" : "VPE (m / Rolle)"}</th>
                   </tr>
@@ -372,10 +380,13 @@ export default async function ProductDetail({
                 <tbody className="divide-y divide-slate-100">
                   {rolls.map((r) => (
                     <tr key={r.label}>
-                      <td className="px-6 py-3 font-medium text-slate-900">{r.label}</td>
-                      <td className="px-3 py-3 text-slate-700">
-                        {r.dPost != null ? `Ø ${formatMm(r.dPost)} mm` : "–"}
-                      </td>
+                      <td className="px-6 py-3 font-mono font-medium text-[#1e4a7a]">{r.typ ?? "–"}</td>
+                      <td className="px-3 py-3 font-medium text-slate-900">{r.label}</td>
+                      {!ohneSchrumpfung && (
+                        <td className="px-3 py-3 text-slate-700">
+                          {r.dPost != null ? `Ø ${formatMm(r.dPost)} mm` : "–"}
+                        </td>
+                      )}
                       <td className="px-3 py-3 text-slate-700">
                         {r.wall != null ? `${formatMm(r.wall)} mm` : "–"}
                       </td>
@@ -403,7 +414,8 @@ export default async function ProductDetail({
               <table className="w-full text-sm">
                 <thead className="bg-white text-left text-xs uppercase tracking-wide text-slate-500">
                   <tr className="border-b border-slate-100">
-                    <th className="px-6 py-3 font-medium">Länge</th>
+                    <th className="px-6 py-3 font-medium">Typ</th>
+                    <th className="px-3 py-3 font-medium">Länge</th>
                     <th className="px-3 py-3 font-medium">Breite</th>
                     <th className="px-6 py-3 text-right font-medium">VPE (Stück / Gebinde)</th>
                   </tr>
@@ -411,7 +423,8 @@ export default async function ProductDetail({
                 <tbody className="divide-y divide-slate-100">
                   {packs.map((p) => (
                     <tr key={p.label}>
-                      <td className="px-6 py-3 font-medium text-slate-900">{formatMm(p.laenge)} mm</td>
+                      <td className="px-6 py-3 font-mono font-medium text-[#1e4a7a]">{p.typ ?? "–"}</td>
+                      <td className="px-3 py-3 font-medium text-slate-900">{formatMm(p.laenge)} mm</td>
                       <td className="px-3 py-3 text-slate-700">
                         {p.breite != null ? `${formatMm(p.breite)} mm` : "–"}
                       </td>

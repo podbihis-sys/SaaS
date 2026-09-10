@@ -98,6 +98,15 @@
   background: radial-gradient(circle at center, rgba(56, 189, 248, 0.22), transparent 70%);
 }
 
+/* Blauer Seitenkopf der Unterseiten: überall dieselbe Höhe (Kundenvorgabe),
+   der Inhalt wird darin vertikal zentriert. */
+.bit-page-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 20rem;
+}
+
 /* --------------------------------------------------------------- buttons -- */
 /* Pill buttons with a sheen sweep on hover — replaces the standard boxes. */
 .bit-btn {

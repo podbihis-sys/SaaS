@@ -64,6 +64,8 @@ export default async function EnProductPage({
     product.vpeType === "laenge" ||
     (!product.vpeType && (rolls?.every((r) => r.vpe.includes("1,22")) ?? false));
   const auchAlsLaenge = product.vpeType === "rolle_laenge";
+  // Produkte ohne Schrumpfrate: Tabelle zeigt den Innendurchmesser.
+  const ohneSchrumpfung = rolls?.every((r) => r.dPost == null) ?? false;
   const related = PRODUCTS.filter(
     (p) => p.category === product.category && p.slug !== product.slug,
   ).slice(0, 3);
@@ -200,8 +202,13 @@ export default async function EnProductPage({
               <table className="w-full text-sm">
                 <thead className="bg-white text-left text-xs uppercase tracking-wide text-slate-500">
                   <tr className="border-b border-slate-100">
-                    <th className="px-6 py-3 font-medium">Ø before shrinkage</th>
-                    <th className="px-3 py-3 font-medium">Ø after shrinkage</th>
+                    <th className="px-6 py-3 font-medium">Type</th>
+                    <th className="px-3 py-3 font-medium">
+                      {ohneSchrumpfung ? "Inner diameter" : "Ø before shrinkage"}
+                    </th>
+                    {!ohneSchrumpfung && (
+                      <th className="px-3 py-3 font-medium">Ø after shrinkage</th>
+                    )}
                     <th className="px-3 py-3 font-medium">Wall thickness</th>
                     <th className="px-6 py-3 text-right font-medium">
                       {laengenware ? "PU (length)" : "PU (m / roll)"}
@@ -211,10 +218,13 @@ export default async function EnProductPage({
                 <tbody className="divide-y divide-slate-100">
                   {rolls.map((r) => (
                     <tr key={r.label}>
-                      <td className="px-6 py-3 font-medium text-slate-900">{r.label}</td>
-                      <td className="px-3 py-3 text-slate-700">
-                        {r.dPost != null ? `Ø ${formatMm(r.dPost)} mm` : "–"}
-                      </td>
+                      <td className="px-6 py-3 font-mono font-medium text-[#1e4a7a]">{r.typ ?? "–"}</td>
+                      <td className="px-3 py-3 font-medium text-slate-900">{r.label}</td>
+                      {!ohneSchrumpfung && (
+                        <td className="px-3 py-3 text-slate-700">
+                          {r.dPost != null ? `Ø ${formatMm(r.dPost)} mm` : "–"}
+                        </td>
+                      )}
                       <td className="px-3 py-3 text-slate-700">
                         {r.wall != null ? `${formatMm(r.wall)} mm` : "–"}
                       </td>

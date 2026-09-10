@@ -1,12 +1,7 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  BadgeCheck,
-  Boxes,
   CalendarDays,
-  Clock,
-  Factory,
-  Headset,
   Layers,
   PencilRuler,
   Phone,
@@ -39,24 +34,10 @@ export const metadata: Metadata = {
 
 
 
-const HERO_TRUST = [
-  { icon: Headset, title: "Technische Beratung", text: "Persönlich, kompetent und lösungsorientiert." },
-  { icon: Truck, title: "Schnelle Lieferung", text: "Standardware in der Regel in 24 h." },
-  { icon: PencilRuler, title: "Individuelle Konfektion", text: "Zuschnitt und Bedruckung nach Ihren Vorgaben." },
-  { icon: ShieldCheck, title: "Zertifizierte Qualität", text: "DIN EN ISO 9001 seit 1997." },
-];
-
 const KOMPETENZEN = [
   { title: "Schlauch-Abschnitte & Konfektion", image: "/bit/kompetenzen/abschnitte.jpg" },
   { title: "Schrumpfschlauch bedruckt", image: "/bit/kompetenzen/bedruckt.jpg" },
   { title: "Farbige Schrumpfschläuche", image: "/bit/kompetenzen/farbig.jpg" },
-];
-
-const STATS = [
-  { icon: Boxes, value: "1.000+", label: "Standardartikel" },
-  { icon: Clock, value: "24 h", label: "Lieferung Standardware" },
-  { icon: Factory, value: "6", label: "Produktionslinien" },
-  { icon: BadgeCheck, value: "1996", label: "gegründet" },
 ];
 
 const ADVANTAGES = [
@@ -78,124 +59,43 @@ export default async function BitHome() {
     ].includes(p.slug),
   );
 
-  // Hero-Diashow: ein Bild je Produktkategorie, jeweils klickbar zur Kategorie.
-  const HERO_SLIDES: HeroSlide[] = categories.flatMap((cat) => {
-    const src = categoryImage[cat.id];
-    return src ? [{ src, alt: cat.name, href: `/bit/${cat.id}`, label: cat.name }] : [];
-  });
+  // Hero-Diashow: ein Bild je Produktkategorie plus die Kompetenzen-Bilder
+  // (Kundenvorgabe), jeweils klickbar zum Ziel.
+  const HERO_SLIDES: HeroSlide[] = [
+    ...categories.flatMap((cat) => {
+      const src = categoryImage[cat.id];
+      return src ? [{ src, alt: cat.name, href: `/bit/${cat.id}`, label: cat.name }] : [];
+    }),
+    ...KOMPETENZEN.map((k) => ({
+      src: k.image,
+      alt: k.title,
+      href: "/bit/kompetenzen",
+      label: k.title,
+    })),
+  ];
 
   return (
     <>
       {/* ---------------------------------------------------------------- Hero */}
+      {/* Kundenvorgabe: nur der Produktslider – danach direkt die Produktwelten. */}
       <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-white to-slate-50">
         <div className="bit-hero-glow" />
         <div className="absolute inset-0 bit-grid-light" />
-        <div className="container relative grid items-center gap-12 pb-4 pt-4 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:pb-5 lg:pt-5">
-          <div>
-            <Reveal
-              as="span"
-              className="inline-flex w-fit items-center gap-2 rounded-full bg-[#1e4a7a]/10 px-3 py-1 text-xs font-medium text-[#1e4a7a] ring-1 ring-[#1e4a7a]/15"
-            >
-              <BadgeCheck className="h-3.5 w-3.5 text-[#1e4a7a]" />
-              {c(content, "home.hero.badge", "DIN EN ISO 9001 zertifiziert seit 1997")}
-            </Reveal>
-            <Reveal
-              as="h1"
-              delay={90}
-              className="mt-5 text-[1.9rem] font-bold leading-[1.15] tracking-tight text-slate-900 sm:text-[2.35rem] xl:text-[2.75rem]"
-            >
-              {c(content, "home.hero.title", "Schrumpfschläuche, Isolierschläuche & Kabelschutz aus einer Hand")}
-            </Reveal>
-            <Reveal as="p" delay={170} className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">
-              {c(
-                content,
-                "home.hero.subtitle",
-                `Seit ${COMPANY.foundedYear} beliefern wir Automotive, Elektronik, Maschinenbau und Medizintechnik mit über 1.000 Standardartikeln – plus Konfektion nach Maß. Standardware in der Regel innerhalb von 24 Stunden.`,
-              )}
-            </Reveal>
-            <Reveal delay={250} className="mt-9 flex flex-wrap gap-3">
-              <Link href="/bit/produkte" className="bit-btn bit-btn-dark">
-                <span>Sortiment entdecken</span>
-                <ArrowRight className="bit-arrow h-4 w-4" />
-              </Link>
-              <Link href="/bit/kontakt" className="bit-btn bit-btn-outline">
-                <span>Beratung anfragen</span>
-              </Link>
-            </Reveal>
-          </div>
-
-          {/* Wechselndes Hero-Bild (Slider) */}
-          <Reveal delay={220} className="relative hidden lg:block">
-            {HERO_SLIDES.length > 0 ? (
-              <HeroSlider slides={HERO_SLIDES} />
-            ) : (
-              <div className="relative mx-auto max-w-md">
-                <ProductIllustration
-                  category="geflechtschlauch"
-                  fit="cover"
-                  className="aspect-square w-full rounded-[1.75rem]"
-                />
-              </div>
-            )}
-          </Reveal>
-        </div>
-
-        {/* Trust row */}
-        <div className="relative border-t border-slate-200 bg-white/60">
-          <div className="container grid gap-6 py-8 sm:grid-cols-2 lg:grid-cols-4">
-            {HERO_TRUST.map(({ icon: Icon, title, text }, i) => (
-              <Reveal key={title} delay={i * 70} className="flex items-start gap-3">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#1e4a7a]/10 text-[#1e4a7a]">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <div>
-                  <div className="text-sm font-semibold text-slate-900">{title}</div>
-                  <div className="text-xs text-slate-500">{text}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-
-        {/* Kategorie-Laufschrift – anklickbar; die zweite Hälfte ist nur die
-            optische Wiederholung für den nahtlosen Lauf und daher aria-hidden. */}
-        <nav className="relative border-t border-slate-200 py-4" aria-label="Kategorien im Überblick">
-          <div className="bit-marquee">
-            <div className="bit-marquee__track text-sm font-medium uppercase tracking-[0.18em] text-slate-500">
-              {[...categories, ...categories].map((c, i) => {
-                const duplicate = i >= categories.length;
-                return (
-                  <Link
-                    key={i}
-                    href={`/bit/${c.id}`}
-                    tabIndex={duplicate ? -1 : undefined}
-                    aria-hidden={duplicate || undefined}
-                    className="flex items-center gap-3 whitespace-nowrap rounded-lg px-2 py-1.5 transition-colors hover:bg-[#1e4a7a]/5 hover:text-[#1e4a7a]"
-                  >
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#38bdf8]" aria-hidden="true" />
-                    {c.name}
-                  </Link>
-                );
-              })}
+        <div className="container relative py-6 sm:py-8">
+          <h1 className="bit-sr-only">
+            {c(content, "home.hero.title", "Schrumpfschläuche, Isolierschläuche & Kabelschutz aus einer Hand")}
+          </h1>
+          {HERO_SLIDES.length > 0 ? (
+            <HeroSlider slides={HERO_SLIDES} />
+          ) : (
+            <div className="relative mx-auto max-w-md">
+              <ProductIllustration
+                category="geflechtschlauch"
+                fit="cover"
+                className="aspect-square w-full rounded-[1.75rem]"
+              />
             </div>
-          </div>
-        </nav>
-
-        {/* Stat strip */}
-        <div className="relative border-t border-slate-200 bg-slate-50">
-          <div className="container grid grid-cols-2 gap-6 py-8 md:grid-cols-4">
-            {STATS.map(({ icon: Icon, value, label }, i) => (
-              <Reveal key={label} delay={i * 80} className="flex items-center gap-3">
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white ring-1 ring-slate-200">
-                  <Icon className="h-6 w-6 text-[#1e4a7a]" />
-                </span>
-                <div>
-                  <div className="text-2xl font-bold text-slate-900">{value}</div>
-                  <div className="text-xs text-slate-500">{label}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          )}
         </div>
       </section>
 

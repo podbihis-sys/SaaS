@@ -41,7 +41,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
 
   return (
     <div
-      className="relative mx-auto w-full max-w-xl xl:max-w-2xl"
+      className="relative mx-auto w-full max-w-2xl xl:max-w-3xl"
       role="group"
       aria-roledescription="Diashow"
       aria-label="Produktkategorien"

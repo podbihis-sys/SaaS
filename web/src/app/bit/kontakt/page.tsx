@@ -58,7 +58,7 @@ export default async function KontaktPage() {
   return (
     <>
       <section className="border-b border-slate-800 bg-[#0f2742]">
-        <div className="container py-16">
+        <div className="bit-page-hero container py-10">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Kontakt</p>
           <h1 className="mt-3 text-4xl font-bold tracking-tight text-white">
             {c(content, "kontakt.title", "Wir beraten Sie persönlich")}
