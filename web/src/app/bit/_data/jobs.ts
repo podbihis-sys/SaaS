@@ -68,3 +68,17 @@ export function jobShortLabel(job: JobPosting): string {
     ? "Ausbildung"
     : job.title.replace("Verstärkung im Bereich ", "");
 }
+
+/** Grammatisch korrekte Ergänzung zu "Bewerben Sie sich …". */
+export function jobApplyPhrase(job: JobPosting): string {
+  switch (job.id) {
+    case "vertrieb":
+      return "als Vertriebler";
+    case "lagerist":
+      return "als Lagerist";
+    case "ausbildung":
+      return "für die Ausbildung";
+    default:
+      return "auf diese Stelle";
+  }
+}

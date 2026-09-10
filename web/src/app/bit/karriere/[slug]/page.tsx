@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Mail, Phone } from "lucide-react";
-import { JOBS, jobShortLabel } from "../../_data/jobs";
+import { JOBS, jobApplyPhrase } from "../../_data/jobs";
 import { getCmsJobs } from "../../_data/misc-server";
 
 // Seite alle 5 Minuten im Hintergrund erneuern (ISR); im CMS neu angelegte
@@ -90,7 +90,7 @@ export default async function StellePage({
         {/* Bewerbung */}
         <div className="mt-12 max-w-3xl rounded-3xl bg-[#0f2742] px-8 py-10">
           <h2 className="text-xl font-bold text-white sm:text-2xl">
-            Bewerben Sie sich als {jobShortLabel(job).replace("*", "")}
+            Bewerben Sie sich {jobApplyPhrase(job)}
           </h2>
           <p className="mt-3 leading-relaxed text-slate-300">
             Kontaktieren Sie uns unter 02254 – 96 10 31 oder senden Sie uns Ihre Bewerbung an
