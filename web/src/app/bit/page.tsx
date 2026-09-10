@@ -16,7 +16,6 @@ import { getCmsNews } from "./_data/news-server";
 import { formatDate } from "./_lib/format";
 import { ProductCard } from "./_components/product-card";
 import { ProductIllustration } from "./_components/product-illustration";
-import { HeroSlider, type HeroSlide } from "./_components/hero-slider";
 import { Reveal } from "./_components/reveal";
 import type { Metadata } from "next";
 
@@ -50,7 +49,7 @@ const ADVANTAGES = [
 export default async function BitHome() {
   const [content, news, catalog] = await Promise.all([getContent(), getCmsNews(), getCatalog()]);
   const latestNews = news.slice(0, 3);
-  const { categories, products, categoryImage } = catalog;
+  const { categories, products } = catalog;
   const featured = products.filter((p) =>
     [
       "schrumpfschlauch-mit-kleber-bpdw-100",
@@ -59,36 +58,40 @@ export default async function BitHome() {
     ].includes(p.slug),
   );
 
-  // Hero-Diashow: ein Bild je Produktkategorie (Kundenvorgabe: nur die
-  // Produkte, keine Kompetenzen-Bilder), jeweils klickbar zur Kategorie.
-  const HERO_SLIDES: HeroSlide[] = categories.flatMap((cat) => {
-    const src = categoryImage[cat.id];
-    return src ? [{ src, alt: cat.name, href: `/bit/${cat.id}`, label: cat.name }] : [];
-  });
-
   return (
     <>
       {/* ---------------------------------------------------------------- Hero */}
-      {/* Kundenvorgabe: nur der Produktslider – danach direkt die Produktwelten. */}
+      {/* Kundenvorgabe: oben nur die durchlaufende Produktkategorien-Zeile
+          (keine Bild-Diashow) – danach direkt die Produktwelten. */}
       <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-white to-slate-50">
         <div className="bit-hero-glow" />
         <div className="absolute inset-0 bit-grid-light" />
-        <div className="container relative py-6 sm:py-8">
-          <h1 className="bit-sr-only">
-            {c(content, "home.hero.title", "Schrumpfschläuche, Isolierschläuche & Kabelschutz aus einer Hand")}
-          </h1>
-          {HERO_SLIDES.length > 0 ? (
-            <HeroSlider slides={HERO_SLIDES} />
-          ) : (
-            <div className="relative mx-auto max-w-md">
-              <ProductIllustration
-                category="geflechtschlauch"
-                fit="cover"
-                className="aspect-square w-full rounded-[1.75rem]"
-              />
+        <h1 className="bit-sr-only">
+          {c(content, "home.hero.title", "Schrumpfschläuche, Isolierschläuche & Kabelschutz aus einer Hand")}
+        </h1>
+        {/* Kategorie-Laufschrift – anklickbar; die zweite Hälfte ist nur die
+            optische Wiederholung für den nahtlosen Lauf und daher aria-hidden. */}
+        <nav className="relative py-5" aria-label="Kategorien im Überblick">
+          <div className="bit-marquee">
+            <div className="bit-marquee__track text-sm font-medium uppercase tracking-[0.18em] text-slate-500">
+              {[...categories, ...categories].map((cat, i) => {
+                const duplicate = i >= categories.length;
+                return (
+                  <Link
+                    key={i}
+                    href={`/bit/${cat.id}`}
+                    tabIndex={duplicate ? -1 : undefined}
+                    aria-hidden={duplicate || undefined}
+                    className="flex items-center gap-3 whitespace-nowrap rounded-lg px-2 py-1.5 transition-colors hover:bg-[#1e4a7a]/5 hover:text-[#1e4a7a]"
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#38bdf8]" aria-hidden="true" />
+                    {cat.name}
+                  </Link>
+                );
+              })}
             </div>
-          )}
-        </div>
+          </div>
+        </nav>
       </section>
 
       {/* ---------------------------------------------------------- Categories */}

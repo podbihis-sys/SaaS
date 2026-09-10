@@ -8,11 +8,9 @@ import {
   Truck,
 } from "lucide-react";
 import { CATEGORIES, COMPANY, PRODUCTS } from "../_data/catalog";
-import { CATEGORY_IMAGE } from "../_data/catalog";
 import { EN_CATEGORY_LABELS, EN_PRODUCTS } from "../_data/catalog-en";
 import { ProductCard } from "../_components/product-card";
 import { ProductIllustration } from "../_components/product-illustration";
-import { HeroSlider, type HeroSlide } from "../_components/hero-slider";
 import { Reveal } from "../_components/reveal";
 import type { Metadata } from "next";
 
@@ -93,37 +91,39 @@ export default function EnglishHome() {
     ].includes(p.slug),
   );
 
-  // Hero-Diashow: ein Bild je Produktkategorie (Kundenvorgabe: nur die
-  // Produkte, keine Kompetenzen-Bilder), jeweils klickbar zur Kategorie.
-  const HERO_SLIDES: HeroSlide[] = CATEGORIES.flatMap((cat) => {
-    const src = CATEGORY_IMAGE[cat.id];
-    const label = EN_CATEGORY_LABELS[cat.id] ?? cat.name;
-    return src ? [{ src, alt: label, href: `/bit/en/products/${cat.id}`, label }] : [];
-  });
-
   return (
     <>
       {/* ---------------------------------------------------------------- Hero */}
-      {/* Kundenvorgabe: nur der Produktslider – danach direkt die Produktwelten. */}
+      {/* Kundenvorgabe: oben nur die durchlaufende Produktkategorien-Zeile
+          (keine Bild-Diashow) – danach direkt die Produktwelten. */}
       <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-white to-slate-50">
         <div className="bit-hero-glow" />
         <div className="absolute inset-0 bit-grid-light" />
-        <div className="container relative py-6 sm:py-8">
-          <h1 className="bit-sr-only">
-            Heat-shrink tubing, insulating tubing & cable protection from a single source
-          </h1>
-          {HERO_SLIDES.length > 0 ? (
-            <HeroSlider slides={HERO_SLIDES} />
-          ) : (
-            <div className="relative mx-auto max-w-md">
-              <ProductIllustration
-                category="geflechtschlauch"
-                fit="cover"
-                className="aspect-square w-full rounded-[1.75rem]"
-              />
+        <h1 className="bit-sr-only">
+          Heat-shrink tubing, insulating tubing & cable protection from a single source
+        </h1>
+        {/* Kategorie-Laufschrift */}
+        <nav className="relative py-5" aria-label="Categories at a glance">
+          <div className="bit-marquee">
+            <div className="bit-marquee__track text-sm font-medium uppercase tracking-[0.18em] text-slate-500">
+              {[...CATEGORIES, ...CATEGORIES].map((cat, i) => {
+                const duplicate = i >= CATEGORIES.length;
+                return (
+                  <Link
+                    key={i}
+                    href={`/bit/en/products/${cat.id}`}
+                    tabIndex={duplicate ? -1 : undefined}
+                    aria-hidden={duplicate || undefined}
+                    className="flex items-center gap-3 whitespace-nowrap rounded-lg px-2 py-1.5 transition-colors hover:bg-[#1e4a7a]/5 hover:text-[#1e4a7a]"
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#38bdf8]" aria-hidden="true" />
+                    {EN_CATEGORY_LABELS[cat.id] ?? cat.name}
+                  </Link>
+                );
+              })}
             </div>
-          )}
-        </div>
+          </div>
+        </nav>
       </section>
 
       {/* ---------------------------------------------------------- Categories */}
