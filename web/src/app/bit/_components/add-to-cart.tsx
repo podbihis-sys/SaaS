@@ -11,24 +11,31 @@ export function AddToCart({ product }: { product: Product }) {
   const { addItem } = useCart();
   const rolls = getRolls(product.slug);
   const packs = !rolls ? getPacks(product.slug) : undefined;
-  // Längenware: jede Größe wird als feste Länge (1,22 m) geliefert.
-  const laengenware = rolls?.every((r) => r.vpe.includes("1,22")) ?? false;
-  // Rollenware, die es laut Artikeltext zusätzlich als 1,22-m-Länge gibt.
-  const auchAlsLaenge = !laengenware && !!rolls && product.description.includes("1,22");
+  // VPE-Art: im CMS gepflegt; ohne Angabe aus der Größentabelle abgeleitet.
+  const laengenware =
+    product.vpeType === "laenge" ||
+    (!product.vpeType && (rolls?.every((r) => r.vpe.includes("1,22")) ?? false));
+  // Rollenware, die es zusätzlich als 1,22-m-Länge gibt.
+  const auchAlsLaenge = product.vpeType === "rolle_laenge";
+  // Längenware ohne eigene Größentabelle (z. B. PTFE 400): Größenliste nutzen.
+  const laengenOhneTabelle = laengenware && !rolls;
 
-  // Einheitliche Variantenliste für Rollen- bzw. Gebindeware.
+  // Einheitliche Variantenliste für Rollen-, Längen- bzw. Gebindeware.
   const variantList = rolls
     ? rolls.map((r) => ({
         label: r.label,
-        amount: laengenware ? 1.22 : r.metersPerRoll,
+        amount: laengenware && r.vpe.includes("1,22") ? 1.22 : r.metersPerRoll,
         vpe: r.vpe,
       }))
-    : packs
-      ? packs.map((p) => ({ label: p.label, amount: p.stueckPerPack, vpe: p.vpe }))
-      : null;
-  const amountUnit = rolls ? "m" : "Stück";
-  const bundle = rolls ? (laengenware ? "Länge" : "Rolle") : "Gebinde";
-  const bundlePl = rolls ? (laengenware ? "Längen" : "Rollen") : "Gebinde";
+    : laengenOhneTabelle
+      ? product.sizes.map((s) => ({ label: s, amount: 1.22, vpe: "1,22 m" }))
+      : packs
+        ? packs.map((p) => ({ label: p.label, amount: p.stueckPerPack, vpe: p.vpe }))
+        : null;
+  const meterware = rolls != null || laengenOhneTabelle;
+  const amountUnit = meterware ? "m" : "Stück";
+  const bundle = meterware ? (laengenware ? "Länge" : "Rolle") : "Gebinde";
+  const bundlePl = meterware ? (laengenware ? "Längen" : "Rollen") : "Gebinde";
   const fmt = (n: number) => n.toLocaleString("de-DE", { maximumFractionDigits: 2 });
 
   const [size, setSize] = useState<string>("");
@@ -54,7 +61,7 @@ export function AddToCart({ product }: { product: Product }) {
       color: product.colors ? color : undefined,
       unit,
       quantity,
-      metersPerRoll: rolls ? selected?.amount : undefined,
+      metersPerRoll: meterware ? selected?.amount : undefined,
       unitsPerPack: packs ? selected?.amount : undefined,
     });
     setAdded(true);
@@ -89,7 +96,7 @@ export function AddToCart({ product }: { product: Product }) {
                 >
                   <span>{v.label}</span>
                   <span className={`text-[11px] ${size === v.label ? "text-white/80" : "text-slate-500"}`}>
-                    {rolls ? `${v.vpe} / ${bundle}` : `${v.amount} ${amountUnit} / ${bundle}`}
+                    {meterware ? `${v.vpe} / ${bundle}` : `${v.amount} ${amountUnit} / ${bundle}`}
                   </span>
                 </button>
               ))
@@ -186,7 +193,7 @@ export function AddToCart({ product }: { product: Product }) {
         </div>
         {variantList && (
           <p className="mt-2 text-xs text-slate-500">
-            {rolls
+            {meterware
               ? laengenware
                 ? "Lieferung als Längenware – jede Größe wird in Längen á 1,22 m geliefert."
                 : "Lieferung nur in ganzen Rollen – die Meterzahl je Rolle hängt vom Durchmesser ab."

@@ -44,8 +44,8 @@ export default function CartPage() {
             size,
             color,
             unit: metersPerRoll
-              ? metersPerRoll === 1.22
-                ? `Länge (1,22 m/Länge, gesamt ${(quantity * metersPerRoll).toLocaleString("de-DE", { maximumFractionDigits: 2 })} m)`
+              ? unit === "Länge" || metersPerRoll === 1.22
+                ? `Länge (${metersPerRoll.toLocaleString("de-DE", { maximumFractionDigits: 2 })} m/Länge, gesamt ${(quantity * metersPerRoll).toLocaleString("de-DE", { maximumFractionDigits: 2 })} m)`
                 : `Rolle (${metersPerRoll} m/Rolle, gesamt ${quantity * metersPerRoll} m)`
               : unitsPerPack
                 ? `Gebinde (${unitsPerPack} Stück/Gebinde, gesamt ${quantity * unitsPerPack} Stück)`
@@ -176,7 +176,7 @@ export default function CartPage() {
                         <div className="mt-1 text-xs text-slate-500">
                           {item.metersPerRoll
                             ? `${
-                                item.metersPerRoll === 1.22
+                                item.unit === "Länge" || item.metersPerRoll === 1.22
                                   ? item.quantity === 1 ? "Länge" : "Längen"
                                   : item.quantity === 1 ? "Rolle" : "Rollen"
                               } · ${(item.quantity * item.metersPerRoll).toLocaleString("de-DE", { maximumFractionDigits: 2 })} m gesamt`

@@ -36,6 +36,13 @@ export interface Product {
   sizes: string[];
   /** Bezugseinheit für die Mengenangabe. */
   unit: "Meter" | "Stück" | "Beutel (100 St.)";
+  /**
+   * VPE-Art (im CMS wählbar). Ohne Angabe wird sie aus der Größentabelle
+   * abgeleitet: "rolle" = nur ganze Rollen, "laenge" = Längenware á 1,22 m,
+   * "rolle_laenge" = Rollenware, jede Größe auch als 1,22-m-Länge,
+   * "meterware" = Verkauf nach Metern.
+   */
+  vpeType?: "rolle" | "laenge" | "rolle_laenge" | "meterware";
   colors?: string[];
   material: string;
   temperature?: string;
@@ -246,6 +253,7 @@ export const PRODUCTS: Product[] = [
     imageAlt: "Schrumpfschlauch BPTW",
     sizes: ["Ø 10 mm", "Ø 12 mm", "Ø 16 mm", "Ø 20 mm", "Ø 25 mm", "Ø 30 mm", "Ø 40 mm", "Ø 50 mm", "Ø 65 mm", "Ø 80 mm", "Ø 100 mm", "Ø 120 mm", "Ø 150 mm"],
     unit: "Meter",
+    vpeType: "rolle_laenge",
     colors: ["Schwarz"],
     material: "Polyolefin",
     temperature: "-55 °C bis 110 °C",
@@ -523,6 +531,7 @@ export const PRODUCTS: Product[] = [
     imageAlt: "Schrumpfschlauch mit Kleber, Schrumpfrate 4:1",
     sizes: ["Ø 4 mm", "Ø 5 mm", "Ø 6 mm", "Ø 8 mm", "Ø 10 mm", "Ø 12 mm", "Ø 16 mm", "Ø 20 mm", "Ø 25 mm", "Ø 30 mm", "Ø 40 mm", "Ø 50 mm"],
     unit: "Meter",
+    vpeType: "rolle_laenge",
     colors: ["Schwarz", "Transparent", "Andere auf Anfrage"],
     material: "Polyolefin",
     temperature: "-55 °C bis 125 °C",
@@ -948,6 +957,7 @@ export const PRODUCTS: Product[] = [
     imageAlt: "Schrumpfschlauch mittelwandig",
     sizes: ["Ø 10 mm", "Ø 12 mm", "Ø 16 mm", "Ø 20 mm", "Ø 25 mm", "Ø 30 mm", "Ø 40 mm", "Ø 50 mm", "Ø 65 mm", "Ø 80 mm", "Ø 100 mm", "Ø 120 mm", "Ø 150 mm"],
     unit: "Meter",
+    vpeType: "laenge",
     colors: ["Schwarz"],
     material: "Polyolefin",
     temperature: "-55 °C bis 110 °C",
@@ -1118,6 +1128,7 @@ export const PRODUCTS: Product[] = [
     imageAlt: "Schrumpfschlauch mit Innenkleber farbig",
     sizes: ["Ø 3 mm", "Ø 4 mm", "Ø 5 mm", "Ø 6 mm", "Ø 8 mm", "Ø 10 mm", "Ø 12 mm", "Ø 16 mm", "Ø 20 mm", "Ø 25 mm", "Ø 30 mm"],
     unit: "Meter",
+    vpeType: "rolle_laenge",
     colors: ["Schwarz", "Rot", "Weiß", "Blau", "Gelb", "Grün", "Transparent"],
     material: "Polyolefin",
     temperature: "-55 °C bis 125 °C",
@@ -1148,6 +1159,7 @@ export const PRODUCTS: Product[] = [
     imageAlt: "Schrumpfschlauch mit Kleber, Schrumpfrate 2:1",
     sizes: ["Ø 2 mm", "Ø 2,5 mm", "Ø 3 mm", "Ø 4 mm", "Ø 5 mm", "Ø 6 mm", "Ø 8 mm", "Ø 10 mm", "Ø 12 mm", "Ø 16 mm", "Ø 20 mm", "Ø 25 mm"],
     unit: "Meter",
+    vpeType: "rolle_laenge",
     colors: ["Schwarz"],
     material: "Polyolefin",
     temperature: "-55 °C bis 125 °C",
@@ -1178,6 +1190,7 @@ export const PRODUCTS: Product[] = [
     imageAlt: "Mittelwandiger Schrumpfschlauch mit Kleber",
     sizes: ["Ø 10 mm", "Ø 12 mm", "Ø 16 mm", "Ø 20 mm", "Ø 25 mm", "Ø 30 mm", "Ø 40 mm", "Ø 50 mm", "Ø 65 mm", "Ø 80 mm", "Ø 100 mm", "Ø 120 mm", "Ø 150 mm"],
     unit: "Meter",
+    vpeType: "laenge",
     colors: ["Schwarz"],
     material: "Polyolefin",
     temperature: "-55 °C bis 110 °C",
@@ -1235,6 +1248,7 @@ export const PRODUCTS: Product[] = [
     imageAlt: "PTFE Schrumpfschlauch 4:1",
     sizes: ["Ø 2 mm", "Ø 2,5 mm", "Ø 3 mm", "Ø 4 mm", "Ø 5 mm", "Ø 6 mm", "Ø 8 mm", "Ø 10 mm", "Ø 12 mm", "Ø 16 mm", "Ø 20 mm", "Ø 25 mm", "Ø 30 mm", "Ø 40 mm", "Ø 50 mm", "Ø 65 mm", "Ø 80 mm", "Ø 100 mm"],
     unit: "Meter",
+    vpeType: "laenge",
     colors: ["Transparent", "Schwarz", "Andere auf Anfrage"],
     material: "PTFE",
     temperature: "-67 °C bis +260 °C",
@@ -1320,6 +1334,7 @@ export const PRODUCTS: Product[] = [
     imageAlt: "Mittelwandiger Schrumpfschlauch aus Polyolefin, UV-beständig",
     sizes: ["Ø 10 mm", "Ø 12 mm", "Ø 16 mm", "Ø 20 mm", "Ø 25 mm", "Ø 30 mm", "Ø 40 mm", "Ø 50 mm", "Ø 65 mm", "Ø 80 mm", "Ø 100 mm", "Ø 120 mm", "Ø 150 mm"],
     unit: "Meter",
+    vpeType: "laenge",
     colors: ["Schwarz"],
     material: "Polyolefin",
     temperature: "-55 °C bis 110 °C",

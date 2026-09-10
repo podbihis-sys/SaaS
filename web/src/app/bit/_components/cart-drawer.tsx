@@ -161,7 +161,7 @@ export function CartDrawer() {
                     <span className="text-right text-xs text-slate-500">
                       {item.metersPerRoll
                         ? `${
-                            item.metersPerRoll === 1.22
+                            item.unit === "Länge" || item.metersPerRoll === 1.22
                               ? item.quantity === 1 ? "Länge" : "Längen"
                               : item.quantity === 1 ? "Rolle" : "Rollen"
                           } · ${(item.quantity * item.metersPerRoll).toLocaleString("de-DE", { maximumFractionDigits: 2 })} m`

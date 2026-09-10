@@ -19,6 +19,7 @@ interface Row {
   material: string | null;
   temperature: string | null;
   unit: string;
+  vpe_type: string | null;
   sizes: string[] | null;
   colors: string[] | null;
   features: string[] | null;
@@ -54,6 +55,9 @@ export default async function EditProductPage({
     material: row.material ?? "",
     temperature: row.temperature ?? "",
     unit: row.unit,
+    vpe_type: (["rolle", "laenge", "rolle_laenge", "meterware"].includes(row.vpe_type ?? "")
+      ? row.vpe_type
+      : "auto") as ProductInput["vpe_type"],
     sizes: row.sizes ?? [],
     colors: row.colors ?? [],
     features: row.features ?? [],
