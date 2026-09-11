@@ -183,10 +183,13 @@ async def test_an_outage_is_re_checked_soon_rather_than_cached_all_day() -> None
     async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
         first = await robots.allowed(client, "https://example.invalid/select2")
         assert first.allowed is False
+        # One retry before giving up: a dropped connection is far commoner
+        # than a host that is really refusing.
+        assert len(calls) == 2
 
         # Nothing re-fetches within the short window …
         await robots.allowed(client, "https://example.invalid/select2")
-        assert len(calls) == 1
+        assert len(calls) == 2
 
         # … but the entry expires far sooner than a parsed file would.
         from app.providers import robots as robots_module
@@ -201,7 +204,7 @@ async def test_an_outage_is_re_checked_soon_rather_than_cached_all_day() -> None
         second = await robots.allowed(client, "https://example.invalid/select2")
 
     assert second.allowed is True
-    assert len(calls) == 2
+    assert len(calls) == 3
 
 
 async def test_rule_naming_us_is_not_overruled_by_a_permissive_wildcard() -> None:

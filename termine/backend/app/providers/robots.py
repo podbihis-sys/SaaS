@@ -24,6 +24,9 @@ _TTL_SECONDS = 6 * 60 * 60
 #: the rest of the day.
 _UNAVAILABLE_TTL_SECONDS = 15 * 60
 
+#: Pause before the single retry of an unreadable robots.txt.
+_RETRY_DELAY_SECONDS = 1.5
+
 
 @dataclass(slots=True)
 class RobotsVerdict:
@@ -171,20 +174,32 @@ class RobotsCache:
         read. Collapsing the two — as treating every failure as "no file" does
         — turns an outage into permission, which is the one direction a
         robots.txt implementation must never get wrong.
-        """
-        try:
-            response = await client.get(f"{origin}/robots.txt", timeout=10.0)
-        except httpx.HTTPError as exc:
-            log.warning("robots.fetch_failed", origin=origin, error=str(exc))
-            return None, "unavailable"
 
-        if response.status_code >= 500:
-            log.warning("robots.server_error", origin=origin, status=response.status_code)
-            return None, "unavailable"
-        if response.status_code >= 400:
-            # 404 is the common case and means "no restrictions".
-            return None, "none"
-        return RobotsRules(response.text), "ok"
+        Because "unreadable" now blocks, a single dropped connection would
+        otherwise shut a host out for the next quarter of an hour. One retry
+        after a short pause costs nothing against a host that is genuinely
+        down and saves the far commoner case of a blip — which, on a survey
+        of several hundred authorities at once, is most of them.
+        """
+        for attempt in range(2):
+            if attempt:
+                await asyncio.sleep(_RETRY_DELAY_SECONDS)
+            try:
+                response = await client.get(f"{origin}/robots.txt", timeout=10.0)
+            except httpx.HTTPError as exc:
+                last_error: str | int = str(exc)
+                continue
+
+            if response.status_code >= 500:
+                last_error = response.status_code
+                continue
+            if response.status_code >= 400:
+                # 404 is the common case and means "no restrictions".
+                return None, "none"
+            return RobotsRules(response.text), "ok"
+
+        log.warning("robots.unreadable", origin=origin, error=last_error)
+        return None, "unavailable"
 
     async def allowed(self, client: httpx.AsyncClient, url: str) -> RobotsVerdict:
         origin = self._origin(url)
