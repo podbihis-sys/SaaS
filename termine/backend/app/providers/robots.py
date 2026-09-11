@@ -180,15 +180,25 @@ class RobotsCache:
         after a short pause costs nothing against a host that is genuinely
         down and saves the far commoner case of a blip — which, on a survey
         of several hundred authorities at once, is most of them.
+
+        Only what a second attempt could plausibly fix is retried: a server
+        error or a timeout. A refused connection or a name that does not
+        resolve will answer the same way in a second and a half, and a survey
+        that tries a dozen guessed hostnames per municipality pays that wait
+        on every one of them.
         """
+        last_error: str | int = "unbekannt"
         for attempt in range(2):
             if attempt:
                 await asyncio.sleep(_RETRY_DELAY_SECONDS)
             try:
                 response = await client.get(f"{origin}/robots.txt", timeout=10.0)
-            except httpx.HTTPError as exc:
-                last_error: str | int = str(exc)
+            except httpx.TimeoutException as exc:
+                last_error = f"timeout: {exc}"
                 continue
+            except httpx.HTTPError as exc:
+                last_error = str(exc)
+                break
 
             if response.status_code >= 500:
                 last_error = response.status_code

@@ -161,12 +161,19 @@ async def test_an_outage_does_not_strike_the_office_out_of_the_catalogue(
 
 
 async def test_an_unreachable_host_blocks_rather_than_permits() -> None:
+    calls: list[int] = []
+
     def handler(request: httpx.Request) -> httpx.Response:
+        calls.append(1)
         raise httpx.ConnectError("no route to host")
 
     async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
         verdict = await robots.allowed(client, "https://example.invalid/select2")
     assert verdict.allowed is False
+    # A name that does not resolve resolves no better a second later, and a
+    # survey guessing a dozen hostnames per municipality pays that wait on
+    # each one. Only a timeout or a server error is worth a second attempt.
+    assert len(calls) == 1
 
 
 async def test_an_outage_is_re_checked_soon_rather_than_cached_all_day() -> None:
