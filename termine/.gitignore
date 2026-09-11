@@ -1,0 +1,7 @@
+backend/dev.db
+backend/.venv/
+backend/.env
+app/node_modules/
+app/.expo/
+app/dist/
+app/.env

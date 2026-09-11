@@ -1,0 +1,327 @@
+<html><body><h1>Terminvorschläge</h1>
+<form action="" method="get" id="suggest_filter_form">
+                            <input type="hidden" name="loc" value="380">
+                                <input type="hidden" name="mdt" value="0" /><input type="hidden" name="cnc-5909" value="1" />
+                            <label><b>Zeitraum</b></label>
+                            <div id="suggest_date_wrap">
+                                <label for="filter_date_from" title="Filter für den Zeitraum von">Von:</label>
+                                <input type="text" name="filter_date_from" id="filter_date_from" class="suggest_date" value="08.09.2026"/>
+                                <label id="filterlabel" for="filter_date_to" title="Filter für den Zeitraum bis" style="margin-left:20px;">Bis: </label>
+                                <input type="text" name="filter_date_to" id="filter_date_to"  class="suggest_date" value="25.09.2026"/>
+                                <p class="error-text" aria-live="polite" style="left:0%"></p>
+                            </div>
+                
+                            
+                            
+                            
+<details id="suggest_filter_timespan">
+<summary class="ui-accordion-header ui-corner-top ui-state-default ui-accordion-header-active ui-state-active ui-accordion-icons" title="Zeitbereich">
+                                                                        <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>
+                                                                        Zeitbereich
+                                                                    </summary>
+                                                                    <div id="panel_zeitbereich" class="ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content">
+
+                                    <div>
+                                        <label style="font-size: 1em; line-height: 30px; margin-bottom: 4px; margin-top: 4px;vertical-align: middle;" for="filter_timespan-08">
+                                            <input style="left: -20000px;" id="filter_timespan-08" type="checkbox" value="08" title="08 Uhr bis 9 Uhr" name="filter_timespan[]"  />
+                                            <span></span>
+                                            <span style="padding-left: 50px; top: -4px; position: relative;" title="08 Uhr bis 9 Uhr">08:00 - 9:00 </span>
+                                        </label>
+                                    </div>
+
+                                    <div>
+                                        <label style="font-size: 1em; line-height: 30px; margin-bottom: 4px; margin-top: 4px;vertical-align: middle;" for="filter_timespan-09">
+                                            <input style="left: -20000px;" id="filter_timespan-09" type="checkbox" value="09" title="09 Uhr bis 10 Uhr" name="filter_timespan[]"  />
+                                            <span></span>
+                                            <span style="padding-left: 50px; top: -4px; position: relative;" title="09 Uhr bis 10 Uhr">09:00 - 10:00 </span>
+                                        </label>
+                                    </div>
+</div>
+</details>
+<details id="suggest_filter_weekday">
+<summary class="ui-accordion-header ui-corner-top ui-state-default ui-accordion-header-active ui-state-active ui-accordion-icons" title="Wochentag">
+                                                                        <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>
+                                                                        Wochentag
+                                                                    </summary>
+                                                                    <div id="panel_wochentag" class="ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content">
+                                    <div>
+                                        <label style="font-size: 1em; line-height: 30px; margin-bottom:4px; margin-top:4px;vertical-align:middle;" for="filter_day-0">
+                                            <input style="left: -20000px;" id="filter_day-0" type="checkbox" value="0" title="Montag" name="filter_day[]"  />
+                                            <span></span>
+                                            <span title="Montag" style="padding-left: 50px;top:-4px; position: relative;">Montag</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label style="font-size: 1em; line-height: 30px; margin-bottom:4px; margin-top:4px;vertical-align:middle;" for="filter_day-1">
+                                            <input style="left: -20000px;" id="filter_day-1" type="checkbox" value="1" title="Dienstag" name="filter_day[]"  />
+                                            <span></span>
+                                            <span title="Dienstag" style="padding-left: 50px;top:-4px; position: relative;">Dienstag</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label style="font-size: 1em; line-height: 30px; margin-bottom:4px; margin-top:4px;vertical-align:middle;" for="filter_day-2">
+                                            <input style="left: -20000px;" id="filter_day-2" type="checkbox" value="2" title="Mittwoch" name="filter_day[]"  />
+                                            <span></span>
+                                            <span title="Mittwoch" style="padding-left: 50px;top:-4px; position: relative;">Mittwoch</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label style="font-size: 1em; line-height: 30px; margin-bottom:4px; margin-top:4px;vertical-align:middle;" for="filter_day-3">
+                                            <input style="left: -20000px;" id="filter_day-3" type="checkbox" value="3" title="Donnerstag" name="filter_day[]"  />
+                                            <span></span>
+                                            <span title="Donnerstag" style="padding-left: 50px;top:-4px; position: relative;">Donnerstag</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label style="font-size: 1em; line-height: 30px; margin-bottom:4px; margin-top:4px;vertical-align:middle;" for="filter_day-4">
+                                            <input style="left: -20000px;" id="filter_day-4" type="checkbox" value="4" title="Freitag" name="filter_day[]"  />
+                                            <span></span>
+                                            <span title="Freitag" style="padding-left: 50px;top:-4px; position: relative;">Freitag</span>
+                                        </label>
+                                    </div>
+</div>
+</details>
+                            <input title="Zurücksetzen" type="button" class="sel_button btn btn-primary fifty" style="float: left;" aria-live="assertive" value="Zurücksetzen" name="suggest_reset" onclick="$(this).attr('aria-busy', true); window.location.href='?suggest&mdt=0&cnc-5909=1'"/>
+<input title="Filtern" type="submit" class="sel_button btn btn-primary fifty" style="float: right;" value="Filtern" aria-live="assertive" onclick="$(this).attr('aria-busy', true);" name="suggest_filter" />
+</form>
+<form method="post" class="suggestion_form" style="margin-bottom: 0px;">
+                            <input type="hidden" name="start" value="540" />
+                            <input type="hidden" name="end" value="600" />
+                            <input type="hidden" name="day" value="5" />
+                            <input type="hidden" name="block" value="1" />
+                            <input type="hidden" name="hour" value="2" />
+                            <input type="hidden" name="week" value="202638" />
+                            <input type="hidden" name="date" value="20260918" />
+                            <input type="hidden" name="cal" value="1213" />
+                            <input type="hidden" name="checksum" value="421b8bf03c41dc85648203adb7786abc5d18073dd1c8c913bdbf8b838bc08af4" />
+                            
+                            
+
+                            <button type="submit" class="suggest_btn btn btn-primary " title="09:00">09:00</button >
+                        </form>
+<form method="post" class="suggestion_form" style="margin-bottom: 0px;">
+                            <input type="hidden" name="start" value="480" />
+                            <input type="hidden" name="end" value="540" />
+                            <input type="hidden" name="day" value="1" />
+                            <input type="hidden" name="block" value="1" />
+                            <input type="hidden" name="hour" value="1" />
+                            <input type="hidden" name="week" value="202639" />
+                            <input type="hidden" name="date" value="20260921" />
+                            <input type="hidden" name="cal" value="1213" />
+                            <input type="hidden" name="checksum" value="8e54778b58bfc15d67a4f266a7f76c0d9598129ee70ff22749b78a6cf59ffd6c" />
+                            
+                            
+
+                            <button type="submit" class="suggest_btn btn btn-primary " title="08:00">08:00</button >
+                        </form>
+<form method="post" class="suggestion_form" style="margin-bottom: 0px;">
+                            <input type="hidden" name="start" value="510" />
+                            <input type="hidden" name="end" value="570" />
+                            <input type="hidden" name="day" value="1" />
+                            <input type="hidden" name="block" value="2" />
+                            <input type="hidden" name="hour" value="1" />
+                            <input type="hidden" name="week" value="202639" />
+                            <input type="hidden" name="date" value="20260921" />
+                            <input type="hidden" name="cal" value="1213" />
+                            <input type="hidden" name="checksum" value="3fc8045ffbb8452d35e7b1295ed23de332661e145680da879a40d75c45153463" />
+                            
+                            
+
+                            <button type="submit" class="suggest_btn btn btn-primary " title="08:30">08:30</button >
+                        </form>
+<form method="post" class="suggestion_form" style="margin-bottom: 0px;">
+                            <input type="hidden" name="start" value="540" />
+                            <input type="hidden" name="end" value="600" />
+                            <input type="hidden" name="day" value="1" />
+                            <input type="hidden" name="block" value="1" />
+                            <input type="hidden" name="hour" value="2" />
+                            <input type="hidden" name="week" value="202639" />
+                            <input type="hidden" name="date" value="20260921" />
+                            <input type="hidden" name="cal" value="1213" />
+                            <input type="hidden" name="checksum" value="ab871ee9679af2a79c396e8cef3e32668fea00f98e51fe9c44eee15e6cc6c836" />
+                            
+                            
+
+                            <button type="submit" class="suggest_btn btn btn-primary " title="09:00">09:00</button >
+                        </form>
+<form method="post" class="suggestion_form" style="margin-bottom: 0px;">
+                            <input type="hidden" name="start" value="480" />
+                            <input type="hidden" name="end" value="540" />
+                            <input type="hidden" name="day" value="2" />
+                            <input type="hidden" name="block" value="1" />
+                            <input type="hidden" name="hour" value="1" />
+                            <input type="hidden" name="week" value="202639" />
+                            <input type="hidden" name="date" value="20260922" />
+                            <input type="hidden" name="cal" value="1213" />
+                            <input type="hidden" name="checksum" value="602e8255908a2b02428e221b56d6054eab3b9f55b24afbabc2d58508b5945707" />
+                            
+                            
+
+                            <button type="submit" class="suggest_btn btn btn-primary " title="08:00">08:00</button >
+                        </form>
+<form method="post" class="suggestion_form" style="margin-bottom: 0px;">
+                            <input type="hidden" name="start" value="510" />
+                            <input type="hidden" name="end" value="570" />
+                            <input type="hidden" name="day" value="2" />
+                            <input type="hidden" name="block" value="2" />
+                            <input type="hidden" name="hour" value="1" />
+                            <input type="hidden" name="week" value="202639" />
+                            <input type="hidden" name="date" value="20260922" />
+                            <input type="hidden" name="cal" value="1213" />
+                            <input type="hidden" name="checksum" value="6793d04d2cfd31537c7588e1b97490418199f93b9d152887ef00e3f1ddb010e8" />
+                            
+                            
+
+                            <button type="submit" class="suggest_btn btn btn-primary " title="08:30">08:30</button >
+                        </form>
+<form method="post" class="suggestion_form" style="margin-bottom: 0px;">
+                            <input type="hidden" name="start" value="540" />
+                            <input type="hidden" name="end" value="600" />
+                            <input type="hidden" name="day" value="2" />
+                            <input type="hidden" name="block" value="1" />
+                            <input type="hidden" name="hour" value="2" />
+                            <input type="hidden" name="week" value="202639" />
+                            <input type="hidden" name="date" value="20260922" />
+                            <input type="hidden" name="cal" value="1213" />
+                            <input type="hidden" name="checksum" value="6204da0006a9020817b9e4dda4f55939c116c68c83fa51d40dc6044f487d5798" />
+                            
+                            
+
+                            <button type="submit" class="suggest_btn btn btn-primary " title="09:00">09:00</button >
+                        </form>
+<form method="post" class="suggestion_form" style="margin-bottom: 0px;">
+                            <input type="hidden" name="start" value="480" />
+                            <input type="hidden" name="end" value="540" />
+                            <input type="hidden" name="day" value="3" />
+                            <input type="hidden" name="block" value="1" />
+                            <input type="hidden" name="hour" value="1" />
+                            <input type="hidden" name="week" value="202639" />
+                            <input type="hidden" name="date" value="20260923" />
+                            <input type="hidden" name="cal" value="1213" />
+                            <input type="hidden" name="checksum" value="238a1d4637b70624d5af859fa31aeef2075e732bae3a33e0449667a450cf8fd2" />
+                            
+                            
+
+                            <button type="submit" class="suggest_btn btn btn-primary " title="08:00">08:00</button >
+                        </form>
+<form method="post" class="suggestion_form" style="margin-bottom: 0px;">
+                            <input type="hidden" name="start" value="510" />
+                            <input type="hidden" name="end" value="570" />
+                            <input type="hidden" name="day" value="3" />
+                            <input type="hidden" name="block" value="2" />
+                            <input type="hidden" name="hour" value="1" />
+                            <input type="hidden" name="week" value="202639" />
+                            <input type="hidden" name="date" value="20260923" />
+                            <input type="hidden" name="cal" value="1213" />
+                            <input type="hidden" name="checksum" value="54708e0765d4318364ffc0b33abe9e344b6c918a1c05437d0736495bcc312079" />
+                            
+                            
+
+                            <button type="submit" class="suggest_btn btn btn-primary " title="08:30">08:30</button >
+                        </form>
+<form method="post" class="suggestion_form" style="margin-bottom: 0px;">
+                            <input type="hidden" name="start" value="540" />
+                            <input type="hidden" name="end" value="600" />
+                            <input type="hidden" name="day" value="3" />
+                            <input type="hidden" name="block" value="1" />
+                            <input type="hidden" name="hour" value="2" />
+                            <input type="hidden" name="week" value="202639" />
+                            <input type="hidden" name="date" value="20260923" />
+                            <input type="hidden" name="cal" value="1213" />
+                            <input type="hidden" name="checksum" value="5dc47e3e7811962d169557a7d674030a6e8a0d87bd6a1a954646b08be338995a" />
+                            
+                            
+
+                            <button type="submit" class="suggest_btn btn btn-primary " title="09:00">09:00</button >
+                        </form>
+<form method="post" class="suggestion_form" style="margin-bottom: 0px;">
+                            <input type="hidden" name="start" value="480" />
+                            <input type="hidden" name="end" value="540" />
+                            <input type="hidden" name="day" value="4" />
+                            <input type="hidden" name="block" value="1" />
+                            <input type="hidden" name="hour" value="1" />
+                            <input type="hidden" name="week" value="202639" />
+                            <input type="hidden" name="date" value="20260924" />
+                            <input type="hidden" name="cal" value="1213" />
+                            <input type="hidden" name="checksum" value="d2fac5e080fd924da54f68bab24b12718f7053fca677dadc3283e5e0c6536576" />
+                            
+                            
+
+                            <button type="submit" class="suggest_btn btn btn-primary " title="08:00">08:00</button >
+                        </form>
+<form method="post" class="suggestion_form" style="margin-bottom: 0px;">
+                            <input type="hidden" name="start" value="510" />
+                            <input type="hidden" name="end" value="570" />
+                            <input type="hidden" name="day" value="4" />
+                            <input type="hidden" name="block" value="2" />
+                            <input type="hidden" name="hour" value="1" />
+                            <input type="hidden" name="week" value="202639" />
+                            <input type="hidden" name="date" value="20260924" />
+                            <input type="hidden" name="cal" value="1213" />
+                            <input type="hidden" name="checksum" value="3c81c278d0019b042db7c5a7233194ce1f1293ea7e75704570e504e30c70207b" />
+                            
+                            
+
+                            <button type="submit" class="suggest_btn btn btn-primary " title="08:30">08:30</button >
+                        </form>
+<form method="post" class="suggestion_form" style="margin-bottom: 0px;">
+                            <input type="hidden" name="start" value="540" />
+                            <input type="hidden" name="end" value="600" />
+                            <input type="hidden" name="day" value="4" />
+                            <input type="hidden" name="block" value="1" />
+                            <input type="hidden" name="hour" value="2" />
+                            <input type="hidden" name="week" value="202639" />
+                            <input type="hidden" name="date" value="20260924" />
+                            <input type="hidden" name="cal" value="1213" />
+                            <input type="hidden" name="checksum" value="50f6a05e404d314046faa7810af491bcf2bceeb4dd7427d57873eb6cdc3f56f9" />
+                            
+                            
+
+                            <button type="submit" class="suggest_btn btn btn-primary " title="09:00">09:00</button >
+                        </form>
+<form method="post" class="suggestion_form" style="margin-bottom: 0px;">
+                            <input type="hidden" name="start" value="480" />
+                            <input type="hidden" name="end" value="540" />
+                            <input type="hidden" name="day" value="5" />
+                            <input type="hidden" name="block" value="1" />
+                            <input type="hidden" name="hour" value="1" />
+                            <input type="hidden" name="week" value="202639" />
+                            <input type="hidden" name="date" value="20260925" />
+                            <input type="hidden" name="cal" value="1213" />
+                            <input type="hidden" name="checksum" value="53e15ddff46343c7d86b089ab993e475b96f59327fde131cd273ea000a57f903" />
+                            
+                            
+
+                            <button type="submit" class="suggest_btn btn btn-primary " title="08:00">08:00</button >
+                        </form>
+<form method="post" class="suggestion_form" style="margin-bottom: 0px;">
+                            <input type="hidden" name="start" value="510" />
+                            <input type="hidden" name="end" value="570" />
+                            <input type="hidden" name="day" value="5" />
+                            <input type="hidden" name="block" value="2" />
+                            <input type="hidden" name="hour" value="1" />
+                            <input type="hidden" name="week" value="202639" />
+                            <input type="hidden" name="date" value="20260925" />
+                            <input type="hidden" name="cal" value="1213" />
+                            <input type="hidden" name="checksum" value="66de499665ba4ad62e8237d20d258e3a7b74c8d3459baa59d4601dcfe032b258" />
+                            
+                            
+
+                            <button type="submit" class="suggest_btn btn btn-primary " title="08:30">08:30</button >
+                        </form>
+<form method="post" class="suggestion_form" style="margin-bottom: 0px;">
+                            <input type="hidden" name="start" value="540" />
+                            <input type="hidden" name="end" value="600" />
+                            <input type="hidden" name="day" value="5" />
+                            <input type="hidden" name="block" value="1" />
+                            <input type="hidden" name="hour" value="2" />
+                            <input type="hidden" name="week" value="202639" />
+                            <input type="hidden" name="date" value="20260925" />
+                            <input type="hidden" name="cal" value="1213" />
+                            <input type="hidden" name="checksum" value="f44aca6209cd50232cb654519759abf4af660fb9520f65a1e78e11a298732b17" />
+                            
+                            
+
+                            <button type="submit" class="suggest_btn btn btn-primary " title="09:00">09:00</button >
+                        </form>
+</body></html>

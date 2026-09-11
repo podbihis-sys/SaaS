@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: termine
+    # 5433 on the host so this can run alongside another Postgres.
+    ports:
+      - "5433:5432"
+    volumes:
+      - termine_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d termine"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ./backend
+    environment:
+      ENV: dev
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/termine
+      JWT_SECRET: dev-only-secret-change-me-32-characters
+      SCANNER_ENABLED: "true"
+      SCANNER_PROVIDERS: demo
+      PUSH_ENABLED: "false"
+      CORS_ORIGINS: http://localhost:8081,http://localhost:19006
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    # Migrations run on start so a fresh checkout needs one command.
+    command: >
+      sh -c "alembic upgrade head && python -m scripts.seed &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000"
+
+volumes:
+  termine_pgdata:
