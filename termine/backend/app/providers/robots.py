@@ -165,7 +165,9 @@ class RobotsCache:
         parts = urlparse(url)
         return f"{parts.scheme}://{parts.netloc}"
 
-    async def _load(self, client: httpx.AsyncClient, origin: str) -> tuple[RobotsRules | None, str]:
+    async def _load(
+        self, client: httpx.AsyncClient, origin: str, *, patient: bool = True
+    ) -> tuple[RobotsRules | None, str]:
         """Fetch robots.txt and say which of the three cases this is.
 
         RFC 9309 §2.3.1 draws the line that matters: "no file" (4xx) means no
@@ -183,16 +185,25 @@ class RobotsCache:
 
         Only what a second attempt could plausibly fix is retried: a server
         error or a timeout. A refused connection or a name that does not
-        resolve will answer the same way in a second and a half, and a survey
-        that tries a dozen guessed hostnames per municipality pays that wait
-        on every one of them.
+        resolve will answer the same way in a second and a half.
+
+        ``patient=False`` gives up after the first attempt and waits a quarter
+        as long for it. That is for a caller *guessing* hostnames rather than
+        reading a known office: ``termin.<stadt>.de`` and a dozen like it, most
+        of which are nothing. Those guesses are where the wait actually lands —
+        a name that resolves to a firewall drops the connection silently, so it
+        costs the full timeout twice, and one district's worth of guesses can
+        take minutes. A guess is a question, not an appointment: being wrong
+        about it costs nothing, so it is not worth waiting for.
         """
+        timeout = 10.0 if patient else 2.5
+        attempts = 2 if patient else 1
         last_error: str | int = "unbekannt"
-        for attempt in range(2):
+        for attempt in range(attempts):
             if attempt:
                 await asyncio.sleep(_RETRY_DELAY_SECONDS)
             try:
-                response = await client.get(f"{origin}/robots.txt", timeout=10.0)
+                response = await client.get(f"{origin}/robots.txt", timeout=timeout)
             except httpx.TimeoutException as exc:
                 last_error = f"timeout: {exc}"
                 continue
@@ -211,7 +222,7 @@ class RobotsCache:
         log.warning("robots.unreadable", origin=origin, error=last_error)
         return None, "unavailable"
 
-    async def allowed(self, client: httpx.AsyncClient, url: str) -> RobotsVerdict:
+    async def allowed(self, client: httpx.AsyncClient, url: str, *, patient: bool = True) -> RobotsVerdict:
         origin = self._origin(url)
         now = time.monotonic()
 
@@ -229,7 +240,7 @@ class RobotsCache:
                 # arrive together and would otherwise each fetch robots.txt.
                 cached = self._rules.get(origin)
                 if stale(cached, time.monotonic()):
-                    rules, outcome = await self._load(client, origin)
+                    rules, outcome = await self._load(client, origin, patient=patient)
                     cached = (rules, outcome, time.monotonic())
                     self._rules[origin] = cached
 

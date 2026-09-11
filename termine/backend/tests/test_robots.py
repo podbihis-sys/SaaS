@@ -176,6 +176,38 @@ async def test_an_unreachable_host_blocks_rather_than_permits() -> None:
     assert len(calls) == 1
 
 
+async def test_a_guessed_host_is_not_waited_for() -> None:
+    """`patient=False` is for hostnames the caller invented.
+
+    The crawler tries a dozen shapes per municipality — `termin.<stadt>.de` and
+    its siblings — and most are nothing. One that resolves to a firewall drops
+    the connection silently, so it costs the full timeout, and with a retry it
+    costs it twice; a single district's guesses ran to minutes. A guess is a
+    question, and being wrong about it costs nothing.
+    """
+    timeouts: list[float] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        timeouts.append(request.extensions["timeout"]["read"])
+        raise httpx.ReadTimeout("no answer")
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+        verdict = await robots.allowed(client, "https://termin.erfunden.invalid/x", patient=False)
+
+    assert verdict.allowed is False
+    assert len(timeouts) == 1
+    assert timeouts[0] < 10.0
+
+    robots.clear()
+    timeouts.clear()
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+        await robots.allowed(client, "https://termin.erfunden.invalid/x")
+
+    # A host we have reason to believe in is given the full wait, and a second try.
+    assert len(timeouts) == 2
+    assert timeouts[0] == 10.0
+
+
 async def test_an_outage_is_re_checked_soon_rather_than_cached_all_day() -> None:
     """A blocked verdict from an outage must not outlive the outage."""
     calls: list[int] = []

@@ -106,27 +106,35 @@ def registrable(host: str) -> str:
     return ".".join(parts[-2:]) if len(parts) >= 2 else host.lower()
 
 
-def seeds(entry: dict) -> list[str]:
-    """Where to start: the official site, its obvious sub-pages, service subdomains."""
-    urls: list[str] = []
+def seeds(entry: dict) -> list[tuple[str, bool]]:
+    """Where to start, each with whether the host is known or merely guessed.
 
-    def add(url: str) -> None:
-        if url not in urls:
-            urls.append(url)
+    The official site comes from the register and exists; ``termin.<stadt>.de``
+    and its dozen siblings are guesses, most of which are nothing. The flag
+    rides along because the two deserve very different patience — see
+    ``CityCrawler.fetch``.
+    """
+    urls: list[tuple[str, bool]] = []
+    seen: set[str] = set()
+
+    def add(url: str, guessed: bool) -> None:
+        if url not in seen:
+            seen.add(url)
+            urls.append((url, guessed))
 
     site = entry.get("site")
     if site:
-        add(site)
+        add(site, False)
         root = f"{urlparse(site).scheme}://{urlparse(site).netloc}"
         for path in _DIRECT_PATHS:
-            add(root + path)
+            add(root + path, False)
 
     stems = list(slug_variants(entry["city"]))[:2]
     for stem in stems:
         if not site:
-            add(f"https://www.{stem}.de/")
+            add(f"https://www.{stem}.de/", True)
         for pattern in _SERVICE_HOSTS:
-            add(f"https://{pattern.format(slug=stem)}/")
+            add(f"https://{pattern.format(slug=stem)}/", True)
     return urls
 
 
@@ -153,22 +161,29 @@ class CityCrawler:
         )
         self.allowed_domains: set[str] = set()
 
-    async def fetch(self, url: str) -> httpx.Response | None:
+    async def fetch(self, url: str, guessed: bool = False) -> httpx.Response | None:
         if url in self.seen_urls or self.pages >= self.max_pages:
             return None
         self.seen_urls.add(url)
+
+        # Most of what this crawler asks for does not exist: `termin.<stadt>.de`
+        # and a dozen shapes like it, tried because one of them usually is the
+        # booking host. A guess that resolves to a firewall drops the
+        # connection silently, so it costs a full timeout — twice over, with
+        # the retry — and one district's guesses can take minutes. Waiting is
+        # worth it for a page we found a link to, or for the official site;
+        # for a name we invented it is not, and being wrong costs nothing.
         try:
-            verdict = await robots.allowed(self.client, url)
+            verdict = await robots.allowed(self.client, url, patient=not guessed)
         except httpx.HTTPError:
             return None
         if not verdict.allowed:
             return None
 
         self.pages += 1
+        timeout = httpx.Timeout(15.0, connect=6.0) if not guessed else httpx.Timeout(4.0, connect=2.5)
         try:
-            response = await self.client.get(
-                url, timeout=httpx.Timeout(15.0, connect=6.0), follow_redirects=True
-            )
+            response = await self.client.get(url, timeout=timeout, follow_redirects=True)
         except httpx.HTTPError:
             return None
         if response.status_code >= 400 or not response.text:
@@ -197,7 +212,7 @@ class CityCrawler:
                 self.outcome.links.append(link)
         return any(link.vendor for link in self.outcome.links)
 
-    def candidates(self, response: httpx.Response, depth: int) -> list[tuple[int, str, int]]:
+    def candidates(self, response: httpx.Response, depth: int) -> list[tuple[int, str, int, bool]]:
         """Same-estate links worth following, best first."""
         page_url = str(response.url)
         page_domain = registrable(urlparse(page_url).netloc)
@@ -216,19 +231,21 @@ class CityCrawler:
             score = rank(text, absolute)
             if score and score > scored.get(absolute, 0):
                 scored[absolute] = score
-        return [(score, url, depth + 1) for url, score in scored.items()]
+        # A link we found on a real page is not a guess, whatever its host.
+        return [(score, url, depth + 1, False) for url, score in scored.items()]
 
     async def run(self) -> Outcome:
-        queue: list[tuple[int, str, int]] = [(9, url, 0) for url in seeds(self.entry)]
+        # (score, url, depth, guessed)
+        queue: list[tuple[int, str, int, bool]] = [(9, url, 0, guessed) for url, guessed in seeds(self.entry)]
         # Score 7 keeps these ahead of anything the crawl discovers (max 6) but
         # behind the city's own entry points.
-        queue += [(7, url, self.max_depth) for url in vendor_seeds(self.entry)]
+        queue += [(7, url, self.max_depth, True) for url in vendor_seeds(self.entry)]
 
         while queue and self.pages < self.max_pages:
             queue.sort(key=lambda item: (-item[0], item[2]))
-            score, url, depth = queue.pop(0)
+            score, url, depth, guessed = queue.pop(0)
             self.outcome.tried.append(url)
-            response = await self.fetch(url)
+            response = await self.fetch(url, guessed)
             if response is None:
                 continue
             if self.collect(response):
