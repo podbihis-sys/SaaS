@@ -138,7 +138,11 @@ VENDOR_SIGNATURES: list[tuple[str, str, bool]] = [
     # Two vendors that would otherwise be read as TEVIS, so they come first:
     # the Bavarian municipal portal and Locaboo both ship the jQuery "Select2"
     # widget, whose stylesheet path contains the word.
-    ("bayern-portal", r"buergerservice-portal\.de|bayernportal", False),
+    # The domain is written both ways — buergerserviceportal.de is the live
+    # host, buergerservice-portal.de the older spelling that still redirects to
+    # it. Matching only the hyphenated form left 144 municipalities' booking
+    # links unrecognised, which is the most common single miss in the survey.
+    ("bayern-portal", r"buergerservice-?portal\.de|bayernportal", False),
     ("locaboo", r"locaboo\.com", False),
     # ``/select2`` only counts when it is the endpoint itself — followed by a
     # query or the end of the URL. Without that guard
@@ -150,11 +154,24 @@ VENDOR_SIGNATURES: list[tuple[str, str, bool]] = [
         r"select2\?md=|/select2(?=[?\"'\s>]|$)|tevisweb|termine-reservieren\.(de|online)|\btevis\b|cnc-\d+",
         True,
     ),
-    ("berlin_zms", r"service\.berlin\.de/terminvereinbarung|terminvereinbarung/termin", True),
+    # ZMS is Berlin's own system, and the path segments it routes on are
+    # ``/terminvereinbarung/termin/<day|tag|time|zeit>/``. Matching the looser
+    # ``terminvereinbarung/termin`` caught every CMS page filed under
+    # "Online-Terminvereinbarung/Terminbuchung" — fourteen municipalities from
+    # Coburg to Quedlinburg were labelled as running Berlin's software.
+    (
+        "berlin_zms",
+        r"service\.berlin\.de/terminvereinbarung|/terminvereinbarung/termin/(day|tag|time|zeit)/",
+        True,
+    ),
     ("netappoint", r"netappoint", True),
     ("etermin", r"etermin\.net", True),
     ("cleverq", r"cleverq", False),
-    ("terminland", r"terminland\.de", False),
+    ("terminland", r"terminland\.(de|eu)", False),
+    ("cm-termin", r"cm-terminreservierung\.de", False),
+    ("terminplaner-online", r"terminplaner-online\.de", False),
+    ("bookingtime", r"booking-?time\.com", False),
+    ("termine-regional", r"termine-regional\.de", False),
     ("qmatic", r"qmatic", False),
     ("no-q", r"no-q\.info", False),
     ("timify", r"timify", False),
