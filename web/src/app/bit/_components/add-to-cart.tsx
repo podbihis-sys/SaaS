@@ -5,6 +5,7 @@ import { Check, Minus, Plus, ShoppingCart } from "lucide-react";
 import type { Product } from "../_data/catalog";
 import { getRolls } from "../_data/rolls";
 import { getPacks } from "../_data/packs";
+import { numEn } from "../_data/terms-en";
 import { useCart } from "../_lib/cart";
 
 const STRINGS = {
@@ -93,6 +94,8 @@ export function AddToCart({
     : t.bundlePl.gebinde;
   const fmt = (n: number) =>
     n.toLocaleString(locale === "en" ? "en-GB" : "de-DE", { maximumFractionDigits: 2 });
+  // Größen-/VPE-Angaben stehen deutsch in den Daten (Dezimalkomma, „Stk.“).
+  const show = (s: string) => (locale === "en" ? numEn(s) : s);
 
   const [size, setSize] = useState<string>("");
   const [color, setColor] = useState<string>(product.colors?.[0] ?? "");
@@ -151,7 +154,7 @@ export function AddToCart({
                       : "border-slate-300 bg-white text-slate-700 hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
                   }`}
                 >
-                  <span>{v.label}</span>
+                  <span>{show(v.label)}</span>
                   {/* Typenbezeichnung des Herstellers (Kundenvorgabe) */}
                   {v.typ && (
                     <span
@@ -163,7 +166,7 @@ export function AddToCart({
                     </span>
                   )}
                   <span className={`text-[11px] ${size === v.label ? "text-white/80" : "text-slate-500"}`}>
-                    {meterware ? `${v.vpe} / ${bundle}` : `${v.amount} ${amountUnit} / ${bundle}`}
+                    {meterware ? `${show(v.vpe)} / ${bundle}` : `${v.amount} ${amountUnit} / ${bundle}`}
                   </span>
                 </button>
               ))
@@ -181,7 +184,7 @@ export function AddToCart({
                       : "border-slate-300 bg-white text-slate-700 hover:border-[#1e4a7a] hover:text-[#1e4a7a]"
                   }`}
                 >
-                  {s}
+                  {show(s)}
                 </button>
               ))}
         </div>

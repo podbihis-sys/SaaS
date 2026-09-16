@@ -8,6 +8,7 @@ import {
   Truck,
 } from "lucide-react";
 import { CATEGORIES, COMPANY, PRODUCTS } from "../_data/catalog";
+import { getCatalog } from "../_data/products-server";
 import { EN_CATEGORY_LABELS, EN_PRODUCTS } from "../_data/catalog-en";
 import { ProductCard } from "../_components/product-card";
 import { ProductIllustration } from "../_components/product-illustration";
@@ -82,7 +83,11 @@ const SECTORS = [
   { label: "Safety Equipment and Engineering", slug: "safety-equipment-and-engineering" },
 ];
 
-export default function EnglishHome() {
+// Kategoriebilder kommen aus dem CMS (Fallback: statischer Katalog).
+export const revalidate = 300;
+
+export default async function EnglishHome() {
+  const { categoryImage } = await getCatalog();
   const featured = PRODUCTS.filter((p) =>
     [
       "schrumpfschlauch-mit-kleber-bpdw-100",
@@ -144,6 +149,7 @@ export default function EnglishHome() {
                 <div className="aspect-[16/9] overflow-hidden rounded-t-[1.3rem] bg-gradient-to-br from-slate-50 to-slate-100">
                   <ProductIllustration
                     category={cat.id}
+                    src={categoryImage[cat.id]}
                     fit="cover"
                     className="bit-card-img h-full w-full"
                   />

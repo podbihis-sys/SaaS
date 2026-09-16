@@ -3695,11 +3695,18 @@ export const INDUSTRIES = [
 ];
 
 /** Repräsentatives Foto je Kategorie (aus dem realen Sortiment). */
+/** Eigene Kategoriebilder (Kundenvorgabe); ohne Eintrag zählt das erste Produktbild. */
+const CATEGORY_IMAGE_OVERRIDES: Partial<Record<CategoryId, string>> = {
+  schrumpfschlauch: "/bit/kategorien/schrumpfschlauch.jpg",
+};
+
 export const CATEGORY_IMAGE: Record<CategoryId, string> = (() => {
   const map = {} as Record<CategoryId, string>;
   for (const c of CATEGORIES) {
     const first = PRODUCTS.find((p) => p.category === c.id);
-    if (first) map[c.id] = first.image;
+    const own = CATEGORY_IMAGE_OVERRIDES[c.id];
+    if (own) map[c.id] = own;
+    else if (first) map[c.id] = first.image;
   }
   return map;
 })();
