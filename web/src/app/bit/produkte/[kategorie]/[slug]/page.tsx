@@ -189,6 +189,22 @@ export default async function ProductDetail({
             </h1>
             <p className="mt-2 text-lg text-slate-600">{product.tagline}</p>
             <p className="mt-5 leading-relaxed text-slate-700">{product.description}</p>
+            {/* Datenblatt direkt unter der Artikelbezeichnung (wie auf der EN-Seite) */}
+            {product.datasheet && (
+              <p className="mt-5">
+                <a
+                  href={product.datasheet}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-[#1e4a7a] hover:underline"
+                >
+                  <span className="inline-flex items-center gap-1 rounded bg-red-600 px-1.5 py-0.5 text-[10px] font-bold uppercase text-white">
+                    <FileText className="h-3 w-3" aria-hidden="true" /> PDF
+                  </span>
+                  Produktdatenblatt
+                </a>
+              </p>
+            )}
 
             {/* Specs */}
             <dl className="mt-6 grid grid-cols-2 gap-4 rounded-xl border border-slate-200 p-5 text-sm">
@@ -311,24 +327,8 @@ export default async function ProductDetail({
         {/* Technische Daten (verbatim vom Hersteller) */}
         {product.tech.length > 0 && (
           <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-slate-50 px-6 py-4">
+            <div className="border-b border-slate-200 bg-slate-50 px-6 py-4">
               <h2 className="text-lg font-semibold text-slate-900">Technische Daten</h2>
-              {product.datasheet && (
-                <a
-                  href={product.datasheet}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-[#1e4a7a] hover:underline"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="inline-flex items-center gap-0.5 rounded-md bg-red-600 px-1.5 py-0.5 text-[10px] font-bold uppercase leading-none text-white"
-                  >
-                    <FileText className="h-3 w-3" /> PDF
-                  </span>
-                  Produktdatenblatt
-                </a>
-              )}
             </div>
             <dl className="divide-y divide-slate-100">
               {product.tech.map((row) => (

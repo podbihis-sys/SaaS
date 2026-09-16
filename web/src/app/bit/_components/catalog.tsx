@@ -5,6 +5,7 @@ import Link from "next/link";
 import { SlidersHorizontal, X } from "lucide-react";
 import { CATEGORIES, PRODUCTS, type Category, type CategoryId, type Product } from "../_data/catalog";
 import { buildSearchIndex, searchIndex } from "../_lib/product-search";
+import { materialEn } from "../_data/terms-en";
 import { ProductCard } from "./product-card";
 import { ProductSearchBox } from "./product-search-box";
 import {
@@ -20,6 +21,83 @@ import {
 
 const WALLS: Wall[] = ["dünnwandig", "mittelwandig", "dickwandig"];
 const SHRINK_OPTIONS = [2, 3, 4];
+
+const WALL_EN: Record<Wall, string> = {
+  dünnwandig: "Thin-wall",
+  mittelwandig: "Medium-wall",
+  dickwandig: "Thick-wall",
+};
+
+/** Oberflächentexte des Katalogs in beiden Sprachen. */
+const STRINGS = {
+  de: {
+    eyebrow: "Produkte",
+    allTitle: "Schläuche, Wellrohre & Befestigung",
+    allIntro:
+      "Über 1.000 Standardartikel aus Schrumpf-, Isolier- und Geflechtschlauchtechnik. Wählen Sie eine Kategorie, filtern Sie nach technischen Eigenschaften und legen Sie Artikel in der gewünschten Größe in den Warenkorb.",
+    catIntro: (c: Category, _label: string) => c.description,
+    navAria: "Kategorien",
+    all: "Alle",
+    filter: "Filter",
+    reset: "Zurücksetzen",
+    wall: "Wandstärke",
+    wallLabel: (w: Wall) => cap(w),
+    shrink: "Schrumpfrate min.",
+    adhesive: "Kleber",
+    adhAll: "Alle",
+    adhYes: "mit Kleber",
+    adhNo: "ohne Kleber",
+    temp: "Einsatztemperatur max.",
+    tempAria: "Mindestens erreichbare Einsatztemperatur",
+    material: "Material",
+    materialLabel: (m: MaterialGroup) => m as string,
+    articles: (_n: number) => "Artikel",
+    forQuery: (q: string) => ["für", `„${q}“`] as const,
+    noneSearch: (q: string) => `Keine Artikel für „${q}“ gefunden.`,
+    noneFilter: "Keine Artikel für diese Filter gefunden.",
+    clearSearch: "Suche löschen",
+    resetFilters: "Filter zurücksetzen",
+    searchAll: "In allen Kategorien suchen",
+    base: "/bit/produkte",
+    catHref: (id: string) => `/bit/${id}`,
+    productHref: undefined as ((p: Product) => string) | undefined,
+  },
+  en: {
+    eyebrow: "Products",
+    allTitle: "Tubing, conduits & fastening",
+    allIntro:
+      "More than 1,000 standard articles in heat-shrink, insulating and braided sleeve technology. Choose a category, filter by technical properties and add articles in the required size to your inquiry cart.",
+    catIntro: (_c: Category, label: string) =>
+      `Our ${label.toLowerCase()} range – filter by technical properties, pick a size and add the article to your inquiry cart.`,
+    navAria: "Categories",
+    all: "All",
+    filter: "Filter",
+    reset: "Reset",
+    wall: "Wall thickness",
+    wallLabel: (w: Wall) => WALL_EN[w],
+    shrink: "Min. shrink ratio",
+    adhesive: "Adhesive",
+    adhAll: "All",
+    adhYes: "adhesive-lined",
+    adhNo: "without adhesive",
+    temp: "Max. operating temperature",
+    tempAria: "Minimum required operating temperature",
+    material: "Material",
+    materialLabel: (m: MaterialGroup) => materialEn(m),
+    articles: (n: number) => (n === 1 ? "article" : "articles"),
+    forQuery: (q: string) => ["for", `“${q}”`] as const,
+    noneSearch: (q: string) => `No articles found for “${q}”.`,
+    noneFilter: "No articles match these filters.",
+    clearSearch: "Clear search",
+    resetFilters: "Reset filters",
+    searchAll: "Search all categories",
+    base: "/bit/en/products",
+    catHref: (id: string) => `/bit/en/products/${id}`,
+    productHref: ((p: Product) => `/bit/en/products/${p.category}/${p.slug}`) as
+      | ((p: Product) => string)
+      | undefined,
+  },
+} as const;
 
 interface Filters {
   walls: Set<Wall>;
@@ -70,17 +148,31 @@ function matches(p: Product, f: Filters): boolean {
  * Die Filter richten sich nach der geöffneten Kategorie: Es werden nur
  * Kriterien und Werte angeboten, die im aktuellen Sortiment auch vorkommen –
  * z. B. keine Wandstärke bei Kabelbindern, keine Schrumpfrate bei Wellrohren.
+ *
+ * Mit `locale="en"` erscheint derselbe Katalog (inkl. Filter) englisch;
+ * `names`/`categoryLabels` liefern die englischen Bezeichnungen.
  */
 export function Catalog({
   active,
   categories = CATEGORIES,
   products = PRODUCTS,
+  locale = "de",
+  names,
+  categoryLabels,
 }: {
   active: CategoryId | "alle";
   /** CMS-Daten (Fallback: statischer Katalog). */
   categories?: Category[];
   products?: Product[];
+  locale?: "de" | "en";
+  /** slug → Anzeigename (EN-Overlay). */
+  names?: Record<string, string>;
+  /** Kategorie-ID → Label (EN). */
+  categoryLabels?: Record<string, string>;
 }) {
+  const t = STRINGS[locale];
+  const en = locale === "en";
+  const catLabel = (c: Category) => categoryLabels?.[c.id] ?? c.name;
   const [filters, setFilters] = useState<Filters>(EMPTY);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -100,7 +192,14 @@ export function Catalog({
 
   // Produktsuche über Typ, Name, Material, Eigenschaften und Größen – Treffer
   // kommen nach Relevanz sortiert zurück, ohne Suchbegriff in Katalogreihenfolge.
-  const index = useMemo(() => buildSearchIndex(byCategory), [byCategory]);
+  const index = useMemo(
+    () =>
+      buildSearchIndex(byCategory, (p) => [
+        names?.[p.slug] ?? "",
+        categoryLabels?.[p.category] ?? "",
+      ]),
+    [byCategory, names, categoryLabels],
+  );
   const searched = useMemo(() => searchIndex(index, query), [index, query]);
   const searching = query.trim().length >= 2;
 
@@ -181,19 +280,19 @@ export function Catalog({
       return { ...f, materials };
     });
 
+  const [forWord, forQuery] = t.forQuery(query.trim());
+
   return (
     <>
       {/* Page header */}
       <section className="border-b border-slate-800 bg-[#0f2742]">
         <div className="bit-page-hero container py-10">
-          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Produkte</p>
+          <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">{t.eyebrow}</p>
           <h1 className="mt-2 text-4xl font-bold tracking-tight text-white">
-            {category ? category.name : "Schläuche, Wellrohre & Befestigung"}
+            {category ? catLabel(category) : t.allTitle}
           </h1>
           <p className="mt-3 max-w-2xl text-slate-300">
-            {category
-              ? category.description
-              : "Über 1.000 Standardartikel aus Schrumpf-, Isolier- und Geflechtschlauchtechnik. Wählen Sie eine Kategorie, filtern Sie nach technischen Eigenschaften und legen Sie Artikel in der gewünschten Größe in den Warenkorb."}
+            {category ? t.catIntro(category, catLabel(category)) : t.allIntro}
           </p>
 
         </div>
@@ -201,13 +300,13 @@ export function Catalog({
 
       <div className="container py-10">
         {/* Kategorie-Navigation mit eigenen URLs */}
-        <nav className="flex flex-wrap gap-2" aria-label="Kategorien">
-          <CategoryChip href="/bit/produkte" label="Alle" active={active === "alle"} count={products.length} />
+        <nav className="flex flex-wrap gap-2" aria-label={t.navAria}>
+          <CategoryChip href={t.base} label={t.all} active={active === "alle"} count={products.length} />
           {categories.map((c) => (
             <CategoryChip
               key={c.id}
-              href={`/bit/${c.id}`}
-              label={c.name}
+              href={t.catHref(c.id)}
+              label={catLabel(c)}
               active={active === c.id}
               count={products.filter((p) => p.category === c.id).length}
             />
@@ -224,14 +323,14 @@ export function Catalog({
               <div className="rounded-2xl border border-slate-200 bg-white lg:sticky lg:top-36 lg:flex lg:max-h-[calc(100vh-10rem)] lg:flex-col">
                 <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
                   <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-900">
-                    Filter
+                    {t.filter}
                   </h2>
                   {activeFilterCount > 0 && (
                     <button
                       onClick={() => setFilters(EMPTY)}
                       className="inline-flex items-center gap-1 text-xs font-medium text-[#1e4a7a] hover:underline"
                     >
-                      <X className="h-3.5 w-3.5" aria-hidden="true" /> Zurücksetzen (
+                      <X className="h-3.5 w-3.5" aria-hidden="true" /> {t.reset} (
                       {activeFilterCount})
                     </button>
                   )}
@@ -240,13 +339,13 @@ export function Catalog({
 
                 {/* Wandstärke – nur wenn in dieser Kategorie vorhanden */}
                 {facets.walls.length > 0 && (
-                  <FilterGroup title="Wandstärke">
+                  <FilterGroup title={t.wall}>
                     {facets.walls.map((w) => (
                       <Check
                         key={w}
                         checked={filters.walls.has(w)}
                         onChange={() => toggleWall(w)}
-                        label={cap(w)}
+                        label={t.wallLabel(w)}
                       />
                     ))}
                   </FilterGroup>
@@ -254,7 +353,7 @@ export function Catalog({
 
                 {/* Schrumpfrate */}
                 {facets.shrinkOptions.length > 0 && (
-                  <FilterGroup title="Schrumpfrate min.">
+                  <FilterGroup title={t.shrink}>
                     <div className="flex flex-wrap gap-2">
                       {facets.shrinkOptions.map((s) => (
                         <button
@@ -278,7 +377,7 @@ export function Catalog({
 
                 {/* Kleber – nur wenn beide Varianten vorkommen */}
                 {facets.showAdhesive && (
-                  <FilterGroup title="Kleber">
+                  <FilterGroup title={t.adhesive}>
                     <div className="flex flex-wrap gap-2">
                       {(["all", "yes", "no"] as const).map((opt) => (
                         <button
@@ -291,7 +390,7 @@ export function Catalog({
                               : "border-slate-300 bg-white text-slate-700 hover:border-[#1e4a7a]"
                           }`}
                         >
-                          {opt === "all" ? "Alle" : opt === "yes" ? "mit Kleber" : "ohne Kleber"}
+                          {opt === "all" ? t.adhAll : opt === "yes" ? t.adhYes : t.adhNo}
                         </button>
                       ))}
                     </div>
@@ -300,7 +399,7 @@ export function Catalog({
 
                 {/* Einsatztemperatur max. (Schieberegler) */}
                 {facets.showTemp && facets.tempMin != null && facets.tempMax != null && (
-                  <FilterGroup title="Einsatztemperatur max.">
+                  <FilterGroup title={t.temp}>
                     <input
                       type="range"
                       min={facets.tempMin}
@@ -312,7 +411,7 @@ export function Catalog({
                         setFilters((f) => ({ ...f, minTemp: v <= facets.tempMin! ? null : v }));
                       }}
                       className="w-full accent-[#1e4a7a]"
-                      aria-label="Mindestens erreichbare Einsatztemperatur"
+                      aria-label={t.tempAria}
                     />
                     <div className="mt-1 flex justify-between text-xs text-slate-500">
                       <span>≥ {filters.minTemp ?? facets.tempMin} °C</span>
@@ -323,13 +422,13 @@ export function Catalog({
 
                 {/* Material – nur die in dieser Kategorie vertretenen Werkstoffe */}
                 {facets.materials.length > 1 && (
-                  <FilterGroup title="Material">
+                  <FilterGroup title={t.material}>
                     {facets.materials.map((m) => (
                       <Check
                         key={m}
                         checked={filters.materials.has(m)}
                         onChange={() => toggleMaterial(m)}
-                        label={m}
+                        label={t.materialLabel(m)}
                       />
                     ))}
                   </FilterGroup>
@@ -343,15 +442,16 @@ export function Catalog({
           <div>
             {/* Produktsuche (Kundenvorgabe): Name, Typ, Material, Eigenschaften, Größen */}
             <div className="mb-4">
-              <ProductSearchBox value={query} onChange={setQuery} />
+              <ProductSearchBox value={query} onChange={setQuery} locale={locale} />
             </div>
             <div className="mb-5 flex items-center justify-between gap-3">
               <p className="text-sm text-slate-600">
-                <span className="font-semibold text-slate-900">{filtered.length}</span> Artikel
+                <span className="font-semibold text-slate-900">{filtered.length}</span>{" "}
+                {t.articles(filtered.length)}
                 {searching && (
                   <>
                     {" "}
-                    für <span className="font-medium text-slate-900">„{query.trim()}“</span>
+                    {forWord} <span className="font-medium text-slate-900">{forQuery}</span>
                   </>
                 )}
               </p>
@@ -362,7 +462,7 @@ export function Catalog({
                   className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 lg:hidden"
                 >
                   <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
-                  Filter{activeFilterCount > 0 ? ` (${activeFilterCount})` : ""}
+                  {t.filter}{activeFilterCount > 0 ? ` (${activeFilterCount})` : ""}
                 </button>
               )}
             </div>
@@ -370,15 +470,20 @@ export function Catalog({
             {filtered.length > 0 ? (
               <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
                 {filtered.map((p) => (
-                  <ProductCard key={p.slug} product={p} />
+                  <ProductCard
+                    key={p.slug}
+                    product={p}
+                    locale={locale}
+                    href={t.productHref?.(p)}
+                    nameOverride={en ? names?.[p.slug] : undefined}
+                    categoryLabel={categoryLabels?.[p.category]}
+                  />
                 ))}
               </div>
             ) : (
               <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-12 text-center">
                 <p className="text-slate-600">
-                  {searching
-                    ? `Keine Artikel für „${query.trim()}“ gefunden.`
-                    : "Keine Artikel für diese Filter gefunden."}
+                  {searching ? t.noneSearch(query.trim()) : t.noneFilter}
                 </p>
                 <div className="mt-3 flex flex-wrap justify-center gap-4 text-sm font-semibold">
                   {searching && (
@@ -387,7 +492,7 @@ export function Catalog({
                       onClick={() => setQuery("")}
                       className="text-[#1e4a7a] hover:underline"
                     >
-                      Suche löschen
+                      {t.clearSearch}
                     </button>
                   )}
                   {activeFilterCount > 0 && (
@@ -396,15 +501,15 @@ export function Catalog({
                       onClick={() => setFilters(EMPTY)}
                       className="text-[#1e4a7a] hover:underline"
                     >
-                      Filter zurücksetzen
+                      {t.resetFilters}
                     </button>
                   )}
                   {searching && active !== "alle" && (
                     <Link
-                      href={`/bit/produkte?q=${encodeURIComponent(query.trim())}`}
+                      href={`${t.base}?q=${encodeURIComponent(query.trim())}`}
                       className="text-[#1e4a7a] hover:underline"
                     >
-                      In allen Kategorien suchen
+                      {t.searchAll}
                     </Link>
                   )}
                 </div>

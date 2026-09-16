@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Cookie, ShieldCheck, X } from "lucide-react";
 import { useConsent } from "../_lib/consent";
@@ -9,7 +10,7 @@ import { useConsent } from "../_lib/consent";
  * Datenschutz-/Cookie-Hinweis beim ersten Seitenaufruf – Aufbau und Wortlaut
  * wie auf bit-gmbh.de (Überschrift „Datenschutzeinstellungen“, Erläuterung,
  * „Alle akzeptieren“, „Nur essenzielle Cookies akzeptieren“ und individuelle
- * Einstellungen).
+ * Einstellungen). Auf /bit/en erscheint der Hinweis englisch.
  *
  * Die aufgeführten Gruppen entsprechen dem, was diese Website tatsächlich
  * speichert bzw. nachlädt.
@@ -22,44 +23,135 @@ interface GroupInfo {
   items: { name: string; purpose: string; storage: string }[];
 }
 
-const GROUPS: GroupInfo[] = [
-  {
-    key: "essential",
-    name: "Essenziell",
-    description:
-      "Essenzielle Speicherung ermöglicht grundlegende Funktionen und ist für die einwandfreie Funktion der Website erforderlich. Sie kann daher nicht deaktiviert werden.",
-    items: [
-      {
-        name: "Warenkorb",
-        purpose:
-          "Merkt sich die von Ihnen zusammengestellten Artikel, damit Ihre Anfrage beim Seitenwechsel erhalten bleibt.",
-        storage: "Lokale Speicherung im Browser · bleibt bis zum Leeren des Warenkorbs",
-      },
-      {
-        name: "Datenschutzeinstellungen",
-        purpose:
-          "Speichert Ihre hier getroffene Auswahl, damit dieser Hinweis nicht bei jedem Besuch erneut erscheint.",
-        storage: "Lokale Speicherung im Browser · bis zum Widerruf",
-      },
-    ],
+const GROUPS: Record<"de" | "en", GroupInfo[]> = {
+  de: [
+    {
+      key: "essential",
+      name: "Essenziell",
+      description:
+        "Essenzielle Speicherung ermöglicht grundlegende Funktionen und ist für die einwandfreie Funktion der Website erforderlich. Sie kann daher nicht deaktiviert werden.",
+      items: [
+        {
+          name: "Warenkorb",
+          purpose:
+            "Merkt sich die von Ihnen zusammengestellten Artikel, damit Ihre Anfrage beim Seitenwechsel erhalten bleibt.",
+          storage: "Lokale Speicherung im Browser · bleibt bis zum Leeren des Warenkorbs",
+        },
+        {
+          name: "Datenschutzeinstellungen",
+          purpose:
+            "Speichert Ihre hier getroffene Auswahl, damit dieser Hinweis nicht bei jedem Besuch erneut erscheint.",
+          storage: "Lokale Speicherung im Browser · bis zum Widerruf",
+        },
+      ],
+    },
+    {
+      key: "externalMedia",
+      name: "Externe Medien",
+      description:
+        "Inhalte von Drittanbietern werden erst nach Ihrer Einwilligung geladen. Ohne Einwilligung wird an dieser Stelle nur ein Platzhalter angezeigt und es werden keine Daten an den Anbieter übertragen.",
+      items: [
+        {
+          name: "OpenStreetMap",
+          purpose:
+            "Zeigt die Anfahrtskarte auf der Kontaktseite. Beim Laden wird Ihre IP-Adresse an die OpenStreetMap Foundation übertragen.",
+          storage: "Anbieter: OpenStreetMap Foundation · Anschrift steht auch als Text daneben",
+        },
+      ],
+    },
+  ],
+  en: [
+    {
+      key: "essential",
+      name: "Essential",
+      description:
+        "Essential storage enables basic functions and is required for the website to work properly. It can therefore not be deactivated.",
+      items: [
+        {
+          name: "Cart",
+          purpose:
+            "Remembers the articles you have collected so that your inquiry is kept when you change pages.",
+          storage: "Local storage in your browser · kept until the cart is emptied",
+        },
+        {
+          name: "Privacy settings",
+          purpose:
+            "Stores the choice you make here so that this notice does not appear again on every visit.",
+          storage: "Local storage in your browser · until revoked",
+        },
+      ],
+    },
+    {
+      key: "externalMedia",
+      name: "External media",
+      description:
+        "Third-party content is only loaded after your consent. Without consent, only a placeholder is shown and no data is transferred to the provider.",
+      items: [
+        {
+          name: "OpenStreetMap",
+          purpose:
+            "Shows the map on the contact page. When loaded, your IP address is transmitted to the OpenStreetMap Foundation.",
+          storage: "Provider: OpenStreetMap Foundation · the address is also shown as text next to it",
+        },
+      ],
+    },
+  ],
+};
+
+const STRINGS = {
+  de: {
+    title: "Datenschutzeinstellungen",
+    intro:
+      "Wir nutzen Cookies auf unserer Website. Einige von ihnen sind essenziell, während andere uns helfen, diese Website und Ihre Erfahrung zu verbessern.",
+    close: "Datenschutzeinstellungen schließen",
+    details:
+      "Hier finden Sie eine Übersicht über alle verwendeten Speicherzugriffe. Sie können Ihre Einwilligung zu ganzen Kategorien geben oder sich weitere Informationen anzeigen lassen.",
+    alwaysAria: (g: string) => `${g} – immer aktiv, nicht abwählbar`,
+    allowAria: (g: string) => `${g} zulassen`,
+    always: "Immer aktiv",
+    allow: "Zulassen",
+    acceptAll: "Alle akzeptieren",
+    saveSelection: "Auswahl speichern",
+    essentialOnly: "Nur essenzielle Cookies akzeptieren",
+    individual: "Individuelle Datenschutzeinstellungen",
+    localOnly: "Ihre Auswahl wird nur lokal in Ihrem Browser gespeichert.",
+    privacy: "Datenschutz",
+    imprint: "Impressum",
+    privacyHref: "/bit/datenschutz",
+    imprintHref: "/bit/impressum",
   },
-  {
-    key: "externalMedia",
-    name: "Externe Medien",
-    description:
-      "Inhalte von Drittanbietern werden erst nach Ihrer Einwilligung geladen. Ohne Einwilligung wird an dieser Stelle nur ein Platzhalter angezeigt und es werden keine Daten an den Anbieter übertragen.",
-    items: [
-      {
-        name: "OpenStreetMap",
-        purpose:
-          "Zeigt die Anfahrtskarte auf der Kontaktseite. Beim Laden wird Ihre IP-Adresse an die OpenStreetMap Foundation übertragen.",
-        storage: "Anbieter: OpenStreetMap Foundation · Anschrift steht auch als Text daneben",
-      },
-    ],
+  en: {
+    title: "Privacy settings",
+    intro:
+      "We use cookies on our website. Some of them are essential, while others help us to improve this website and your experience.",
+    close: "Close privacy settings",
+    details:
+      "Here you will find an overview of all storage used. You can give your consent to whole categories or display further information.",
+    alwaysAria: (g: string) => `${g} – always active, cannot be deselected`,
+    allowAria: (g: string) => `Allow ${g}`,
+    always: "Always active",
+    allow: "Allow",
+    acceptAll: "Accept all",
+    saveSelection: "Save selection",
+    essentialOnly: "Accept essential cookies only",
+    individual: "Individual privacy settings",
+    localOnly: "Your selection is only stored locally in your browser.",
+    privacy: "Privacy policy",
+    imprint: "Imprint",
+    privacyHref: "/bit/en/privacy-policy",
+    imprintHref: "/bit/en/imprint",
   },
-];
+} as const;
+
+function useLocale(): "de" | "en" {
+  const pathname = usePathname();
+  return pathname.startsWith("/bit/en") ? "en" : "de";
+}
 
 export function CookieBanner() {
+  const locale = useLocale();
+  const t = STRINGS[locale];
+  const groups = GROUPS[locale];
   const {
     consent,
     ready,
@@ -130,17 +222,16 @@ export function CookieBanner() {
           </span>
           <div className="min-w-0 flex-1">
             <h2 id="bit-consent-title" className="text-lg font-bold text-slate-900">
-              Datenschutzeinstellungen
+              {t.title}
             </h2>
             <p id="bit-consent-desc" className="mt-1 text-sm leading-relaxed text-slate-600">
-              Wir nutzen Cookies auf unserer Website. Einige von ihnen sind essenziell, während
-              andere uns helfen, diese Website und Ihre Erfahrung zu verbessern.
+              {t.intro}
             </p>
           </div>
           {consent !== null && (
             <button
               onClick={closeSettings}
-              aria-label="Datenschutzeinstellungen schließen"
+              aria-label={t.close}
               className="rounded-md p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-900"
             >
               <X className="h-5 w-5" aria-hidden="true" />
@@ -150,13 +241,9 @@ export function CookieBanner() {
 
         {showDetails && (
           <div className="border-b border-slate-200 px-6 py-5">
-            <p className="text-sm leading-relaxed text-slate-600">
-              Hier finden Sie eine Übersicht über alle verwendeten Speicherzugriffe. Sie können
-              Ihre Einwilligung zu ganzen Kategorien geben oder sich weitere Informationen
-              anzeigen lassen.
-            </p>
+            <p className="text-sm leading-relaxed text-slate-600">{t.details}</p>
             <ul className="mt-5 space-y-4">
-              {GROUPS.map((g) => {
+              {groups.map((g) => {
                 const isEssential = g.key === "essential";
                 const checked = isEssential ? true : externalMedia;
                 return (
@@ -174,14 +261,10 @@ export function CookieBanner() {
                           checked={checked}
                           disabled={isEssential}
                           onChange={(e) => setExternalMedia(e.target.checked)}
-                          aria-label={
-                            isEssential
-                              ? `${g.name} – immer aktiv, nicht abwählbar`
-                              : `${g.name} zulassen`
-                          }
+                          aria-label={isEssential ? t.alwaysAria(g.name) : t.allowAria(g.name)}
                           className="h-4 w-4 rounded border-slate-300 accent-[#1e4a7a] disabled:opacity-60"
                         />
-                        {isEssential ? "Immer aktiv" : "Zulassen"}
+                        {isEssential ? t.always : t.allow}
                       </label>
                     </div>
                     <dl className="mt-3 space-y-2 border-t border-slate-100 pt-3">
@@ -207,13 +290,13 @@ export function CookieBanner() {
               onClick={acceptAll}
               className="flex-1 rounded-xl bg-[#1e4a7a] px-5 py-3 text-sm font-semibold text-white hover:bg-[#163a61]"
             >
-              Alle akzeptieren
+              {t.acceptAll}
             </button>
             <button
               onClick={showDetails ? () => save({ externalMedia }) : acceptEssential}
               className="flex-1 rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
-              {showDetails ? "Auswahl speichern" : "Nur essenzielle Cookies akzeptieren"}
+              {showDetails ? t.saveSelection : t.essentialOnly}
             </button>
           </div>
 
@@ -223,20 +306,20 @@ export function CookieBanner() {
                 onClick={openSettings}
                 className="font-medium text-[#1e4a7a] hover:underline"
               >
-                Individuelle Datenschutzeinstellungen
+                {t.individual}
               </button>
             ) : (
               <span className="inline-flex items-center gap-1.5 text-xs text-slate-500">
                 <ShieldCheck className="h-4 w-4 text-[#38bdf8]" aria-hidden="true" />
-                Ihre Auswahl wird nur lokal in Ihrem Browser gespeichert.
+                {t.localOnly}
               </span>
             )}
             <span className="flex gap-4 text-slate-500">
-              <Link href="/bit/datenschutz" className="hover:text-[#1e4a7a] hover:underline">
-                Datenschutz
+              <Link href={t.privacyHref} className="hover:text-[#1e4a7a] hover:underline">
+                {t.privacy}
               </Link>
-              <Link href="/bit/impressum" className="hover:text-[#1e4a7a] hover:underline">
-                Impressum
+              <Link href={t.imprintHref} className="hover:text-[#1e4a7a] hover:underline">
+                {t.imprint}
               </Link>
             </span>
           </div>
@@ -248,10 +331,11 @@ export function CookieBanner() {
 
 /** Footer-Schaltfläche, um die Einstellungen erneut zu öffnen. */
 export function ConsentSettingsLink({ className }: { className?: string }) {
+  const locale = useLocale();
   const { openSettings } = useConsent();
   return (
     <button type="button" onClick={openSettings} className={className}>
-      Datenschutzeinstellungen
+      {STRINGS[locale].title}
     </button>
   );
 }

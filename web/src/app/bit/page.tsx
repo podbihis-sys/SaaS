@@ -49,7 +49,7 @@ const ADVANTAGES = [
 export default async function BitHome() {
   const [content, news, catalog] = await Promise.all([getContent(), getCmsNews(), getCatalog()]);
   const latestNews = news.slice(0, 3);
-  const { categories, products } = catalog;
+  const { categories, products, categoryImage } = catalog;
   const featured = products.filter((p) =>
     [
       "schrumpfschlauch-mit-kleber-bpdw-100",
@@ -112,6 +112,7 @@ export default async function BitHome() {
                 <div className="aspect-[16/9] overflow-hidden rounded-t-[1.3rem] bg-gradient-to-br from-slate-50 to-slate-100">
                   <ProductIllustration
                     category={cat.id}
+                    src={categoryImage[cat.id]}
                     fit="cover"
                     className="bit-card-img h-full w-full"
                   />

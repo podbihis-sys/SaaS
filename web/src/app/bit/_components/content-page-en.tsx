@@ -20,7 +20,12 @@ export function contentMetadataEn(slug: string): Metadata {
   if (!page) return {};
   return {
     title: seoTitle(page.metaTitle || page.title),
-    description: clampDesc(page.metaDescription || page.body.replace(/^[#!|-].*$/gm, "").slice(0, 300)),
+    // Der WordPress-Standardtext des Originals ist deutsch – dann Auszug aus dem Inhalt.
+    description: clampDesc(
+      (page.metaDescription && !/WordPress/i.test(page.metaDescription)
+        ? page.metaDescription
+        : "") || page.body.replace(/^[#!|-].*$/gm, "").slice(0, 300),
+    ),
     alternates: { canonical: `/bit/en/${slug}` },
   };
 }

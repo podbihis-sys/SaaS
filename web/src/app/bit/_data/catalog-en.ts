@@ -51,7 +51,7 @@ export const EN_PRODUCTS: Record<string, EnProductOverlay> = {
     "source": "/en/products/bis-105-ul-y/"
   },
   "bis-300-glasseidenschlauch-silikon-hitzebestaendig": {
-    "name": "BIS 300 – BIT Bierther GmbH Glasseidenschlauch Silikon-imprägniert",
+    "name": "BIS 300 – heat-resistant fiberglass sleeve, silicone-impregnated",
     "description": "BIS 300 is halogen-free insulating fiberglass sleeving coated with silicone varnish that offers great mechanical properties. It is both high-temperature and cut-through resistant.",
     "tech": [
       {
