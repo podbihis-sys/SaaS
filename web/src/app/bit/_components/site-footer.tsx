@@ -3,7 +3,7 @@ import { Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import { CATEGORIES, COMPANY } from "../_data/catalog";
 import { EN_CATEGORY_LABELS } from "../_data/catalog-en";
 import { materialTaxa, propertyTaxa, shrinkTaxa } from "../_data/attributes";
-import { featureEn, materialEn } from "../_data/terms-en";
+import { featureEn, materialEn, numEn } from "../_data/terms-en";
 import { ShareButtons } from "./share-buttons";
 import { ConsentSettingsLink } from "./cookie-banner";
 
@@ -43,21 +43,21 @@ const COMPANY_LINKS = {
 
 export function SiteFooter({ locale = "de" }: { locale?: "de" | "en" }) {
   const en = locale === "en";
-  // „Beliebte Suchen“: DE verlinkt die Themenseiten, EN die Katalogsuche
-  // (die Suchbegriffe bleiben deutsch, weil die Produktdaten deutsch sind).
+  // „Beliebte Suchen“: DE verlinkt die Themenseiten, EN die Katalogsuche mit
+  // englischen Suchbegriffen (der EN-Suchindex ist englisch).
   const popular = en
     ? [
         ...propertyTaxa().slice(0, 6).map((t) => {
-          const term = t.label.split(" (")[0] ?? t.label;
-          return { href: `/bit/en/products?q=${encodeURIComponent(term)}`, label: featureEn(term) };
+          const term = featureEn(t.label.split(" (")[0] ?? t.label);
+          return { href: `/bit/en/products?q=${encodeURIComponent(term)}`, label: term };
         }),
         ...materialTaxa().slice(0, 6).map((t) => ({
-          href: `/bit/en/products?q=${encodeURIComponent(t.label)}`,
+          href: `/bit/en/products?q=${encodeURIComponent(materialEn(t.label))}`,
           label: `${materialEn(t.label)} tubing`,
         })),
         ...shrinkTaxa().map((t) => ({
-          href: `/bit/en/products?q=${encodeURIComponent(t.label)}`,
-          label: `Shrink ratio ${t.label}`,
+          href: `/bit/en/products?q=${encodeURIComponent(numEn(t.label))}`,
+          label: `Shrink ratio ${numEn(t.label)}`,
         })),
       ]
     : [

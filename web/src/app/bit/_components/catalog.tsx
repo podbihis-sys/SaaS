@@ -159,6 +159,7 @@ export function Catalog({
   locale = "de",
   names,
   categoryLabels,
+  enText,
 }: {
   active: CategoryId | "alle";
   /** CMS-Daten (Fallback: statischer Katalog). */
@@ -169,6 +170,8 @@ export function Catalog({
   names?: Record<string, string>;
   /** Kategorie-ID → Label (EN). */
   categoryLabels?: Record<string, string>;
+  /** slug → englischer Suchtext (Beschreibung, technische Daten) für die EN-Suche. */
+  enText?: Record<string, string>;
 }) {
   const t = STRINGS[locale];
   const en = locale === "en";
@@ -194,11 +197,16 @@ export function Catalog({
   // kommen nach Relevanz sortiert zurück, ohne Suchbegriff in Katalogreihenfolge.
   const index = useMemo(
     () =>
-      buildSearchIndex(byCategory, (p) => [
-        names?.[p.slug] ?? "",
-        categoryLabels?.[p.category] ?? "",
-      ]),
-    [byCategory, names, categoryLabels],
+      buildSearchIndex(
+        byCategory,
+        (p) => [
+          names?.[p.slug] ?? "",
+          categoryLabels?.[p.category] ?? "",
+          enText?.[p.slug] ?? "",
+        ],
+        locale,
+      ),
+    [byCategory, names, categoryLabels, enText, locale],
   );
   const searched = useMemo(() => searchIndex(index, query), [index, query]);
   const searching = query.trim().length >= 2;

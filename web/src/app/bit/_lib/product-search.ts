@@ -2,6 +2,15 @@ import type { Product } from "../_data/catalog";
 import { getCategory } from "../_data/catalog";
 import { getRolls } from "../_data/rolls";
 import { getPacks } from "../_data/packs";
+import {
+  applicationEn,
+  colorEn,
+  featureEn,
+  materialEn,
+  numEn,
+  taglineEn,
+  temperatureEn,
+} from "../_data/terms-en";
 
 /**
  * Produktsuche für die Katalogansicht.
@@ -84,6 +93,15 @@ interface Field {
   weight: number;
 }
 
+/**
+ * Kurze Suchwörter (≤ 3 Zeichen, z. B. „tie", „uv", „3:1") zählen nur am
+ * Wortanfang – sonst trifft „tie" auch „properties".
+ */
+function matches(text: string, token: string): boolean {
+  if (token.length > 3) return text.includes(token);
+  return (" " + text).includes(" " + token);
+}
+
 export interface SearchEntry<T extends Product> {
   product: T;
   fields: Field[];
@@ -94,11 +112,15 @@ export interface SearchEntry<T extends Product> {
 /**
  * Suchindex einmal je Produktliste aufbauen (memoisieren!). `extra` liefert
  * zusätzliche, gleich hoch wie der Name gewichtete Texte – z. B. den
- * englischen Produktnamen.
+ * englischen Produktnamen. Mit `locale = "en"` wird ausschließlich in den
+ * englischen Texten gesucht (übersetzte Merkmale, Anwendungen, Werkstoffe,
+ * Farben und die per `extra` gelieferten EN-Beschreibungen) – nur
+ * Typbezeichnungen, Größen und Messwerte bleiben sprachneutral.
  */
 export function buildSearchIndex<T extends Product>(
   products: T[],
   extra?: (p: T) => string[],
+  locale: "de" | "en" = "de",
 ): SearchEntry<T>[] {
   return products.map((p) => {
     const rolls = getRolls(p.slug);
@@ -106,6 +128,34 @@ export function buildSearchIndex<T extends Product>(
     const types = [...(rolls ?? []).map((r) => r.typ), ...(packs ?? []).map((k) => k.typ)].filter(
       (t): t is string => !!t,
     );
+    if (locale === "en") {
+      const en: Field[] = [
+        { text: normalizeSearch(p.code), weight: 10 },
+        { text: normalizeSearch((extra?.(p) ?? []).join(" ")), weight: 8 },
+        { text: normalizeSearch(materialEn(p.material)), weight: 5 },
+        { text: normalizeSearch(taglineEn(p.tagline)), weight: 4 },
+        {
+          text: normalizeSearch(
+            [...p.features.map(featureEn), ...p.applications.map(applicationEn)].join(" "),
+          ),
+          weight: 3,
+        },
+        // Messwerte (3:1, 125 °C …) sind sprachneutral – Labels bleiben außen vor.
+        { text: normalizeSearch(p.tech.map((t) => t.value).join(" ")), weight: 3 },
+        {
+          text: normalizeSearch(
+            [
+              ...p.sizes.map(numEn),
+              ...types,
+              ...(p.colors ?? []).map(colorEn),
+              p.temperature ? temperatureEn(p.temperature) : "",
+            ].join(" "),
+          ),
+          weight: 3,
+        },
+      ].filter((f) => f.text.length > 0);
+      return { product: p, fields: en, compactCode: compact(p.code), compactName: compact(p.name) };
+    }
     const fields: Field[] = [
       { text: normalizeSearch(p.code), weight: 10 },
       { text: normalizeSearch(p.name), weight: 8 },
@@ -141,7 +191,7 @@ export function searchIndex<T extends Product>(index: SearchEntry<T>[], query: s
     for (const alts of tokens) {
       let best = 0;
       for (const f of e.fields) {
-        if (f.weight > best && alts.some((a) => f.text.includes(a))) best = f.weight;
+        if (f.weight > best && alts.some((a) => matches(f.text, a))) best = f.weight;
       }
       if (best === 0) {
         all = false;
