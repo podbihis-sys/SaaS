@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { ChevronRight, CircleCheck, FileText, Thermometer } from "lucide-react";
 import { PRODUCTS, getCategory } from "../../../_data/catalog";
 import { getCatalog, getCmsProduct } from "../../../_data/products-server";
-import { applicationTaxa, formatMm, materialTaxa, propertyTaxonForText, slugify } from "../../../_data/attributes";
+import { applicationTaxa, dimLabel, formatMm, materialTaxa, propertyTaxonForText, slugify } from "../../../_data/attributes";
 import { clampText, clampDesc } from "../../../_lib/seo";
 import { getRolls } from "../../../_data/rolls";
 import { getPacks } from "../../../_data/packs";
@@ -381,7 +381,7 @@ export default async function ProductDetail({
                   {rolls.map((r) => (
                     <tr key={r.label}>
                       <td className="px-6 py-3 font-mono font-medium text-[#1e4a7a]">{r.typ ?? "–"}</td>
-                      <td className="px-3 py-3 font-medium text-slate-900">{r.label}</td>
+                      <td className="px-3 py-3 font-medium text-slate-900">{dimLabel(r.label)}</td>
                       {!ohneSchrumpfung && (
                         <td className="px-3 py-3 text-slate-700">
                           {r.dPost != null ? `Ø ${formatMm(r.dPost)} mm` : "–"}

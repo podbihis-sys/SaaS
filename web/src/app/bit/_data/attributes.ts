@@ -76,10 +76,26 @@ export function diameterRange(p: Product): { min: number; max: number } | null {
   return { min, max };
 }
 
-/** mm-Zahl hübsch formatieren: 1,5 / 50 (deutsches Komma, ohne ",0"). */
-export function formatMm(n: number): string {
-  if (Number.isInteger(n)) return String(n);
-  return n.toFixed(1).replace(/\.0$/, "").replace(".", ",");
+/**
+ * mm-Zahl formatieren: immer mindestens eine Nachkommastelle (3,0 / 4,8 /
+ * 0,45), deutsches Komma – Kundenvorgabe: einheitliche Nachkommastellen.
+ */
+export function formatMm(n: number, locale: "de" | "en" = "de"): string {
+  return n.toLocaleString(locale === "en" ? "en-GB" : "de-DE", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 2,
+  });
+}
+
+/**
+ * Maßangaben in Textlabels vereinheitlichen: "Ø 3 mm" → "Ø 3,0 mm",
+ * "100 × 8 mm" → "100,0 × 8,0 mm", "Ø 1,5 – 50 mm" → "Ø 1,5 – 50,0 mm".
+ * Meterangaben ("1,22 m") bleiben unverändert.
+ */
+export function dimLabel(label: string): string {
+  return label.replace(/(\d+(?:,\d+)?)(?=\s*(?:mm\b|×|x\b|–))/g, (m) =>
+    formatMm(parseFloat(m.replace(",", "."))),
+  );
 }
 
 /** "Ø 1,5 – 50 mm" für die Produktkarte. */
