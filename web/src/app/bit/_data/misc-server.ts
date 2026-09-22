@@ -59,6 +59,27 @@ export interface JobPosting {
   aufgabenTitel: string;
   aufgaben: string[];
   schluss: string;
+  /** Englische Fassung (CMS oder jobs.ts); fehlt sie, bleibt die Stelle deutsch. */
+  titleEn?: string;
+  introEn?: string;
+  textEn?: string[];
+  aufgabenTitelEn?: string;
+  aufgabenEn?: string[];
+  schlussEn?: string;
+}
+
+/** Stelle in der gewünschten Sprache (EN fällt je Feld auf Deutsch zurück). */
+export function localizeJob(job: JobPosting, locale: "de" | "en"): JobPosting {
+  if (locale === "de") return job;
+  return {
+    ...job,
+    title: job.titleEn || job.title,
+    intro: job.introEn || job.intro,
+    text: job.textEn?.length ? job.textEn : job.text,
+    aufgabenTitel: job.aufgabenTitelEn || job.aufgabenTitel,
+    aufgaben: job.aufgabenEn?.length ? job.aufgabenEn : job.aufgaben,
+    schluss: job.schlussEn || job.schluss,
+  };
 }
 
 export async function getCmsJobs(fallback: JobPosting[]): Promise<JobPosting[]> {
@@ -66,7 +87,7 @@ export async function getCmsJobs(fallback: JobPosting[]): Promise<JobPosting[]> 
     const supabase = createPublicClient();
     const { data, error } = await supabase
       .from("bit_jobs")
-      .select("slug,title,intro,body,tasks_title,tasks,closing,sort_order")
+      .select("slug,title,intro,body,tasks_title,tasks,closing,sort_order,title_en,intro_en,body_en,tasks_title_en,tasks_en,closing_en")
       .order("sort_order");
     if (error || !data || data.length === 0) return fallback;
     return data.map((r) => ({
@@ -77,6 +98,14 @@ export async function getCmsJobs(fallback: JobPosting[]): Promise<JobPosting[]> 
       aufgabenTitel: r.tasks_title,
       aufgaben: r.tasks ?? [],
       schluss: r.closing,
+      titleEn: r.title_en ?? fallback.find((f) => f.id === r.slug)?.titleEn,
+      introEn: r.intro_en ?? fallback.find((f) => f.id === r.slug)?.introEn,
+      textEn: r.body_en
+        ? (r.body_en as string).split(/\n\n+/).filter(Boolean)
+        : fallback.find((f) => f.id === r.slug)?.textEn,
+      aufgabenTitelEn: r.tasks_title_en ?? fallback.find((f) => f.id === r.slug)?.aufgabenTitelEn,
+      aufgabenEn: r.tasks_en ?? fallback.find((f) => f.id === r.slug)?.aufgabenEn,
+      schlussEn: r.closing_en ?? fallback.find((f) => f.id === r.slug)?.schlussEn,
     }));
   }, fallback);
 }

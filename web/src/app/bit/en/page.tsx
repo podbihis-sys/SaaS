@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { CATEGORIES, COMPANY, PRODUCTS } from "../_data/catalog";
 import { getCatalog } from "../_data/products-server";
-import { getCmsNews } from "../_data/news-server";
+import { getCmsNews, localizeNews } from "../_data/news-server";
 import { EN_CATEGORY_LABELS, EN_PRODUCTS } from "../_data/catalog-en";
 import { ProductCard } from "../_components/product-card";
 import { ProductIllustration } from "../_components/product-illustration";
@@ -103,7 +103,7 @@ export const revalidate = 300;
 
 export default async function EnglishHome() {
   const [{ categoryImage }, news] = await Promise.all([getCatalog(), getCmsNews()]);
-  const latestNews = news.slice(0, 3);
+  const latestNews = news.slice(0, 3).map((n) => localizeNews(n, "en"));
   const featured = PRODUCTS.filter((p) =>
     [
       "schrumpfschlauch-mit-kleber-bpdw-100",
@@ -353,16 +353,16 @@ export default async function EnglishHome() {
                         <CalendarDays className="h-3.5 w-3.5" /> {new Date(post.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
                       </span>
                     )}
-                    <div className="mt-2 line-clamp-2 flex-1 font-semibold leading-snug text-slate-900" lang="de">
+                    <div className="mt-2 line-clamp-2 flex-1 font-semibold leading-snug text-slate-900">
                       <Link
-                        href={`/bit/news/${post.slug}`}
+                        href={`/bit/en/news/${post.slug}`}
                         className="before:absolute before:inset-0 hover:text-[#1e4a7a]"
                       >
                         {post.title}
                       </Link>
                     </div>
                     <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#1e4a7a]">
-                      Read more (German)
+                      Read more
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </span>
                   </div>

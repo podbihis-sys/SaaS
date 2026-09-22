@@ -125,6 +125,9 @@ const newsInput = z.object({
   title: z.string().min(1, "Titel erforderlich"),
   excerpt: z.string().default(""),
   body: z.string().default(""),
+  title_en: z.string().default(""),
+  excerpt_en: z.string().default(""),
+  body_en: z.string().default(""),
   published_at: z.string().default(""),
   image_path: z.string().default(""),
   image_alt: z.string().default(""),
@@ -137,6 +140,8 @@ function revalidateNews(slug: string) {
   revalidatePath("/bit/admin/news");
   revalidatePath("/bit/news");
   revalidatePath(`/bit/news/${slug}`);
+  revalidatePath("/bit/en/news");
+  revalidatePath(`/bit/en/news/${slug}`);
 }
 
 export async function saveNews(input: NewsInput): Promise<ActionResult> {
@@ -152,6 +157,9 @@ export async function saveNews(input: NewsInput): Promise<ActionResult> {
     title: d.title,
     excerpt: d.excerpt,
     body: d.body,
+    title_en: d.title_en || null,
+    excerpt_en: d.excerpt_en || null,
+    body_en: d.body_en || null,
     published_at: d.published_at || null,
     image_path: d.image_path || null,
     image_alt: d.image_alt || null,
@@ -353,6 +361,12 @@ const jobInput = z.object({
   tasks_title: z.string().default("Ihre Aufgaben:"),
   tasks: z.array(z.string().min(1)).default([]),
   closing: z.string().default(""),
+  title_en: z.string().default(""),
+  intro_en: z.string().default(""),
+  body_en: z.string().default(""),
+  tasks_title_en: z.string().default(""),
+  tasks_en: z.array(z.string().min(1)).default([]),
+  closing_en: z.string().default(""),
   sort_order: z.number().int().default(0),
   status: z.enum(["draft", "published"]).default("published"),
 });
@@ -373,6 +387,12 @@ export async function saveJob(input: JobInput): Promise<ActionResult> {
     tasks_title: d.tasks_title,
     tasks: d.tasks,
     closing: d.closing,
+    title_en: d.title_en || null,
+    intro_en: d.intro_en || null,
+    body_en: d.body_en || null,
+    tasks_title_en: d.tasks_title_en || null,
+    tasks_en: d.tasks_en.length ? d.tasks_en : null,
+    closing_en: d.closing_en || null,
     sort_order: d.sort_order,
     status: d.status,
   };

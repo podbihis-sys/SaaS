@@ -2,6 +2,7 @@ import { createPublicClient } from "@/app/bit/_lib/supabase-public";
 import { withTimeout } from "@/app/bit/_lib/with-timeout";
 import { bitImageUrl } from "./cms";
 import { NEWS, type NewsPost } from "./news";
+import { NEWS_EN } from "./news-en";
 
 /**
  * Datenzugriff für News-Beiträge.
@@ -22,17 +23,48 @@ interface NewsRow {
   image_path: string | null;
   image_alt: string | null;
   status: "draft" | "published";
+  title_en?: string | null;
+  excerpt_en?: string | null;
+  body_en?: string | null;
+}
+
+/** Englische Felder ergänzen: CMS-Spalten zuerst, sonst die Übersetzung aus news-en.ts. */
+function withEn(post: NewsPost, row?: NewsRow): NewsPost {
+  const en = NEWS_EN[post.slug];
+  return {
+    ...post,
+    titleEn: row?.title_en || post.titleEn || en?.title,
+    excerptEn: row?.excerpt_en || post.excerptEn || en?.excerpt,
+    bodyEn: row?.body_en || post.bodyEn || en?.body,
+  };
 }
 
 function mapNews(row: NewsRow): NewsPost {
+  return withEn(
+    {
+      slug: row.slug,
+      title: row.title,
+      date: row.published_at ?? "",
+      excerpt: row.excerpt ?? "",
+      body: row.body ?? "",
+      image: bitImageUrl(row.image_path) ?? "/bit/logo.png",
+      imageAlt: row.image_alt ?? row.title,
+    },
+    row,
+  );
+}
+
+const NEWS_WITH_EN = NEWS.map((n) => withEn(n));
+
+/** Beitrag in der gewünschten Sprache (EN fällt je Feld auf Deutsch zurück). */
+export function localizeNews(post: NewsPost, locale: "de" | "en"): NewsPost {
+  if (locale === "de") return post;
   return {
-    slug: row.slug,
-    title: row.title,
-    date: row.published_at ?? "",
-    excerpt: row.excerpt ?? "",
-    body: row.body ?? "",
-    image: bitImageUrl(row.image_path) ?? "/bit/logo.png",
-    imageAlt: row.image_alt ?? row.title,
+    ...post,
+    title: post.titleEn || post.title,
+    excerpt: post.excerptEn || post.excerpt,
+    body: post.bodyEn || post.body,
+    imageAlt: post.titleEn || post.imageAlt,
   };
 }
 
@@ -48,13 +80,13 @@ export async function getCmsNews(
       .order("published_at", { ascending: false });
     if (!opts.includeDrafts) query = query.eq("status", "published");
     const { data, error } = await query.returns<NewsRow[]>();
-    if (error || !data || data.length === 0) return NEWS;
+    if (error || !data || data.length === 0) return NEWS_WITH_EN;
     return data.map(mapNews);
-  }, NEWS);
+  }, NEWS_WITH_EN);
 }
 
 export async function getCmsNewsPost(slug: string): Promise<NewsPost | undefined> {
-  const fallback = NEWS.find((n) => n.slug === slug);
+  const fallback = NEWS_WITH_EN.find((n) => n.slug === slug);
   return withTimeout<NewsPost | undefined>(async () => {
     const supabase = createPublicClient();
     const { data, error } = await supabase

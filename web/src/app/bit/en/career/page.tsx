@@ -17,8 +17,8 @@ import {
   Users,
 } from "lucide-react";
 import { COMPANY } from "../../_data/catalog";
-import { JOBS, jobShortLabel } from "../../_data/jobs";
-import { getCmsJobs } from "../../_data/misc-server";
+import { JOBS, jobShortLabelEn } from "../../_data/jobs";
+import { getCmsJobs, localizeJob } from "../../_data/misc-server";
 
 /**
  * Englische Karriere-Seite – gleicher Aufbau wie /bit/karriere. Die
@@ -77,7 +77,7 @@ const ENGAGEMENT = [
 
 export default async function EnglishCareerPage() {
   // CMS-first: Stellen aus bit_jobs; Fallback ist die eingebaute Liste.
-  const jobs = await getCmsJobs(JOBS);
+  const jobs = (await getCmsJobs(JOBS)).map((j) => localizeJob(j, "en"));
   return (
     <>
       <section className="border-b border-slate-800 bg-[#0f2742]">
@@ -94,11 +94,10 @@ export default async function EnglishCareerPage() {
             {jobs.map((j) => (
               <Link
                 key={j.id}
-                href={`/bit/karriere/${j.id}`}
-                lang="de"
+                href={`/bit/en/career/${j.id}`}
                 className="rounded-full border border-slate-600 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 transition-colors hover:border-[#38bdf8] hover:text-[#38bdf8]"
               >
-                {jobShortLabel(j)}
+                {jobShortLabelEn(j)}
               </Link>
             ))}
           </div>
@@ -109,23 +108,19 @@ export default async function EnglishCareerPage() {
         <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
           Open positions
         </h2>
-        <p className="mt-2 text-sm text-slate-500">
-          Our job advertisements are published in German – applications in German or English are
-          welcome.
-        </p>
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
           {jobs.map((job) => (
             <Link
               key={job.id}
-              href={`/bit/karriere/${job.id}`}
+              href={`/bit/en/career/${job.id}`}
               className="group flex flex-col rounded-3xl border border-slate-200 bg-white p-7 transition-colors hover:border-[#1e4a7a]"
             >
-              <h3 className="text-lg font-bold tracking-tight text-slate-900 group-hover:text-[#1e4a7a]" lang="de">
+              <h3 className="text-lg font-bold tracking-tight text-slate-900 group-hover:text-[#1e4a7a]">
                 {job.title}
               </h3>
-              <p className="mt-3 flex-1 leading-relaxed text-slate-600" lang="de">{job.intro}</p>
+              <p className="mt-3 flex-1 leading-relaxed text-slate-600">{job.intro}</p>
               <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[#1e4a7a]">
-                View job advertisement (German)
+                View job advertisement
                 <ArrowRight
                   className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
                   aria-hidden="true"

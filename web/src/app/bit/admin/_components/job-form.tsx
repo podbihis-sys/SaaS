@@ -19,11 +19,18 @@ export function JobForm({ initial }: { initial?: JobInput }) {
       tasks_title: "Ihre Aufgaben:",
       tasks: [],
       closing: "",
+      title_en: "",
+      intro_en: "",
+      body_en: "",
+      tasks_title_en: "",
+      tasks_en: [],
+      closing_en: "",
       sort_order: 0,
       status: "published",
     },
   );
   const [tasksText, setTasksText] = useState((initial?.tasks ?? []).join("\n"));
+  const [tasksEnText, setTasksEnText] = useState((initial?.tasks_en ?? []).join("\n"));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -38,6 +45,7 @@ export function JobForm({ initial }: { initial?: JobInput }) {
       ...f,
       slug: f.slug || f.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
       tasks: tasksText.split("\n").map((t) => t.trim()).filter(Boolean),
+      tasks_en: tasksEnText.split("\n").map((t) => t.trim()).filter(Boolean),
     });
     setSaving(false);
     if (res.ok) {
@@ -90,6 +98,39 @@ export function JobForm({ initial }: { initial?: JobInput }) {
         <span className="text-sm font-semibold text-slate-900">Schlussabsatz</span>
         <textarea className={`${FIELD} mt-1.5`} rows={3} value={f.closing} onChange={(e) => set("closing", e.target.value)} />
       </label>
+      {/* Englische Fassung (für /bit/en/career) */}
+      <section className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-700">Englische Fassung</h2>
+        <p className="mt-1 text-xs text-slate-500">
+          Wird auf der englischen Karriereseite angezeigt. Leere Felder fallen auf die mitgelieferte Übersetzung bzw. den deutschen Text zurück.
+        </p>
+        <div className="mt-4 space-y-4">
+          <label className="block">
+            <span className="text-sm font-semibold text-slate-900">Job title (EN)</span>
+            <input className={`${FIELD} mt-1.5`} value={f.title_en} onChange={(e) => set("title_en", e.target.value)} />
+          </label>
+          <label className="block">
+            <span className="text-sm font-semibold text-slate-900">Intro (EN)</span>
+            <textarea className={`${FIELD} mt-1.5`} rows={2} value={f.intro_en} onChange={(e) => set("intro_en", e.target.value)} />
+          </label>
+          <label className="block">
+            <span className="text-sm font-semibold text-slate-900">Description (EN, blank line = paragraph)</span>
+            <textarea className={`${FIELD} mt-1.5`} rows={4} value={f.body_en} onChange={(e) => set("body_en", e.target.value)} />
+          </label>
+          <label className="block">
+            <span className="text-sm font-semibold text-slate-900">Tasks heading (EN)</span>
+            <input className={`${FIELD} mt-1.5`} value={f.tasks_title_en} onChange={(e) => set("tasks_title_en", e.target.value)} />
+          </label>
+          <label className="block">
+            <span className="text-sm font-semibold text-slate-900">Tasks (EN, one per line)</span>
+            <textarea className={`${FIELD} mt-1.5`} rows={5} value={tasksEnText} onChange={(e) => setTasksEnText(e.target.value)} />
+          </label>
+          <label className="block">
+            <span className="text-sm font-semibold text-slate-900">Closing paragraph (EN)</span>
+            <textarea className={`${FIELD} mt-1.5`} rows={3} value={f.closing_en} onChange={(e) => set("closing_en", e.target.value)} />
+          </label>
+        </div>
+      </section>
       <div className="sticky bottom-0 -mx-6 flex items-center justify-end gap-2 border-t border-slate-200 bg-white/95 px-6 py-3 backdrop-blur">
         {f.id && (
           <button

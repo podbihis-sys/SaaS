@@ -19,6 +19,10 @@ export interface NewsPost {
    * Zwischenüberschriften mit "## " und Aufzählungspunkte mit "- ".
    */
   body: string;
+  /** Englische Fassung (CMS oder news-en.ts); fehlt sie, bleibt der Beitrag deutsch. */
+  titleEn?: string;
+  excerptEn?: string;
+  bodyEn?: string;
 }
 
 export const NEWS: NewsPost[] = [
