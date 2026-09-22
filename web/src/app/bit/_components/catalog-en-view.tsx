@@ -12,11 +12,25 @@ export function CatalogEnView({ active }: { active: CategoryId | "alle" }) {
   // (das komplette EN-Overlay bleibt serverseitig).
   const shown = active === "alle" ? PRODUCTS : PRODUCTS.filter((p) => p.category === active);
   const names: Record<string, string> = {};
+  // Englischer Suchtext je Produkt (Beschreibung + technische Daten), damit
+  // die Suche englische Begriffe findet und nicht in den deutschen Daten sucht.
+  const enText: Record<string, string> = {};
   for (const p of shown) {
-    const n = EN_PRODUCTS[p.slug]?.name;
-    if (n) names[p.slug] = n;
+    const en = EN_PRODUCTS[p.slug];
+    if (!en) continue;
+    if (en.name) names[p.slug] = en.name;
+    enText[p.slug] = [
+      en.description.slice(0, 400),
+      ...en.tech.map((t) => `${t.label} ${t.value}`),
+    ].join(" ");
   }
   return (
-    <Catalog active={active} locale="en" names={names} categoryLabels={EN_CATEGORY_LABELS} />
+    <Catalog
+      active={active}
+      locale="en"
+      names={names}
+      categoryLabels={EN_CATEGORY_LABELS}
+      enText={enText}
+    />
   );
 }
