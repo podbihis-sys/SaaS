@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {
   ArrowRight,
+  CalendarDays,
   Layers,
   PencilRuler,
   Phone,
@@ -9,6 +10,7 @@ import {
 } from "lucide-react";
 import { CATEGORIES, COMPANY, PRODUCTS } from "../_data/catalog";
 import { getCatalog } from "../_data/products-server";
+import { getCmsNews } from "../_data/news-server";
 import { EN_CATEGORY_LABELS, EN_PRODUCTS } from "../_data/catalog-en";
 import { ProductCard } from "../_components/product-card";
 import { ProductIllustration } from "../_components/product-illustration";
@@ -73,6 +75,19 @@ const EN_CATEGORY_TEXT: Record<string, string> = {
     "Spiral-wrap sleeves, protective rubber sleeves, butt and crimp connectors, and more.",
 };
 
+/** Kurzzeilen der Kategorien – wie auf der deutschen Startseite. */
+const EN_CATEGORY_TAGLINE: Record<string, string> = {
+  schrumpfschlauch: "made of polyolefin, PVC, PET, Kynar®, PTFE, FEP and silicone",
+  isolierschlauch: "made of PVC, silicone, PTFE, FEP, polyamide, PE, PUR and Viton®",
+  glasseidenschlauch: "with PUR, acrylic resin or silicone coating",
+  geflechtschlauch: "made of polyamide, polypropylene or polyester",
+  wellrohr: "made of PP, PA6, PFA and TPE",
+  kabelbinder: "in many different versions",
+  verarbeitungsgeraete: "heat guns, hot knives, pliers & shrink systems",
+  "weitere-schrumpfprodukte": "end caps, shrink sleeves, solder connectors, breakout boots & splice kits",
+  "weitere-produkte": "spiral wrap, connectors, edge clips and much more",
+};
+
 const SECTORS = [
   { label: "Power Engineering and Energy Management", slug: "power-engineering-and-energy-management" },
   { label: "Automotive", slug: "automotive" },
@@ -87,7 +102,8 @@ const SECTORS = [
 export const revalidate = 300;
 
 export default async function EnglishHome() {
-  const { categoryImage } = await getCatalog();
+  const [{ categoryImage }, news] = await Promise.all([getCatalog(), getCmsNews()]);
+  const latestNews = news.slice(0, 3);
   const featured = PRODUCTS.filter((p) =>
     [
       "schrumpfschlauch-mit-kleber-bpdw-100",
@@ -158,6 +174,7 @@ export default async function EnglishHome() {
                   <p className="text-lg font-semibold text-slate-900">
                     {EN_CATEGORY_LABELS[cat.id] ?? cat.name}
                   </p>
+                  <p className="mt-1 text-sm font-medium text-[#1d4ed8]">{EN_CATEGORY_TAGLINE[cat.id] ?? ""}</p>
                   <p className="mt-3 line-clamp-3 flex-1 text-sm leading-relaxed text-slate-600">
                     {EN_CATEGORY_TEXT[cat.id] ?? ""}
                   </p>
@@ -303,6 +320,58 @@ export default async function EnglishHome() {
           </Link>
         </div>
       </section>
+
+      {/* --------------------------------------------------------------- News */}
+      {latestNews.length > 0 && (
+        <section className="container py-20 sm:py-24">
+          <Reveal className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <span className="text-sm font-semibold uppercase tracking-wide text-[#1d4ed8]">Latest</span>
+              <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                News from BIT
+              </h2>
+            </div>
+            <Link
+              href="/bit/en/news"
+              className="group inline-flex items-center gap-1.5 text-sm font-semibold text-[#1e4a7a]"
+            >
+              All news
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </Reveal>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {latestNews.map((post, i) => (
+              <Reveal key={post.slug} delay={i * 70} className="h-full">
+                <article className="bit-card group relative flex h-full flex-col overflow-hidden">
+                  <div className="aspect-[16/10] overflow-hidden rounded-t-[1.3rem] bg-slate-100">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={post.image} alt={post.imageAlt} className="bit-card-img h-full w-full object-contain" loading="lazy" />
+                  </div>
+                  <div className="flex flex-1 flex-col p-6">
+                    {post.date && (
+                      <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400">
+                        <CalendarDays className="h-3.5 w-3.5" /> {new Date(post.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+                      </span>
+                    )}
+                    <div className="mt-2 line-clamp-2 flex-1 font-semibold leading-snug text-slate-900" lang="de">
+                      <Link
+                        href={`/bit/news/${post.slug}`}
+                        className="before:absolute before:inset-0 hover:text-[#1e4a7a]"
+                      >
+                        {post.title}
+                      </Link>
+                    </div>
+                    <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#1e4a7a]">
+                      Read more (German)
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ------------------------------------------------------ Range overview */}
       <section className="border-t border-slate-200 bg-slate-50 py-16">

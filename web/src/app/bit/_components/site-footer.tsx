@@ -3,6 +3,7 @@ import { Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import { CATEGORIES, COMPANY } from "../_data/catalog";
 import { EN_CATEGORY_LABELS } from "../_data/catalog-en";
 import { materialTaxa, propertyTaxa, shrinkTaxa } from "../_data/attributes";
+import { featureEn, materialEn } from "../_data/terms-en";
 import { ShareButtons } from "./share-buttons";
 import { ConsentSettingsLink } from "./cookie-banner";
 
@@ -24,22 +25,41 @@ const COMPANY_LINKS = {
     { href: "/bit/datenschutz", label: "Datenschutz" },
   ],
   en: [
-    { href: "/bit/en/about-bit", label: "About BIT" },
+    { href: "/bit/en/news", label: "News" },
+    { href: "/bit/en/competences", label: "Competences" },
     { href: "/bit/en/industrial-sectors", label: "Industrial Sectors" },
+    { href: "/bit/en/about-bit", label: "About BIT" },
+    { href: "/bit/en/career", label: "Career" },
+    { href: "/bit/en/sustainability", label: "Sustainability" },
     { href: "/bit/en/service", label: "Service" },
     { href: "/bit/en/service/downloads", label: "Downloads" },
     { href: "/bit/en/contact", label: "Contact" },
     { href: "/bit/en/imprint", label: "Imprint" },
-    { href: "/bit/en/privacy-policy", label: "Privacy Policy" },
     { href: "/bit/en/legal-notice", label: "Legal notice" },
     { href: "/bit/en/general-terms-and-conditions", label: "General Terms and Conditions" },
+    { href: "/bit/en/privacy-policy", label: "Privacy Policy" },
   ],
 } as const;
 
 export function SiteFooter({ locale = "de" }: { locale?: "de" | "en" }) {
   const en = locale === "en";
+  // „Beliebte Suchen“: DE verlinkt die Themenseiten, EN die Katalogsuche
+  // (die Suchbegriffe bleiben deutsch, weil die Produktdaten deutsch sind).
   const popular = en
-    ? []
+    ? [
+        ...propertyTaxa().slice(0, 6).map((t) => {
+          const term = t.label.split(" (")[0] ?? t.label;
+          return { href: `/bit/en/products?q=${encodeURIComponent(term)}`, label: featureEn(term) };
+        }),
+        ...materialTaxa().slice(0, 6).map((t) => ({
+          href: `/bit/en/products?q=${encodeURIComponent(t.label)}`,
+          label: `${materialEn(t.label)} tubing`,
+        })),
+        ...shrinkTaxa().map((t) => ({
+          href: `/bit/en/products?q=${encodeURIComponent(t.label)}`,
+          label: `Shrink ratio ${t.label}`,
+        })),
+      ]
     : [
         ...propertyTaxa().slice(0, 6).map((t) => ({
           href: `/bit/produkte/eigenschaft/${t.slug}`,
@@ -121,7 +141,7 @@ export function SiteFooter({ locale = "de" }: { locale?: "de" | "en" }) {
               </li>
             ))}
             <li>
-              <Link href="/bit/warenkorb" rel="nofollow" className="text-slate-500 hover:text-[#1e4a7a]">
+              <Link href={en ? "/bit/en/cart" : "/bit/warenkorb"} rel="nofollow" className="text-slate-500 hover:text-[#1e4a7a]">
                 {en ? "Inquiry / Cart" : "Anfrage / Warenkorb"}
               </Link>
             </li>
@@ -149,10 +169,10 @@ export function SiteFooter({ locale = "de" }: { locale?: "de" | "en" }) {
         </div>
       </div>
 
-      {!en && (
+      {(
         <div className="border-t border-slate-200">
           <div className="container py-8">
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-900">Beliebte Suchen</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-900">{en ? "Popular searches" : "Beliebte Suchen"}</h3>
             <div className="mt-3 flex flex-wrap gap-2">
               {popular.map((l) => (
                 <Link
