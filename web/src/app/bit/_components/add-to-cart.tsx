@@ -47,9 +47,12 @@ const STRINGS = {
 export function AddToCart({
   product,
   locale = "de",
+  nameOverride,
 }: {
   product: Product;
   locale?: "de" | "en";
+  /** Anzeigename im Warenkorb (EN-Produktname). */
+  nameOverride?: string;
 }) {
   const t = STRINGS[locale];
   const { addItem } = useCart();
@@ -114,14 +117,14 @@ export function AddToCart({
     }
     addItem({
       slug: product.slug,
-      name: product.name,
+      name: nameOverride ?? product.name,
       code: product.code,
       category: product.category,
       // Typenbezeichnung mit in die Anfrage übernehmen.
       size: selected?.typ
-        ? `${dimLabel(size)} · ${locale === "en" ? "Type" : "Typ"} ${selected.typ}`
-        : dimLabel(size),
-      color: product.colors ? color : undefined,
+        ? `${show(size)} · ${locale === "en" ? "Type" : "Typ"} ${selected.typ}`
+        : show(size),
+      color: product.colors ? (locale === "en" ? colorEn(color) : color) : undefined,
       unit,
       quantity,
       metersPerRoll: meterware ? selected?.amount : undefined,
@@ -297,7 +300,7 @@ export function AddToCart({
       </button>
       {/* Statusmeldung für Screenreader (WCAG 4.1.3 Status Messages) */}
       <p role="status" aria-live="polite" className="bit-sr-only">
-        {added ? `${product.name} ${t.addedStatus}` : ""}
+        {added ? `${nameOverride ?? product.name} ${t.addedStatus}` : ""}
       </p>
       <p className="relative mt-3 text-center text-xs text-slate-500">
         {t.note}

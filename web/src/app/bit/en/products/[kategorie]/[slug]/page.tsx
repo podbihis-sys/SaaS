@@ -223,7 +223,7 @@ export default async function EnProductPage({
             </dl>
 
             <div className="mt-8">
-              <AddToCart product={product} locale="en" />
+              <AddToCart product={product} locale="en" nameOverride={name} />
             </div>
           </div>
         </div>

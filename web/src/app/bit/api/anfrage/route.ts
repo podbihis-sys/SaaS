@@ -7,6 +7,8 @@ const itemSchema = z.object({
   color: z.string().optional(),
   unit: z.string().min(1),
   quantity: z.number().int().positive(),
+  /** Freitext des Kunden zur Position (z. B. Bedruckung mit Logo). */
+  note: z.string().max(1000).optional(),
 });
 
 const inquirySchema = z.object({
