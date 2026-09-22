@@ -32,6 +32,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Englische Seiten (/bit/en) – Inhaltsseiten, Kategorien und Produkte.
   const enPaths = [
     "/bit/en/products",
+    "/bit/en/competences",
+    "/bit/en/news",
+    "/bit/en/career",
+    "/bit/en/sustainability",
     ...CONTENT_PAGES_EN.map((p) => `/bit/en/${p.slug}`),
     ...CATEGORIES.map((c) => `/bit/en/products/${c.id}`),
     ...PRODUCTS.map((p) => `/bit/en/products/${p.category}/${p.slug}`),

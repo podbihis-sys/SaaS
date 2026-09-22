@@ -6,6 +6,7 @@ import type { Product } from "../_data/catalog";
 import { getRolls } from "../_data/rolls";
 import { getPacks } from "../_data/packs";
 import { numEn } from "../_data/terms-en";
+import { dimLabel } from "../_data/attributes";
 import { useCart } from "../_lib/cart";
 
 const STRINGS = {
@@ -95,7 +96,7 @@ export function AddToCart({
   const fmt = (n: number) =>
     n.toLocaleString(locale === "en" ? "en-GB" : "de-DE", { maximumFractionDigits: 2 });
   // Größen-/VPE-Angaben stehen deutsch in den Daten (Dezimalkomma, „Stk.“).
-  const show = (s: string) => (locale === "en" ? numEn(s) : s);
+  const show = (s: string) => (locale === "en" ? numEn(dimLabel(s)) : dimLabel(s));
 
   const [size, setSize] = useState<string>("");
   const [color, setColor] = useState<string>(product.colors?.[0] ?? "");
@@ -117,7 +118,9 @@ export function AddToCart({
       code: product.code,
       category: product.category,
       // Typenbezeichnung mit in die Anfrage übernehmen.
-      size: selected?.typ ? `${size} · ${locale === "en" ? "Type" : "Typ"} ${selected.typ}` : size,
+      size: selected?.typ
+        ? `${dimLabel(size)} · ${locale === "en" ? "Type" : "Typ"} ${selected.typ}`
+        : dimLabel(size),
       color: product.colors ? color : undefined,
       unit,
       quantity,

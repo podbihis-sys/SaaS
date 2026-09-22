@@ -7,6 +7,7 @@ import { EN_CATEGORY_LABELS, EN_PRODUCTS } from "../../../../_data/catalog-en";
 import { getRolls } from "../../../../_data/rolls";
 import { getPacks } from "../../../../_data/packs";
 import { numEn } from "../../../../_data/terms-en";
+import { dimLabel } from "../../../../_data/attributes";
 import { AddToCart } from "../../../../_components/add-to-cart";
 import { ProductCard } from "../../../../_components/product-card";
 import { ProductIllustration } from "../../../../_components/product-illustration";
@@ -20,8 +21,9 @@ import { clampDesc, seoTitle } from "../../../../_lib/seo";
 
 export const revalidate = 300;
 
+// Immer mindestens eine Nachkommastelle (3.0 / 4.8 / 0.45) – wie auf der DE-Seite.
 function formatMm(n: number) {
-  return n.toLocaleString("en-GB", { maximumFractionDigits: 2 });
+  return n.toLocaleString("en-GB", { minimumFractionDigits: 1, maximumFractionDigits: 2 });
 }
 
 export function generateStaticParams() {
@@ -220,7 +222,7 @@ export default async function EnProductPage({
                   {rolls.map((r) => (
                     <tr key={r.label}>
                       <td className="px-6 py-3 font-mono font-medium text-[#1e4a7a]">{r.typ ?? "–"}</td>
-                      <td className="px-3 py-3 font-medium text-slate-900">{numEn(r.label)}</td>
+                      <td className="px-3 py-3 font-medium text-slate-900">{numEn(dimLabel(r.label))}</td>
                       {!ohneSchrumpfung && (
                         <td className="px-3 py-3 text-slate-700">
                           {r.dPost != null ? `Ø ${formatMm(r.dPost)} mm` : "–"}
