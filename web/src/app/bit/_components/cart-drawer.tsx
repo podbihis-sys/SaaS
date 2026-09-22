@@ -20,6 +20,8 @@ const STRINGS = {
     qtyFor: (name: string) => `Menge für ${name}`,
     length: "Länge", lengths: "Längen", roll: "Rolle", rolls: "Rollen", pack: "Gebinde",
     pieces: "Stück",
+    noteLabel: "Anmerkung",
+    notePlaceholder: "z. B. Bedruckung mit Logo …",
     checkout: "Anfrage zusammenstellen",
     note: "Unverbindlich · kostenfreies Angebot innerhalb von 24 h",
     products: "/bit/produkte",
@@ -39,6 +41,8 @@ const STRINGS = {
     qtyFor: (name: string) => `Quantity for ${name}`,
     length: "length", lengths: "lengths", roll: "roll", rolls: "rolls", pack: "pack",
     pieces: "pcs",
+    noteLabel: "Note",
+    notePlaceholder: "e.g. printing with logo …",
     checkout: "Complete inquiry",
     note: "Non-binding · free quote within 24 h",
     products: "/bit/en/products",
@@ -50,7 +54,7 @@ const STRINGS = {
 export function CartDrawer() {
   const pathname = usePathname();
   const t = STRINGS[pathname.startsWith("/bit/en") ? "en" : "de"];
-  const { items, isOpen, closeCart, updateQuantity, removeItem, count } = useCart();
+  const { items, isOpen, closeCart, updateQuantity, updateNote, removeItem, count } = useCart();
   const panelRef = useRef<HTMLElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const restoreRef = useRef<HTMLElement | null>(null);
@@ -176,6 +180,14 @@ export function CartDrawer() {
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
+                  <input
+                    type="text"
+                    value={item.note ?? ""}
+                    onChange={(e) => updateNote(item.id, e.target.value)}
+                    aria-label={`${t.noteLabel}: ${item.name}`}
+                    placeholder={t.notePlaceholder}
+                    className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-900 outline-none placeholder:text-slate-400 focus:border-[#1e4a7a]"
+                  />
                   <div className="mt-3 flex items-center justify-between">
                     <div className="inline-flex items-center rounded-lg border border-slate-200">
                       <button

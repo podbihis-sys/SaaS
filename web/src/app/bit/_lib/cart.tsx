@@ -25,6 +25,8 @@ export interface CartItem {
   metersPerRoll?: number;
   /** Bei Stückware/Gebinde: Stück pro Gebinde (gesamt = quantity × unitsPerPack). */
   unitsPerPack?: number;
+  /** Freitext des Kunden zur Position (z. B. Bedruckung mit Logo). */
+  note?: string;
 }
 
 interface CartContextValue {
@@ -32,6 +34,7 @@ interface CartContextValue {
   count: number;
   addItem: (item: Omit<CartItem, "id">) => void;
   updateQuantity: (id: string, quantity: number) => void;
+  updateNote: (id: string, note: string) => void;
   removeItem: (id: string) => void;
   clear: () => void;
   isOpen: boolean;
@@ -93,6 +96,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     );
   }, []);
 
+  const updateNote = useCallback((id: string, note: string) => {
+    setItems((prev) => prev.map((p) => (p.id === id ? { ...p, note } : p)));
+  }, []);
+
   const removeItem = useCallback((id: string) => {
     setItems((prev) => prev.filter((p) => p.id !== id));
   }, []);
@@ -105,13 +112,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       count: items.reduce((sum, p) => sum + p.quantity, 0),
       addItem,
       updateQuantity,
+      updateNote,
       removeItem,
       clear,
       isOpen,
       openCart: () => setIsOpen(true),
       closeCart: () => setIsOpen(false),
     }),
-    [items, addItem, updateQuantity, removeItem, clear, isOpen],
+    [items, addItem, updateQuantity, updateNote, removeItem, clear, isOpen],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

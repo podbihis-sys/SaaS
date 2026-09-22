@@ -53,6 +53,8 @@ const STRINGS = {
       `Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben zur Bearbeitung der Anfrage zu. Oder rufen Sie an: ${phone}.`,
     errSend: "Die Anfrage konnte nicht gesendet werden.", errUnknown: "Unbekannter Fehler.",
     required: "(Pflichtfeld)",
+    noteLabel: "Anmerkung zu diesem Artikel",
+    notePlaceholder: "z. B. Bedruckung mit Logo, Sonderlänge, Farbwunsch …",
     numLocale: "de-DE",
   },
   en: {
@@ -85,6 +87,8 @@ const STRINGS = {
       `By submitting you agree to the processing of your details for handling the inquiry. Or call us: ${phone}.`,
     errSend: "The inquiry could not be sent.", errUnknown: "Unknown error.",
     required: "(required)",
+    noteLabel: "Note on this article",
+    notePlaceholder: "e.g. printing with logo, special length, colour request …",
     numLocale: "en-GB",
   },
 } as const;
@@ -92,7 +96,7 @@ const STRINGS = {
 /** Warenkorb + Anfrageformular – deutsche und englische Ausgabe. */
 export function CartPageView({ locale = "de" }: { locale?: "de" | "en" }) {
   const t = STRINGS[locale];
-  const { items, updateQuantity, removeItem, clear } = useCart();
+  const { items, updateQuantity, updateNote, removeItem, clear } = useCart();
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [error, setError] = useState<string>("");
@@ -110,10 +114,11 @@ export function CartPageView({ locale = "de" }: { locale?: "de" | "en" }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
-          items: items.map(({ name, code, size, color, unit, quantity, metersPerRoll, unitsPerPack }) => ({
+          items: items.map(({ name, code, size, color, unit, quantity, metersPerRoll, unitsPerPack, note }) => ({
             name: code && code !== name ? `${name} (${code})` : name,
             size,
             color,
+            note: note?.trim() || undefined,
             unit: metersPerRoll
               ? unit === "Länge" || unit === "Length" || metersPerRoll === 1.22
                 ? `Länge (${metersPerRoll.toLocaleString("de-DE", { maximumFractionDigits: 2 })} m/Länge, gesamt ${(quantity * metersPerRoll).toLocaleString("de-DE", { maximumFractionDigits: 2 })} m)`
@@ -211,6 +216,15 @@ export function CartPageView({ locale = "de" }: { locale?: "de" | "en" }) {
                         {item.color && (
                           <div className="mt-0.5 text-xs text-slate-500">{item.color}</div>
                         )}
+                        {/* Anmerkung je Position (Kundenvorgabe) */}
+                        <textarea
+                          value={item.note ?? ""}
+                          onChange={(e) => updateNote(item.id, e.target.value)}
+                          aria-label={`${t.noteLabel}: ${item.name}`}
+                          placeholder={t.notePlaceholder}
+                          rows={2}
+                          className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-[#1e4a7a] focus:ring-1 focus:ring-[#1e4a7a]"
+                        />
                       </td>
                       <td className="px-3 py-4 text-slate-700">{item.size}</td>
                       <td className="px-3 py-4">
