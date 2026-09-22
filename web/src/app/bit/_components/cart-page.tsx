@@ -10,6 +10,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { useCart } from "../_lib/cart";
+import { displayCartItem } from "../_lib/cart-display";
 import { COMPANY } from "../_data/catalog";
 
 interface FormState {
@@ -114,7 +115,10 @@ export function CartPageView({ locale = "de" }: { locale?: "de" | "en" }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
-          items: items.map(({ name, code, size, color, unit, quantity, metersPerRoll, unitsPerPack, note }) => ({
+          items: items.map((item) => {
+            const { name, size, color } = displayCartItem(item, locale);
+            const { code, unit, quantity, metersPerRoll, unitsPerPack, note } = item;
+            return {
             name: code && code !== name ? `${name} (${code})` : name,
             size,
             color,
@@ -127,7 +131,8 @@ export function CartPageView({ locale = "de" }: { locale?: "de" | "en" }) {
                 ? `Gebinde (${unitsPerPack} Stück/Gebinde, gesamt ${quantity * unitsPerPack} Stück)`
                 : unit,
             quantity,
-          })),
+            };
+          }),
         }),
       });
       const data = await res.json();
@@ -199,6 +204,7 @@ export function CartPageView({ locale = "de" }: { locale?: "de" | "en" }) {
                   {items.map((item) => {
                     const isLength =
                       item.unit === "Länge" || item.unit === "Length" || item.metersPerRoll === 1.22;
+                    const shown = displayCartItem(item, locale);
                     return (
                     <tr key={item.id}>
                       <td className="px-5 py-4">
@@ -206,27 +212,27 @@ export function CartPageView({ locale = "de" }: { locale?: "de" | "en" }) {
                           href={t.productHref(item.category, item.slug)}
                           className="font-medium text-slate-900 hover:text-[#1e4a7a]"
                         >
-                          {item.name}
+                          {shown.name}
                         </Link>
-                        {item.code && item.code !== item.name && (
+                        {item.code && item.code !== shown.name && (
                           <span className="ml-1.5 rounded bg-[#0f2742] px-1.5 py-0.5 font-mono text-[11px] font-medium text-white/90">
                             {item.code}
                           </span>
                         )}
-                        {item.color && (
-                          <div className="mt-0.5 text-xs text-slate-500">{item.color}</div>
+                        {shown.color && (
+                          <div className="mt-0.5 text-xs text-slate-500">{shown.color}</div>
                         )}
                         {/* Anmerkung je Position (Kundenvorgabe) */}
                         <textarea
                           value={item.note ?? ""}
                           onChange={(e) => updateNote(item.id, e.target.value)}
-                          aria-label={`${t.noteLabel}: ${item.name}`}
+                          aria-label={`${t.noteLabel}: ${shown.name}`}
                           placeholder={t.notePlaceholder}
                           rows={2}
                           className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-[#1e4a7a] focus:ring-1 focus:ring-[#1e4a7a]"
                         />
                       </td>
-                      <td className="px-3 py-4 text-slate-700">{item.size}</td>
+                      <td className="px-3 py-4 text-slate-700">{shown.size}</td>
                       <td className="px-3 py-4">
                         <div className="inline-flex items-center rounded-lg border border-slate-200">
                           <button
@@ -240,7 +246,7 @@ export function CartPageView({ locale = "de" }: { locale?: "de" | "en" }) {
                             type="number"
                             min={1}
                             value={item.quantity}
-                            aria-label={t.qtyFor(item.name)}
+                            aria-label={t.qtyFor(shown.name)}
                             onChange={(e) =>
                               updateQuantity(item.id, parseInt(e.target.value || "1", 10))
                             }
@@ -269,7 +275,7 @@ export function CartPageView({ locale = "de" }: { locale?: "de" | "en" }) {
                       <td className="px-3 py-4 text-right">
                         <button
                           onClick={() => removeItem(item.id)}
-                          aria-label={t.remove(item.name)}
+                          aria-label={t.remove(shown.name)}
                           className="rounded-md p-1.5 text-slate-500 hover:bg-red-50 hover:text-red-700"
                         >
                           <Trash2 className="h-4 w-4" aria-hidden="true" />

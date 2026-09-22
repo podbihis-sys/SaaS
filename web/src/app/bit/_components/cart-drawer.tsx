@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { Minus, Plus, ShoppingCart, Trash2, X } from "lucide-react";
 import { useCart } from "../_lib/cart";
+import { displayCartItem } from "../_lib/cart-display";
 
 const STRINGS = {
   de: {
@@ -53,7 +54,8 @@ const STRINGS = {
 
 export function CartDrawer() {
   const pathname = usePathname();
-  const t = STRINGS[pathname.startsWith("/bit/en") ? "en" : "de"];
+  const locale = pathname.startsWith("/bit/en") ? "en" : "de";
+  const t = STRINGS[locale];
   const { items, isOpen, closeCart, updateQuantity, updateNote, removeItem, count } = useCart();
   const panelRef = useRef<HTMLElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -152,6 +154,7 @@ export function CartDrawer() {
               {items.map((item) => {
                 const isLength =
                   item.unit === "Länge" || item.unit === "Length" || item.metersPerRoll === 1.22;
+                const shown = displayCartItem(item, locale);
                 return (
                 <li
                   key={item.id}
@@ -160,16 +163,16 @@ export function CartDrawer() {
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
                       <p className="text-sm font-semibold text-slate-900">
-                        {item.name}
-                        {item.code && item.code !== item.name && (
+                        {shown.name}
+                        {item.code && item.code !== shown.name && (
                           <span className="ml-1.5 rounded bg-[#0f2742] px-1.5 py-0.5 align-middle font-mono text-[11px] font-medium text-white/90">
                             {item.code}
                           </span>
                         )}
                       </p>
                       <p className="mt-0.5 text-xs text-slate-500">
-                        {t.size}: <span className="font-medium text-slate-700">{item.size}</span>
-                        {item.color ? ` · ${item.color}` : ""}
+                        {t.size}: <span className="font-medium text-slate-700">{shown.size}</span>
+                        {shown.color ? ` · ${shown.color}` : ""}
                       </p>
                     </div>
                     <button
@@ -184,7 +187,7 @@ export function CartDrawer() {
                     type="text"
                     value={item.note ?? ""}
                     onChange={(e) => updateNote(item.id, e.target.value)}
-                    aria-label={`${t.noteLabel}: ${item.name}`}
+                    aria-label={`${t.noteLabel}: ${shown.name}`}
                     placeholder={t.notePlaceholder}
                     className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-900 outline-none placeholder:text-slate-400 focus:border-[#1e4a7a]"
                   />
@@ -201,7 +204,7 @@ export function CartDrawer() {
                         type="number"
                         min={1}
                         value={item.quantity}
-                        aria-label={t.qtyFor(item.name)}
+                        aria-label={t.qtyFor(shown.name)}
                         onChange={(e) =>
                           updateQuantity(item.id, parseInt(e.target.value || "1", 10))
                         }
