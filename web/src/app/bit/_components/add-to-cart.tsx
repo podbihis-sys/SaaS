@@ -5,7 +5,7 @@ import { Check, Minus, Plus, ShoppingCart } from "lucide-react";
 import type { Product } from "../_data/catalog";
 import { getRolls } from "../_data/rolls";
 import { getPacks } from "../_data/packs";
-import { numEn } from "../_data/terms-en";
+import { colorEn, numEn } from "../_data/terms-en";
 import { dimLabel } from "../_data/attributes";
 import { useCart } from "../_lib/cart";
 
@@ -214,7 +214,7 @@ export function AddToCart({
                     : "border-slate-300 bg-white text-slate-700 hover:border-[#1e4a7a]"
                 }`}
               >
-                {c}
+                {locale === "en" ? colorEn(c) : c}
               </button>
             ))}
           </div>

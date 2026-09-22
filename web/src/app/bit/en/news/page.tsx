@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CalendarDays } from "lucide-react";
 import { getCmsNews } from "../../_data/news-server";
-import { formatDate } from "../../_lib/format";
 import { Reveal } from "../../_components/reveal";
 
 /**
@@ -64,7 +63,7 @@ export default async function EnglishNewsPage() {
                     <div className="flex flex-1 flex-col p-6">
                       {post.date && (
                         <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
-                          <CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.date)}
+                          <CalendarDays className="h-3.5 w-3.5" /> {new Date(post.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
                         </span>
                       )}
                       <h2 className="mt-2 text-lg font-semibold leading-snug text-slate-900" lang="de">

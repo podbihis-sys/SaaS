@@ -161,6 +161,86 @@ export function temperatureEn(temperature: string): string {
   return temperature.replace(/\bbis\b/g, "to");
 }
 
+const APPLICATION_EN: Record<string, string> = {
+  Aderisolation: "Wire insulation",
+  "Außen- & UV-Einsatz": "Outdoor & UV use",
+  Beleuchtungstechnik: "Lighting technology",
+  "Bündelung von Leitungen": "Bundling of cables",
+  "Fahrzeug- & Motorraum": "Vehicle & engine compartment",
+  Fahrzeugtechnik: "Automotive engineering",
+  Heizgeräte: "Heating appliances",
+  Hochtemperaturbereiche: "High-temperature areas",
+  "Isolation & Aderkennzeichnung": "Insulation & wire marking",
+  Kabelbefestigung: "Cable fastening",
+  Kabelbündelung: "Cable bundling",
+  Kabelverbindung: "Cable connection",
+  "Konfektion & Ablängen": "Processing & cutting to length",
+  "Korrosions- & Spritzwasserschutz": "Corrosion & splash-water protection",
+  "Leitungsführung an Blechkanten": "Cable routing along sheet-metal edges",
+  "Maschinen- & Anlagenbau": "Mechanical & plant engineering",
+  "Modulrahmen-Befestigung": "Module frame fastening",
+  Montage: "Assembly",
+  "Montage & Befestigung": "Assembly & fastening",
+  "Motoren- & Transformatorenbau": "Motor & transformer construction",
+  "Photovoltaik-Montage": "Photovoltaic installation",
+  "Reparatur & Wartung": "Repair & maintenance",
+  "Roboter- & Schleppketten": "Robots & drag chains",
+  "Schaltschrank- & Gerätebau": "Control cabinet & device construction",
+  Schaltschrankbau: "Control cabinet construction",
+  "Scheuer- & Abriebschutz": "Chafe & abrasion protection",
+  "Schrumpfen & Verarbeiten": "Shrinking & processing",
+  "Schutz bewegter Leitungen": "Protection of moving cables",
+  "Serien- & Werkstattfertigung": "Series & workshop production",
+  "Trafo- & Spulenwicklung": "Transformer & coil winding",
+  Vormontage: "Pre-assembly",
+  "Werkzeuglose Montage": "Tool-free assembly",
+  Wickeltechnik: "Winding technology",
+  Zugentlastung: "Strain relief",
+};
+
+export function applicationEn(application: string): string {
+  return APPLICATION_EN[application] ?? application;
+}
+
+const COLOR_EN: Record<string, string> = {
+  Schwarz: "Black",
+  Rot: "Red",
+  Weiß: "White",
+  Blau: "Blue",
+  Gelb: "Yellow",
+  Grün: "Green",
+  Transparent: "Transparent",
+  Braun: "Brown",
+  Grau: "Grey",
+  Orange: "Orange",
+  Violett: "Violet",
+  Natur: "Natural",
+  Klar: "Clear",
+  Silber: "Silver",
+};
+
+export function colorEn(color: string): string {
+  return COLOR_EN[color] ?? color;
+}
+
+/** Funktionsbezeichnungen des Teams (Kontaktseite). */
+const ROLE_EN: Record<string, string> = {
+  Geschäftsführer: "Managing Director",
+  "Prokuristin / Assistentin Geschäftsleitung": "Authorised Officer / Management Assistant",
+  Vertriebsleitung: "Sales Management",
+  Verkauf: "Sales",
+  "Verkauf / QMB": "Sales / Quality Management",
+  Betriebsleitung: "Plant Management",
+  "Auftragssachbearbeitung / Dispo": "Order Processing",
+  Einkauf: "Procurement",
+  "Prokuristin / Rechnungswesen": "Authorised Officer / Accounting",
+  Administration: "Administration",
+};
+
+export function roleEn(role: string): string {
+  return ROLE_EN[role] ?? role;
+}
+
 /** Dezimalkomma → Punkt, „Stk." → „pcs" (Größen, VPE-Angaben). */
 export function numEn(text: string): string {
   return text.replace(/(\d),(\d)/g, "$1.$2").replace(/Stk\./g, "pcs");
