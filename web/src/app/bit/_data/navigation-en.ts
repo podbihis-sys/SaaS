@@ -1,9 +1,9 @@
 import type { NavItem } from "./navigation";
 
 /**
- * Englische Menüstruktur (/bit/en) – gleicher Aufbau wie das deutsche Menü,
- * Bezeichnungen und Reihenfolge folgen dem englischen Original
- * (bit-gmbh.de/en): Products, Industrial Sectors, Service, About BIT, Contact.
+ * Englische Menüstruktur (/bit/en) – gleiche Punkte und Reihenfolge wie das
+ * deutsche Menü (Kundenvorgabe): Home, Products, Competences, News,
+ * Industrial Sectors, About BIT, Career, Sustainability, Contact.
  */
 export const NAV_EN: NavItem[] = [
   { label: "Home", href: "/bit/en" },
@@ -25,6 +25,8 @@ export const NAV_EN: NavItem[] = [
       { label: "Coloured heat shrink tubing", href: "/bit/en/coloured-heat-shrink-tubing" },
     ],
   },
+  { label: "Competences", href: "/bit/en/competences" },
+  { label: "News", href: "/bit/en/news" },
   {
     label: "Industrial Sectors",
     href: "/bit/en/industrial-sectors",
@@ -57,28 +59,24 @@ export const NAV_EN: NavItem[] = [
     ],
   },
   {
-    label: "Service",
-    href: "/bit/en/service",
-    children: [
-      { label: "Downloads", href: "/bit/en/service/downloads" },
-      { label: "Shrink tubing transparent / clear", href: "/bit/en/shrink-tubing-transparent-clear" },
-      { label: "Heat shrink tubing printed", href: "/bit/en/heat-shrink-tubing-printed" },
-      { label: "Coloured heat shrink tubing", href: "/bit/en/coloured-heat-shrink-tubing" },
-    ],
-  },
-  {
     label: "About BIT",
     href: "/bit/en/about-bit",
     children: [
+      { label: "Career", href: "/bit/en/career" },
       { label: "Company History", href: "/bit/en/about-bit" },
       {
         label: "Our commitment to charity",
         href: "/bit/en/about-bit/our-commitment-to-charity",
       },
+      { label: "Sustainability", href: "/bit/en/sustainability" },
+      { label: "Service", href: "/bit/en/service" },
+      { label: "Downloads", href: "/bit/en/service/downloads" },
       { label: "Accueil (FR)", href: "/bit/en/about-bit/accueil" },
       { label: "Chi siamo (IT)", href: "/bit/en/about-bit/chi-siamo" },
       { label: "Inicio (ES)", href: "/bit/en/about-bit/inicio" },
     ],
   },
+  { label: "Career", href: "/bit/en/career" },
+  { label: "Sustainability", href: "/bit/en/sustainability" },
   { label: "Contact", href: "/bit/en/contact" },
 ];
