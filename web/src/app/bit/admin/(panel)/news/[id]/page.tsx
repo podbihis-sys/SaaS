@@ -4,6 +4,7 @@ import { Trash2 } from "lucide-react";
 import { createClient } from "@/app/bit/_lib/supabase-server";
 import { NewsForm } from "@/app/bit/admin/_components/news-form";
 import type { NewsInput } from "@/app/bit/admin/_actions";
+import { NEWS_EN } from "@/app/bit/_data/news-en";
 
 export const dynamic = "force-dynamic";
 
@@ -17,6 +18,9 @@ interface Row {
   image_path: string | null;
   image_alt: string | null;
   status: "draft" | "published";
+  title_en: string | null;
+  excerpt_en: string | null;
+  body_en: string | null;
 }
 
 export default async function EditNewsPage({
@@ -36,6 +40,11 @@ export default async function EditNewsPage({
     title: row.title,
     excerpt: row.excerpt ?? "",
     body: row.body ?? "",
+    // Leere EN-Felder mit der mitgelieferten Übersetzung vorbelegen – beim
+    // Speichern wandert sie in die Datenbank und ist dann im CMS pflegbar.
+    title_en: row.title_en ?? NEWS_EN[row.slug]?.title ?? "",
+    excerpt_en: row.excerpt_en ?? NEWS_EN[row.slug]?.excerpt ?? "",
+    body_en: row.body_en ?? NEWS_EN[row.slug]?.body ?? "",
     published_at: row.published_at ?? "",
     image_path: row.image_path ?? "",
     image_alt: row.image_alt ?? "",

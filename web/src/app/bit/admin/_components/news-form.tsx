@@ -35,6 +35,9 @@ export function NewsForm({ initial }: { initial?: NewsInput }) {
       title: "",
       excerpt: "",
       body: "",
+      title_en: "",
+      excerpt_en: "",
+      body_en: "",
       published_at: new Date().toISOString().slice(0, 10),
       image_path: "",
       image_alt: "",
@@ -145,6 +148,33 @@ export function NewsForm({ initial }: { initial?: NewsInput }) {
           Formatierung: Leerzeile = neuer Absatz · „## “ = Zwischenüberschrift · „- “ = Aufzählungspunkt.
         </p>
       </Field>
+
+      {/* Englische Fassung (für /bit/en/news) */}
+      <section className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-700">
+          Englische Fassung
+        </h2>
+        <p className="mt-1 text-xs text-slate-500">
+          Wird auf der englischen Seite angezeigt. Leere Felder fallen auf die
+          mitgelieferte Übersetzung bzw. den deutschen Text zurück.
+        </p>
+        <div className="mt-4 space-y-4">
+          <Field label="Title (EN)">
+            <input className={FIELD} value={f.title_en} onChange={(e) => set("title_en", e.target.value)} />
+          </Field>
+          <Field label="Excerpt (EN)">
+            <textarea className={FIELD} rows={3} value={f.excerpt_en} onChange={(e) => set("excerpt_en", e.target.value)} />
+          </Field>
+          <Field label="Body (EN)">
+            <textarea
+              className={`${FIELD} font-mono text-xs`}
+              rows={16}
+              value={f.body_en}
+              onChange={(e) => set("body_en", e.target.value)}
+            />
+          </Field>
+        </div>
+      </section>
 
       {/* Bild */}
       <section>

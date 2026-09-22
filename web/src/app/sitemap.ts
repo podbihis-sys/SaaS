@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { CATEGORIES, PRODUCTS } from "./bit/_data/catalog";
 import { NEWS } from "./bit/_data/news";
+import { JOBS } from "./bit/_data/jobs";
 import { CONTENT_PAGES } from "./bit/_data/pages";
 import { CONTENT_PAGES_EN } from "./bit/_data/pages-en";
 
@@ -36,6 +37,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/bit/en/news",
     "/bit/en/career",
     "/bit/en/sustainability",
+    ...NEWS.map((n) => `/bit/en/news/${n.slug}`),
+    ...JOBS.map((j) => `/bit/en/career/${j.id}`),
     ...CONTENT_PAGES_EN.map((p) => `/bit/en/${p.slug}`),
     ...CATEGORIES.map((c) => `/bit/en/products/${c.id}`),
     ...PRODUCTS.map((p) => `/bit/en/products/${p.category}/${p.slug}`),

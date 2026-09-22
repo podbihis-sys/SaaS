@@ -27,6 +27,12 @@ export default async function StelleBearbeiten({
             tasks_title: data.tasks_title,
             tasks: data.tasks ?? [],
             closing: data.closing,
+            title_en: data.title_en ?? "",
+            intro_en: data.intro_en ?? "",
+            body_en: data.body_en ?? "",
+            tasks_title_en: data.tasks_title_en ?? "",
+            tasks_en: data.tasks_en ?? [],
+            closing_en: data.closing_en ?? "",
             sort_order: data.sort_order,
             status: data.status,
           }}
