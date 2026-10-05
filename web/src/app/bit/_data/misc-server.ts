@@ -82,6 +82,18 @@ export function localizeJob(job: JobPosting, locale: "de" | "en"): JobPosting {
   };
 }
 
+/**
+ * Aktuell ausgeschriebene Stellen (Kundenvorgabe: vorerst NUR "Vertrieb").
+ * Zentral gefiltert, weil die Liste auch aus dem CMS (bit_jobs) kommen kann –
+ * ein Entfernen in jobs.ts allein würde DB-Einträge nicht ausblenden.
+ */
+export const ACTIVE_JOB_IDS = new Set<string>(["vertrieb"]);
+
+export async function getActiveJobs(fallback: JobPosting[]): Promise<JobPosting[]> {
+  const jobs = await getCmsJobs(fallback);
+  return jobs.filter((job) => ACTIVE_JOB_IDS.has(job.id));
+}
+
 export async function getCmsJobs(fallback: JobPosting[]): Promise<JobPosting[]> {
   return withTimeout<JobPosting[]>(async () => {
     const supabase = createPublicClient();

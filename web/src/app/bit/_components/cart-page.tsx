@@ -55,7 +55,7 @@ const STRINGS = {
     errSend: "Die Anfrage konnte nicht gesendet werden.", errUnknown: "Unbekannter Fehler.",
     required: "(Pflichtfeld)",
     noteLabel: "Anmerkung zu diesem Artikel",
-    notePlaceholder: "z. B. Bedruckung mit Logo, Sonderlänge, Farbwunsch …",
+    notePlaceholder: "Zuschnitt, Bedruckung, Etikettierung oder sonstige Anforderungen …",
     numLocale: "de-DE",
   },
   en: {
@@ -89,7 +89,7 @@ const STRINGS = {
     errSend: "The inquiry could not be sent.", errUnknown: "Unknown error.",
     required: "(required)",
     noteLabel: "Note on this article",
-    notePlaceholder: "e.g. printing with logo, special length, colour request …",
+    notePlaceholder: "Cutting, printing, labelling or other requirements …",
     numLocale: "en-GB",
   },
 } as const;
@@ -250,7 +250,7 @@ export function CartPageView({ locale = "de" }: { locale?: "de" | "en" }) {
                             onChange={(e) =>
                               updateQuantity(item.id, parseInt(e.target.value || "1", 10))
                             }
-                            className="w-12 border-x border-slate-200 py-1 text-center text-slate-900 outline-none"
+                            className="w-12 border-x border-slate-200 bg-white py-1 text-center text-slate-900 outline-none"
                           />
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}

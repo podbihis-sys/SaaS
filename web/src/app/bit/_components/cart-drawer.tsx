@@ -22,7 +22,7 @@ const STRINGS = {
     length: "Länge", lengths: "Längen", roll: "Rolle", rolls: "Rollen", pack: "Gebinde",
     pieces: "Stück",
     noteLabel: "Anmerkung",
-    notePlaceholder: "z. B. Bedruckung mit Logo …",
+    notePlaceholder: "Zuschnitt, Bedruckung, Etikettierung oder sonstige Anforderungen …",
     checkout: "Anfrage zusammenstellen",
     note: "Unverbindlich · kostenfreies Angebot innerhalb von 24 h",
     products: "/bit/produkte",
@@ -43,7 +43,7 @@ const STRINGS = {
     length: "length", lengths: "lengths", roll: "roll", rolls: "rolls", pack: "pack",
     pieces: "pcs",
     noteLabel: "Note",
-    notePlaceholder: "e.g. printing with logo …",
+    notePlaceholder: "Cutting, printing, labelling or other requirements …",
     checkout: "Complete inquiry",
     note: "Non-binding · free quote within 24 h",
     products: "/bit/en/products",
@@ -208,7 +208,7 @@ export function CartDrawer() {
                         onChange={(e) =>
                           updateQuantity(item.id, parseInt(e.target.value || "1", 10))
                         }
-                        className="w-12 border-x border-slate-200 py-1 text-center text-sm text-slate-900 outline-none"
+                        className="w-12 border-x border-slate-200 bg-white py-1 text-center text-sm text-slate-900 outline-none"
                       />
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}

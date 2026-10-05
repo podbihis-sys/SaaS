@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Mail, Phone } from "lucide-react";
 import { JOBS, jobApplyPhraseEn } from "../../../_data/jobs";
-import { getCmsJobs, localizeJob } from "../../../_data/misc-server";
+import { ACTIVE_JOB_IDS, getActiveJobs, localizeJob } from "../../../_data/misc-server";
 
 /** Englische Stellen-Unterseite – gleicher Aufbau wie /bit/karriere/[slug]. */
 
@@ -11,7 +11,7 @@ export const revalidate = 300;
 export const dynamicParams = true;
 
 export function generateStaticParams() {
-  return JOBS.map((job) => ({ slug: job.id }));
+  return JOBS.filter((job) => ACTIVE_JOB_IDS.has(job.id)).map((job) => ({ slug: job.id }));
 }
 
 export async function generateMetadata({
@@ -20,7 +20,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const jobs = await getCmsJobs(JOBS);
+  const jobs = await getActiveJobs(JOBS);
   const raw = jobs.find((j) => j.id === slug);
   if (!raw) return { title: "Position not found" };
   const job = localizeJob(raw, "en");
@@ -37,7 +37,7 @@ export default async function EnglishJobPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const jobs = await getCmsJobs(JOBS);
+  const jobs = await getActiveJobs(JOBS);
   const raw = jobs.find((j) => j.id === slug);
   if (!raw) notFound();
   const job = localizeJob(raw, "en");

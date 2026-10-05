@@ -543,6 +543,6 @@ export const PRODUCT_NAMES: Record<string, { de: string; en: string }> = {
   },
   "solar-und-kantenclips": {
     "de": "Solar- und Kantenclips",
-    "en": "Solar- und Kantenclips"
+    "en": "Solar and edge clips"
   }
 };

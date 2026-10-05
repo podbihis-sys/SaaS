@@ -4,17 +4,13 @@ import { Clock, Mail, MapPin, Phone, Printer, ShoppingCart } from "lucide-react"
 import { COMPANY } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
-import { MapEmbed } from "../_components/map-embed";
+import { ContactForm } from "../_components/contact-form";
 import { getCmsTeam, type TeamMember } from "../_data/misc-server";
 
 
 // Seite alle 5 Minuten im Hintergrund erneuern (ISR) – Besucher bekommen
 // immer die zwischengespeicherte Fassung statt auf die Datenbank zu warten.
 export const revalidate = 300;
-
-// Exakte Koordinaten des BIT-Gebäudes, Dützhofer Str. 7 (OpenStreetMap, Gewerbegebiet Heimerzheim).
-const MAP = { lat: 50.72287, lon: 6.91813 };
-const MAP_BBOX = `${MAP.lon - 0.014}%2C${MAP.lat - 0.009}%2C${MAP.lon + 0.014}%2C${MAP.lat + 0.009}`;
 
 /** Team-Kontakte – Fallback, falls das CMS (bit_team) nicht erreichbar ist. */
 const TEAM: { name: string; role: string; phone: string; email: string }[] = [
@@ -51,9 +47,6 @@ export default async function KontaktPage() {
   const team = await getCmsTeam(teamFallback);
   const visible = team.filter((m) => !m.cssOnly);
   const cssOnly = team.find((m) => m.cssOnly);
-  const mapsQuery = encodeURIComponent(
-    `${COMPANY.street}, ${COMPANY.zip} ${COMPANY.city}`,
-  );
 
   return (
     <>
@@ -127,21 +120,7 @@ export default async function KontaktPage() {
             </p>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-slate-200">
-            <MapEmbed
-              title="Standort BIT"
-              className="h-full min-h-[420px] w-full"
-              src={`https://www.openstreetmap.org/export/embed.html?bbox=${MAP_BBOX}&layer=mapnik&marker=${MAP.lat}%2C${MAP.lon}`}
-            />
-            <a
-              href={`https://www.openstreetmap.org/search?query=${mapsQuery}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block bg-slate-50 px-4 py-3 text-center text-sm font-medium text-[#1e4a7a] hover:underline"
-            >
-              Auf der Karte öffnen
-            </a>
-          </div>
+          <ContactForm locale="de" />
         </div>
       </section>
 
@@ -199,60 +178,6 @@ export default async function KontaktPage() {
         </div>
       </section>
 
-      <section className="border-t border-slate-200 bg-slate-50">
-        <div className="container py-16">
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-            {c(content, "kontakt.service.title", "Anfahrt, Lieferung & Service")}
-          </h2>
-          <p className="mt-4 max-w-3xl leading-relaxed text-slate-700">
-            {c(
-              content,
-              "kontakt.service.text",
-              `Unser Firmensitz liegt in ${COMPANY.street}, ${COMPANY.zip} ${COMPANY.city} – verkehrsgünstig zwischen Bonn und Euskirchen erreichbar. Standardartikel versenden wir in der Regel innerhalb von 24 Stunden; für Konfektion, Bedruckung und Sonderwerkstoffe erstellen wir Ihnen gerne ein individuelles Angebot. Sprechen Sie uns ${COMPANY.hours} telefonisch, per E-Mail oder über den Warenkorb an – wir beraten Sie technisch fundiert und lösungsorientiert.`,
-            )}
-          </p>
-
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { href: "/bit/produkte", title: "Sortiment", text: "Über 1.000 Standardartikel in 9 Kategorien." },
-              { href: "/bit/kompetenzen", title: "Kompetenzen", text: "Zuschnitt, Bedruckung & Sonderwerkstoffe." },
-              { href: "/bit/branchen", title: "Branchen", text: "Lösungen für Automotive bis Medizintechnik." },
-              { href: "/bit/news", title: "News", text: "Neuheiten und Anwendungstipps." },
-            ].map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-[#1e4a7a]"
-              >
-                <span className="font-semibold text-slate-900">{l.title}</span>
-                <span className="mt-1 block text-sm text-slate-600">{l.text}</span>
-              </Link>
-            ))}
-          </div>
-
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
-            {[
-              {
-                q: "Wie schnell liefern Sie?",
-                a: "Standardartikel sind in der Regel ab Lager verfügbar und werden meist innerhalb von 24 Stunden versendet. Bei Konfektion oder Sonderanfertigungen nennen wir Ihnen mit dem Angebot einen verbindlichen Liefertermin.",
-              },
-              {
-                q: "Kann ich Schläuche nach Maß bestellen?",
-                a: "Ja. Wir schneiden, bedrucken und konfektionieren Schrumpf-, Isolier- und Glasseidenschläuche nach Ihren Vorgaben – über sechs Produktionsstrecken an unserem Standort in Heimerzheim.",
-              },
-              {
-                q: "Wie stelle ich eine Anfrage?",
-                a: "Legen Sie die gewünschten Artikel in allen benötigten Größen in den Warenkorb und senden Sie alles in einer einzigen Anfrage. Wir antworten mit einem individuellen Angebot – in der Regel innerhalb von 24 Stunden.",
-              },
-            ].map((f) => (
-              <div key={f.q} className="rounded-2xl border border-slate-200 bg-white p-6">
-                <h3 className="font-semibold text-slate-900">{f.q}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">{f.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
     </>
   );
 }

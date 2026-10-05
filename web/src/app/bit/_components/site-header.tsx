@@ -8,6 +8,7 @@ import { useCart } from "../_lib/cart";
 import { COMPANY } from "../_data/catalog";
 import { NAV, type NavItem } from "../_data/navigation";
 import { NAV_EN } from "../_data/navigation-en";
+import { otherLocaleHref } from "../_lib/locale-switch";
 import { FlagIcon } from "./flag-icon";
 
 /** Aktive Sprache mit blauem Rahmen, inaktive gedimmt. */
@@ -52,6 +53,10 @@ export function SiteHeader() {
   const english = pathname.startsWith("/bit/en");
   const nav = english ? NAV_EN : NAV;
   const home = english ? "/bit/en" : "/bit";
+  // Sprachumschalter bleibt auf der aktuellen Seite: das Ziel der jeweils
+  // anderen Sprache wird aus dem aktuellen Pfad abgeleitet.
+  const deHref = english ? otherLocaleHref(pathname) : pathname;
+  const enHref = english ? pathname : otherLocaleHref(pathname);
 
   return (
     <header
@@ -78,7 +83,7 @@ export function SiteHeader() {
             {/* Sprachwahl – Flaggen statt Text (Kundenvorgabe) */}
             <span className="flex items-center gap-2 border-l border-slate-200 pl-4">
               <Link
-                href="/bit"
+                href={deHref}
                 aria-current={!english ? "true" : undefined}
                 aria-label="Deutsch"
                 title="Deutsch"
@@ -87,7 +92,7 @@ export function SiteHeader() {
                 <FlagIcon code="de" className="h-4 w-6" />
               </Link>
               <Link
-                href="/bit/en"
+                href={enHref}
                 aria-current={english ? "true" : undefined}
                 aria-label="English"
                 title="English"
@@ -214,7 +219,7 @@ export function SiteHeader() {
                 {english ? "Language:" : "Sprache:"}
               </span>
               <Link
-                href="/bit"
+                href={deHref}
                 aria-current={!english ? "true" : undefined}
                 aria-label="Deutsch"
                 title="Deutsch"
@@ -223,7 +228,7 @@ export function SiteHeader() {
                 <FlagIcon code="de" className="h-5 w-[30px]" />
               </Link>
               <Link
-                href="/bit/en"
+                href={enHref}
                 aria-current={english ? "true" : undefined}
                 aria-label="English"
                 title="English"
