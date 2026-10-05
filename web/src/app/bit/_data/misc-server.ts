@@ -1,10 +1,12 @@
-import { createPublicClient } from "@/app/bit/_lib/supabase-public";
+import { query, parseJsonColumn } from "@/app/bit/_lib/db";
 import { withTimeout } from "@/app/bit/_lib/with-timeout";
 
 /**
- * CMS-Loader für FAQ, Team-Kontakte und Stellenanzeigen (Tabellen aus
- * 0005_bit_cms_complete.sql). Die Aufrufer übergeben ihren statischen
- * Fallback, damit die Seiten auch ohne Datenbank vollständig bleiben.
+ * CMS-Loader für FAQ, Team-Kontakte und Stellenanzeigen (MariaDB). Die Aufrufer
+ * übergeben ihren statischen Fallback, damit die Seiten auch ohne Datenbank
+ * vollständig bleiben.
+ *
+ * Oeffentliche Reads: nur status='published' (ersetzt die fruehere RLS).
  */
 
 export interface FaqItem {
@@ -15,13 +17,11 @@ export interface FaqItem {
 
 export async function getCmsFaq(fallback: FaqItem[]): Promise<FaqItem[]> {
   return withTimeout<FaqItem[]>(async () => {
-    const supabase = createPublicClient();
-    const { data, error } = await supabase
-      .from("bit_faq")
-      .select("group_name,question,answer,sort_order")
-      .order("sort_order");
-    if (error || !data || data.length === 0) return fallback;
-    return data.map((r) => ({ group: r.group_name, q: r.question, a: r.answer }));
+    const rows = await query<{ group_name: string; question: string; answer: string }>(
+      "SELECT group_name,question,answer FROM bit_faq WHERE status = 'published' ORDER BY sort_order",
+    );
+    if (rows.length === 0) return fallback;
+    return rows.map((r) => ({ group: r.group_name, q: r.question, a: r.answer }));
   }, fallback);
 }
 
@@ -35,18 +35,22 @@ export interface TeamMember {
 
 export async function getCmsTeam(fallback: TeamMember[]): Promise<TeamMember[]> {
   return withTimeout<TeamMember[]>(async () => {
-    const supabase = createPublicClient();
-    const { data, error } = await supabase
-      .from("bit_team")
-      .select("name,role,phone,email,sort_order,css_only")
-      .order("sort_order");
-    if (error || !data || data.length === 0) return fallback;
-    return data.map((r) => ({
+    const rows = await query<{
+      name: string;
+      role: string;
+      phone: string;
+      email: string;
+      css_only: number | boolean;
+    }>(
+      "SELECT name,role,phone,email,css_only FROM bit_team WHERE status = 'published' ORDER BY sort_order",
+    );
+    if (rows.length === 0) return fallback;
+    return rows.map((r) => ({
       name: r.name,
       role: r.role,
       phone: r.phone,
       email: r.email,
-      cssOnly: r.css_only,
+      cssOnly: Boolean(r.css_only),
     }));
   }, fallback);
 }
@@ -93,30 +97,49 @@ export async function getActiveJobs(fallback: JobPosting[]): Promise<JobPosting[
   return jobs.filter((job) => ACTIVE_JOB_IDS.has(job.id));
 }
 
+interface JobRow {
+  slug: string;
+  title: string;
+  intro: string;
+  body: string | null;
+  tasks_title: string;
+  tasks: unknown;
+  closing: string;
+  title_en: string | null;
+  intro_en: string | null;
+  body_en: string | null;
+  tasks_title_en: string | null;
+  tasks_en: unknown;
+  closing_en: string | null;
+}
+
 export async function getCmsJobs(fallback: JobPosting[]): Promise<JobPosting[]> {
   return withTimeout<JobPosting[]>(async () => {
-    const supabase = createPublicClient();
-    const { data, error } = await supabase
-      .from("bit_jobs")
-      .select("slug,title,intro,body,tasks_title,tasks,closing,sort_order,title_en,intro_en,body_en,tasks_title_en,tasks_en,closing_en")
-      .order("sort_order");
-    if (error || !data || data.length === 0) return fallback;
-    return data.map((r) => ({
-      id: r.slug,
-      title: r.title,
-      intro: r.intro,
-      text: (r.body ?? "").split(/\n\n+/).filter(Boolean),
-      aufgabenTitel: r.tasks_title,
-      aufgaben: r.tasks ?? [],
-      schluss: r.closing,
-      titleEn: r.title_en ?? fallback.find((f) => f.id === r.slug)?.titleEn,
-      introEn: r.intro_en ?? fallback.find((f) => f.id === r.slug)?.introEn,
-      textEn: r.body_en
-        ? (r.body_en as string).split(/\n\n+/).filter(Boolean)
-        : fallback.find((f) => f.id === r.slug)?.textEn,
-      aufgabenTitelEn: r.tasks_title_en ?? fallback.find((f) => f.id === r.slug)?.aufgabenTitelEn,
-      aufgabenEn: r.tasks_en ?? fallback.find((f) => f.id === r.slug)?.aufgabenEn,
-      schlussEn: r.closing_en ?? fallback.find((f) => f.id === r.slug)?.schlussEn,
-    }));
+    const rows = await query<JobRow>(
+      "SELECT slug,title,intro,body,tasks_title,tasks,closing,title_en,intro_en,body_en,tasks_title_en,tasks_en,closing_en FROM bit_jobs WHERE status = 'published' ORDER BY sort_order",
+    );
+    if (rows.length === 0) return fallback;
+    return rows.map((r) => {
+      const tasksEnRaw = parseJsonColumn<string[] | null>(r.tasks_en, []);
+      return {
+        id: r.slug,
+        title: r.title,
+        intro: r.intro,
+        text: (r.body ?? "").split(/\n\n+/).filter(Boolean),
+        aufgabenTitel: r.tasks_title,
+        aufgaben: parseJsonColumn<string[]>(r.tasks, []),
+        schluss: r.closing,
+        titleEn: r.title_en ?? fallback.find((f) => f.id === r.slug)?.titleEn,
+        introEn: r.intro_en ?? fallback.find((f) => f.id === r.slug)?.introEn,
+        textEn: r.body_en
+          ? r.body_en.split(/\n\n+/).filter(Boolean)
+          : fallback.find((f) => f.id === r.slug)?.textEn,
+        aufgabenTitelEn: r.tasks_title_en ?? fallback.find((f) => f.id === r.slug)?.aufgabenTitelEn,
+        aufgabenEn: tasksEnRaw && tasksEnRaw.length
+          ? tasksEnRaw
+          : fallback.find((f) => f.id === r.slug)?.aufgabenEn,
+        schlussEn: r.closing_en ?? fallback.find((f) => f.id === r.slug)?.schlussEn,
+      };
+    });
   }, fallback);
 }
