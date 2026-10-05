@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { Trash2 } from "lucide-react";
-import { createClient } from "@/app/bit/_lib/supabase-server";
+import { queryOne, execute, parseJsonColumn } from "@/app/bit/_lib/db";
 import { getCmsCategories } from "@/app/bit/_data/cms";
 import { ProductForm } from "@/app/bit/admin/_components/product-form";
 import type { ProductInput } from "@/app/bit/admin/_actions";
@@ -20,11 +20,11 @@ interface Row {
   temperature: string | null;
   unit: string;
   vpe_type: string | null;
-  sizes: string[] | null;
-  colors: string[] | null;
-  features: string[] | null;
-  applications: string[] | null;
-  tech: { label: string; value: string }[] | null;
+  sizes: unknown;
+  colors: unknown;
+  features: unknown;
+  applications: unknown;
+  tech: unknown;
   datasheet_url: string | null;
   image_path: string | null;
   image_alt: string | null;
@@ -37,9 +37,10 @@ export default async function EditProductPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
-  const { data } = await supabase.from("bit_products").select("*").eq("id", id).maybeSingle();
-  const row = data as Row | null;
+  const row = await queryOne<Row>(
+    "SELECT id,slug,category_id,code,name,tagline,description,material,temperature,unit,vpe_type,sizes,colors,features,applications,tech,datasheet_url,image_path,image_alt,status FROM bit_products WHERE id = ? LIMIT 1",
+    [id],
+  );
   if (!row) notFound();
 
   const categories = await getCmsCategories();
@@ -58,11 +59,11 @@ export default async function EditProductPage({
     vpe_type: (["rolle", "laenge", "rolle_laenge", "meterware"].includes(row.vpe_type ?? "")
       ? row.vpe_type
       : "auto") as ProductInput["vpe_type"],
-    sizes: row.sizes ?? [],
-    colors: row.colors ?? [],
-    features: row.features ?? [],
-    applications: row.applications ?? [],
-    tech: row.tech ?? [],
+    sizes: parseJsonColumn<string[]>(row.sizes, []),
+    colors: parseJsonColumn<string[]>(row.colors, []),
+    features: parseJsonColumn<string[]>(row.features, []),
+    applications: parseJsonColumn<string[]>(row.applications, []),
+    tech: parseJsonColumn<{ label: string; value: string }[]>(row.tech, []),
     datasheet_url: row.datasheet_url ?? "",
     image_path: row.image_path ?? "",
     image_alt: row.image_alt ?? "",
@@ -71,8 +72,7 @@ export default async function EditProductPage({
 
   async function handleDelete() {
     "use server";
-    const sb = await createClient();
-    await sb.from("bit_products").delete().eq("id", id);
+    await execute("DELETE FROM bit_products WHERE id = ?", [id]);
     revalidatePath("/bit/admin");
     revalidatePath("/bit/produkte");
     redirect("/bit/admin");

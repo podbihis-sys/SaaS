@@ -1,16 +1,28 @@
-import { createClient } from "@/app/bit/_lib/supabase-server";
+import { query } from "@/app/bit/_lib/db";
 import { CategoryEditor } from "../../_components/category-editor";
 import type { CategoryInput } from "../../_actions";
 
 export const dynamic = "force-dynamic";
 
+interface CatRow {
+  id: string;
+  name: string;
+  tagline: string | null;
+  description: string | null;
+  image_path: string | null;
+  sort_order: number;
+}
+
 export default async function KategorienAdmin() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("bit_categories")
-    .select("id,name,tagline,description,image_path,sort_order")
-    .order("sort_order");
-  const rows: CategoryInput[] = (data ?? []).map((r) => ({
+  let data: CatRow[] = [];
+  try {
+    data = await query<CatRow>(
+      "SELECT id,name,tagline,description,image_path,sort_order FROM bit_categories ORDER BY sort_order",
+    );
+  } catch {
+    data = [];
+  }
+  const rows: CategoryInput[] = data.map((r) => ({
     id: r.id,
     name: r.name,
     tagline: r.tagline ?? "",

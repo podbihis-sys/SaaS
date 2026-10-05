@@ -1,15 +1,26 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import { createClient } from "@/app/bit/_lib/supabase-server";
+import { query } from "@/app/bit/_lib/db";
 
 export const dynamic = "force-dynamic";
 
+interface PageRow {
+  id: string;
+  slug: string;
+  title: string;
+  status: "draft" | "published";
+  updated_at: string | null;
+}
+
 export default async function SeitenAdmin() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("bit_pages")
-    .select("id,slug,title,status,updated_at")
-    .order("slug");
+  let data: PageRow[] = [];
+  try {
+    data = await query<PageRow>(
+      "SELECT id,slug,title,status,updated_at FROM bit_pages ORDER BY slug",
+    );
+  } catch {
+    data = [];
+  }
   return (
     <>
       <div className="flex items-center justify-between">
