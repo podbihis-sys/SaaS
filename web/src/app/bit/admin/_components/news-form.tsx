@@ -3,17 +3,8 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Upload } from "lucide-react";
-import { createClient } from "@/app/bit/_lib/supabase-browser";
+import { mediaUrl as publicUrl, uploadImage } from "@/app/bit/_lib/upload-client";
 import { saveNews, type NewsInput } from "../_actions";
-
-const BUCKET = "bit-product-images";
-
-function publicUrl(path: string): string {
-  if (!path) return "";
-  if (path.startsWith("http") || path.startsWith("/")) return path;
-  const base = process.env.NEXT_PUBLIC_BIT_SUPABASE_URL ?? "";
-  return `${base}/storage/v1/object/public/${BUCKET}/${path}`;
-}
 
 function slugify(value: string): string {
   return value
@@ -55,18 +46,11 @@ export function NewsForm({ initial }: { initial?: NewsInput }) {
     setUploading(true);
     setError("");
     try {
-      const supabase = createClient();
-      const ext = file.name.split(".").pop() || "jpg";
       const base = (f.slug || slugify(f.title) || "news").slice(0, 60);
-      const path = `news/${base}-${Date.now()}.${ext}`;
-      const { error: upErr } = await supabase.storage
-        .from(BUCKET)
-        .upload(path, file, { upsert: true, cacheControl: "3600" });
-      if (upErr) {
-        setError(`Bild-Upload fehlgeschlagen: ${upErr.message}`);
-        return;
-      }
+      const path = await uploadImage(file, "news", base);
       set("image_path", path);
+    } catch (e) {
+      setError(`Bild-Upload fehlgeschlagen: ${e instanceof Error ? e.message : String(e)}`);
     } finally {
       setUploading(false);
     }
