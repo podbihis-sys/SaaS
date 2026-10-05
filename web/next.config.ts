@@ -3,11 +3,13 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // Self-hosted-Build fuer Plesk/Passenger: eigenstaendiges .next/standalone.
+  output: "standalone",
+  outputFileTracingRoot: __dirname,
   images: {
-    remotePatterns: [
-      { protocol: "https", hostname: "*.supabase.co" },
-      { protocol: "https", hostname: "*.supabase.in" },
-    ],
+    // Keine Next-Bildoptimierung noetig (lokale Uploads werden direkt
+    // ausgeliefert). Ersetzt die frueheren Supabase-remotePatterns.
+    unoptimized: true,
   },
   experimental: {
     typedRoutes: false,
