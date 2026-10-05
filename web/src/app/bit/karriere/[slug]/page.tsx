@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Mail, Phone } from "lucide-react";
 import { JOBS, jobApplyPhrase } from "../../_data/jobs";
-import { getCmsJobs } from "../../_data/misc-server";
+import { ACTIVE_JOB_IDS, getActiveJobs } from "../../_data/misc-server";
 
 // Seite alle 5 Minuten im Hintergrund erneuern (ISR); im CMS neu angelegte
 // Stellen bekommen über dynamicParams ebenfalls eine Unterseite.
@@ -11,7 +11,7 @@ export const revalidate = 300;
 export const dynamicParams = true;
 
 export function generateStaticParams() {
-  return JOBS.map((job) => ({ slug: job.id }));
+  return JOBS.filter((job) => ACTIVE_JOB_IDS.has(job.id)).map((job) => ({ slug: job.id }));
 }
 
 export async function generateMetadata({
@@ -20,7 +20,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const jobs = await getCmsJobs(JOBS);
+  const jobs = await getActiveJobs(JOBS);
   const job = jobs.find((j) => j.id === slug);
   if (!job) return { title: "Stelle nicht gefunden" };
   return {
@@ -37,7 +37,7 @@ export default async function StellePage({
 }) {
   const { slug } = await params;
   // CMS-first: Stellen aus bit_jobs; Fallback ist die eingebaute Liste.
-  const jobs = await getCmsJobs(JOBS);
+  const jobs = await getActiveJobs(JOBS);
   const job = jobs.find((j) => j.id === slug);
   if (!job) notFound();
 

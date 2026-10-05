@@ -11,14 +11,21 @@ const itemSchema = z.object({
   note: z.string().max(1000).optional(),
 });
 
-const inquirySchema = z.object({
-  company: z.string().optional().default(""),
-  name: z.string().min(1, "Name ist erforderlich"),
-  email: z.string().email("Gültige E-Mail erforderlich"),
-  phone: z.string().optional().default(""),
-  message: z.string().optional().default(""),
-  items: z.array(itemSchema).min(1, "Der Warenkorb ist leer"),
-});
+const inquirySchema = z
+  .object({
+    company: z.string().optional().default(""),
+    name: z.string().min(1, "Name ist erforderlich"),
+    email: z.string().email("Gültige E-Mail erforderlich"),
+    phone: z.string().optional().default(""),
+    message: z.string().optional().default(""),
+    // Positionen sind optional: Das Kontaktformular sendet eine reine Nachricht
+    // ohne Warenkorb, die Warenkorb-Anfrage sendet mindestens eine Position.
+    items: z.array(itemSchema).optional().default([]),
+  })
+  .refine((data) => data.items.length > 0 || data.message.trim().length > 0, {
+    message: "Bitte eine Nachricht eingeben.",
+    path: ["message"],
+  });
 
 function reference() {
   const date = new Date();

@@ -4,17 +4,13 @@ import { Clock, Mail, MapPin, Phone, Printer, ShoppingCart } from "lucide-react"
 import { COMPANY } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
-import { MapEmbed } from "../_components/map-embed";
+import { ContactForm } from "../_components/contact-form";
 import { getCmsTeam, type TeamMember } from "../_data/misc-server";
 
 
 // Seite alle 5 Minuten im Hintergrund erneuern (ISR) – Besucher bekommen
 // immer die zwischengespeicherte Fassung statt auf die Datenbank zu warten.
 export const revalidate = 300;
-
-// Exakte Koordinaten des BIT-Gebäudes, Dützhofer Str. 7 (OpenStreetMap, Gewerbegebiet Heimerzheim).
-const MAP = { lat: 50.72287, lon: 6.91813 };
-const MAP_BBOX = `${MAP.lon - 0.014}%2C${MAP.lat - 0.009}%2C${MAP.lon + 0.014}%2C${MAP.lat + 0.009}`;
 
 /** Team-Kontakte – Fallback, falls das CMS (bit_team) nicht erreichbar ist. */
 const TEAM: { name: string; role: string; phone: string; email: string }[] = [
@@ -51,9 +47,6 @@ export default async function KontaktPage() {
   const team = await getCmsTeam(teamFallback);
   const visible = team.filter((m) => !m.cssOnly);
   const cssOnly = team.find((m) => m.cssOnly);
-  const mapsQuery = encodeURIComponent(
-    `${COMPANY.street}, ${COMPANY.zip} ${COMPANY.city}`,
-  );
 
   return (
     <>
@@ -127,21 +120,7 @@ export default async function KontaktPage() {
             </p>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-slate-200">
-            <MapEmbed
-              title="Standort BIT"
-              className="h-full min-h-[420px] w-full"
-              src={`https://www.openstreetmap.org/export/embed.html?bbox=${MAP_BBOX}&layer=mapnik&marker=${MAP.lat}%2C${MAP.lon}`}
-            />
-            <a
-              href={`https://www.openstreetmap.org/search?query=${mapsQuery}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block bg-slate-50 px-4 py-3 text-center text-sm font-medium text-[#1e4a7a] hover:underline"
-            >
-              Auf der Karte öffnen
-            </a>
-          </div>
+          <ContactForm locale="de" />
         </div>
       </section>
 

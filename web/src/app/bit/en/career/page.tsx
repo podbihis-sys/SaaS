@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { COMPANY } from "../../_data/catalog";
 import { JOBS, jobShortLabelEn } from "../../_data/jobs";
-import { getCmsJobs, localizeJob } from "../../_data/misc-server";
+import { getActiveJobs, localizeJob } from "../../_data/misc-server";
 
 /**
  * Englische Karriere-Seite – gleicher Aufbau wie /bit/karriere. Die
@@ -77,7 +77,7 @@ const ENGAGEMENT = [
 
 export default async function EnglishCareerPage() {
   // CMS-first: Stellen aus bit_jobs; Fallback ist die eingebaute Liste.
-  const jobs = (await getCmsJobs(JOBS)).map((j) => localizeJob(j, "en"));
+  const jobs = (await getActiveJobs(JOBS)).map((j) => localizeJob(j, "en"));
   return (
     <>
       <section className="border-b border-slate-800 bg-[#0f2742]">

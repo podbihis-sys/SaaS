@@ -20,7 +20,7 @@ import { COMPANY } from "../_data/catalog";
 import { c } from "../_data/content";
 import { getContent } from "../_data/content-server";
 import { JOBS, jobShortLabel } from "../_data/jobs";
-import { getCmsJobs } from "../_data/misc-server";
+import { getActiveJobs } from "../_data/misc-server";
 
 
 // Seite alle 5 Minuten im Hintergrund erneuern (ISR) – Besucher bekommen
@@ -94,7 +94,7 @@ const ENGAGEMENT = [
 export default async function KarrierePage() {
   const content = await getContent();
   // CMS-first: Stellen aus bit_jobs; Fallback ist die eingebaute Liste.
-  const jobs = await getCmsJobs(JOBS);
+  const jobs = await getActiveJobs(JOBS);
   return (
     <>
       {/* Hero – dunkel, einheitlich mit den übrigen Unterseiten (Kundenvorgabe). */}

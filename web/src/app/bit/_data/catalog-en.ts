@@ -4526,6 +4526,34 @@ export const EN_PRODUCTS: Record<string, EnProductOverlay> = {
     "datasheet": "https://www.bit-gmbh.de/wp-content/uploads/2020/03/WS-Y.pdf",
     "source": "/en/products/y-manifold-ws-y/"
   },
+  "solar-und-kantenclips": {
+    "name": "Solar and edge clips",
+    "description": "Our edge clips are a robust and durable solution for fastening cables, wires and pipes to plastic and metal profiles. They are made of high-quality polyamide 6.6 HS, a material that is particularly resistant to high temperatures, chemicals, UV radiation and moisture. The edge clips are easy to install and create a firm connection. They are available in different sizes and designs. Edge clips are the perfect choice for use in photovoltaic mounting, in the automotive and electronics industry, in mechanical and shipbuilding engineering and in many other sectors. They let you organise and fix cables and wires quickly and easily, ensuring clear and secure routing of cables and wires, e.g. on PV modules.",
+    "tech": [
+      {
+        "label": "Material",
+        "value": "polyamide 6.6 HS"
+      },
+      {
+        "label": "Properties",
+        "value": "heat-resistant, impact-resistant, UV-resistant"
+      },
+      {
+        "label": "Operating temperature min.",
+        "value": "-40 °C"
+      },
+      {
+        "label": "Operating temperature max.",
+        "value": "+120 °C"
+      },
+      {
+        "label": "Colors",
+        "value": "black"
+      }
+    ],
+    "datasheet": "https://www.bit-gmbh.de/wp-content/uploads/2023/01/Solar-und-Kantenclips.pdf",
+    "source": "/en/products/solar-and-edge-clips/"
+  },
   "geschlitztes-wellrohr-bis-ws-pp-gs": {
     "name": "BIS WS PP gs",
     "description": "PP corrugated conduit pipe\nBIS WS PP gs is all-purpose corrugated conduit tubing made from modified polypropylene. The material exhibits both high chemical and thermal resistance.",

@@ -3,16 +3,12 @@ import Link from "next/link";
 import { Clock, Mail, MapPin, Phone, Printer, ShoppingCart } from "lucide-react";
 import { COMPANY } from "../../_data/catalog";
 import { roleEn } from "../../_data/terms-en";
-import { MapEmbed } from "../../_components/map-embed";
+import { ContactForm } from "../../_components/contact-form";
 import { getCmsTeam, type TeamMember } from "../../_data/misc-server";
 
 /** Englische Kontaktseite – gleicher Aufbau wie /bit/kontakt. */
 
 export const revalidate = 300;
-
-// Exakte Koordinaten des BIT-Gebäudes, Dützhofer Str. 7 (OpenStreetMap, Gewerbegebiet Heimerzheim).
-const MAP = { lat: 50.72287, lon: 6.91813 };
-const MAP_BBOX = `${MAP.lon - 0.014}%2C${MAP.lat - 0.009}%2C${MAP.lon + 0.014}%2C${MAP.lat + 0.009}`;
 
 /** Team-Kontakte – Fallback, falls das CMS (bit_team) nicht erreichbar ist. */
 const TEAM: { name: string; role: string; phone: string; email: string }[] = [
@@ -46,7 +42,6 @@ export default async function ContactPage() {
   const team = await getCmsTeam(teamFallback);
   const visible = team.filter((m) => !m.cssOnly);
   const cssOnly = team.find((m) => m.cssOnly);
-  const mapsQuery = encodeURIComponent(`${COMPANY.street}, ${COMPANY.zip} ${COMPANY.city}`);
 
   return (
     <>
@@ -117,22 +112,7 @@ export default async function ContactPage() {
             </p>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-slate-200">
-            <MapEmbed
-              title="BIT location"
-              locale="en"
-              className="h-full min-h-[420px] w-full"
-              src={`https://www.openstreetmap.org/export/embed.html?bbox=${MAP_BBOX}&layer=mapnik&marker=${MAP.lat}%2C${MAP.lon}`}
-            />
-            <a
-              href={`https://www.openstreetmap.org/search?query=${mapsQuery}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block bg-slate-50 px-4 py-3 text-center text-sm font-medium text-[#1e4a7a] hover:underline"
-            >
-              Open on the map
-            </a>
-          </div>
+          <ContactForm locale="en" />
         </div>
       </section>
 
