@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Lock } from "lucide-react";
-import { createClient } from "@/app/bit/_lib/supabase-browser";
+import { loginAction } from "@/app/bit/admin/_auth-actions";
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -16,11 +16,10 @@ export default function AdminLogin() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const supabase = createClient();
-    const { error: err } = await supabase.auth.signInWithPassword({ email, password });
+    const res = await loginAction(email, password);
     setLoading(false);
-    if (err) {
-      setError(err.message);
+    if (!res.ok) {
+      setError(res.error);
       return;
     }
     router.push("/bit/admin");
