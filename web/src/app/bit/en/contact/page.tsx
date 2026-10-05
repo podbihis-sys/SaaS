@@ -170,60 +170,6 @@ export default async function ContactPage() {
         </div>
       </section>
 
-      <section className="border-t border-slate-200 bg-slate-50">
-        <div className="container py-16">
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-            Directions, delivery & service
-          </h2>
-          <p className="mt-4 max-w-3xl leading-relaxed text-slate-700">
-            Our headquarters are located at {COMPANY.street}, {COMPANY.zip} {COMPANY.city} –
-            conveniently situated between Bonn and Euskirchen. Standard articles are usually
-            dispatched within 24 hours; for processing, printing and special materials we are happy
-            to prepare an individual quote. Contact us Mon–Fri 8:00–17:00 by phone, email or via
-            the cart – we advise you with technical expertise and a focus on solutions.
-          </p>
-
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { href: "/bit/en/products", title: "Products", text: "More than 1,000 standard articles in 9 categories." },
-              { href: "/bit/en/competences", title: "Competences", text: "Cutting, printing & special materials." },
-              { href: "/bit/en/industrial-sectors", title: "Industrial Sectors", text: "Solutions from automotive to medical technology." },
-              { href: "/bit/en/news", title: "News", text: "New products and application tips." },
-            ].map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-[#1e4a7a]"
-              >
-                <span className="font-semibold text-slate-900">{l.title}</span>
-                <span className="mt-1 block text-sm text-slate-600">{l.text}</span>
-              </Link>
-            ))}
-          </div>
-
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
-            {[
-              {
-                q: "How fast do you deliver?",
-                a: "Standard articles are usually available from stock and are mostly dispatched within 24 hours. For processing or custom products we state a binding delivery date with the quote.",
-              },
-              {
-                q: "Can I order tubing cut to size?",
-                a: "Yes. We cut, print and process heat-shrink, insulating and fiberglass sleeves to your specification – on six production lines at our site in Heimerzheim.",
-              },
-              {
-                q: "How do I submit an inquiry?",
-                a: "Add the desired articles in all required sizes to the cart and send everything in a single inquiry. We reply with an individual quote – usually within 24 hours.",
-              },
-            ].map((f) => (
-              <div key={f.q} className="rounded-2xl border border-slate-200 bg-white p-6">
-                <h3 className="font-semibold text-slate-900">{f.q}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">{f.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
     </>
   );
 }
