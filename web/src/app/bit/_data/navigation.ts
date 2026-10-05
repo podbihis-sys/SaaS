@@ -1,9 +1,9 @@
 /**
  * Menüstruktur der Website.
  *
- * Der Header rendert NUR die oberste Ebene – bewusst ohne Dropdowns
- * (Kundenvorgabe). Die `children` bleiben erhalten: Sie speisen die
- * Bereichsnavigation („In diesem Bereich") auf den Unterseiten.
+ * Der Header rendert nur die oberste Ebene, ohne Dropdowns. Die `children`
+ * bleiben erhalten: Sie speisen die Bereichsnavigation („In diesem Bereich")
+ * auf den Unterseiten.
  */
 
 export interface NavItem {

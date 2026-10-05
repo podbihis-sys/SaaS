@@ -3,14 +3,11 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 /**
  * Supabase-Client für ÖFFENTLICHE Leseanfragen (Seitentexte, News).
  *
- * Bewusst ohne Cookie-Anbindung: Sobald eine Seite `cookies()` anfasst, stuft
- * Next.js sie als dynamisch ein und rendert sie bei jedem Aufruf neu. Genau das
- * hat Startseite, News und Kontakt auf mehrere Sekunden Antwortzeit gebracht.
- * Ohne Cookies können diese Seiten statisch vorgerendert und aus dem Cache
- * ausgeliefert werden.
+ * Ohne Cookie-Anbindung: Sobald eine Seite `cookies()` anfasst, wird sie von
+ * Next.js als dynamisch eingestuft und bei jedem Aufruf neu gerendert. Ohne
+ * Cookies bleiben diese Seiten statisch vorgerendert und cachebar.
  *
- * Für alles, was eine Anmeldung braucht (Admin), bleibt `supabase-server.ts`
- * mit Cookie-Anbindung zuständig.
+ * Alles, was eine Anmeldung braucht (Admin), läuft über `supabase-server.ts`.
  */
 export function createPublicClient() {
   return createSupabaseClient(

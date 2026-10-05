@@ -3694,8 +3694,7 @@ export const INDUSTRIES = [
   "Elektronik",
 ];
 
-/** Repräsentatives Foto je Kategorie (aus dem realen Sortiment). */
-/** Eigene Kategoriebilder (Kundenvorgabe); ohne Eintrag zählt das erste Produktbild. */
+/** Eigene Kategoriebilder; ohne Eintrag zählt das erste Produktbild. */
 const CATEGORY_IMAGE_OVERRIDES: Partial<Record<CategoryId, string>> = {
   schrumpfschlauch: "/bit/kategorien/schrumpfschlauch.jpg",
 };

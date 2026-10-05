@@ -1,12 +1,10 @@
 /**
  * Ordnet jeder Seite ihr Gegenstück in der anderen Sprache zu, damit der
- * Sprachumschalter (DE ⇄ EN) auf der AKTUELLEN Seite bleibt statt auf die
- * Startseite zu springen.
+ * Sprachumschalter (DE ⇄ EN) auf der aktuellen Seite bleibt.
  *
  * Die Pfadsegmente unterscheiden sich zwischen DE und EN (kein reiner
- * Präfix-Tausch), deshalb eine explizite Paar-Tabelle für die statischen
- * Seiten plus Muster-Regeln für die dynamischen Detailrouten, deren Slugs in
- * beiden Sprachen identisch sind (Produkte, News, Karriere).
+ * Präfix-Tausch), daher eine explizite Paar-Tabelle für die statischen Seiten
+ * plus Muster-Regeln für die dynamischen Detailrouten (Produkte, News, Karriere).
  */
 
 /** DE-Pfad ↔ EN-Pfad. Reihenfolge egal; beide Richtungen werden abgeleitet. */

@@ -161,7 +161,7 @@ export function AddToCart({
                   }`}
                 >
                   <span>{show(v.label)}</span>
-                  {/* Typenbezeichnung des Herstellers (Kundenvorgabe) */}
+                  {/* Typenbezeichnung des Herstellers */}
                   {v.typ && (
                     <span
                       className={`font-mono text-[11px] font-semibold ${

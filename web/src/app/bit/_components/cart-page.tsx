@@ -222,7 +222,7 @@ export function CartPageView({ locale = "de" }: { locale?: "de" | "en" }) {
                         {shown.color && (
                           <div className="mt-0.5 text-xs text-slate-500">{shown.color}</div>
                         )}
-                        {/* Anmerkung je Position (Kundenvorgabe) */}
+                        {/* Anmerkung je Position */}
                         <textarea
                           value={item.note ?? ""}
                           onChange={(e) => updateNote(item.id, e.target.value)}

@@ -21,8 +21,8 @@ export const metadata: Metadata = {
 };
 
 /**
- * Service-Seite – komplett überarbeitetes Layout (Kundenvorgabe) statt der
- * generischen Import-Ansicht. Inhalte von bit-gmbh.de/service/.
+ * Service-Seite – überarbeitetes Layout statt der generischen Import-Ansicht.
+ * Inhalte von bit-gmbh.de/service/.
  */
 const PILLARS = [
   {

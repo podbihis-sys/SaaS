@@ -39,9 +39,7 @@ export function ProductCard({
           alt={en ? name : product.imageAlt}
           className="bit-card-img h-full w-full"
         />
-        {/* Typ-Bezeichnung links oben – immer sichtbar, bewusst größer und in
-            der Farbe des Schrumpfraten-Badges (Kundenvorgabe); Kategorie
-            rechts oben. */}
+        {/* Typ-Bezeichnung links oben in Badge-Farbe, Kategorie rechts oben. */}
         {code && (
           <span className="absolute left-3 top-3 rounded-md bg-[#38bdf8] px-3 py-1 font-mono text-base font-bold text-[#0f2742] shadow-sm">
             {code}

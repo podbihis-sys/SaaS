@@ -83,9 +83,8 @@ export function localizeJob(job: JobPosting, locale: "de" | "en"): JobPosting {
 }
 
 /**
- * Aktuell ausgeschriebene Stellen (Kundenvorgabe: vorerst NUR "Vertrieb").
- * Zentral gefiltert, weil die Liste auch aus dem CMS (bit_jobs) kommen kann –
- * ein Entfernen in jobs.ts allein würde DB-Einträge nicht ausblenden.
+ * Aktuell ausgeschriebene Stellen – vorerst nur "Vertrieb".
+ * Zentral gefiltert, weil die Liste auch aus dem CMS (bit_jobs) kommen kann.
  */
 export const ACTIVE_JOB_IDS = new Set<string>(["vertrieb"]);
 

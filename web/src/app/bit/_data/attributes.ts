@@ -78,7 +78,7 @@ export function diameterRange(p: Product): { min: number; max: number } | null {
 
 /**
  * mm-Zahl formatieren: immer mindestens eine Nachkommastelle (3,0 / 4,8 /
- * 0,45), deutsches Komma – Kundenvorgabe: einheitliche Nachkommastellen.
+ * 0,45), deutsches Komma.
  */
 export function formatMm(n: number, locale: "de" | "en" = "de"): string {
   return n.toLocaleString(locale === "en" ? "en-GB" : "de-DE", {

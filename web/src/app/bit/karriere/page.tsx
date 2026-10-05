@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     "Karriere bei der BIT: Vertrieb, Lagerist und Ausbildung zum Kaufmann/zur Kauffrau für Groß- und Außenhandelsmanagement – beim familiären Spezialisten für Schrumpf- und Isolierschläuche.",
 };
 
-/** Benefits – Wortlaut laut Kundenvorgabe, ergänzt um bestehende Punkte. */
+/** Benefits, ergänzt um bestehende Punkte. */
 const BENEFITS = [
   {
     icon: BadgeEuro,
@@ -97,7 +97,7 @@ export default async function KarrierePage() {
   const jobs = await getActiveJobs(JOBS);
   return (
     <>
-      {/* Hero – dunkel, einheitlich mit den übrigen Unterseiten (Kundenvorgabe). */}
+      {/* Hero – dunkel, einheitlich mit den übrigen Unterseiten. */}
       <section className="border-b border-slate-800 bg-[#0f2742]">
         <div className="bit-page-hero container py-10">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Karriere</p>
