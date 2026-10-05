@@ -249,7 +249,7 @@ export function AddToCart({
               aria-label={t.qty}
               value={quantity}
               onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value || "1", 10)))}
-              className="w-16 border-x border-slate-200 py-2 text-center text-sm font-medium text-slate-900 outline-none"
+              className="w-16 border-x border-slate-200 bg-white py-2 text-center text-sm font-medium text-slate-900 outline-none"
             />
             <button
               type="button"
