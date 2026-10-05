@@ -115,8 +115,8 @@ export default async function EnglishHome() {
   return (
     <>
       {/* ---------------------------------------------------------------- Hero */}
-      {/* Kundenvorgabe: oben nur die durchlaufende Produktkategorien-Zeile
-          (keine Bild-Diashow) – danach direkt die Produktwelten. */}
+      {/* Oben nur die durchlaufende Produktkategorien-Zeile (keine
+          Bild-Diashow) – danach direkt die Produktwelten. */}
       <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-white to-slate-50">
         <div className="bit-hero-glow" />
         <div className="absolute inset-0 bit-grid-light" />
@@ -148,7 +148,7 @@ export default async function EnglishHome() {
       </section>
 
       {/* ---------------------------------------------------------- Categories */}
-      {/* Direkt unter der Laufschrift, ohne großen Abstand (Kundenvorgabe). */}
+      {/* Direkt unter der Laufschrift, ohne großen Abstand. */}
       <section className="container pb-20 pt-8 sm:pb-24 sm:pt-10">
         <Reveal className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">

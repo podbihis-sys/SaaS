@@ -80,7 +80,7 @@ export function SiteHeader() {
               <Phone className="h-3.5 w-3.5" aria-hidden="true" /> {COMPANY.phone}
             </a>
             <span className="hidden lg:inline">{COMPANY.hours}</span>
-            {/* Sprachwahl – Flaggen statt Text (Kundenvorgabe) */}
+            {/* Sprachwahl – Flaggen statt Text */}
             <span className="flex items-center gap-2 border-l border-slate-200 pl-4">
               <Link
                 href={deHref}

@@ -34,7 +34,7 @@ export default async function UnternehmenPage() {
   const content = await getContent();
   return (
     <>
-      {/* Heller Hero – einheitlich mit den übrigen Seiten (Kundenvorgabe). */}
+      {/* Heller Hero – einheitlich mit den übrigen Seiten. */}
       <section className="border-b border-slate-800 bg-[#0f2742]">
         <div className="bit-page-hero container py-10">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#38bdf8]">Unternehmen</p>

@@ -43,7 +43,7 @@ export default async function StellePage({
 
   return (
     <>
-      {/* Hero – dunkel, einheitlich mit den übrigen Unterseiten (Kundenvorgabe). */}
+      {/* Hero – dunkel, einheitlich mit den übrigen Unterseiten. */}
       <section className="border-b border-slate-800 bg-[#0f2742]">
         <div className="bit-page-hero container py-10">
           <Link

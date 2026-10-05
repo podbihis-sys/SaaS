@@ -3,8 +3,8 @@
 import { useId } from "react";
 
 /**
- * Flaggen für die Sprachumschaltung (Kundenvorgabe: Flaggen statt „DE/EN").
- * Inline-SVG, damit keine Bilddateien nachgeladen werden müssen.
+ * Flaggen für die Sprachumschaltung statt „DE/EN".
+ * Inline-SVG, damit keine Bilddateien nachgeladen werden.
  */
 export function FlagIcon({ code, className = "" }: { code: "de" | "gb"; className?: string }) {
   const id = useId();

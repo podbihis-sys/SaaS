@@ -11,13 +11,9 @@ export interface HeroSlide {
 }
 
 /**
- * Automatisch durchlaufende Diashow im Hero – ein Bild je Produktkategorie,
- * jedes klickbar zur jeweiligen Kategorieseite (Kundenvorgabe: ohne
- * sichtbare Steuerleiste und ohne Badge).
- *
- * Barrierefreiheit: Der Lauf pausiert bei Hover und Tastatur-Fokus. Bei
- * prefers-reduced-motion läuft der Wechsel weiter (Kundenvorgabe), aber als
- * harter Bildwechsel ohne Überblendung.
+ * Durchlaufende Hero-Diashow – ein Bild je Produktkategorie, jedes klickbar
+ * zur Kategorieseite, ohne Steuerleiste und Badge. Pausiert bei Hover und
+ * Fokus; bei prefers-reduced-motion harter Wechsel ohne Überblendung.
  */
 export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
   const [index, setIndex] = useState(0);

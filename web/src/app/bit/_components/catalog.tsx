@@ -448,7 +448,7 @@ export function Catalog({
 
           {/* Results */}
           <div>
-            {/* Produktsuche (Kundenvorgabe): Name, Typ, Material, Eigenschaften, Größen */}
+            {/* Produktsuche: Name, Typ, Material, Eigenschaften, Größen */}
             <div className="mb-4">
               <ProductSearchBox value={query} onChange={setQuery} locale={locale} />
             </div>

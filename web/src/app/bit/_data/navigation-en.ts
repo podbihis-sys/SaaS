@@ -2,8 +2,8 @@ import type { NavItem } from "./navigation";
 
 /**
  * Englische Menüstruktur (/bit/en) – gleiche Punkte und Reihenfolge wie das
- * deutsche Menü (Kundenvorgabe): Home, Products, Competences, News,
- * Industrial Sectors, About BIT, Career, Sustainability, Contact.
+ * deutsche Menü: Home, Products, Competences, News, Industrial Sectors,
+ * About BIT, Career, Sustainability, Contact.
  */
 export const NAV_EN: NavItem[] = [
   { label: "Home", href: "/bit/en" },

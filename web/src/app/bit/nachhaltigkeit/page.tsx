@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 };
 
 const PILLARS = [
-  // Energie & Standort – Punkte laut Kundenvorgabe (09/2026).
+  // Energie & Standort (Stand 09/2026).
   {
     icon: Zap,
     title: "Wir setzen auf Ökostrom",

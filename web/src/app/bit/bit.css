@@ -98,8 +98,8 @@
   background: radial-gradient(circle at center, rgba(56, 189, 248, 0.22), transparent 70%);
 }
 
-/* Blauer Seitenkopf der Unterseiten: überall dieselbe Höhe (Kundenvorgabe),
-   der Inhalt wird darin vertikal zentriert. */
+/* Blauer Seitenkopf der Unterseiten: überall dieselbe Höhe,
+   Inhalt vertikal zentriert. */
 .bit-page-hero {
   display: flex;
   flex-direction: column;
@@ -452,9 +452,9 @@
 }
 
 /* ------------------------------------------- nicht indexierbarer Kontakt -- */
-/* Ansprechpartnerin N. F. wird per CSS-content ausgegeben (Kundenvorgabe):
-   Name, Durchwahl und E-Mail stehen nicht im HTML-Quelltext und werden von
-   Suchmaschinen nicht indexiert. Screenreader lesen CSS-content vor. */
+/* Ansprechpartnerin N. F. wird per CSS-content ausgegeben: Name, Durchwahl
+   und E-Mail stehen nicht im HTML-Quelltext und werden nicht indexiert.
+   Screenreader lesen CSS-content vor. */
 .bit-nf-name::after {
   content: "Nicole Faßbender";
 }
