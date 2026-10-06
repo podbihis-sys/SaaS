@@ -3,17 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Plus, Save, Trash2, Upload, X } from "lucide-react";
-import { createClient } from "@/app/bit/_lib/supabase-browser";
+import { mediaUrl as publicUrl, uploadImage } from "@/app/bit/_lib/upload-client";
 import { deleteCategory, saveCategory, type CategoryInput } from "../_actions";
-
-const BUCKET = "bit-product-images";
-
-function publicUrl(path: string): string {
-  if (!path) return "";
-  if (path.startsWith("http") || path.startsWith("/")) return path;
-  const base = process.env.NEXT_PUBLIC_BIT_SUPABASE_URL ?? "";
-  return `${base}/storage/v1/object/public/${BUCKET}/${path}`;
-}
 
 const FIELD =
   "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-[#1e4a7a] focus:ring-1 focus:ring-[#1e4a7a]";
@@ -36,17 +27,10 @@ export function CategoryEditor({ initial }: { initial: CategoryInput[] }) {
     setUploading(i);
     setError("");
     try {
-      const supabase = createClient();
-      const ext = file.name.split(".").pop() || "jpg";
-      const path = `categories/${row.id || "kategorie"}-${Date.now()}.${ext}`;
-      const { error: upErr } = await supabase.storage
-        .from(BUCKET)
-        .upload(path, file, { upsert: true, cacheControl: "3600" });
-      if (upErr) {
-        setError(`Bild-Upload fehlgeschlagen: ${upErr.message}`);
-        return;
-      }
+      const path = await uploadImage(file, "categories", row.id || "kategorie");
       set(i, { image_path: path });
+    } catch (e) {
+      setError(`Bild-Upload fehlgeschlagen: ${e instanceof Error ? e.message : String(e)}`);
     } finally {
       setUploading(null);
     }

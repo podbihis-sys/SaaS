@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { Trash2 } from "lucide-react";
-import { createClient } from "@/app/bit/_lib/supabase-server";
+import { queryOne, execute } from "@/app/bit/_lib/db";
 import { NewsForm } from "@/app/bit/admin/_components/news-form";
 import type { NewsInput } from "@/app/bit/admin/_actions";
 import { NEWS_EN } from "@/app/bit/_data/news-en";
@@ -29,9 +29,10 @@ export default async function EditNewsPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
-  const { data } = await supabase.from("bit_news").select("*").eq("id", id).maybeSingle();
-  const row = data as Row | null;
+  const row = await queryOne<Row>(
+    "SELECT id,slug,title,excerpt,body,published_at,image_path,image_alt,status,title_en,excerpt_en,body_en FROM bit_news WHERE id = ? LIMIT 1",
+    [id],
+  );
   if (!row) notFound();
 
   const initial: NewsInput = {
@@ -53,8 +54,7 @@ export default async function EditNewsPage({
 
   async function handleDelete() {
     "use server";
-    const sb = await createClient();
-    await sb.from("bit_news").delete().eq("id", id);
+    await execute("DELETE FROM bit_news WHERE id = ?", [id]);
     revalidatePath("/bit/admin/news");
     revalidatePath("/bit/news");
     redirect("/bit/admin/news");

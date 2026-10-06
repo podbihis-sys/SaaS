@@ -1,21 +1,32 @@
-import { createClient } from "@/app/bit/_lib/supabase-server";
+import { query } from "@/app/bit/_lib/db";
 import { TeamEditor } from "../../_components/team-editor";
 import type { TeamListInput } from "../../_actions";
 
 export const dynamic = "force-dynamic";
 
+interface TeamRow {
+  name: string;
+  role: string;
+  phone: string;
+  email: string;
+  css_only: number | boolean;
+}
+
 export default async function TeamAdmin() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("bit_team")
-    .select("name,role,phone,email,sort_order,css_only")
-    .order("sort_order");
-  const rows: TeamListInput = (data ?? []).map((r) => ({
+  let data: TeamRow[] = [];
+  try {
+    data = await query<TeamRow>(
+      "SELECT name,role,phone,email,css_only FROM bit_team ORDER BY sort_order",
+    );
+  } catch {
+    data = [];
+  }
+  const rows: TeamListInput = data.map((r) => ({
     name: r.name,
     role: r.role,
     phone: r.phone,
     email: r.email,
-    css_only: r.css_only,
+    css_only: Boolean(r.css_only),
   }));
   return (
     <>

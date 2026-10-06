@@ -1,27 +1,26 @@
 import { NextResponse } from "next/server";
-import { createPublicClient } from "@/app/bit/_lib/supabase-public";
+import { queryOne } from "@/app/bit/_lib/db";
 
 export const dynamic = "force-dynamic";
 
-/** Diagnose: Erreicht die Server-Runtime das CMS? (keine Geheimnisse im Output) */
+/** Diagnose: Erreicht die Server-Runtime die MariaDB? (keine Geheimnisse im Output) */
 export async function GET() {
   const started = Date.now();
   const env = {
-    url: Boolean(process.env.NEXT_PUBLIC_BIT_SUPABASE_URL),
-    key: Boolean(process.env.NEXT_PUBLIC_BIT_SUPABASE_ANON_KEY),
+    host: Boolean(process.env.BIT_DB_HOST ?? process.env.DB_HOST),
+    name: Boolean(process.env.BIT_DB_NAME ?? process.env.DB_NAME),
+    auth: Boolean(process.env.BIT_AUTH_SECRET),
   };
   try {
-    const supabase = createPublicClient();
-    const { data, error } = await supabase
-      .from("bit_faq")
-      .select("answer")
-      .eq("question", "Wie lange gibt es die BIT Bierther GmbH schon?")
-      .maybeSingle();
+    const row = await queryOne<{ answer: string }>(
+      "SELECT answer FROM bit_faq WHERE question = ? LIMIT 1",
+      ["Wie lange gibt es die BIT Bierther GmbH schon?"],
+    );
     return NextResponse.json({
       env,
       ms: Date.now() - started,
-      error: error?.message ?? null,
-      answer: data?.answer ?? null,
+      error: null,
+      answer: row?.answer ?? null,
     });
   } catch (e) {
     return NextResponse.json({ env, ms: Date.now() - started, thrown: String(e) });

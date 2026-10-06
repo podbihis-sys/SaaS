@@ -1,8 +1,18 @@
 import { notFound } from "next/navigation";
-import { createClient } from "@/app/bit/_lib/supabase-server";
+import { queryOne } from "@/app/bit/_lib/db";
 import { PageForm } from "../../../_components/page-form";
 
 export const dynamic = "force-dynamic";
+
+interface PageRow {
+  id: string;
+  slug: string;
+  title: string;
+  meta_title: string | null;
+  meta_description: string | null;
+  body: string;
+  status: "draft" | "published";
+}
 
 export default async function SeiteBearbeiten({
   params,
@@ -10,8 +20,10 @@ export default async function SeiteBearbeiten({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createClient();
-  const { data } = await supabase.from("bit_pages").select("*").eq("id", id).maybeSingle();
+  const data = await queryOne<PageRow>(
+    "SELECT id,slug,title,meta_title,meta_description,body,status FROM bit_pages WHERE id = ? LIMIT 1",
+    [id],
+  );
   if (!data) notFound();
   return (
     <>

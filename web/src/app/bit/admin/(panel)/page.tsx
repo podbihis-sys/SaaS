@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ChevronRight, Plus } from "lucide-react";
-import { createClient } from "@/app/bit/_lib/supabase-server";
+import { query } from "@/app/bit/_lib/db";
 import { getCmsCategories } from "@/app/bit/_data/cms";
 
 export const dynamic = "force-dynamic";
@@ -14,12 +14,16 @@ interface Row {
 }
 
 export default async function AdminProductsPage() {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("bit_products")
-    .select("id,slug,name,status,category_id")
-    .order("name", { ascending: true });
-  const products = (data as Row[] | null) ?? [];
+  // Admin-Read: alle Status (nicht nur published).
+  let products: Row[] = [];
+  let error: { message: string } | null = null;
+  try {
+    products = await query<Row>(
+      "SELECT id,slug,name,status,category_id FROM bit_products ORDER BY name ASC",
+    );
+  } catch (e) {
+    error = { message: e instanceof Error ? e.message : String(e) };
+  }
   const categories = await getCmsCategories();
 
   // Produkte nach Kategorie gruppieren (Reihenfolge der Kategorien beibehalten).

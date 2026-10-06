@@ -1,48 +1,23 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { LogOut, Package, ExternalLink } from "lucide-react";
-import { createClient } from "@/app/bit/_lib/supabase-server";
+import { getSessionAdmin } from "@/app/bit/_lib/auth";
+import { logoutAction } from "@/app/bit/admin/_auth-actions";
 
 export const dynamic = "force-dynamic";
 
 async function signOut() {
   "use server";
-  const supabase = await createClient();
-  await supabase.auth.signOut();
+  await logoutAction();
   redirect("/bit/admin/login");
 }
 
 export default async function PanelLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/bit/admin/login");
-
-  const { data: admin } = await supabase
-    .from("bit_admins")
-    .select("role")
-    .eq("user_id", user.id)
-    .maybeSingle();
-
-  if (!admin) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-        <div className="max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center">
-          <h1 className="text-lg font-semibold text-slate-900">Kein Zugriff</h1>
-          <p className="mt-2 text-sm text-slate-600">
-            Das Konto <span className="font-medium">{user.email}</span> ist nicht als CMS-Bearbeiter
-            freigeschaltet. Bitte einen Administrator um eine Einladung.
-          </p>
-          <form action={signOut} className="mt-6">
-            <button className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
-              Abmelden
-            </button>
-          </form>
-        </div>
-      </div>
-    );
-  }
+  // Eine gueltige Session + vorhandene Admin-Zeile IST die Freischaltung;
+  // fehlt sie, zurueck zur Anmeldung (kein separater "Kein Zugriff"-Screen,
+  // da es keine Whitelist getrennt von der Kontozeile mehr gibt).
+  const admin = await getSessionAdmin();
+  if (!admin) redirect("/bit/admin/login");
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -75,7 +50,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
             <Link href="/bit" target="_blank" className="inline-flex items-center gap-1 text-slate-500 hover:text-[#1e4a7a]">
               <ExternalLink className="h-4 w-4" /> Website
             </Link>
-            <span className="hidden text-slate-400 sm:inline">{user.email}</span>
+            <span className="hidden text-slate-400 sm:inline">{admin.email}</span>
             <form action={signOut}>
               <button className="inline-flex items-center gap-1 text-slate-500 hover:text-red-600">
                 <LogOut className="h-4 w-4" /> Abmelden

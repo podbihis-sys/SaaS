@@ -1,16 +1,17 @@
-import { createPublicClient } from "@/app/bit/_lib/supabase-public";
+import { query, queryOne } from "@/app/bit/_lib/db";
 import { withTimeout } from "@/app/bit/_lib/with-timeout";
 import { bitImageUrl } from "./cms";
 import { NEWS, type NewsPost } from "./news";
 import { NEWS_EN } from "./news-en";
 
 /**
- * Datenzugriff für News-Beiträge.
+ * Datenzugriff für News-Beiträge (MariaDB).
  *
- * Liest veröffentlichte Beiträge aus der Tabelle `bit_news` (siehe
- * 0004_bit_news.sql) und fällt – solange die Tabelle leer/nicht vorhanden ist –
- * sauber auf die statische Liste aus `news.ts` zurück. Die Seite funktioniert
- * damit in jeder Phase (vor Migration + Seed wie danach).
+ * Liest veröffentlichte Beiträge aus der Tabelle `bit_news` und fällt – solange
+ * die Tabelle leer/nicht vorhanden ist – sauber auf die statische Liste aus
+ * `news.ts` zurück. Die Seite funktioniert damit in jeder Phase.
+ *
+ * Oeffentliche Reads: nur status='published' (ersetzt die fruehere RLS).
  */
 
 interface NewsRow {
@@ -56,6 +57,9 @@ function mapNews(row: NewsRow): NewsPost {
 
 const NEWS_WITH_EN = NEWS.map((n) => withEn(n));
 
+const NEWS_COLS =
+  "id,slug,title,published_at,excerpt,body,image_path,image_alt,status,title_en,excerpt_en,body_en";
+
 /** Beitrag in der gewünschten Sprache (EN fällt je Feld auf Deutsch zurück). */
 export function localizeNews(post: NewsPost, locale: "de" | "en"): NewsPost {
   if (locale === "de") return post;
@@ -73,28 +77,23 @@ export async function getCmsNews(
   opts: { includeDrafts?: boolean } = {},
 ): Promise<NewsPost[]> {
   return withTimeout<NewsPost[]>(async () => {
-    const supabase = createPublicClient();
-    let query = supabase
-      .from("bit_news")
-      .select("*")
-      .order("published_at", { ascending: false });
-    if (!opts.includeDrafts) query = query.eq("status", "published");
-    const { data, error } = await query.returns<NewsRow[]>();
-    if (error || !data || data.length === 0) return NEWS_WITH_EN;
-    return data.map(mapNews);
+    const where = opts.includeDrafts ? "" : " WHERE status = 'published'";
+    const rows = await query<NewsRow>(
+      `SELECT ${NEWS_COLS} FROM bit_news${where} ORDER BY published_at DESC`,
+    );
+    if (rows.length === 0) return NEWS_WITH_EN;
+    return rows.map(mapNews);
   }, NEWS_WITH_EN);
 }
 
 export async function getCmsNewsPost(slug: string): Promise<NewsPost | undefined> {
   const fallback = NEWS_WITH_EN.find((n) => n.slug === slug);
   return withTimeout<NewsPost | undefined>(async () => {
-    const supabase = createPublicClient();
-    const { data, error } = await supabase
-      .from("bit_news")
-      .select("*")
-      .eq("slug", slug)
-      .maybeSingle();
-    if (error || !data) return fallback;
-    return mapNews(data as unknown as NewsRow);
+    const row = await queryOne<NewsRow>(
+      `SELECT ${NEWS_COLS} FROM bit_news WHERE slug = ? AND status = 'published' LIMIT 1`,
+      [slug],
+    );
+    if (!row) return fallback;
+    return mapNews(row);
   }, fallback);
 }

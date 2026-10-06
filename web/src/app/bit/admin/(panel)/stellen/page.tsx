@@ -1,15 +1,26 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import { createClient } from "@/app/bit/_lib/supabase-server";
+import { query } from "@/app/bit/_lib/db";
 
 export const dynamic = "force-dynamic";
 
+interface JobRow {
+  id: string;
+  slug: string;
+  title: string;
+  status: "draft" | "published";
+  sort_order: number;
+}
+
 export default async function StellenAdmin() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("bit_jobs")
-    .select("id,slug,title,status,sort_order")
-    .order("sort_order");
+  let data: JobRow[] = [];
+  try {
+    data = await query<JobRow>(
+      "SELECT id,slug,title,status,sort_order FROM bit_jobs ORDER BY sort_order",
+    );
+  } catch {
+    data = [];
+  }
   return (
     <>
       <div className="flex items-center justify-between">

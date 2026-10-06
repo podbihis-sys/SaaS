@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ChevronRight, Plus } from "lucide-react";
-import { createClient } from "@/app/bit/_lib/supabase-server";
+import { query } from "@/app/bit/_lib/db";
 import { formatDate } from "@/app/bit/_lib/format";
 import { NEWS } from "@/app/bit/_data/news";
 
@@ -15,12 +15,16 @@ interface Row {
 }
 
 export default async function AdminNewsPage() {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("bit_news")
-    .select("id,slug,title,status,published_at")
-    .order("published_at", { ascending: false });
-  const rows = (data as Row[] | null) ?? [];
+  // Admin-Read: alle Status.
+  let rows: Row[] = [];
+  let error: { message: string } | null = null;
+  try {
+    rows = await query<Row>(
+      "SELECT id,slug,title,status,published_at FROM bit_news ORDER BY published_at DESC",
+    );
+  } catch (e) {
+    error = { message: e instanceof Error ? e.message : String(e) };
+  }
 
   return (
     <div>

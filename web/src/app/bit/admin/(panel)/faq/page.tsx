@@ -1,16 +1,19 @@
-import { createClient } from "@/app/bit/_lib/supabase-server";
+import { query } from "@/app/bit/_lib/db";
 import { FaqEditor } from "../../_components/faq-editor";
 import type { FaqListInput } from "../../_actions";
 
 export const dynamic = "force-dynamic";
 
 export default async function FaqAdmin() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("bit_faq")
-    .select("group_name,question,answer,sort_order")
-    .order("sort_order");
-  const rows: FaqListInput = (data ?? []).map((r) => ({
+  let data: { group_name: string; question: string; answer: string }[] = [];
+  try {
+    data = await query(
+      "SELECT group_name,question,answer FROM bit_faq ORDER BY sort_order",
+    );
+  } catch {
+    data = [];
+  }
+  const rows: FaqListInput = data.map((r) => ({
     group_name: r.group_name,
     question: r.question,
     answer: r.answer,
