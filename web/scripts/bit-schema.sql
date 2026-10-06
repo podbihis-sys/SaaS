@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS bit_categories (
 
 -- -------------------------------------------------------------------- Produkte
 CREATE TABLE IF NOT EXISTS bit_products (
-  id            CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
+  id            CHAR(36) NOT NULL PRIMARY KEY,
   slug          VARCHAR(200) NOT NULL UNIQUE,
   category_id   VARCHAR(190) NOT NULL,
   code          VARCHAR(120) NOT NULL DEFAULT '',
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS bit_products (
 
 -- ----------------------------------------------------------------------- News
 CREATE TABLE IF NOT EXISTS bit_news (
-  id           CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
+  id           CHAR(36) NOT NULL PRIMARY KEY,
   slug         VARCHAR(200) NOT NULL UNIQUE,
   title        VARCHAR(300) NOT NULL,
   excerpt      TEXT NOT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS bit_news (
 
 -- ------------------------------------------------------------------ Unterseiten
 CREATE TABLE IF NOT EXISTS bit_pages (
-  id               CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
+  id               CHAR(36) NOT NULL PRIMARY KEY,
   slug             VARCHAR(240) NOT NULL UNIQUE,
   title            VARCHAR(300) NOT NULL,
   meta_title       VARCHAR(300) NULL,
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS bit_pages (
 
 -- ------------------------------------------------------------- Stellenanzeigen
 CREATE TABLE IF NOT EXISTS bit_jobs (
-  id               CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
+  id               CHAR(36) NOT NULL PRIMARY KEY,
   slug             VARCHAR(200) NOT NULL UNIQUE,
   title            VARCHAR(300) NOT NULL,
   intro            TEXT NOT NULL,
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS bit_jobs (
 
 -- ------------------------------------------------------------------------ FAQ
 CREATE TABLE IF NOT EXISTS bit_faq (
-  id          CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
+  id          CHAR(36) NOT NULL PRIMARY KEY,
   group_name  VARCHAR(200) NOT NULL DEFAULT '',
   question    TEXT NOT NULL,
   answer      TEXT NOT NULL,
@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS bit_faq (
 
 -- ------------------------------------------------------------- Team-Kontakte
 CREATE TABLE IF NOT EXISTS bit_team (
-  id          CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
+  id          CHAR(36) NOT NULL PRIMARY KEY,
   name        VARCHAR(200) NOT NULL,
   role        VARCHAR(240) NOT NULL DEFAULT '',
   phone       VARCHAR(80) NOT NULL DEFAULT '',
@@ -157,7 +157,7 @@ CREATE TABLE IF NOT EXISTS bit_content (
 -- Ohne Supabase-Auth: eigenes Konto mit bcrypt-Passwort-Hash. Eine gueltige
 -- Zeile hier IST die Freischaltung (Whitelist). Anlegen per create-admin.mjs.
 CREATE TABLE IF NOT EXISTS bit_admins (
-  id            CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
+  id            CHAR(36) NOT NULL PRIMARY KEY,
   email         VARCHAR(240) NOT NULL UNIQUE,
   password_hash VARCHAR(255) NOT NULL,
   role          ENUM('admin','editor') NOT NULL DEFAULT 'editor',
